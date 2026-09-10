@@ -1,6 +1,10 @@
-# Match Scanner - stemmi statici
+# Match Scanner - titoli lineari
 
-- Stevenage, Luton Town, SC Braga ed Estrela Amadora usano URL SVG statici.
-- Niente ricerca API per queste quattro squadre.
-- Dimensione stemmi uniforme a 50px su desktop.
-- Architettura home -> match.html invariata.
+Regola fissa per tutte le schede:
+- stemma casa
+- nome squadra casa
+- trattino centrale
+- stemma trasferta
+- nome squadra trasferta
+
+Tutto sulla stessa linea, stessa dimensione stemmi, stesso peso tipografico e allineamento verticale.

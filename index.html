@@ -2904,6 +2904,86 @@ body{padding:26px}
   }
 }
 
+
+/* ===== TITOLI PARTITA: REGOLA UNICA E LINEARE ===== */
+.heroTitle{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  max-width:100%!important;
+  margin-inline:auto!important;
+  padding:14px 18px!important;
+}
+.heroTeamLine{
+  display:grid!important;
+  grid-template-columns:50px minmax(0,1fr) auto 50px minmax(0,1fr)!important;
+  align-items:center!important;
+  justify-content:center!important;
+  column-gap:12px!important;
+  width:min(100%,980px)!important;
+  max-width:980px!important;
+  white-space:nowrap!important;
+  text-align:center!important;
+  line-height:1!important;
+  font-size:clamp(28px,2.4vw,44px)!important;
+  font-weight:900!important;
+  letter-spacing:-1.2px!important;
+}
+.heroTeamLine .heroCrestFixed{
+  width:50px!important;
+  height:50px!important;
+  min-width:50px!important;
+  min-height:50px!important;
+  max-width:50px!important;
+  max-height:50px!important;
+  object-fit:contain!important;
+  object-position:center!important;
+  display:block!important;
+  margin:0!important;
+  justify-self:center!important;
+  align-self:center!important;
+  flex:none!important;
+}
+.heroTeamLine .heroDash{
+  font-size:.68em!important;
+  opacity:.75!important;
+  margin:0 2px!important;
+  justify-self:center!important;
+  white-space:nowrap!important;
+}
+.heroTeamLine > span:not(.heroDash){
+  min-width:0!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+  white-space:nowrap!important;
+}
+@media(max-width:1100px){
+  .heroTeamLine{
+    grid-template-columns:44px minmax(0,1fr) auto 44px minmax(0,1fr)!important;
+    column-gap:10px!important;
+    font-size:clamp(24px,2.1vw,38px)!important;
+  }
+  .heroTeamLine .heroCrestFixed{
+    width:44px!important;height:44px!important;
+    min-width:44px!important;min-height:44px!important;
+    max-width:44px!important;max-height:44px!important;
+  }
+}
+@media(max-width:760px){
+  .heroTitle{padding:12px!important;}
+  .heroTeamLine{
+    grid-template-columns:38px minmax(0,1fr) auto 38px minmax(0,1fr)!important;
+    column-gap:8px!important;
+    font-size:20px!important;
+    letter-spacing:-.5px!important;
+  }
+  .heroTeamLine .heroCrestFixed{
+    width:38px!important;height:38px!important;
+    min-width:38px!important;min-height:38px!important;
+    max-width:38px!important;max-height:38px!important;
+  }
+}
+
 </style>
 </head>
 <body>
