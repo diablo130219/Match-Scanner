@@ -1,12 +1,14 @@
-# Match Scanner
+# Match Scanner - fix apertura/stemmi
 
-Versione a pagina unica.
-
-- `index.html`: home + dettagli partita nello stesso documento.
-- Estrela Amadora - Sporting Braga contiene la scheda completa caricata.
-- Il pulsante "Torna alla home" ripristina l'elenco partite senza cambiare pagina.
-- Le altre partite mostrano il dettaglio generico fino al caricamento dei dati completi.
+Correzioni:
+- le partite si aprono nello stesso index.html;
+- nessun `window.location` verso una seconda pagina;
+- click via `data-match-id` + `addEventListener`;
+- rimosso lo scroll forzato a inizio pagina;
+- endpoint TheSportsDB corretto a `/3/`;
+- Estrela Amadora - Sporting Braga contiene i dati completi già caricati.
 
 Render:
-- Build Command: `npm ci && npm run build`
-- Publish Directory: `dist`
+- se il servizio usa già `npm ci && npm run build`, puoi lasciarlo se nel repository è presente package-lock.json;
+- altrimenti usa `npm install && npm run build`;
+- Publish Directory: `dist`.

@@ -2565,6 +2565,30 @@ body{padding:26px}
   }
 }
 
+
+/* ===== FIX DEFINITIVO APERTURA PARTITE ===== */
+.matchCard[data-match-id]{
+  cursor:pointer !important;
+}
+.matchCard[data-match-id]:focus-visible{
+  outline:3px solid rgba(37,99,235,.28);
+  outline-offset:3px;
+}
+#detailView{
+  display:none;
+  width:100%;
+  position:relative;
+}
+#detailView.show{
+  display:block !important;
+}
+#estrelaBragaFullDetail[style*="display: block"],
+#twenteFullDetail[style*="display: block"],
+#genericDetail[style*="display: block"]{
+  visibility:visible !important;
+  opacity:1 !important;
+}
+
 </style>
 </head>
 <body>
@@ -3359,7 +3383,7 @@ async function getOfficialTeamLogo(name){
   if(logoCache.has(name)) return logoCache.get(name);
   const q = teamLogoAliases[name] || name;
   try{
-    const url = `https://www.thesportsdb.com/api/v1/json/123/searchteams.php?t=${encodeURIComponent(q)}`;
+    const url = `https://www.thesportsdb.com/api/v1/json/3/searchteams.php?t=${encodeURIComponent(q)}`;
     const res = await fetch(url);
     if(!res.ok) throw new Error('logo lookup failed');
     const data = await res.json();
@@ -3371,6 +3395,24 @@ async function getOfficialTeamLogo(name){
   }catch(e){
     logoCache.set(name, '');
     return '';
+  }
+}
+
+
+async function hydrateEstrelaHeroCrests(){
+  const pairs = [
+    ['crestHome','Estrela Amadora'],
+    ['crestAway','Sporting Braga']
+  ];
+  for(const [id,team] of pairs){
+    const img=document.getElementById(id);
+    if(!img) continue;
+    const badge=await getOfficialTeamLogo(team);
+    if(badge){
+      img.src=badge;
+      img.style.display='';
+      img.classList.remove('loading');
+    }
   }
 }
 
@@ -3529,7 +3571,7 @@ function renderList(){
   }
 
   list.innerHTML = arr.map(m => `
-    <div class="matchCard" onclick="openDetail('${esc(m.id)}')">
+    <div class="matchCard" data-match-id="${esc(m.id)}" role="button" tabindex="0">
       <div class="timePill">${esc(m.time)}</div>
 
       <div class="teamsBlock">
@@ -3559,6 +3601,19 @@ function renderList(){
       <div style="font-size:13px;font-weight:900;color:#174f91">Apri →</div>
     </div>
   `).join('');
+
+  // Collegamento robusto: niente onclick inline.
+  list.querySelectorAll('.matchCard[data-match-id]').forEach(card => {
+    const open = () => openDetail(card.dataset.matchId);
+    card.addEventListener('click', open);
+    card.addEventListener('keydown', ev => {
+      if(ev.key === 'Enter' || ev.key === ' '){
+        ev.preventDefault();
+        open();
+      }
+    });
+  });
+
   hydrateStaticOfficialCrests(list);
 }
 
@@ -3629,6 +3684,7 @@ function openDetail(id){
   else if(isEstrelaBraga){
     estrelaDetail.style.display = 'block';
     hydrateStaticOfficialCrests(estrelaDetail);
+    hydrateEstrelaHeroCrests();
   }
   else{
     genericDetail.style.display = 'block';
@@ -3658,7 +3714,13 @@ function openDetail(id){
     `;
   }
 
-  window.scrollTo({top:0,behavior:'smooth'});
+  // Non cambiare pagina e non fare scroll forzato a inizio documento.
+  // Il contenuto principale viene nascosto e il dettaglio occupa il suo posto.
+  requestAnimationFrame(() => {
+    if(estrelaDetail && estrelaDetail.style.display === 'block'){
+      hydrateStaticOfficialCrests(estrelaDetail);
+    }
+  });
 }
 
 document.getElementById('backBtn').onclick = () => {
@@ -3678,7 +3740,6 @@ document.getElementById('backBtn').onclick = () => {
     genericDetail.innerHTML = '';
   }
 
-  window.scrollTo({top:0,behavior:'smooth'});
 };
 
 
@@ -3764,9 +3825,9 @@ initTwenteHeroTitle();
 <div class="heroMainFixed">
 <div class="badge"><span class="dot"></span> Scheda partita completa</div>
 <div class="heroTitle" id="heroMatchTitle">
-<span class="heroTeamLine"><img alt="Estrela Amadora" class="heroCrestFixed" id="crestHome"/><span>Estrela Amadora</span></span>
+<span class="heroTeamLine"><img alt="Estrela Amadora" class="heroCrestFixed staticOfficialCrest" data-team="Estrela Amadora" id="crestHome"/><span>Estrela Amadora</span></span>
 <span class="heroDash">—</span>
-<span class="heroTeamLine"><img alt="Sporting Braga" class="heroCrestFixed" id="crestAway"/><span>Sporting Braga</span></span>
+<span class="heroTeamLine"><img alt="Sporting Braga" class="heroCrestFixed staticOfficialCrest" data-team="Sporting Braga" id="crestAway"/><span>Sporting Braga</span></span>
 </div>
 <div class="heroMeta">
 <div class="metaChip">📅 10 settembre 2026</div>
