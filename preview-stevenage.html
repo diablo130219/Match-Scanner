@@ -4138,6 +4138,404 @@ body::before{
   .cardTitle{font-size:18px!important}
 }
 
+
+/* =====================================================================
+   MAGICSCANNER — DETAIL PAGE CSS MASTER FIX
+   Ultimo override: corregge larghezza pagina, hero, griglia, card e mobile.
+   ===================================================================== */
+html,body{
+  width:100%!important;
+  min-width:0!important;
+  margin:0!important;
+  background:
+    radial-gradient(1100px 620px at 6% -8%,rgba(37,99,235,.18),transparent 62%),
+    radial-gradient(950px 560px at 92% 4%,rgba(124,58,237,.16),transparent 62%),
+    radial-gradient(850px 520px at 76% 100%,rgba(13,148,136,.08),transparent 64%),
+    linear-gradient(180deg,#050914 0%,#07101d 52%,#09121f 100%)!important;
+  color:#eef5ff!important;
+}
+body{
+  padding:20px!important;
+  overflow-x:hidden!important;
+  background-attachment:fixed!important;
+}
+#detailView{
+  display:block!important;
+  width:100%!important;
+  max-width:none!important;
+  margin:0!important;
+  padding:0!important;
+}
+#detailContent{
+  display:block!important;
+  width:100%!important;
+  max-width:none!important;
+  min-width:0!important;
+}
+#twenteFullDetail,
+#estrelaBragaFullDetail,
+#stevenageLutonFullDetail,
+#genericDetail{
+  width:100%!important;
+  max-width:none!important;
+  min-width:0!important;
+}
+#twenteFullDetail > .container,
+#estrelaBragaFullDetail > .container,
+#stevenageLutonFullDetail > .container,
+#genericDetail > .container{
+  width:min(100%,1580px)!important;
+  max-width:1580px!important;
+  min-width:0!important;
+  margin:0 auto!important;
+  padding:0!important;
+}
+
+/* back */
+.backLink,.backBtn{
+  margin:0 0 14px!important;
+  color:#dbeafe!important;
+  background:linear-gradient(180deg,rgba(17,28,48,.96),rgba(10,19,34,.98))!important;
+  border:1px solid rgba(125,171,226,.18)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.04),0 10px 26px rgba(0,0,0,.22)!important;
+}
+
+/* hero definitivo */
+#twenteFullDetail .hero,
+#estrelaBragaFullDetail .hero,
+#stevenageLutonFullDetail .hero{
+  width:100%!important;
+  max-width:none!important;
+  min-height:250px!important;
+  margin:0 0 18px!important;
+  padding:0!important;
+  border-radius:28px!important;
+  overflow:hidden!important;
+  position:relative!important;
+  background:
+    radial-gradient(680px 320px at 6% 8%,rgba(56,189,248,.18),transparent 64%),
+    radial-gradient(620px 320px at 92% 2%,rgba(99,102,241,.28),transparent 63%),
+    radial-gradient(480px 280px at 70% 100%,rgba(20,184,166,.11),transparent 68%),
+    linear-gradient(120deg,#09111f 0%,#0d1c36 48%,#173b79 100%)!important;
+  border:1px solid rgba(114,166,230,.16)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.04),0 24px 58px rgba(0,0,0,.34)!important;
+}
+#twenteFullDetail .heroTop,
+#estrelaBragaFullDetail .heroTop,
+#stevenageLutonFullDetail .heroTop{
+  width:100%!important;
+  min-height:250px!important;
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) 370px!important;
+  gap:20px!important;
+  align-items:stretch!important;
+  padding:18px!important;
+}
+#twenteFullDetail .heroMainFixed,
+#estrelaBragaFullDetail .heroMainFixed,
+#stevenageLutonFullDetail .heroMainFixed{
+  width:auto!important;
+  max-width:none!important;
+  min-width:0!important;
+  min-height:214px!important;
+  padding:20px 24px!important;
+  display:flex!important;
+  flex-direction:column!important;
+  justify-content:center!important;
+  align-items:center!important;
+}
+#twenteFullDetail .heroTitle,
+#estrelaBragaFullDetail .heroTitle,
+#stevenageLutonFullDetail .heroTitle{
+  width:100%!important;
+  max-width:1040px!important;
+  min-width:0!important;
+  margin:10px auto 0!important;
+  padding:14px 18px!important;
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) auto minmax(0,1fr)!important;
+  gap:16px!important;
+  align-items:center!important;
+  justify-content:center!important;
+  background:linear-gradient(180deg,rgba(9,20,38,.34),rgba(5,14,28,.24))!important;
+  border:1px solid rgba(145,190,239,.08)!important;
+  border-radius:20px!important;
+}
+#twenteFullDetail .heroTeamLine,
+#estrelaBragaFullDetail .heroTeamLine,
+#stevenageLutonFullDetail .heroTeamLine{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:10px!important;
+  width:auto!important;
+  max-width:100%!important;
+  min-width:0!important;
+  white-space:nowrap!important;
+  font-size:clamp(28px,2.35vw,43px)!important;
+  line-height:1!important;
+  letter-spacing:-1.3px!important;
+  font-weight:950!important;
+  color:#fff!important;
+}
+#twenteFullDetail .heroTeamLine:first-child,
+#estrelaBragaFullDetail .heroTeamLine:first-child,
+#stevenageLutonFullDetail .heroTeamLine:first-child{justify-self:end!important}
+#twenteFullDetail .heroTeamLine:last-child,
+#estrelaBragaFullDetail .heroTeamLine:last-child,
+#stevenageLutonFullDetail .heroTeamLine:last-child{justify-self:start!important}
+#twenteFullDetail .heroTitle > .heroDash,
+#estrelaBragaFullDetail .heroTitle > .heroDash,
+#stevenageLutonFullDetail .heroTitle > .heroDash{
+  display:block!important;
+  margin:0!important;
+  font-size:28px!important;
+  color:#7890aa!important;
+  opacity:.72!important;
+}
+#twenteFullDetail .heroCrestFixed,
+#estrelaBragaFullDetail .heroCrestFixed,
+#stevenageLutonFullDetail .heroCrestFixed{
+  display:block!important;
+  width:48px!important;
+  height:48px!important;
+  min-width:48px!important;
+  min-height:48px!important;
+  max-width:48px!important;
+  max-height:48px!important;
+  object-fit:contain!important;
+  flex:0 0 48px!important;
+  margin:0!important;
+}
+#twenteFullDetail .heroTeamLine > span,
+#estrelaBragaFullDetail .heroTeamLine > span,
+#stevenageLutonFullDetail .heroTeamLine > span{
+  display:block!important;
+  min-width:0!important;
+  overflow:visible!important;
+  text-overflow:clip!important;
+  white-space:nowrap!important;
+}
+#twenteFullDetail .heroMeta,
+#estrelaBragaFullDetail .heroMeta,
+#stevenageLutonFullDetail .heroMeta{
+  margin-top:18px!important;
+  display:flex!important;
+  gap:9px!important;
+  justify-content:center!important;
+  flex-wrap:wrap!important;
+}
+#twenteFullDetail .metaChip,
+#estrelaBragaFullDetail .metaChip,
+#stevenageLutonFullDetail .metaChip{
+  color:#e8f2ff!important;
+  background:rgba(255,255,255,.07)!important;
+  border:1px solid rgba(255,255,255,.08)!important;
+}
+#twenteFullDetail .heroAside,
+#estrelaBragaFullDetail .heroAside,
+#stevenageLutonFullDetail .heroAside{
+  width:auto!important;
+  max-width:none!important;
+  min-width:0!important;
+  margin:0!important;
+  min-height:214px!important;
+  padding:18px!important;
+  align-self:stretch!important;
+  border-radius:20px!important;
+  background:linear-gradient(180deg,rgba(36,48,71,.82),rgba(27,42,64,.82))!important;
+  border:1px solid rgba(164,193,232,.14)!important;
+}
+
+/* layout principale: usa davvero tutta la pagina */
+.pageGrid{
+  width:100%!important;
+  max-width:none!important;
+  min-width:0!important;
+  display:grid!important;
+  grid-template-columns:minmax(0,1.55fr) minmax(360px,.92fr)!important;
+  gap:18px!important;
+  align-items:start!important;
+}
+.stack{
+  width:100%!important;
+  min-width:0!important;
+  display:grid!important;
+  gap:18px!important;
+}
+.card{
+  width:100%!important;
+  min-width:0!important;
+  color:#eef5ff!important;
+  background:
+    linear-gradient(180deg,rgba(15,24,40,.96) 0%,rgba(9,17,29,.98) 100%)!important;
+  border:1px solid rgba(137,168,207,.13)!important;
+  border-radius:24px!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.035),0 18px 42px rgba(0,0,0,.25)!important;
+}
+.cardTitle{color:#f4f8ff!important}
+.cardSub,.smallMuted{color:#8fa4bd!important}
+.note,.hl,.analysisBlock,.timingPanel,.comparisonCard,.metricCard,.resultsTeamCard{
+  color:#dce8f7!important;
+  background:linear-gradient(180deg,rgba(16,29,49,.94),rgba(10,21,37,.96))!important;
+  border-color:rgba(136,171,215,.12)!important;
+}
+
+/* Stato forma: niente più riquadri bianchi */
+.formGrid{
+  display:grid!important;
+  grid-template-columns:minmax(0,1.18fr) minmax(300px,.82fr)!important;
+  gap:18px!important;
+  align-items:stretch!important;
+}
+.chartWrap{
+  background:linear-gradient(180deg,#08162d 0%,#0d2450 100%)!important;
+  border:1px solid rgba(94,174,255,.14)!important;
+}
+.formGrid .pill,
+.summaryPills .pill{
+  color:#e8f2ff!important;
+  background:linear-gradient(180deg,rgba(17,31,52,.96),rgba(10,22,39,.98))!important;
+  border:1px solid rgba(126,171,225,.14)!important;
+  box-shadow:none!important;
+}
+.chartLegend{color:#b8cbe1!important}
+
+/* tabelle / risultati */
+.table td,.microTable td,.rankTable td{
+  color:#dce8f7!important;
+}
+.table td{
+  background:rgba(11,23,40,.92)!important;
+  border-color:rgba(131,163,202,.11)!important;
+}
+.table th,.microTable th,.rankTable th{color:#8097b1!important}
+.resultsTeamName,.resultsTeamMeta,.resultMatch,.resultScore,.formHeadline{color:#e9f2ff!important}
+.resultRow2,.marketRow,.overRowPremium{
+  background:rgba(11,23,40,.86)!important;
+  border-color:rgba(132,167,208,.10)!important;
+}
+
+/* radar */
+.radarCompareCard{overflow:hidden!important}
+.radarMount{gap:12px!important}
+.radarStage{
+  width:min(100%,620px)!important;
+  height:clamp(340px,30vw,390px)!important;
+  min-height:340px!important;
+  padding:0!important;
+  margin:0 auto!important;
+  border-radius:18px!important;
+  background:
+    radial-gradient(circle at 50% 43%,rgba(37,99,235,.16),transparent 36%),
+    linear-gradient(180deg,#07142a 0%,#0d2450 100%)!important;
+  box-shadow:inset 0 0 0 1px rgba(106,174,255,.08)!important;
+}
+.radarTeam{
+  color:#e9f3ff!important;
+  background:linear-gradient(180deg,rgba(14,28,49,.96),rgba(9,20,36,.98))!important;
+  border-color:rgba(125,171,225,.12)!important;
+}
+.radarQuickItem{
+  background:#0a1729!important;
+  border-color:rgba(129,166,211,.11)!important;
+}
+.radarQuickItem b{color:#fff!important}
+.radarFoot{
+  color:#8198b4!important;
+  background:#091525!important;
+  border-color:rgba(129,166,211,.10)!important;
+}
+
+/* footer analysis */
+.finalAnalysisShell,.analysisGrid,.analysisBlock{
+  color:#eaf3ff!important;
+}
+
+/* evita clipping globale */
+.hero,.heroTop,.heroMainFixed,.heroTitle,.pageGrid,.stack,.card{
+  box-sizing:border-box!important;
+}
+img{max-width:100%}
+
+/* desktop medio */
+@media(max-width:1250px){
+  body{padding:16px!important}
+  #twenteFullDetail .heroTop,
+  #estrelaBragaFullDetail .heroTop,
+  #stevenageLutonFullDetail .heroTop{
+    grid-template-columns:minmax(0,1fr) 330px!important;
+  }
+  .pageGrid{grid-template-columns:minmax(0,1.45fr) minmax(330px,.9fr)!important}
+  #twenteFullDetail .heroTeamLine,
+  #estrelaBragaFullDetail .heroTeamLine,
+  #stevenageLutonFullDetail .heroTeamLine{font-size:clamp(25px,2.35vw,36px)!important}
+}
+
+/* tablet */
+@media(max-width:980px){
+  #twenteFullDetail .heroTop,
+  #estrelaBragaFullDetail .heroTop,
+  #stevenageLutonFullDetail .heroTop{
+    grid-template-columns:1fr!important;
+  }
+  #twenteFullDetail .heroAside,
+  #estrelaBragaFullDetail .heroAside,
+  #stevenageLutonFullDetail .heroAside{
+    min-height:0!important;
+  }
+  .pageGrid,.formGrid{grid-template-columns:1fr!important}
+}
+
+/* mobile */
+@media(max-width:720px){
+  body{padding:10px!important}
+  #twenteFullDetail .hero,
+  #estrelaBragaFullDetail .hero,
+  #stevenageLutonFullDetail .hero{border-radius:20px!important}
+  #twenteFullDetail .heroTop,
+  #estrelaBragaFullDetail .heroTop,
+  #stevenageLutonFullDetail .heroTop{padding:12px!important}
+  #twenteFullDetail .heroMainFixed,
+  #estrelaBragaFullDetail .heroMainFixed,
+  #stevenageLutonFullDetail .heroMainFixed{padding:18px 10px!important}
+  #twenteFullDetail .heroTitle,
+  #estrelaBragaFullDetail .heroTitle,
+  #stevenageLutonFullDetail .heroTitle{
+    grid-template-columns:minmax(0,1fr) auto minmax(0,1fr)!important;
+    gap:7px!important;
+    padding:10px!important;
+  }
+  #twenteFullDetail .heroTeamLine,
+  #estrelaBragaFullDetail .heroTeamLine,
+  #stevenageLutonFullDetail .heroTeamLine{
+    gap:6px!important;
+    font-size:17px!important;
+    white-space:normal!important;
+  }
+  #twenteFullDetail .heroTeamLine:first-child,
+  #estrelaBragaFullDetail .heroTeamLine:first-child,
+  #stevenageLutonFullDetail .heroTeamLine:first-child{justify-self:end!important;text-align:right!important}
+  #twenteFullDetail .heroTeamLine:last-child,
+  #estrelaBragaFullDetail .heroTeamLine:last-child,
+  #stevenageLutonFullDetail .heroTeamLine:last-child{justify-self:start!important;text-align:left!important}
+  #twenteFullDetail .heroCrestFixed,
+  #estrelaBragaFullDetail .heroCrestFixed,
+  #stevenageLutonFullDetail .heroCrestFixed{
+    width:34px!important;height:34px!important;
+    min-width:34px!important;min-height:34px!important;
+    max-width:34px!important;max-height:34px!important;
+    flex-basis:34px!important;
+  }
+  #twenteFullDetail .heroTeamLine > span,
+  #estrelaBragaFullDetail .heroTeamLine > span,
+  #stevenageLutonFullDetail .heroTeamLine > span{
+    white-space:normal!important;
+    overflow:visible!important;
+  }
+  .radarStage{height:300px!important;min-height:300px!important}
+}
+
 </style>
 </head>
 <body>
@@ -4750,9 +5148,9 @@ body::before{
 <div class="heroMainFixed">
 <div class="badge"><span class="dot"></span> Scheda partita completa</div>
 <div class="heroTitle" id="heroMatchTitle">
-<span class="heroTeamLine"><img alt="" class="heroCrestFixed staticOfficialCrest" data-team="Estrela Amadora" id="crestHome" data-team="Estrela Amadora" onerror="this.style.display='none';this.removeAttribute('src');"/><span>Estrela Amadora</span></span>
+<span class="heroTeamLine"><img alt="" class="heroCrestFixed staticOfficialCrest" data-team="Estrela Amadora" id="crestHome" onerror="this.style.display='none';this.removeAttribute('src');"/><span>Estrela Amadora</span></span>
 <span class="heroDash">—</span>
-<span class="heroTeamLine"><img alt="" class="heroCrestFixed staticOfficialCrest" data-team="Sporting Braga" id="crestAway" data-team="Sporting Braga" onerror="this.style.display='none';this.removeAttribute('src');"/><span>Sporting Braga</span></span>
+<span class="heroTeamLine"><img alt="" class="heroCrestFixed staticOfficialCrest" data-team="Sporting Braga" id="crestAway" onerror="this.style.display='none';this.removeAttribute('src');"/><span>Sporting Braga</span></span>
 </div>
 <div class="heroMeta">
 <div class="metaChip">📅 10 settembre 2026</div>
@@ -5009,14 +5407,14 @@ body::before{
 <div class="heroMainFixed">
 <div class="badge"><span class="dot"></span> Scheda partita completa</div>
 <div class="heroTitle" id="heroMatchTitle">
-<span class="heroTeamLine"><img alt="" class="heroCrestFixed staticOfficialCrest" data-team="Stevenage" id="crestStevenage" data-team="Stevenage" onerror="this.style.display='none';this.removeAttribute('src');"/><span>Stevenage</span></span>
+<span class="heroTeamLine"><img alt="" class="heroCrestFixed staticOfficialCrest" data-team="Stevenage" id="crestStevenage" onerror="this.style.display='none';this.removeAttribute('src');"/><span>Stevenage</span></span>
 <span class="heroDash">—</span>
-<span class="heroTeamLine"><img alt="" class="heroCrestFixed staticOfficialCrest" data-team="Luton Town" id="crestLuton" data-team="Luton Town" onerror="this.style.display='none';this.removeAttribute('src');"/><span>Luton Town</span></span>
+<span class="heroTeamLine"><img alt="" class="heroCrestFixed staticOfficialCrest" data-team="Luton Town" id="crestLuton" onerror="this.style.display='none';this.removeAttribute('src');"/><span>Luton Town</span></span>
 </div>
 <div class="heroMeta">
 <div class="metaChip">📅 10 settembre 2026</div>
 <div class="metaChip">🕘 21:00</div>
-<div class="metaChip">🇵🇹 League One</div>
+<div class="metaChip">🏴 League One</div>
 </div>
 </div>
 <div class="heroAside">
@@ -5539,7 +5937,7 @@ function renderRadar(m,root){
 }
 
 function initMatchPage(){
-  const id=new URLSearchParams(location.search).get('id') || 'stevenage-luton-town';
+  const id='stevenage-luton-town';
   const m=matches.find(x=>x.id===id);
 
   if(!m){
