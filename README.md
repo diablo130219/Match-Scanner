@@ -1,9 +1,6 @@
-# Match Scanner - stemmi final fix
+# Match Scanner - stemmi statici
 
-Correzioni:
-- Estrela Amadora e Sporting Braga con URL diretti di fallback.
-- Stevenage e Luton Town con URL diretti di fallback.
-- Dimensione stemmi uniforme nel titolo partita.
-- Allineamento verticale corretto.
-- Nessun testo ALT visibile se un'immagine fallisce.
-- Architettura multipagina invariata.
+- Stevenage, Luton Town, SC Braga ed Estrela Amadora usano URL SVG statici.
+- Niente ricerca API per queste quattro squadre.
+- Dimensione stemmi uniforme a 50px su desktop.
+- Architettura home -> match.html invariata.

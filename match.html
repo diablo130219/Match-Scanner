@@ -2891,6 +2891,30 @@ body{padding:26px}
   }
 }
 
+
+/* ===== STEMMI STATICI 2026 ===== */
+.heroCrestFixed{
+  width:50px!important;
+  height:50px!important;
+  min-width:50px!important;
+  min-height:50px!important;
+  max-width:50px!important;
+  max-height:50px!important;
+  object-fit:contain!important;
+  object-position:center!important;
+  flex:0 0 50px!important;
+  display:block!important;
+  filter:drop-shadow(0 4px 8px rgba(0,0,0,.22));
+}
+@media(max-width:700px){
+  .heroCrestFixed{
+    width:40px!important;height:40px!important;
+    min-width:40px!important;min-height:40px!important;
+    max-width:40px!important;max-height:40px!important;
+    flex-basis:40px!important;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -4049,7 +4073,7 @@ const teamLogoAliases={
   "FC Twente":"FC Twente",
   "Telstar":"SC Telstar"
 };
-const teamLogoOverrides = {"Estrela Amadora": "https://commons.wikimedia.org/wiki/Special:Redirect/file/S%C3%ADmbolo_Estrela_da_Amadora.svg", "Sporting Braga": "https://toppng.com/public/uploads/preview/sporting-clube-de-braga-vector-logo-11574300417gq81hvr0il.png", "Stevenage": "https://www.thesportsdb.com/images/media/team/badge/6f5v0g1610644196.png", "Luton Town": "https://www.vhv.rs/dpng/d/439-4390487_luton-town-fc-logo-png-luton-town-football.png"};
+const teamLogoOverrides = {"Stevenage": "https://assets.footylogos.com/logos/stevenage/stevenage-logo-footylogos.svg", "Luton Town": "https://assets.footylogos.com/logos/luton-town/luton-town-logo-footylogos.svg", "Sporting Braga": "https://assets.footylogos.com/logos/sc-braga/sc-braga-logo-footylogos.svg", "Estrela Amadora": "https://assets.footylogos.com/logos/estrela-amadora/estrela-amadora-logo-footylogos.svg"};
 const logoCache=new Map();
 
 function esc(v){
