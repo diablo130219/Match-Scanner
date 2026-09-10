@@ -4625,7 +4625,7 @@ renderList();
 </script>
 <script>
 (function(){
-  const extractorCode = `javascript:(async()=>{const h='<!doctype html>\\n'+document.documentElement.outerHTML;try{await navigator.clipboard.writeText(h);alert('MagicScanner: pagina copiata. Torna nell Import Center e incolla.')}catch(e){const b=new Blob([h],{type:'text/html'}),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='soccerstats-'+Date.now()+'.html';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),2000);alert('MagicScanner: appunti non disponibili. Ho salvato un file HTML: caricalo nell Import Center.')}})()`;
+  const extractorCode = `javascript:(()=>{try{const h='<!doctype html>\n'+document.documentElement.outerHTML,t=document.createElement('textarea');t.value=h;t.setAttribute('readonly','');t.style.position='fixed';t.style.left='-99999px';t.style.top='0';document.body.appendChild(t);t.focus();t.select();t.setSelectionRange(0,t.value.length);const ok=document.execCommand('copy');t.remove();if(ok){alert('MagicScanner: pagina copiata! Torna su MagicScanner > Importa SoccerSTATS e incolla con CTRL+V.');}else{prompt('Copia tutto il contenuto qui sotto con CTRL+A e CTRL+C, poi torna su MagicScanner:',h);}}catch(e){alert('MagicScanner Extract: errore '+e.message);}})()`;
   const btn = document.getElementById('homeExtractorBookmarklet');
   if(!btn) return;
   btn.href = extractorCode;
