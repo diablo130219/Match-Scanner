@@ -1,6 +1,10 @@
 services:
   - type: web
     name: magicscanner
-    runtime: static
+    runtime: node
+    plan: free
     buildCommand: npm install && npm run build
-    staticPublishPath: ./dist
+    startCommand: npm start
+    envVars:
+      - key: NODE_VERSION
+        value: 22

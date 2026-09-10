@@ -6322,7 +6322,9 @@ async function initMatchPage(){
 
   const embeddedDetail=(window.MATCH_DETAIL_HTML||{})[id];
   const detailFile=(window.MATCH_DETAIL_FILES||{})[id];
-  const importedDetail=(window.IMPORTED_DETAILS||{})[id];
+  let localImported={};
+  try{ localImported=JSON.parse(localStorage.getItem('MAGICSCANNER_IMPORTED_DETAILS')||'{}'); }catch(e){ console.warn('Archivio import locale non leggibile',e); }
+  const importedDetail=(localImported||{})[id] || (window.IMPORTED_DETAILS||{})[id];
   if(embeddedDetail){
     const mount=document.getElementById('fullDetailMount');
     mount.innerHTML=embeddedDetail;
