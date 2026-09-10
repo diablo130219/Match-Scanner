@@ -2593,6 +2593,20 @@ body{padding:26px}
 #stevenageLutonFullDetail{display:none;width:100%}
 #stevenageLutonFullDetail > .container{max-width:none;margin:0;padding:0}
 #stevenageLutonFullDetail .hero{margin-top:0;margin-bottom:18px}
+
+/* ===== CLICK/NAVIGAZIONE DEFINITIVA ===== */
+#detailView.show{
+  display:block !important;
+  position:relative !important;
+  z-index:20 !important;
+  pointer-events:auto !important;
+}
+#detailView.show *{pointer-events:auto}
+#mainView[style*="display: none"]{pointer-events:none !important}
+.matchCard[data-match-id]{cursor:pointer !important;position:relative}
+.matchCard[data-match-id]::after{
+  content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+}
 </style>
 </head>
 <body>
@@ -3607,18 +3621,6 @@ function renderList(){
     </div>
   `).join('');
 
-  // Collegamento robusto: niente onclick inline.
-  list.querySelectorAll('.matchCard[data-match-id]').forEach(card => {
-    const open = () => openDetail(card.dataset.matchId);
-    card.addEventListener('click', open);
-    card.addEventListener('keydown', ev => {
-      if(ev.key === 'Enter' || ev.key === ' '){
-        ev.preventDefault();
-        open();
-      }
-    });
-  });
-
   hydrateStaticOfficialCrests(list);
 }
 
@@ -3657,6 +3659,8 @@ function activateDetailTabs(){
   });
 }
 
+let homeScrollY = 0;
+
 function openDetail(id){
   const m = matches.find(x => x.id === id);
   if(!m) return;
@@ -3668,6 +3672,7 @@ function openDetail(id){
   const stevenageDetail = document.getElementById('stevenageLutonFullDetail');
   const genericDetail = document.getElementById('genericDetail');
 
+  homeScrollY = window.scrollY || document.documentElement.scrollTop || 0;
   mainView.style.display = 'none';
   detailView.classList.add('show');
 
@@ -3726,12 +3731,15 @@ function openDetail(id){
     `;
   }
 
-  // Non cambiare pagina e non fare scroll forzato a inizio documento.
-  // Il contenuto principale viene nascosto e il dettaglio occupa il suo posto.
+  // Mostra sempre l'inizio della scheda aperta, senza cambiare URL/pagina.
   requestAnimationFrame(() => {
     if(estrelaDetail && estrelaDetail.style.display === 'block'){
       hydrateStaticOfficialCrests(estrelaDetail);
     }
+    if(stevenageDetail && stevenageDetail.style.display === 'block'){
+      hydrateStaticOfficialCrests(stevenageDetail);
+    }
+    window.scrollTo({top: detailView.offsetTop, left:0, behavior:'auto'});
   });
 }
 
@@ -3754,6 +3762,9 @@ document.getElementById('backBtn').onclick = () => {
     genericDetail.innerHTML = '';
   }
 
+  requestAnimationFrame(() => {
+    window.scrollTo({top:homeScrollY,left:0,behavior:'auto'});
+  });
 };
 
 
@@ -3822,10 +3833,31 @@ function updateDateUI(){
 }
 
 document.getElementById('search').addEventListener('input', renderList);
+
 document.querySelectorAll('.marketCard').forEach(btn => btn.onclick = () => {
   activeFilter = btn.dataset.filter;
   renderList();
 });
+
+/* Click unico e permanente per tutte le partite, anche quelle aggiunte in futuro. */
+const matchListEl = document.getElementById('matchList');
+if(matchListEl){
+  matchListEl.addEventListener('click', (ev) => {
+    const card = ev.target.closest('.matchCard[data-match-id]');
+    if(!card || !matchListEl.contains(card)) return;
+    ev.preventDefault();
+    ev.stopPropagation();
+    openDetail(card.dataset.matchId);
+  });
+
+  matchListEl.addEventListener('keydown', (ev) => {
+    if(ev.key !== 'Enter' && ev.key !== ' ') return;
+    const card = ev.target.closest('.matchCard[data-match-id]');
+    if(!card || !matchListEl.contains(card)) return;
+    ev.preventDefault();
+    openDetail(card.dataset.matchId);
+  });
+}
 
 
 setupDates();
