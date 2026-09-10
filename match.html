@@ -6000,6 +6000,7 @@ img{max-width:100%}
 <div id="detailContent">
 <div id="fullDetailMount"></div><div id="genericDetail" style="display:none"></div></div></div><script src="./data/matches.js"></script>
 <script src="./data/detail-manifest.js"></script>
+<script src="./data/detail-content.js"></script>
 <script>
 const matches=window.MATCHES || [];
 
@@ -6241,8 +6242,14 @@ async function initMatchPage(){
 
   document.title=`${m.home} vs ${m.away} · Match Scanner`;
 
+  const embeddedDetail=(window.MATCH_DETAIL_HTML||{})[id];
   const detailFile=(window.MATCH_DETAIL_FILES||{})[id];
-  if(detailFile){
+  if(embeddedDetail){
+    const mount=document.getElementById('fullDetailMount');
+    mount.innerHTML=embeddedDetail;
+    hydrateStaticOfficialCrests(mount);
+    renderRadar(m,mount);
+  }else if(detailFile && location.protocol !== 'file:'){
     try{
       const res=await fetch(detailFile,{cache:'no-store'});
       if(!res.ok) throw new Error(`HTTP ${res.status}`);
