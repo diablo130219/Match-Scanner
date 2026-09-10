@@ -5297,7 +5297,7 @@ function renderRadar(m,root){
 }
 
 function initMatchPage(){
-  const id=new URLSearchParams(location.search).get('id');
+  const id=new URLSearchParams(location.search).get('id') || 'stevenage-luton-town';
   const m=matches.find(x=>x.id===id);
 
   if(!m){
