@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>MagicScanner V2.7 · SoccerSTATS Browser Import</title>
+<title>MagicScanner V2.7.7 · SoccerSTATS Browser Import</title>
 <style>
 :root{color-scheme:dark;--bg:#07101d;--panel:#0b1727;--panel2:#0d1b2d;--line:#203750;--text:#eef6ff;--muted:#8fa6bd;--cyan:#38bdf8;--green:#5ee7b1;--amber:#fbbf24;--red:#fb7185}
 *{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,Arial;background:radial-gradient(circle at 10% 0,#12306a55,transparent 38%),var(--bg);color:var(--text)}
@@ -26,7 +26,7 @@ h1{font-size:34px;margin:0 0 8px}.sub{color:var(--muted);line-height:1.58}.eyebr
 
 @media(max-width:720px){.grid{grid-template-columns:repeat(2,1fr)}.row{grid-template-columns:1fr}.wrap{padding:16px}h1{font-size:28px}}
 </style></head><body><div class="wrap">
-<div class="top"><div class="brand">MagicScanner <span>Import Center V2.7</span></div><a class="back" href="index.html">← Home</a></div>
+<div class="top"><div class="brand">MagicScanner <span>Import Center V2.7.7</span></div><a class="back" href="index.html">← Home</a></div>
 
 <div class="card">
   <div class="eyebrow">Novità V2.7 · Browser Import</div>
@@ -37,13 +37,25 @@ h1{font-size:34px;margin:0 0 8px}.sub{color:var(--muted);line-height:1.58}.eyebr
     <div class="label">1. Installa una volta l'estrattore nel browser</div>
     <div class="notice">Trascina il pulsante qui sotto nella barra dei preferiti. Poi, quando sei su una pagina SoccerSTATS, cliccalo: prova a copiare l'HTML negli appunti; se il browser non lo consente, scarica automaticamente un file <code>.html</code>.</div>
     <div class="actions">
-      <a id="bookmarklet" class="btn primary" style="text-decoration:none" href="javascript:(()=&gt;{try{if(!/(^|\.)soccerstats\.com$/i.test(location.hostname)){alert(&#x27;Apri prima una pagina di SoccerSTATS.&#x27;);return;}const N=s=&gt;(s||&#x27;&#x27;).replace(/\u00a0/g,&#x27; &#x27;).replace(/\s+/g,&#x27; &#x27;).trim();const rows=[...document.querySelectorAll(&#x27;tr&#x27;)].map((tr,i)=&gt;({i,cells:[...tr.querySelectorAll(&#x27;th,td&#x27;)].map(c=&gt;N(c.innerText||c.textContent)),text:N(tr.innerText||tr.textContent),links:[...tr.querySelectorAll(&#x27;a,button,input&#x27;)].map(a=&gt;({text:N(a.innerText||a.textContent||a.value),href:a.href||&#x27;&#x27;,onclick:a.getAttribute(&#x27;onclick&#x27;)||&#x27;&#x27;}))})).filter(r=&gt;r.text);const links=[...document.querySelectorAll(&#x27;a[href]&#x27;)].map(a=&gt;({text:N(a.innerText||a.textContent),href:a.href}));const payload=JSON.stringify({magicScannerExtract:3,page:&#x27;matchday&#x27;,source:location.href,extracted_at:new Date().toISOString(),rows,links,bodyText:document.body.innerText||document.body.textContent||&#x27;&#x27;});const ta=document.createElement(&#x27;textarea&#x27;);ta.value=payload;ta.style.position=&#x27;fixed&#x27;;ta.style.left=&#x27;-99999px&#x27;;document.body.appendChild(ta);ta.select();const ok=document.execCommand(&#x27;copy&#x27;);ta.remove();alert(ok?&#x27;MagicScanner: pagina strutturata copiata. Torna su MagicScanner e incolla.&#x27;:&#x27;Copia automatica non riuscita.&#x27;);if(!ok)prompt(&#x27;Copia questi dati:&#x27;,payload)}catch(e){alert(&#x27;MagicScanner Extract: &#x27;+e.message)}})()">MagicScanner Extract</a>
+      <a id="bookmarklet" class="btn primary" style="text-decoration:none" href="javascript:(()=&gt;{try{if(!/(^|\.)soccerstats\.com$/i.test(location.hostname)){alert(&#x27;Apri prima una pagina di SoccerSTATS.&#x27;);return;}const N=s=&gt;(s||&#x27;&#x27;).replace(/\u00a0/g,&#x27; &#x27;).replace(/\s+/g,&#x27; &#x27;).trim();const rows=[...document.querySelectorAll(&#x27;tr&#x27;)].map((tr,i)=&gt;({i,cells:[...tr.querySelectorAll(&#x27;th,td&#x27;)].map(c=&gt;N(c.innerText||c.textContent)),text:N(tr.innerText||tr.textContent),links:[...tr.querySelectorAll(&#x27;a,button,input&#x27;)].map(a=&gt;({text:N(a.innerText||a.textContent||a.value),href:a.href||&#x27;&#x27;,onclick:a.getAttribute(&#x27;onclick&#x27;)||&#x27;&#x27;}))})).filter(r=&gt;r.text);const links=[...document.querySelectorAll(&#x27;a[href]&#x27;)].map(a=&gt;({text:N(a.innerText||a.textContent),href:a.href}));const dateCandidates=[...document.querySelectorAll(&#x27;a,button,div,span,td&#x27;)].map(e=&gt;({text:N(e.innerText||e.textContent),cls:N(e.className&amp;&amp;typeof e.className===&#x27;string&#x27;?e.className:&#x27;&#x27;),id:e.id||&#x27;&#x27;,aria:e.getAttribute(&#x27;aria-current&#x27;)||&#x27;&#x27;,pressed:e.getAttribute(&#x27;aria-pressed&#x27;)||&#x27;&#x27;})).filter(x=&gt;/\b(?:mon|tue|wed|thu|fri|sat|sun|lun|mar|mer|gio|ven|sab|dom)\b/i.test(x.text)&amp;&amp;/\b\d{1,2}(?:st|nd|rd|th)?\b/i.test(x.text)&amp;&amp;x.text.length&lt;80).slice(0,80);const payload=JSON.stringify({magicScannerExtract:4,page:&#x27;matchday&#x27;,source:location.href,title:document.title||&#x27;&#x27;,extracted_at:new Date().toISOString(),dateCandidates,rows,links,bodyText:document.body.innerText||document.body.textContent||&#x27;&#x27;});const ta=document.createElement(&#x27;textarea&#x27;);ta.value=payload;ta.style.position=&#x27;fixed&#x27;;ta.style.left=&#x27;-99999px&#x27;;document.body.appendChild(ta);ta.select();const ok=document.execCommand(&#x27;copy&#x27;);ta.remove();alert(ok?&#x27;MagicScanner: pagina strutturata copiata. Torna su MagicScanner e incolla.&#x27;:&#x27;Copia automatica non riuscita.&#x27;);if(!ok)prompt(&#x27;Copia questi dati:&#x27;,payload)}catch(e){alert(&#x27;MagicScanner Extract: &#x27;+e.message)}})()">MagicScanner Extract</a>
       <button class="btn secondary" id="copyExtractorBtn">Copia comando estrattore</button>
     </div>
 
     <div style="height:16px"></div>
     <div class="label">2. Apri la pagina giornaliera SoccerSTATS e premi MagicScanner Extract</div>
     <input id="matchdayUrl" class="dayurl" value="https://www.soccerstats.com/matches.asp?matchday=201&matchdayn=104" placeholder="URL della giornata (solo come riferimento)">
+    <div style="height:12px"></div>
+    <div class="label">Giorno destinazione</div>
+    <select id="targetDay" class="dayurl" style="font-family:Inter,system-ui,Arial">
+      <option value="auto">Automatico · leggi la data da SoccerSTATS</option>
+      <option value="0">Oggi</option>
+      <option value="1">Domani</option>
+      <option value="2">Tra 2 giorni</option>
+      <option value="3">Tra 3 giorni</option>
+      <option value="4">Tra 4 giorni</option>
+      <option value="-1">Ieri</option>
+    </select>
+    <div class="helper">Lascia Automatico. Se SoccerSTATS non espone chiaramente la data selezionata, puoi scegliere manualmente il giorno senza perdere le altre giornate importate.</div>
 
     <div style="height:14px"></div>
     <div class="label">3. Incolla qui l'HTML copiato</div>
@@ -78,7 +90,9 @@ h1{font-size:34px;margin:0 0 8px}.sub{color:var(--muted);line-height:1.58}.eyebr
 <script>
 
 const MATCHDAY_KEY='MAGICSCANNER_MATCHDAY';
-const EXTRACTOR_CODE = `javascript:(()=>{try{if(!/(^|\.)soccerstats\.com$/i.test(location.hostname)){alert('Apri prima una pagina di SoccerSTATS.');return;}const N=s=>(s||'').replace(/\u00a0/g,' ').replace(/\s+/g,' ').trim();const rows=[...document.querySelectorAll('tr')].map((tr,i)=>({i,cells:[...tr.querySelectorAll('th,td')].map(c=>N(c.innerText||c.textContent)),text:N(tr.innerText||tr.textContent),links:[...tr.querySelectorAll('a,button,input')].map(a=>({text:N(a.innerText||a.textContent||a.value),href:a.href||'',onclick:a.getAttribute('onclick')||''}))})).filter(r=>r.text);const links=[...document.querySelectorAll('a[href]')].map(a=>({text:N(a.innerText||a.textContent),href:a.href}));const payload=JSON.stringify({magicScannerExtract:3,page:'matchday',source:location.href,extracted_at:new Date().toISOString(),rows,links,bodyText:document.body.innerText||document.body.textContent||''});const ta=document.createElement('textarea');ta.value=payload;ta.style.position='fixed';ta.style.left='-99999px';document.body.appendChild(ta);ta.select();const ok=document.execCommand('copy');ta.remove();alert(ok?'MagicScanner: pagina strutturata copiata. Torna su MagicScanner e incolla.':'Copia automatica non riuscita.');if(!ok)prompt('Copia questi dati:',payload)}catch(e){alert('MagicScanner Extract: '+e.message)}})()`;
+const MATCHDAYS_KEY='MAGICSCANNER_MATCHDAYS';
+const LAST_DAY_KEY='MAGICSCANNER_LAST_IMPORTED_DATE';
+const EXTRACTOR_CODE = `javascript:(()=>{try{if(!/(^|\.)soccerstats\.com$/i.test(location.hostname)){alert('Apri prima una pagina di SoccerSTATS.');return;}const N=s=>(s||'').replace(/\u00a0/g,' ').replace(/\s+/g,' ').trim();const rows=[...document.querySelectorAll('tr')].map((tr,i)=>({i,cells:[...tr.querySelectorAll('th,td')].map(c=>N(c.innerText||c.textContent)),text:N(tr.innerText||tr.textContent),links:[...tr.querySelectorAll('a,button,input')].map(a=>({text:N(a.innerText||a.textContent||a.value),href:a.href||'',onclick:a.getAttribute('onclick')||''}))})).filter(r=>r.text);const links=[...document.querySelectorAll('a[href]')].map(a=>({text:N(a.innerText||a.textContent),href:a.href}));const dateCandidates=[...document.querySelectorAll('a,button,div,span,td')].map(e=>({text:N(e.innerText||e.textContent),cls:N(e.className&&typeof e.className==='string'?e.className:''),id:e.id||'',aria:e.getAttribute('aria-current')||'',pressed:e.getAttribute('aria-pressed')||''})).filter(x=>/\b(?:mon|tue|wed|thu|fri|sat|sun|lun|mar|mer|gio|ven|sab|dom)\b/i.test(x.text)&&/\b\d{1,2}(?:st|nd|rd|th)?\b/i.test(x.text)&&x.text.length<80).slice(0,80);const payload=JSON.stringify({magicScannerExtract:4,page:'matchday',source:location.href,title:document.title||'',extracted_at:new Date().toISOString(),dateCandidates,rows,links,bodyText:document.body.innerText||document.body.textContent||''});const ta=document.createElement('textarea');ta.value=payload;ta.style.position='fixed';ta.style.left='-99999px';document.body.appendChild(ta);ta.select();const ok=document.execCommand('copy');ta.remove();alert(ok?'MagicScanner: pagina strutturata copiata. Torna su MagicScanner e incolla.':'Copia automatica non riuscita.');if(!ok)prompt('Copia questi dati:',payload)}catch(e){alert('MagicScanner Extract: '+e.message)}})()`;
 window.addEventListener('DOMContentLoaded',()=>{
   const bm=document.querySelector('#bookmarklet');
   if(bm) bm.setAttribute('href', EXTRACTOR_CODE);
@@ -151,27 +165,77 @@ function parseExtractV3(data){
   return out;
 }
 
+function isoLocal(d){
+  const y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,'0'),day=String(d.getDate()).padStart(2,'0');
+  return `${y}-${m}-${day}`;
+}
+function dateFromOffset(offset){const d=new Date();d.setHours(12,0,0,0);d.setDate(d.getDate()+Number(offset||0));return d}
+function nearestDateForDay(day, weekday){
+  const today=new Date();today.setHours(12,0,0,0);
+  let best=null,bestDist=999;
+  for(let k=-20;k<=20;k++){
+    const d=new Date(today);d.setDate(today.getDate()+k);
+    if(d.getDate()===day && (weekday==null || d.getDay()===weekday)){
+      const dist=Math.abs(k); if(dist<bestDist){best=d;bestDist=dist}
+    }
+  }
+  return best;
+}
+function detectSoccerstatsDate(data){
+  const week={sun:0,dom:0,mon:1,lun:1,tue:2,mar:2,wed:3,mer:3,thu:4,gio:4,fri:5,ven:5,sat:6,sab:6};
+  const candidates=Array.isArray(data?.dateCandidates)?data.dateCandidates:[];
+  const scored=candidates.map(x=>{
+    const t=String(x.text||'').trim(); const m=t.match(/\b(mon|tue|wed|thu|fri|sat|sun|lun|mar|mer|gio|ven|sab|dom)\w*\s+(\d{1,2})(?:st|nd|rd|th)?\b/i);
+    if(!m)return null;
+    let score=0; const meta=`${x.cls||''} ${x.id||''} ${x.aria||''} ${x.pressed||''}`.toLowerCase();
+    if(/active|selected|current|today|seldate|matchdayselected/.test(meta))score+=10;
+    if(String(x.aria).toLowerCase()==='date'||String(x.aria).toLowerCase()==='true')score+=8;
+    if(String(x.pressed).toLowerCase()==='true')score+=8;
+    if(t.length<20)score+=2;
+    return {score,day:Number(m[2]),weekday:week[m[1].slice(0,3).toLowerCase()]};
+  }).filter(Boolean).sort((a,b)=>b.score-a.score);
+  if(scored.length && scored[0].score>=2){const d=nearestDateForDay(scored[0].day,scored[0].weekday);if(d)return d}
+  const all=String(data?.title||'')+'\n'+String(data?.bodyText||'');
+  const full=all.match(/\b(\d{1,2})\s+(Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:tember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)\s+(20\d{2})\b/i);
+  if(full){const d=new Date(`${full[2]} ${full[1]}, ${full[3]} 12:00:00`);if(!isNaN(d))return d}
+  return null;
+}
+function resolveTargetDate(data){
+  const sel=document.querySelector('#targetDay')?.value||'auto';
+  if(sel!=='auto')return {date:dateFromOffset(Number(sel)),mode:'manuale'};
+  const detected=detectSoccerstatsDate(data); if(detected)return {date:detected,mode:'automatica'};
+  return {date:dateFromOffset(0),mode:'fallback'};
+}
+function storeImportedDay(date,matches,sourceUrl){
+  let days={};try{days=JSON.parse(localStorage.getItem(MATCHDAYS_KEY)||'{}')||{}}catch{}
+  const key=isoLocal(date); days[key]={date:key,source_url:sourceUrl,imported_at:new Date().toISOString(),matches};
+  localStorage.setItem(MATCHDAYS_KEY,JSON.stringify(days)); localStorage.setItem(LAST_DAY_KEY,key);
+  // Compatibilità: manteniamo la vecchia chiave solo se la giornata è oggi.
+  if(key===isoLocal(dateFromOffset(0))) localStorage.setItem(MATCHDAY_KEY,JSON.stringify(days[key]));
+  return key;
+}
 function storeMatchdayFromHtml(html, sourceUrl='browser'){
   if(!html || html.trim().length<20) throw new Error('Incolla i dati copiati da MagicScanner Extract.');
-  let matches=[];
+  let matches=[]; let extractData=null;
   const raw=html.trim();
   if(raw.startsWith('{')){
     try{
-      const data=JSON.parse(raw);
-      if(data && data.magicScannerExtract===3 && Array.isArray(data.rows)){
-        matches=parseExtractV3(data);
-        sourceUrl=data.source||sourceUrl;
+      const data=JSON.parse(raw); extractData=data;
+      if(data && (data.magicScannerExtract===4 || data.magicScannerExtract===3) && Array.isArray(data.rows)){
+        matches=parseExtractV3(data); sourceUrl=data.source||sourceUrl;
       } else if(data && data.magicScannerExtract===2 && Array.isArray(data.matches)){
-        matches=data.matches.map(x=>buildMatch(x.home,x.away,x.league||'SoccerSTATS',x.time||'',x.stats_url||''));
-        sourceUrl=data.source||sourceUrl;
+        matches=data.matches.map(x=>buildMatch(x.home,x.away,x.league||'SoccerSTATS',x.time||'',x.stats_url||'')); sourceUrl=data.source||sourceUrl;
       }
     }catch(e){}
   }
   if(!matches.length) matches=parseMatchdayHtml(html);
-  if(!matches.length) throw new Error(`Dati ricevuti (${html.length.toLocaleString('it-IT')} caratteri), ma non riconosco partite. Reinstalla il nuovo MagicScanner Extract V2.7.6 nei preferiti.`);
-  localStorage.setItem(MATCHDAY_KEY,JSON.stringify({source_url:sourceUrl,imported_at:new Date().toISOString(),matches}));
+  if(!matches.length) throw new Error(`Dati ricevuti (${html.length.toLocaleString('it-IT')} caratteri), ma non riconosco partite.`);
+  const resolved=resolveTargetDate(extractData||{}); const key=storeImportedDay(resolved.date,matches,sourceUrl);
   renderDay(matches);
-  dayStatus(`${matches.length} partite importate. La home “Oggi” è stata aggiornata.`,'good');
+  const [y,m,d]=key.split('-');
+  const label=new Date(Number(y),Number(m)-1,Number(d),12).toLocaleDateString('it-IT',{weekday:'long',day:'numeric',month:'long'});
+  const warning=resolved.mode==='fallback'?' Data non riconosciuta: ho usato Oggi; scegli manualmente “Domani” se necessario.':'';
+  dayStatus(`${matches.length} partite importate in ${label} (${resolved.mode}).${warning}`,'good');
   return matches;
 }
 function clamp(n,a=0,b=100){return Math.max(a,Math.min(b,n))}
@@ -410,7 +474,7 @@ $('#clearBtn').onclick=()=>{if(!confirm('Vuoi cancellare dal browser tutte le sc
 
 document.querySelector('#parseDayHtmlBtn').onclick=()=>{try{const html=document.querySelector('#matchdayHtml').value;storeMatchdayFromHtml(html,document.querySelector('#matchdayUrl').value.trim()||'browser')}catch(e){dayStatus(String(e.message||e),'error')}};
 document.querySelector('#matchdayHtmlFile').onchange=async(e)=>{const f=e.target.files?.[0];if(!f)return;try{const html=await f.text();document.querySelector('#matchdayHtml').value=html;storeMatchdayFromHtml(html,document.querySelector('#matchdayUrl').value.trim()||f.name)}catch(err){dayStatus(String(err.message||err),'error')}};
-document.querySelector('#clearDayBtn').onclick=()=>{if(!confirm('Ripristinare la giornata originale inclusa nel progetto?'))return;localStorage.removeItem(MATCHDAY_KEY);renderDay([]);dayStatus('Giornata importata rimossa. La home userà di nuovo i dati originali.','good')};
+document.querySelector('#clearDayBtn').onclick=()=>{if(!confirm('Rimuovere l’ultima giornata importata e ripristinare i dati originali per quel giorno?'))return;let days={};try{days=JSON.parse(localStorage.getItem(MATCHDAYS_KEY)||'{}')||{}}catch{};const k=localStorage.getItem(LAST_DAY_KEY);if(k&&days[k]){delete days[k];localStorage.setItem(MATCHDAYS_KEY,JSON.stringify(days));}localStorage.removeItem(LAST_DAY_KEY);localStorage.removeItem(MATCHDAY_KEY);renderDay([]);dayStatus('Ultima giornata importata rimossa.','good')};
 try{const d=JSON.parse(localStorage.getItem(MATCHDAY_KEY)||'{}');if(Array.isArray(d.matches)&&d.matches.length){renderDay(d.matches);dayStatus(`${d.matches.length} partite della giornata già presenti nel browser.`,'good')}}catch{}
 
 try{const ex=JSON.parse(localStorage.getItem('MAGICSCANNER_IMPORTED_DETAILS')||'{}');if(Object.keys(ex).length){parsed=ex;$('#downloadBtn').disabled=false;status(`${Object.keys(ex).length} scheda/e già presenti nel browser.`,'good')}}catch{}
