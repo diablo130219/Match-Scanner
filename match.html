@@ -5992,6 +5992,25 @@ img{max-width:100%}
   .msHeroDash{transform:rotate(90deg)!important;margin:auto!important}
 }
 
+
+/* ===== V2.4 AUTO-IMPORT DETAIL ===== */
+.autoHero{padding-bottom:22px!important}
+.autoTeams{display:grid;grid-template-columns:1fr auto 1fr;gap:22px;align-items:center;margin:20px 0 18px}
+.autoTeams>div{min-width:0;padding:16px 18px;border:1px solid rgba(103,232,249,.15);border-radius:18px;background:rgba(8,20,38,.58)}
+.autoTeams>div:last-child{text-align:right}
+.autoTeams span{display:block;color:#7f95ad;font-size:10px;letter-spacing:1.2px;font-weight:900;margin-bottom:5px}
+.autoTeams b{font-size:clamp(25px,3vw,44px);line-height:1.05;color:#f7fbff}
+.autoTeams i{font-style:normal;font-size:13px;font-weight:950;color:#67e8f9;border:1px solid rgba(103,232,249,.22);padding:10px;border-radius:999px;background:#0b1728}
+.autoSectionGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:16px}
+.autoDetailCard{min-width:0}
+.autoTableWrap{overflow:auto;border-radius:14px;border:1px solid rgba(148,163,184,.10)}
+.autoTable{width:100%;border-collapse:collapse;font-size:12px;background:rgba(4,12,25,.38)}
+.autoTable th,.autoTable td{padding:9px 10px;border-bottom:1px solid rgba(148,163,184,.09);text-align:left;white-space:nowrap}
+.autoTable th{color:#dcecff;font-weight:850}
+.autoTable td{color:#a9bdd2;font-weight:700}
+.autoTable tr:last-child th,.autoTable tr:last-child td{border-bottom:0}
+@media(max-width:900px){.autoSectionGrid{grid-template-columns:1fr}.autoTeams{grid-template-columns:1fr}.autoTeams>div:last-child{text-align:left}.autoTeams i{justify-self:start}}
+
 </style>
 </head>
 <body>
@@ -6001,6 +6020,7 @@ img{max-width:100%}
 <div id="fullDetailMount"></div><div id="genericDetail" style="display:none"></div></div></div><script src="./data/matches.js"></script>
 <script src="./data/detail-manifest.js"></script>
 <script src="./data/detail-content.js"></script>
+<script src="./data/imported-details.js"></script>
 <script>
 const matches=window.MATCHES || [];
 
@@ -6094,6 +6114,64 @@ function showGeneric(m){
         <div class="detailCardTitle">Dettaglio completo non ancora caricato</div>
         <div class="notice">Per questa partita sono disponibili per ora i dati generali della home.</div>
       </div>
+    </div>`;
+}
+
+
+function cleanCells(row){
+  return String(row||'').replace(/^\||\|$/g,'').split('|').map(x=>x.replace(/\*\*/g,'').trim());
+}
+function autoTable(title, rows){
+  if(!rows||!rows.length) return '';
+  const body=rows.map(r=>{
+    const c=Array.isArray(r)?r:cleanCells(r);
+    return `<tr>${c.map((x,i)=>`<${i===0?'th':'td'}>${esc(x)}</${i===0?'th':'td'}>`).join('')}</tr>`;
+  }).join('');
+  return `<div class="detailCard autoDetailCard"><div class="detailCardTitle">${esc(title)}</div><div class="autoTableWrap"><table class="autoTable">${body}</table></div></div>`;
+}
+function objectRows(obj){
+  return Object.entries(obj||{}).map(([k,v])=>{
+    const arr=Array.isArray(v)?v:[];
+    return [k,...arr.filter(Boolean)];
+  });
+}
+function timingRows(d){
+  const out=[];
+  for(const [team,scopes] of Object.entries(d.timing||{})){
+    for(const [scope,segs] of Object.entries(scopes||{})){
+      for(const [seg,x] of Object.entries(segs||{})) out.push([`${team} · ${scope} · ${seg}`,`GF ${x.gf??'—'}`,`GA ${x.ga??'—'}`]);
+    }
+  }
+  return out;
+}
+function showAutoDetail(m,d){
+  const el=document.getElementById('genericDetail');
+  el.style.display='block';
+  const goalRows=objectRows(d.goal_statistics);
+  const cornerRows=objectRows(d.corners);
+  const timing=timingRows(d);
+  el.innerHTML=`
+    <div class="detailHero autoHero">
+      <div class="detailMeta">${esc(m.league)} · ${esc(m.time)} · IMPORT SOCCERSTATS</div>
+      <div class="autoTeams"><div><span>CASA</span><b>${esc(m.home)}</b></div><i>VS</i><div><span>TRASFERTA</span><b>${esc(m.away)}</b></div></div>
+      <div class="detailReco">
+        <div class="detailRecoLabel">Pronostico MagicScanner</div>
+        <div class="detailRecoValue">${esc(m.recommended||'Analisi statistica')}</div>
+        <div class="detailRecoHelp">${esc(m.summary||'Scheda generata automaticamente dai dati importati.')}</div>
+      </div>
+    </div>
+    <div class="detailGrid autoTopGrid">
+      <div class="detailCard"><div class="detailCardTitle">Statistiche generali</div>${statRows(m)}</div>
+      <div class="detailCard"><div class="detailCardTitle">Import automatico</div><div class="notice">Scheda generata da <b>${esc(d.source_file||'file SoccerSTATS')}</b>. I dati originali restano separati dalla grafica del sito.</div></div>
+    </div>
+    <div class="autoSectionGrid">
+      ${autoTable('Goal statistics · Home vs Away',goalRows)}
+      ${autoTable('Corner statistics',cornerRows)}
+      ${autoTable('Average goal times',d.average_goal_times_raw||[])}
+      ${autoTable('Goal timing',timing)}
+      ${autoTable('Total Goals / BTS',d.total_goals_raw||[])}
+      ${autoTable('Contextual averages',d.contextual_raw||[])}
+      ${autoTable('Home vs Away stats',d.home_away_raw||[])}
     </div>`;
 }
 
@@ -6244,11 +6322,14 @@ async function initMatchPage(){
 
   const embeddedDetail=(window.MATCH_DETAIL_HTML||{})[id];
   const detailFile=(window.MATCH_DETAIL_FILES||{})[id];
+  const importedDetail=(window.IMPORTED_DETAILS||{})[id];
   if(embeddedDetail){
     const mount=document.getElementById('fullDetailMount');
     mount.innerHTML=embeddedDetail;
     hydrateStaticOfficialCrests(mount);
     renderRadar(m,mount);
+  }else if(importedDetail){
+    showAutoDetail(m,importedDetail);
   }else if(detailFile && location.protocol !== 'file:'){
     try{
       const res=await fetch(detailFile,{cache:'no-store'});
