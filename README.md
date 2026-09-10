@@ -1,6 +1,3 @@
-# Match Scanner Template Master v1.8
+# Radar cornice ridotta
 
-- Rimossa la fascia superiore di riepilogo dal grafico Stato forma.
-- Il grafico resta con titolo interno, assi, valori, legenda e lettura sotto.
-- Nei Precedenti storici resta solo l'elenco delle partite e la lettura finale.
-- Rimosso lo Snapshot H2H laterale.
+Versione con radar partita con molta meno cornice blu e grafico più pieno dentro la stessa slide.

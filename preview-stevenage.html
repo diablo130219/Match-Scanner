@@ -1627,7 +1627,7 @@ body{padding:26px}
   background:rgba(255,255,255,.86);
   backdrop-filter:blur(12px);
   border:1px solid var(--line);
-  border-radius:28px;
+  border-radius:22px;
   padding:22px;
   box-shadow:var(--shadow);
   margin-bottom:18px;
@@ -3712,189 +3712,87 @@ body{padding:26px}
 }
 
 
+
 /* ===== RADAR COMPARATIVO DINAMICO ===== */
 .radarCompareCard{
   overflow:hidden;
   display:flex;
   flex-direction:column;
   background:
-    radial-gradient(circle at 15% 10%,rgba(34,211,238,.08),transparent 24%),
-    radial-gradient(circle at 95% 0%,rgba(124,58,237,.10),transparent 25%),
+    radial-gradient(circle at 15% 10%,rgba(34,211,238,.07),transparent 24%),
+    radial-gradient(circle at 95% 0%,rgba(124,58,237,.09),transparent 25%),
     linear-gradient(180deg,#ffffff 0%,#f8fbff 100%)!important;
 }
-.radarMount{
-  display:flex;
-  flex-direction:column;
-  gap:12px;
-  min-height:100%;
-}
-.radarHead{
-  display:flex;
-  align-items:flex-start;
-  justify-content:space-between;
-  gap:12px;
-}
-.radarEyebrow{
-  display:inline-flex;
-  align-items:center;
-  gap:7px;
-  padding:7px 10px;
-  border-radius:999px;
-  background:#eff6ff;
-  color:#2563eb;
-  font-size:10px;
-  font-weight:950;
-  letter-spacing:.9px;
-  text-transform:uppercase;
-  border:1px solid #dbeafe;
-}
-.radarEyebrow::before{
-  content:"";
-  width:7px;height:7px;border-radius:50%;
-  background:#22c55e;
-  box-shadow:0 0 0 4px rgba(34,197,94,.10);
-}
-.radarTitle{
-  margin:8px 0 0;
-  font-size:22px;
-  font-weight:1000;
-  letter-spacing:-.7px;
-  color:#0f172a;
-}
-.radarSub{
-  margin-top:5px;
-  color:#64748b;
-  font-size:12px;
-  line-height:1.45;
-  font-weight:700;
-}
-.radarScaleBadge{
-  flex:0 0 auto;
-  padding:8px 10px;
-  border-radius:12px;
-  background:#0f172a;
-  color:#fff;
-  font-size:10px;
-  font-weight:900;
-  letter-spacing:.7px;
-}
+.radarMount{display:flex;flex-direction:column;gap:12px;min-height:100%}
+.radarHead{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.radarEyebrow{display:inline-flex;align-items:center;gap:7px;padding:7px 10px;border-radius:999px;background:#eff6ff;color:#2563eb;font-size:10px;font-weight:950;letter-spacing:.9px;text-transform:uppercase;border:1px solid #dbeafe}
+.radarEyebrow::before{content:"";width:7px;height:7px;border-radius:50%;background:#22c55e;box-shadow:0 0 0 4px rgba(34,197,94,.10)}
+.radarTitle{margin:8px 0 0;font-size:22px;font-weight:1000;letter-spacing:-.7px;color:#0f172a}
+.radarSub{margin-top:5px;color:#64748b;font-size:12px;line-height:1.45;font-weight:700}
+.radarScaleBadge{flex:0 0 auto;padding:8px 10px;border-radius:12px;background:#0f172a;color:#fff;font-size:10px;font-weight:900;letter-spacing:.7px}
+
+.radarBody{display:flex;flex-direction:column;align-items:center;gap:12px}
 .radarStage{
   position:relative;
-  width:100%;
-  max-width:100%;
-  aspect-ratio:1 / 1;
-  min-height:420px;
-  padding:18px;
-  border-radius:24px;
+  width:min(100%,620px);
+  height:clamp(340px,30vw,390px);
+  min-height:340px;
+  padding:0;
+  border-radius:18px;
   background:
-    radial-gradient(circle at 50% 42%,rgba(37,99,235,.18),transparent 35%),
+    radial-gradient(circle at 50% 43%,rgba(37,99,235,.17),transparent 36%),
     linear-gradient(180deg,#0b1630 0%,#122654 100%);
-  border:1px solid rgba(148,163,184,.16);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.04),0 18px 38px rgba(15,23,42,.12);
+  border:0;
+  box-shadow:0 12px 24px rgba(15,23,42,.08);
+  margin:0 auto;
 }
-.radarStage svg{
-  display:block;
-  width:100%;
-  height:100%;
-  overflow:visible;
-}
-.radarGrid{fill:none;stroke:rgba(226,232,240,.15);stroke-width:1}
-.radarAxis{stroke:rgba(226,232,240,.13);stroke-width:1}
-.radarAxisLabel{fill:#d8e5f7;font-size:13px;font-weight:850;text-anchor:middle}
-.radarPolyHome{fill:rgba(56,189,248,.20);stroke:#54c5ff;stroke-width:3;filter:drop-shadow(0 0 10px rgba(84,197,255,.28))}
-.radarPolyAway{fill:rgba(244,63,94,.18);stroke:#ff6387;stroke-width:3;filter:drop-shadow(0 0 10px rgba(255,99,135,.24))}
+.radarStage svg{display:block;width:100%;height:100%;overflow:visible}
+.radarGrid{fill:none;stroke:rgba(226,232,240,.16);stroke-width:1}
+.radarAxis{stroke:rgba(226,232,240,.14);stroke-width:1}
+.radarAxisLabel{fill:#e5edf8;font-size:14px;font-weight:900;text-anchor:middle;letter-spacing:-.15px}
+.radarPolyHome{fill:rgba(56,189,248,.20);stroke:#54c5ff;stroke-width:3.2;filter:drop-shadow(0 0 12px rgba(84,197,255,.32))}
+.radarPolyAway{fill:rgba(244,63,94,.18);stroke:#ff6387;stroke-width:3.2;filter:drop-shadow(0 0 12px rgba(255,99,135,.28))}
 .radarPointHome{fill:#e8f8ff;stroke:#54c5ff;stroke-width:3}
 .radarPointAway{fill:#fff0f4;stroke:#ff6387;stroke-width:3}
+
 .radarLegend{
+  width:min(100%,620px);
   display:grid;
   grid-template-columns:1fr 1fr;
   gap:10px;
 }
-.radarTeam{
-  padding:12px 13px;
-  border-radius:16px;
-  border:1px solid #e1eaf3;
-  background:#fff;
-  box-shadow:0 8px 18px rgba(15,23,42,.035);
-}
+.radarTeam{padding:11px 12px;border-radius:16px;border:1px solid #e1eaf3;background:#fff;box-shadow:0 8px 16px rgba(15,23,42,.03)}
 .radarTeamTop{display:flex;align-items:center;gap:8px;color:#0f172a;font-size:13px;font-weight:950}
 .radarDot{width:10px;height:10px;border-radius:4px;display:inline-block}
 .radarDot.home{background:#38bdf8;box-shadow:0 0 0 4px rgba(56,189,248,.10)}
 .radarDot.away{background:#f43f5e;box-shadow:0 0 0 4px rgba(244,63,94,.09)}
-.radarTeamMeta{margin-top:7px;color:#64748b;font-size:11px;line-height:1.45;font-weight:760}
-.radarQuickGrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:10px}
-.radarQuickItem{padding:8px 10px;border-radius:12px;background:#f7faff;border:1px solid #e5edf5}
+.radarQuickGrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin-top:8px}
+.radarQuickItem{padding:8px 9px;border-radius:12px;background:#f7faff;border:1px solid #e5edf5;text-align:left}
 .radarQuickItem span{display:block;color:#718096;font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:.65px}
-.radarQuickItem b{display:block;margin-top:3px;color:#0f172a;font-size:13px;font-weight:1000}
-.radarFoot{padding:10px 12px;border-radius:14px;background:#f8fafc;border:1px solid #e2e8f0;color:#64748b;font-size:10px;line-height:1.45;font-weight:720}
+.radarQuickItem b{display:block;margin-top:4px;color:#0f172a;font-size:13px;font-weight:1000;line-height:1.2}
+.radarFoot{width:min(100%,620px);padding:9px 11px;border-radius:12px;background:#f8fafc;border:1px solid #e2e8f0;color:#64748b;font-size:10px;line-height:1.4;font-weight:720;text-align:center}
+
 @media(max-width:1200px){
-  .radarStage{min-height:380px}
+  .radarStage{width:min(100%,600px);height:clamp(320px,32vw,370px);min-height:320px;padding:0}
+  .radarLegend,.radarFoot{width:min(100%,600px)}
 }
-@media(max-width:900px){
-  .radarLegend{grid-template-columns:1fr}
+@media(max-width:950px){
+  .radarStage{width:100%;height:clamp(310px,56vw,360px);min-height:310px;padding:0}
+  .radarLegend,.radarFoot{width:100%}
 }
 @media(max-width:760px){
-  .radarAxisLabel{font-size:10px}
-  .radarStage{min-height:320px;padding:12px}
-  .radarQuickGrid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .radarHead{align-items:flex-start}
+  .radarStage{height:300px;min-height:300px;padding:0}
+  .radarAxisLabel{font-size:11px}
+  .radarLegend{grid-template-columns:1fr}
+  .radarQuickGrid{grid-template-columns:repeat(3,minmax(0,1fr))}
 }
-
 
 /* ===== PRECEDENTI: SOLO PARTITE ===== */
 .h2hShowcase{grid-template-columns:1fr!important;}
 .h2hMatches{width:100%!important;}
 
 
-/* ===== RADAR: PROPORZIONE FINALE NELLA PAGINA ===== */
-.radarCompareCard{
-  align-self:start!important;
-  height:auto!important;
-}
-.radarMount{
-  min-height:0!important;
-}
-.radarStage{
-  aspect-ratio:auto!important;
-  height:clamp(340px,26vw,430px)!important;
-  min-height:0!important;
-  max-height:430px!important;
-  padding:14px 16px!important;
-}
-.radarStage svg{
-  width:100%!important;
-  height:100%!important;
-  max-height:100%!important;
-}
-.radarLegend{
-  margin-top:0!important;
-  gap:8px!important;
-}
-.radarTeam{
-  padding:10px 12px!important;
-}
-.radarTeamMeta{
-  display:none!important;
-}
-.radarQuickGrid{
-  margin-top:7px!important;
-  gap:6px!important;
-}
-.radarQuickItem{
-  padding:7px 8px!important;
-}
-.radarFoot{
-  margin-top:0!important;
-  padding:8px 10px!important;
-}
-@media(max-width:1200px){
-  .radarStage{height:clamp(320px,31vw,390px)!important;max-height:390px!important}
-}
-@media(max-width:950px){
-  .radarStage{height:clamp(340px,65vw,460px)!important;max-height:460px!important}
-}
-@media(max-width:600px){
-  .radarStage{height:330px!important;max-height:330px!important;padding:10px!important}
-}
 
 </style>
 </head>
@@ -4858,7 +4756,7 @@ body{padding:26px}
 <rect x="524" y="22" width="32" height="20" rx="10" fill="rgba(255,98,137,.14)" stroke="rgba(255,98,137,.35)"></rect><text x="540" y="36" text-anchor="middle" font-size="11" font-weight="900" fill="#ffe4ec">8</text>
 </g>
 </svg>
-<div class="chartLegend"><span><i class="c1"></i>Stevenage · andamento cumulato</span><span><i class="c2"></i>Luton Town · andamento cumulato</span></div>
+<div class="chartLegend"><span><i class="c1"></i>Stevenage</span><span><i class="c2"></i>Luton Town</span></div>
 <div class="chartExplain"><span class="chip">Lettura: Luton cresce con più continuità, Stevenage accelera nelle ultime 2 gare</span><span class="micro">Scala: punti cumulati nelle ultime partite considerate</span></div>
 </div>
 </div>
@@ -5233,8 +5131,8 @@ function renderRadar(m,root){
   const homeVals=radarIndexes(source.home);
   const awayVals=radarIndexes(source.away);
   const labels=["Rendimento","Solidità","Realizzazione","Porta inviolata","Fattore casa/trasf.","Stato di forma"];
-  const cx=250,cy=235,r=156;
-  const labelR=196;
+  const cx=310,cy=205,r=178;
+  const labelR=194;
 
   const grids=[20,40,60,80,100].map(v=>`<polygon class="radarGrid" points="${radarGridPolygon(cx,cy,r,v)}"></polygon>`).join('');
   const axes=labels.map((_,i)=>{
@@ -5264,35 +5162,35 @@ function renderRadar(m,root){
       </div>
       <div class="radarScaleBadge">INDICE 0–100</div>
     </div>
-    <div class="radarStage">
-      <svg viewBox="0 0 500 470" preserveAspectRatio="xMidYMid meet" aria-label="Radar comparativo ${esc(m.home)} vs ${esc(m.away)}">
-        ${grids}${axes}${axisLabels}
-        <polygon class="radarPolyHome" points="${radarPolygon(cx,cy,r,homeVals)}"></polygon>
-        <polygon class="radarPolyAway" points="${radarPolygon(cx,cy,r,awayVals)}"></polygon>
-        ${homePts}${awayPts}
-      </svg>
-    </div>
-    <div class="radarLegend">
-      <div class="radarTeam">
-        <div class="radarTeamTop"><i class="radarDot home"></i>${esc(m.home)} · casa</div>
-        <div class="radarTeamMeta">Radar costruito sulla singola partita: profilo complessivo, solidità, realizzazione e split casa.</div>
-        <div class="radarQuickGrid">
-          <div class="radarQuickItem"><span>Rendimento</span><b>${homeVals[0]}</b></div>
-          <div class="radarQuickItem"><span>Solidità</span><b>${homeVals[1]}</b></div>
-          <div class="radarQuickItem"><span>Realizzazione</span><b>${homeVals[2]}</b></div>
+    <div class="radarBody">
+      <div class="radarStage">
+        <svg viewBox="0 0 620 410" preserveAspectRatio="xMidYMid meet" aria-label="Radar comparativo ${esc(m.home)} vs ${esc(m.away)}">
+          ${grids}${axes}${axisLabels}
+          <polygon class="radarPolyHome" points="${radarPolygon(cx,cy,r,homeVals)}"></polygon>
+          <polygon class="radarPolyAway" points="${radarPolygon(cx,cy,r,awayVals)}"></polygon>
+          ${homePts}${awayPts}
+        </svg>
+      </div>
+      <div class="radarLegend">
+        <div class="radarTeam">
+          <div class="radarTeamTop"><i class="radarDot home"></i>${esc(m.home)} · casa</div>
+          <div class="radarQuickGrid">
+            <div class="radarQuickItem"><span>Rendimento</span><b>${homeVals[0]}</b></div>
+            <div class="radarQuickItem"><span>Solidità</span><b>${homeVals[1]}</b></div>
+            <div class="radarQuickItem"><span>Realizzazione</span><b>${homeVals[2]}</b></div>
+          </div>
+        </div>
+        <div class="radarTeam">
+          <div class="radarTeamTop"><i class="radarDot away"></i>${esc(m.away)} · trasferta</div>
+          <div class="radarQuickGrid">
+            <div class="radarQuickItem"><span>Porta inviolata</span><b>${awayVals[3]}</b></div>
+            <div class="radarQuickItem"><span>Fattore trasf.</span><b>${awayVals[4]}</b></div>
+            <div class="radarQuickItem"><span>Stato forma</span><b>${awayVals[5]}</b></div>
+          </div>
         </div>
       </div>
-      <div class="radarTeam">
-        <div class="radarTeamTop"><i class="radarDot away"></i>${esc(m.away)} · trasferta</div>
-        <div class="radarTeamMeta">Lettura coerente anche per il profilo ospite, con focus su rendimento fuori casa e stato di forma.</div>
-        <div class="radarQuickGrid">
-          <div class="radarQuickItem"><span>Porta inviolata</span><b>${awayVals[3]}</b></div>
-          <div class="radarQuickItem"><span>Fattore trasf.</span><b>${awayVals[4]}</b></div>
-          <div class="radarQuickItem"><span>Stato forma</span><b>${awayVals[5]}</b></div>
-        </div>
-      </div>
+      <div class="radarFoot">Indice comparativo interno, non percentuale ufficiale SoccerSTATS. Il radar è centrato e dimensionato per restare protagonista senza rompere le proporzioni del layout.</div>
     </div>
-    <div class="radarFoot">Indice comparativo interno, non percentuale ufficiale SoccerSTATS. Il radar adesso resta proporzionato al blocco pagina e scala in modo più armonioso su desktop e mobile.</div>
   `;
 }
 
