@@ -87,7 +87,7 @@ app.post('/api/fetch-stats', async (req,res)=>{
 });
 
 app.use(express.static(path.join(__dirname,'dist'), { extensions: ['html'] }));
-app.get('*', (req,res)=>{
+app.use((req,res)=>{
   res.status(404).sendFile(path.join(__dirname,'dist','index.html'));
 });
 
