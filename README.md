@@ -1,10 +1,7 @@
-# Match Scanner - Template Master Definitivo v1.4
+# Match Scanner Template Master v1.5
 
-Upgrade grafico applicato alle schede partita:
-
-- Stato forma con grafico piu moderno, glow e look premium
-- Lettura forma con pill piu impattanti e box lettura operativa
-- Precedenti storici con righe piu eleganti e risultati evidenziati
-- Stile coerente su tutte le schede
-
-Template di riferimento sempre uniforme per tutte le partite.
+Migliorie introdotte:
+- Grafico Stato forma piu dettagliato, leggibile e moderno
+- Card Lettura forma mantenuta ma piu armoniosa
+- Sezione Precedenti storici completamente ridisegnata in stile premium
+- Layout pensato come base definitiva e uniforme per tutte le schede partita

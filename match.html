@@ -3497,6 +3497,221 @@ body{padding:26px}
   }
 }
 
+
+/* ===== V2 dettaglio grafico forma + precedenti storici ===== */
+.formGrid > div:first-child .chartMetaRow{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:10px;
+  margin-bottom:14px;
+}
+.formGrid > div:first-child .chartStat{
+  padding:12px 12px 11px;
+  border-radius:16px;
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.08);
+  backdrop-filter:blur(8px);
+}
+.formGrid > div:first-child .chartStatLabel{
+  font-size:10px;
+  letter-spacing:1px;
+  text-transform:uppercase;
+  color:#9fb2cf;
+  font-weight:900;
+}
+.formGrid > div:first-child .chartStatValue{
+  margin-top:6px;
+  font-size:22px;
+  font-weight:1000;
+  letter-spacing:-.5px;
+  color:#ffffff;
+}
+.formGrid > div:first-child .chartStatValue small{
+  font-size:12px;
+  color:#a9bdd9;
+  font-weight:800;
+}
+.formGrid > div:first-child .chartExplain{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  margin-top:14px;
+  flex-wrap:wrap;
+}
+.formGrid > div:first-child .chartExplain .chip{
+  padding:10px 14px;
+  border-radius:999px;
+  background:rgba(255,255,255,.07);
+  border:1px solid rgba(255,255,255,.08);
+  color:#edf4ff;
+  font-size:12px;
+  font-weight:850;
+}
+.formGrid > div:first-child .chartExplain .micro{
+  color:#9fb2cf;
+  font-size:12px;
+  font-weight:750;
+}
+.h2hShowcase{
+  margin-top:18px;
+  display:grid;
+  grid-template-columns:300px 1fr;
+  gap:18px;
+  align-items:start;
+}
+.h2hStatsPanel{
+  padding:18px;
+  border-radius:22px;
+  background:linear-gradient(180deg,#fbfdff 0%,#f5f9ff 100%);
+  border:1px solid #dfe8f2;
+  box-shadow:0 12px 28px rgba(15,23,42,.05);
+}
+.h2hStatsTitle{
+  font-size:12px;
+  text-transform:uppercase;
+  letter-spacing:1px;
+  color:#64748b;
+  font-weight:950;
+  margin-bottom:12px;
+}
+.h2hStatsGrid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+.h2hStatCard{
+  position:relative;
+  padding:16px 14px;
+  border-radius:18px;
+  background:radial-gradient(circle at 100% 0%, rgba(59,130,246,.06), transparent 26%), linear-gradient(180deg,#ffffff 0%,#f8fbff 100%);
+  border:1px solid #e2ebf3;
+  box-shadow:0 10px 20px rgba(15,23,42,.03);
+}
+.h2hStatCard::before{
+  content:"";
+  position:absolute;
+  left:0;
+  top:14px;
+  bottom:14px;
+  width:4px;
+  border-radius:999px;
+  background:linear-gradient(180deg,#2563eb 0%,#7c3aed 100%);
+}
+.h2hStatNum{
+  font-size:30px;
+  line-height:1;
+  font-weight:1000;
+  color:#0f172a;
+  letter-spacing:-1px;
+}
+.h2hStatText{
+  margin-top:8px;
+  font-size:12px;
+  line-height:1.45;
+  color:#475569;
+  font-weight:800;
+}
+.h2hMatches{
+  display:grid;
+  gap:14px;
+}
+.h2hMatchCard{
+  position:relative;
+  display:grid;
+  grid-template-columns:120px 1fr auto auto;
+  gap:14px;
+  align-items:center;
+  padding:16px 18px;
+  border-radius:22px;
+  background:radial-gradient(circle at 100% 0%, rgba(16,185,129,.05), transparent 24%), linear-gradient(180deg,#ffffff 0%,#fbfdff 100%);
+  border:1px solid #e2ebf3;
+  box-shadow:0 14px 28px rgba(15,23,42,.04);
+}
+.h2hMatchCard::before{
+  content:"";
+  position:absolute;
+  left:0;
+  top:18px;
+  bottom:18px;
+  width:5px;
+  border-radius:999px;
+  background:linear-gradient(180deg,#22c55e 0%,#2563eb 100%);
+}
+.h2hDateBadge{
+  display:inline-flex;
+  justify-content:center;
+  align-items:center;
+  padding:10px 12px;
+  border-radius:999px;
+  background:#f7fbff;
+  border:1px solid #dbe7f3;
+  font-size:12px;
+  font-weight:950;
+  color:#334155;
+}
+.h2hTeams{
+  font-size:18px;
+  line-height:1.2;
+  font-weight:980;
+  color:#0f172a;
+  letter-spacing:-.35px;
+}
+.h2hSub{
+  margin-top:5px;
+  font-size:12px;
+  color:#64748b;
+  font-weight:780;
+}
+.h2hScorePill{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-width:84px;
+  padding:11px 16px;
+  border-radius:999px;
+  background:linear-gradient(135deg,#0f172a 0%,#1d4ed8 100%);
+  color:#fff;
+  font-size:22px;
+  font-weight:1000;
+  letter-spacing:-.6px;
+  box-shadow:0 12px 24px rgba(29,78,216,.23);
+}
+.h2hOutcome{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-width:120px;
+  padding:10px 14px;
+  border-radius:999px;
+  font-size:12px;
+  font-weight:950;
+  letter-spacing:.4px;
+  text-transform:uppercase;
+}
+.h2hOutcome.win{background:#e7f8ef;color:#0f9f6e;border:1px solid #cceedd}
+.h2hOutcome.draw{background:#fff7df;color:#b7791f;border:1px solid #f4e2a8}
+.h2hOutcome.loss{background:#ffe8ed;color:#dc4c64;border:1px solid #ffd1da}
+.h2hBottomNote{
+  margin-top:16px;
+  padding:16px 18px;
+  border-radius:18px;
+  background:linear-gradient(180deg,#ffffff 0%,#f8fbff 100%);
+  border:1px solid #e2ebf3;
+  box-shadow:0 10px 20px rgba(15,23,42,.03);
+  color:#334155;
+  font-size:14px;
+  line-height:1.5;
+  font-weight:820;
+}
+.h2hBottomNote strong{color:#0f172a}
+@media (max-width: 1100px){
+  .formGrid > div:first-child .chartMetaRow{grid-template-columns:1fr 1fr}
+  .h2hShowcase{grid-template-columns:1fr}
+  .h2hMatchCard{grid-template-columns:1fr; align-items:start}
+  .h2hOutcome,.h2hScorePill{width:max-content}
+}
+
 </style>
 </head>
 <body>
@@ -4429,22 +4644,61 @@ body{padding:26px}
 <h2 class="cardTitle">Stato forma</h2>
 <div class="cardSub">Progressione ricostruita con regola vittoria +2, pareggio 0, sconfitta -1.</div>
 <div class="chartWrap">
-<svg id="formChart" preserveaspectratio="none" viewbox="0 0 520 250" width="100%">
-<line stroke="#e8eef5" x1="40" x2="505" y1="30" y2="30"></line>
-<line stroke="#e8eef5" x1="40" x2="505" y1="85" y2="85"></line>
-<line stroke="#e8eef5" x1="40" x2="505" y1="140" y2="140"></line>
-<line stroke="#e8eef5" x1="40" x2="505" y1="195" y2="195"></line>
-<polyline fill="none" points="75,195 205,195 335,85 465,85" stroke="#3e9bdd" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"></polyline>
-<polyline fill="none" points="75,195 270,85 465,30" stroke="#ec5f7a" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"></polyline>
-<circle cx="75" cy="195" fill="#fff" r="5" stroke="#3e9bdd" stroke-width="3"></circle>
-<circle cx="205" cy="195" fill="#fff" r="5" stroke="#3e9bdd" stroke-width="3"></circle>
-<circle cx="335" cy="85" fill="#fff" r="5" stroke="#3e9bdd" stroke-width="3"></circle>
-<circle cx="465" cy="85" fill="#fff" r="5" stroke="#3e9bdd" stroke-width="3"></circle>
-<circle cx="75" cy="195" fill="#fff" r="5" stroke="#ec5f7a" stroke-width="3"></circle>
-<circle cx="270" cy="85" fill="#fff" r="5" stroke="#ec5f7a" stroke-width="3"></circle>
-<circle cx="465" cy="30" fill="#fff" r="5" stroke="#ec5f7a" stroke-width="3"></circle>
+<div class="chartMetaRow">
+<div class="chartStat"><div class="chartStatLabel">Punti recenti</div><div class="chartStatValue">6 <small>Stevenage</small></div></div>
+<div class="chartStat"><div class="chartStatLabel">Punti recenti</div><div class="chartStatValue">8 <small>Luton</small></div></div>
+<div class="chartStat"><div class="chartStatLabel">Trend finale</div><div class="chartStatValue">+6 <small>ultima progressione</small></div></div>
+<div class="chartStat"><div class="chartStatLabel">Lettura rapida</div><div class="chartStatValue">Luton <small>più continua</small></div></div>
+</div>
+<svg id="formChart" preserveAspectRatio="none" viewBox="0 0 640 320" width="100%">
+<defs>
+<linearGradient id="gridGlow" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#0b1835"/><stop offset="100%" stop-color="#10285e"/></linearGradient>
+<linearGradient id="areaA" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="rgba(86,184,255,.32)"/><stop offset="100%" stop-color="rgba(86,184,255,0)"/></linearGradient>
+<linearGradient id="areaB" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="rgba(255,98,137,.28)"/><stop offset="100%" stop-color="rgba(255,98,137,0)"/></linearGradient>
+</defs>
+<rect x="0" y="0" width="640" height="320" rx="24" fill="url(#gridGlow)"></rect>
+<text x="26" y="30" fill="#c6d4eb" font-size="12" font-weight="900">PUNTI CUMULATI · ULTIME 4 GARE</text>
+<g>
+<line x1="70" y1="50" x2="610" y2="50" stroke="#e8eef5" opacity=".16"></line>
+<line x1="70" y1="112" x2="610" y2="112" stroke="#e8eef5" opacity=".16"></line>
+<line x1="70" y1="174" x2="610" y2="174" stroke="#e8eef5" opacity=".16"></line>
+<line x1="70" y1="236" x2="610" y2="236" stroke="#e8eef5" opacity=".16"></line>
+<line x1="70" y1="288" x2="610" y2="288" stroke="#e8eef5" opacity=".16"></line>
+<text x="24" y="292" font-size="12" fill="#8aa1c4">0</text>
+<text x="24" y="240" font-size="12" fill="#8aa1c4">2</text>
+<text x="24" y="178" font-size="12" fill="#8aa1c4">4</text>
+<text x="24" y="116" font-size="12" fill="#8aa1c4">6</text>
+<text x="24" y="54" font-size="12" fill="#8aa1c4">8</text>
+<text x="105" y="307" font-size="12" fill="#8aa1c4">G1</text>
+<text x="245" y="307" font-size="12" fill="#8aa1c4">G2</text>
+<text x="385" y="307" font-size="12" fill="#8aa1c4">G3</text>
+<text x="525" y="307" font-size="12" fill="#8aa1c4">G4</text>
+</g>
+<path fill="url(#areaA)" d="M120 236 L260 236 L400 112 L540 112 L540 288 L120 288 Z"></path>
+<path fill="url(#areaB)" d="M120 236 L330 112 L540 50 L540 288 L120 288 Z"></path>
+<polyline fill="none" points="120,236 260,236 400,112 540,112" stroke="#3e9bdd" stroke-linecap="round" stroke-linejoin="round" stroke-width="5"></polyline>
+<polyline fill="none" points="120,236 330,112 540,50" stroke="#f45b79" stroke-linecap="round" stroke-linejoin="round" stroke-width="5"></polyline>
+<g>
+<circle cx="120" cy="236" r="8" fill="#fff" stroke="#3e9bdd" stroke-width="5"></circle>
+<circle cx="260" cy="236" r="8" fill="#fff" stroke="#3e9bdd" stroke-width="5"></circle>
+<circle cx="400" cy="112" r="8" fill="#fff" stroke="#3e9bdd" stroke-width="5"></circle>
+<circle cx="540" cy="112" r="8" fill="#fff" stroke="#3e9bdd" stroke-width="5"></circle>
+<rect x="104" y="208" width="32" height="20" rx="10" fill="rgba(86,184,255,.14)" stroke="rgba(86,184,255,.35)"></rect><text x="120" y="222" text-anchor="middle" font-size="11" font-weight="900" fill="#dff2ff">2</text>
+<rect x="244" y="208" width="32" height="20" rx="10" fill="rgba(86,184,255,.14)" stroke="rgba(86,184,255,.35)"></rect><text x="260" y="222" text-anchor="middle" font-size="11" font-weight="900" fill="#dff2ff">2</text>
+<rect x="384" y="84" width="32" height="20" rx="10" fill="rgba(86,184,255,.14)" stroke="rgba(86,184,255,.35)"></rect><text x="400" y="98" text-anchor="middle" font-size="11" font-weight="900" fill="#dff2ff">6</text>
+<rect x="524" y="84" width="32" height="20" rx="10" fill="rgba(86,184,255,.14)" stroke="rgba(86,184,255,.35)"></rect><text x="540" y="98" text-anchor="middle" font-size="11" font-weight="900" fill="#dff2ff">6</text>
+</g>
+<g>
+<circle cx="120" cy="236" r="8" fill="#fff" stroke="#f45b79" stroke-width="5"></circle>
+<circle cx="330" cy="112" r="8" fill="#fff" stroke="#f45b79" stroke-width="5"></circle>
+<circle cx="540" cy="50" r="8" fill="#fff" stroke="#f45b79" stroke-width="5"></circle>
+<rect x="104" y="258" width="32" height="20" rx="10" fill="rgba(255,98,137,.14)" stroke="rgba(255,98,137,.35)"></rect><text x="120" y="272" text-anchor="middle" font-size="11" font-weight="900" fill="#ffe4ec">2</text>
+<rect x="314" y="84" width="32" height="20" rx="10" fill="rgba(255,98,137,.14)" stroke="rgba(255,98,137,.35)"></rect><text x="330" y="98" text-anchor="middle" font-size="11" font-weight="900" fill="#ffe4ec">6</text>
+<rect x="524" y="22" width="32" height="20" rx="10" fill="rgba(255,98,137,.14)" stroke="rgba(255,98,137,.35)"></rect><text x="540" y="36" text-anchor="middle" font-size="11" font-weight="900" fill="#ffe4ec">8</text>
+</g>
 </svg>
-<div class="chartLegend"><span><i class="c1"></i>Stevenage</span><span><i class="c2"></i>Luton Town</span></div>
+<div class="chartLegend"><span><i class="c1"></i>Stevenage · andamento cumulato</span><span><i class="c2"></i>Luton Town · andamento cumulato</span></div>
+<div class="chartExplain"><span class="chip">Lettura: Luton cresce con più continuità, Stevenage accelera nelle ultime 2 gare</span><span class="micro">Scala: punti cumulati nelle ultime partite considerate</span></div>
 </div>
 </div>
 <div>
@@ -4463,12 +4717,35 @@ body{padding:26px}
 </section>
 <section class="card">
 <h2 class="cardTitle">Precedenti storici</h2>
-<div class="cardSub">Recenti confronti diretti nello stesso campionato/livello.</div>
-<div class="h2hList">
-<div class="h2hRow"><span>10/01/26</span><b>Luton Town - Stevenage</b><strong>2-1</strong></div>
-<div class="h2hRow"><span>04/10/25</span><b>Stevenage - Luton Town</b><strong>2-0</strong></div>
+<div class="cardSub">Confronti diretti recenti letti in modo più immediato e visivo.</div>
+<div class="h2hShowcase">
+<div class="h2hStatsPanel">
+<div class="h2hStatsTitle">Snapshot H2H</div>
+<div class="h2hStatsGrid">
+<div class="h2hStatCard"><div class="h2hStatNum">2</div><div class="h2hStatText">precedenti recenti disponibili nello stesso livello</div></div>
+<div class="h2hStatCard"><div class="h2hStatNum">2.50</div><div class="h2hStatText">media gol nei confronti diretti</div></div>
+<div class="h2hStatCard"><div class="h2hStatNum">1-1</div><div class="h2hStatText">equilibrio vittorie tra le due squadre</div></div>
+<div class="h2hStatCard"><div class="h2hStatNum">50%</div><div class="h2hStatText">gare finite con almeno entrambe a segno</div></div>
 </div>
-<div class="note" style="margin-top:12px">2 precedenti: 1 vittoria Stevenage, 1 vittoria Luton, 0 pareggi · media 2.50 gol.</div>
+</div>
+<div>
+<div class="h2hMatches">
+<div class="h2hMatchCard">
+<div class="h2hDateBadge">10/01/26</div>
+<div><div class="h2hTeams">Luton Town vs Stevenage</div><div class="h2hSub">Confronto più recente</div></div>
+<div class="h2hScorePill">2-1</div>
+<div class="h2hOutcome loss">Vince Luton</div>
+</div>
+<div class="h2hMatchCard">
+<div class="h2hDateBadge">04/10/25</div>
+<div><div class="h2hTeams">Stevenage vs Luton Town</div><div class="h2hSub">Match precedente</div></div>
+<div class="h2hScorePill">2-0</div>
+<div class="h2hOutcome win">Vince Stevenage</div>
+</div>
+</div>
+<div class="h2hBottomNote"><strong>Lettura H2H:</strong> storico molto corto ma equilibrato. Una vittoria per parte, nessun pareggio e media realizzativa discreta. Il dato aiuta come contesto, ma da solo non basta a guidare la scelta.</div>
+</div>
+</div>
 </section>
 <section class="card">
 <h2 class="cardTitle">Ultimi risultati campionato</h2>
