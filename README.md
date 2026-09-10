@@ -1,12 +1,6 @@
-# Match Scanner Template Master v1.7
+# Match Scanner Template Master v1.8
 
-Novità:
-- rimossa la card ridondante "Info match";
-- aggiunto Radar della partita a 6 assi;
-- radar dinamico per ogni match completo;
-- confronto squadra casa vs squadra ospite;
-- valori 0-100 derivati dai dati specifici della singola partita;
-- legenda con indicatori numerici per rendere il grafico leggibile.
-
-Assi:
-Rendimento, Solidità, Realizzazione, Porta inviolata, Fattore casa/trasferta, Stato di forma.
+- Rimossa la fascia superiore di riepilogo dal grafico Stato forma.
+- Il grafico resta con titolo interno, assi, valori, legenda e lettura sotto.
+- Nei Precedenti storici resta solo l'elenco delle partite e la lettura finale.
+- Rimosso lo Snapshot H2H laterale.
