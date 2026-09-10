@@ -1,3 +1,3 @@
-# Radar cornice ridotta
+# Match Scanner Ultra Trend 2026
 
-Versione con radar partita con molta meno cornice blu e grafico più pieno dentro la stessa slide.
+Restyling premium aurora glass / fintech-social applicato senza cambiare struttura, dati o proporzioni approvate.

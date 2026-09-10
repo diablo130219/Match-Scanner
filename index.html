@@ -4,8 +4,8 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
-<title>Match Scanner Premium</title>
-<meta content="Match Scanner - analisi statistiche pre-match" name="description"/>
+<title>MatchScope — Pre-match Intelligence</title>
+<meta content="MatchScope - dashboard pre-match con analisi statistiche, segnali chiari e layout premium" name="description"/>
 <style>
 :root{
   --bg:#f4f7fb;
@@ -3250,32 +3250,554 @@ body{padding:26px}
   }
 }
 
+
+/* ===== DARK SOCIAL 2026 THEME ===== */
+:root{
+  --bg:#07111f!important;
+  --panel:#0d1728!important;
+  --panel2:#111d31!important;
+  --line:rgba(148,163,184,.16)!important;
+  --text:#f8fbff!important;
+  --muted:#8fa3bd!important;
+  --blue:#5ab8ff!important;
+  --green:#45e0a5!important;
+  --purple:#a78bfa!important;
+  --amber:#f4c15d!important;
+  --red:#ff6b86!important;
+  --shadow:0 20px 50px rgba(0,0,0,.32)!important;
+  --shadow-soft:0 12px 28px rgba(0,0,0,.22)!important;
+}
+html,body{
+  background:
+    radial-gradient(circle at 12% 4%,rgba(56,189,248,.12),transparent 24%),
+    radial-gradient(circle at 88% 12%,rgba(139,92,246,.13),transparent 26%),
+    radial-gradient(circle at 72% 82%,rgba(16,185,129,.08),transparent 22%),
+    linear-gradient(180deg,#07111f 0%,#091525 45%,#0b1727 100%)!important;
+  color:var(--text)!important;
+}
+body{color:#f8fbff!important}
+
+/* cards / panels */
+.sectionBox,.card,.detailCard,.statCard,.marketCard,.topMatch,.matchCard,.resultsTeamCard,.metricCard,.timingPanel,.comparisonCard,.radarCompareCard{
+  background:
+    radial-gradient(circle at 100% 0%,rgba(96,165,250,.055),transparent 22%),
+    linear-gradient(180deg,rgba(16,27,46,.96) 0%,rgba(12,22,38,.98) 100%)!important;
+  border:1px solid rgba(148,163,184,.14)!important;
+  box-shadow:0 18px 40px rgba(0,0,0,.24)!important;
+  color:#f8fbff!important;
+}
+.sectionBox,.card{backdrop-filter:blur(14px)!important}
+
+/* general text */
+.sectionTitle,.cardTitle,.detailCardTitle,.teamsName,.topTeams,.resultsTeamName,.metricValue,.statValue,.marketCardNum,.scoreN,.radarTitle{
+  color:#f8fbff!important;
+}
+.sectionSub,.cardSub,.teamsLeague,.listMeta,.statLabel,.statHelp,.recoSub,.topTime,.topFoot,.metricLabel,.metricSmall,.resultsTeamMeta,.timingPanelSub,.radarSub,.radarFoot{
+  color:#8fa3bd!important;
+}
+
+/* top bar / brand */
+.softBtn,.backBtn,.backLink{
+  background:linear-gradient(180deg,rgba(17,29,49,.96),rgba(11,22,39,.96))!important;
+  border:1px solid rgba(96,165,250,.22)!important;
+  color:#eaf4ff!important;
+  box-shadow:0 0 0 1px rgba(59,130,246,.05),0 10px 24px rgba(0,0,0,.24)!important;
+}
+.softBtn:hover,.backBtn:hover,.backLink:hover{
+  border-color:rgba(90,184,255,.52)!important;
+  box-shadow:0 0 24px rgba(59,130,246,.20),0 10px 24px rgba(0,0,0,.30)!important;
+}
+
+/* hero */
+.hero,.detailHero{color:#fff!important}
+.heroMain,.detailHero,.hero{
+  background:
+    radial-gradient(circle at 12% 15%,rgba(56,189,248,.20),transparent 24%),
+    radial-gradient(circle at 86% 18%,rgba(139,92,246,.20),transparent 25%),
+    radial-gradient(circle at 74% 85%,rgba(16,185,129,.12),transparent 22%),
+    linear-gradient(135deg,#07111f 0%,#0d1a32 48%,#123b74 100%)!important;
+}
+.eyebrow,.heroChip,.predictionPanel{
+  background:rgba(8,18,32,.48)!important;
+  border-color:rgba(148,163,184,.16)!important;
+  backdrop-filter:blur(14px)!important;
+}
+.predictionRow{
+  background:linear-gradient(180deg,rgba(255,255,255,.055),rgba(255,255,255,.025))!important;
+  border-color:rgba(148,163,184,.13)!important;
+}
+.predictionText strong,.predictionHeader,.predictionEyebrow,.predictionFoot{color:#eef6ff!important}
+
+/* luminous pills / buttons */
+.dateBtn,.filterBtn,.marketCard,.confPill,.badge,.timePill{
+  transition:all .16s ease!important;
+}
+.dateBtn,.filterBtn{
+  background:#0e1a2c!important;
+  color:#dceaff!important;
+  border:1px solid rgba(148,163,184,.18)!important;
+}
+.dateBtn.active,.filterBtn.active,.marketCard.active{
+  background:linear-gradient(135deg,#0d315c 0%,#173f78 55%,#5b3fa6 100%)!important;
+  color:#fff!important;
+  border-color:rgba(90,184,255,.55)!important;
+  box-shadow:0 0 0 1px rgba(90,184,255,.12),0 0 28px rgba(90,184,255,.18),0 16px 34px rgba(0,0,0,.28)!important;
+}
+.marketCard:hover,.matchCard:hover,.topMatch:hover{
+  transform:translateY(-3px)!important;
+  border-color:rgba(96,165,250,.34)!important;
+  box-shadow:0 0 28px rgba(59,130,246,.09),0 18px 36px rgba(0,0,0,.28)!important;
+}
+.timePill{
+  background:rgba(37,99,235,.16)!important;
+  color:#9ed5ff!important;
+  border:1px solid rgba(59,130,246,.20)!important;
+}
+
+/* search / inputs */
+.search,input,select{
+  background:#0d182a!important;
+  color:#eef6ff!important;
+  border-color:rgba(148,163,184,.16)!important;
+}
+.search::placeholder,input::placeholder{color:#6f839e!important}
+
+/* notes */
+.note,.notice,.hl,.radarQuickItem,.radarTeam,.h2hMatchCard,.h2hStatsPanel,.h2hStatCard,.summaryPills .pill{
+  background:linear-gradient(180deg,rgba(16,28,47,.96),rgba(11,21,37,.96))!important;
+  border-color:rgba(148,163,184,.13)!important;
+  color:#dce7f5!important;
+  box-shadow:0 10px 24px rgba(0,0,0,.16)!important;
+}
+.note strong,.h2hTeams,.h2hStatNum,.radarQuickItem b,.radarTeamTop{color:#f8fbff!important}
+.h2hDateBadge{background:#0e1a2c!important;color:#dceaff!important;border-color:rgba(148,163,184,.16)!important}
+.h2hSub,.h2hStatText,.radarQuickItem span{color:#8fa3bd!important}
+
+/* tables */
+.table thead th{color:#93a7bf!important}
+.table td{
+  background:linear-gradient(180deg,#0f1b2e 0%,#0c1728 100%)!important;
+  color:#edf5ff!important;
+  border-color:rgba(148,163,184,.12)!important;
+  box-shadow:none!important;
+}
+.table td:first-child{color:#8fa3bd!important}
+.table tbody tr:hover td{background:#12213a!important;border-color:rgba(96,165,250,.24)!important}
+
+/* result rows */
+.resultRow2,.statRow,.statsRow,.compRow,.marketRow{
+  background:#0d182a!important;
+  border-color:rgba(148,163,184,.12)!important;
+  color:#eaf3ff!important;
+}
+.resultMatch,.resultScore,.statVal,.compLbl,.compNum,.marketName{color:#f2f7ff!important}
+.resultDate,.marketMeta{color:#8398b2!important}
+
+/* radar - keep geometry, integrate theme */
+.radarStage{
+  background:
+    radial-gradient(circle at 50% 43%,rgba(56,189,248,.16),transparent 34%),
+    linear-gradient(180deg,#071327 0%,#0c2148 100%)!important;
+  box-shadow:0 16px 34px rgba(0,0,0,.30),inset 0 0 0 1px rgba(148,163,184,.08)!important;
+}
+.radarTeam,.radarFoot{background:#0d182a!important}
+.radarScaleBadge{background:linear-gradient(135deg,#0b1b35,#183e73)!important;box-shadow:0 0 18px rgba(56,189,248,.14)!important}
+
+/* form chart */
+.formGrid > div:first-child .chartWrap{
+  background:
+    radial-gradient(circle at 16% 12%,rgba(56,189,248,.10),transparent 20%),
+    radial-gradient(circle at 88% 14%,rgba(244,63,94,.10),transparent 20%),
+    linear-gradient(180deg,#071327 0%,#10264f 100%)!important;
+  border-color:rgba(148,163,184,.12)!important;
+  box-shadow:0 16px 34px rgba(0,0,0,.24)!important;
+}
+
+/* results summary */
+.formHeadline,.resultsSummary,.resultsList{color:#e9f2ff!important}
+.formHeadline{background:#0e1a2c!important;border-color:rgba(148,163,184,.12)!important}
+
+/* market signal colors */
+.badge.over,.conf-media-alta{background:rgba(59,130,246,.14)!important;color:#8bc9ff!important;border-color:rgba(59,130,246,.24)!important}
+.badge.goal{background:rgba(139,92,246,.14)!important;color:#c5b1ff!important;border-color:rgba(139,92,246,.24)!important}
+.badge.favorite,.conf-media{background:rgba(245,158,11,.12)!important;color:#ffd27a!important;border-color:rgba(245,158,11,.22)!important}
+.badge.under,.conf-alta{background:rgba(16,185,129,.13)!important;color:#72edbc!important;border-color:rgba(16,185,129,.23)!important}
+.badge.nobet,.conf-bassa{background:rgba(244,63,94,.12)!important;color:#ff9caf!important;border-color:rgba(244,63,94,.22)!important}
+.recoMain,.topReco{color:#59e7b0!important;text-shadow:0 0 16px rgba(16,185,129,.18)!important}
+
+/* accents */
+.card::before,.sectionBox::before{opacity:.9}
+.compTrack{background:#16253b!important}
+.metricCard,.comparisonCard{border-color:rgba(148,163,184,.12)!important}
+
+/* footer */
+.footerNote{color:#6f839e!important}
+
+@media(max-width:760px){
+  body{padding:14px!important}
+  .sectionBox,.card{border-radius:20px!important}
+}
+
+
+/* ===== ULTRA TREND 2026 · AURORA GLASS / FINTECH SOCIAL ===== */
+:root{
+  --neo-bg:#050912;
+  --neo-panel:rgba(12,18,31,.82);
+  --neo-panel-2:rgba(15,24,40,.92);
+  --neo-line:rgba(142,171,208,.13);
+  --neo-cyan:#67e8f9;
+  --neo-blue:#60a5fa;
+  --neo-violet:#a78bfa;
+  --neo-mint:#5eead4;
+  --neo-green:#4ade80;
+  --neo-pink:#fb7185;
+  --neo-gold:#fbbf24;
+}
+html,body{
+  background:
+    radial-gradient(1000px 500px at 8% -8%,rgba(59,130,246,.19),transparent 60%),
+    radial-gradient(900px 460px at 95% 3%,rgba(168,85,247,.18),transparent 58%),
+    radial-gradient(760px 520px at 76% 96%,rgba(20,184,166,.10),transparent 62%),
+    linear-gradient(180deg,#050912 0%,#070d18 42%,#09111d 100%)!important;
+  background-attachment:fixed!important;
+}
+body{position:relative}
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;opacity:.24;
+  background-image:linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.014) 1px,transparent 1px);
+  background-size:32px 32px;
+  mask-image:linear-gradient(to bottom,rgba(0,0,0,.75),transparent 82%);
+}
+.container{max-width:1420px!important}
+.topbar{padding:4px 2px 6px}
+.brand{font-size:24px!important;letter-spacing:-.9px!important}
+.brandIcon{
+  width:46px!important;height:46px!important;border-radius:15px!important;
+  background:linear-gradient(145deg,#38bdf8 0%,#6366f1 48%,#14b8a6 100%)!important;
+  box-shadow:0 0 0 1px rgba(255,255,255,.10),0 0 34px rgba(56,189,248,.25),0 18px 34px rgba(0,0,0,.30)!important;
+}
+.softBtn,.backBtn,.backLink{
+  border-radius:14px!important;
+  background:linear-gradient(180deg,rgba(17,26,43,.88),rgba(10,17,30,.92))!important;
+  border:1px solid rgba(123,160,206,.18)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.045),0 12px 28px rgba(0,0,0,.20)!important;
+}
+.sectionBox,.card,.detailCard,.statCard,.marketCard,.topMatch,.matchCard,.resultsTeamCard,.metricCard,.timingPanel,.comparisonCard,.radarCompareCard{
+  background:
+    linear-gradient(180deg,rgba(16,24,40,.92) 0%,rgba(10,17,29,.94) 100%)!important;
+  border:1px solid var(--neo-line)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.035),0 20px 50px rgba(0,0,0,.25)!important;
+}
+.sectionBox,.card{position:relative;overflow:hidden}
+.sectionBox::after,.card::after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(135deg,rgba(103,232,249,.035),transparent 28%,transparent 72%,rgba(167,139,250,.03));
+}
+.sectionTitle,.cardTitle{letter-spacing:-.75px!important}
+.sectionTitle{font-size:24px!important}
+.cardTitle{font-size:20px!important}
+.sectionSub,.cardSub{font-size:12px!important;color:#8fa4be!important}
+.heroMain,.detailHero,.hero{
+  background:
+    radial-gradient(650px 280px at 10% 0%,rgba(56,189,248,.22),transparent 62%),
+    radial-gradient(520px 260px at 88% 8%,rgba(139,92,246,.24),transparent 64%),
+    radial-gradient(420px 280px at 70% 100%,rgba(16,185,129,.12),transparent 64%),
+    linear-gradient(135deg,#070c17 0%,#0c1830 48%,#12305e 100%)!important;
+  border:1px solid rgba(120,158,205,.15)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.04),0 30px 70px rgba(0,0,0,.34)!important;
+}
+.heroMain::before,.detailHero::before{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(115deg,transparent 0%,rgba(255,255,255,.045) 34%,transparent 52%);
+  transform:translateX(-35%);
+}
+.eyebrow{
+  background:rgba(7,15,29,.52)!important;border-color:rgba(103,232,249,.18)!important;
+  color:#bdeeff!important;box-shadow:0 0 24px rgba(56,189,248,.08)!important;
+}
+.heroTitle{letter-spacing:-2.4px!important;text-shadow:0 12px 38px rgba(0,0,0,.30)}
+.heroTitle .accent{background:linear-gradient(90deg,#7dd3fc,#a78bfa 58%,#5eead4);-webkit-background-clip:text;background-clip:text;color:transparent!important}
+.heroChip,.predictionPanel{
+  background:linear-gradient(180deg,rgba(11,20,35,.68),rgba(7,14,26,.74))!important;
+  border-color:rgba(130,170,219,.16)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.035)!important;
+}
+.marketCard{
+  min-height:142px!important;border-radius:20px!important;
+  transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease,background .18s ease!important;
+}
+.marketCard::before{width:3px!important;opacity:.95}
+.marketCard:hover{
+  transform:translateY(-4px) scale(1.008)!important;
+  background:linear-gradient(180deg,rgba(20,31,51,.98),rgba(12,21,37,.98))!important;
+  box-shadow:0 0 0 1px rgba(96,165,250,.06),0 0 34px rgba(96,165,250,.10),0 22px 42px rgba(0,0,0,.26)!important;
+}
+.marketCard.active{
+  background:
+    radial-gradient(circle at 100% 0%,rgba(167,139,250,.18),transparent 36%),
+    linear-gradient(135deg,rgba(17,46,82,.98),rgba(30,42,90,.97))!important;
+  border-color:rgba(103,232,249,.40)!important;
+  box-shadow:0 0 0 1px rgba(103,232,249,.08),0 0 38px rgba(59,130,246,.16),0 22px 44px rgba(0,0,0,.30)!important;
+}
+.marketCardTitle{font-size:11px!important;letter-spacing:1.15px!important}
+.marketCardNum{font-size:40px!important}
+.dateBtn,.filterBtn{
+  border-radius:13px!important;padding:10px 14px!important;
+  background:rgba(13,22,37,.90)!important;
+}
+.dateBtn.active,.filterBtn.active{
+  background:linear-gradient(135deg,#123768,#3d3d88 68%,#155e75 100%)!important;
+  box-shadow:0 0 24px rgba(103,232,249,.12),inset 0 1px 0 rgba(255,255,255,.08)!important;
+}
+.matchCard,.topMatch{
+  border-radius:18px!important;
+  background:
+    radial-gradient(circle at 100% 0%,rgba(96,165,250,.045),transparent 25%),
+    linear-gradient(180deg,rgba(16,26,44,.96),rgba(10,18,31,.98))!important;
+}
+.matchCard:hover,.topMatch:hover{border-color:rgba(103,232,249,.25)!important}
+.timePill{border-radius:12px!important;background:rgba(59,130,246,.12)!important;color:#a8d7ff!important}
+.badge,.confPill{border-radius:11px!important}
+.search,input,select{
+  border-radius:15px!important;
+  background:linear-gradient(180deg,rgba(13,22,37,.96),rgba(9,16,28,.96))!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.03)!important;
+}
+.note,.notice,.hl,.radarQuickItem,.radarTeam,.h2hMatchCard,.h2hStatsPanel,.h2hStatCard,.summaryPills .pill{
+  background:linear-gradient(180deg,rgba(16,27,45,.92),rgba(10,18,32,.96))!important;
+  border-color:rgba(126,157,198,.12)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.025),0 10px 24px rgba(0,0,0,.16)!important;
+}
+.table td{background:rgba(11,20,35,.92)!important}
+.table tbody tr:hover td{background:rgba(20,34,57,.96)!important}
+.resultRow2,.statRow,.statsRow,.compRow,.marketRow{
+  background:linear-gradient(180deg,rgba(13,23,39,.96),rgba(9,17,30,.96))!important;
+}
+.radarStage,.formGrid > div:first-child .chartWrap{
+  background:
+    radial-gradient(circle at 50% 42%,rgba(56,189,248,.15),transparent 34%),
+    linear-gradient(180deg,#061124 0%,#0a2045 100%)!important;
+  border:1px solid rgba(103,232,249,.08)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.025),0 20px 44px rgba(0,0,0,.26)!important;
+}
+.radarPolyHome{filter:drop-shadow(0 0 15px rgba(84,197,255,.36))!important}
+.radarPolyAway{filter:drop-shadow(0 0 15px rgba(255,99,135,.32))!important}
+.radarQuickItem b,.metricValue,.scoreN{font-variant-numeric:tabular-nums}
+.predictionRow{border-radius:13px!important}
+.predictionRow:hover{background:rgba(255,255,255,.07)!important}
+.recoMain,.topReco{color:#64e8ba!important;text-shadow:0 0 18px rgba(94,234,212,.20)!important}
+.footerNote{color:#62758d!important}
+@media(max-width:760px){
+  .marketCard{min-height:118px!important}
+  .marketCardNum{font-size:34px!important}
+  .sectionTitle{font-size:21px!important}
+  .cardTitle{font-size:18px!important}
+}
+
+
+/* ===== MATCHSCOPE HOME HEADER / HERO ===== */
+body{padding-top:22px}
+.topbar,.hero.heroSingle{display:none!important}
+.matchscopeHeader{
+  position:relative;overflow:hidden;border-radius:34px;margin-bottom:18px;
+  padding:18px 18px 20px;
+  background:
+    linear-gradient(180deg, rgba(0,8,28,.96) 0%, rgba(5,18,48,.98) 100%),
+    linear-gradient(135deg,#06142f 0%,#0d2a66 54%,#16a3ff 100%);
+  box-shadow:0 28px 60px rgba(5,15,35,.32);
+  border:1px solid rgba(92,128,189,.22);
+}
+.matchscopeHeader:before{
+  content:"";position:absolute;inset:0;pointer-events:none;opacity:.22;
+  background:
+    linear-gradient(90deg, rgba(86,153,255,.20) 1px, transparent 1px),
+    linear-gradient(rgba(86,153,255,.14) 1px, transparent 1px);
+  background-size:28px 28px;
+}
+.matchscopeHeader:after{
+  content:"";position:absolute;inset:auto -140px -150px auto;width:520px;height:520px;border-radius:50%;
+  background:radial-gradient(circle, rgba(29,78,216,.35) 0%, rgba(0,0,0,0) 68%);
+  filter:blur(12px);pointer-events:none;
+}
+.matchscopeTopbar{
+  position:relative;z-index:2;display:grid;grid-template-columns:auto 1fr auto;gap:26px;align-items:center;
+  padding:6px 10px 14px;border-bottom:1px solid rgba(139,170,255,.14);
+}
+.matchscopeBrand{display:flex;align-items:center;gap:14px;min-width:0}
+.matchscopeLogo{width:58px;height:58px;display:block;flex:0 0 58px;filter:drop-shadow(0 0 18px rgba(0,198,255,.32))}
+.matchscopeWordmark{font-size:38px;line-height:.9;font-weight:1000;letter-spacing:-1.4px;color:#eef6ff}
+.matchscopeWordmark span{background:linear-gradient(90deg,#91f7ff 0%, #34baff 45%, #5bc8ff 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.matchscopeSubmark{margin-top:4px;font-size:13px;letter-spacing:4px;text-transform:uppercase;color:#a4bbd7;font-weight:700}
+.matchscopeNav{display:flex;justify-content:center;gap:24px;flex-wrap:wrap}
+.matchscopeNav a{position:relative;text-decoration:none;color:#d8e8ff;font-size:14px;font-weight:850;letter-spacing:.6px;text-transform:uppercase;padding:10px 0}
+.matchscopeNav a.active{color:#66d6ff}
+.matchscopeNav a.active:after{content:"";position:absolute;left:0;right:0;bottom:-13px;height:3px;border-radius:999px;background:linear-gradient(90deg,#1fdbff,#55a2ff);box-shadow:0 0 16px rgba(31,219,255,.85)}
+.matchscopeActions{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:flex-end}
+.msAction{
+  display:inline-flex;align-items:center;gap:10px;padding:11px 16px;border-radius:15px;
+  background:rgba(12,30,72,.75);border:1px solid rgba(99,170,255,.25);
+  color:#eef6ff;font-size:13px;font-weight:800;box-shadow:inset 0 1px 0 rgba(255,255,255,.05),0 0 0 1px rgba(35,140,255,.06),0 0 26px rgba(21,132,255,.12)
+}
+.msAction.primary{background:linear-gradient(180deg, rgba(7,39,92,.94) 0%, rgba(11,61,132,.94) 100%); border-color:rgba(92,194,255,.55); box-shadow:0 0 26px rgba(33,154,255,.28), inset 0 0 0 1px rgba(190,241,255,.07)}
+.msAction .icon{font-size:15px;line-height:1}
+.matchscopeHero{position:relative;z-index:2;display:grid;grid-template-columns:minmax(0,1.08fr) minmax(340px,.92fr);gap:26px;align-items:center;padding:26px 10px 18px}
+.msCopy{padding:8px 8px 8px 2px}
+.msBadge{display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border-radius:999px;background:rgba(13,33,78,.72);border:1px solid rgba(125,187,255,.24);font-size:11px;font-weight:900;letter-spacing:1.1px;text-transform:uppercase;color:#a5c7ef}
+.msBadgeDot{width:9px;height:9px;border-radius:50%;background:#26f19b;box-shadow:0 0 0 7px rgba(38,241,155,.10),0 0 12px rgba(38,241,155,.5)}
+.msTitle{margin:18px 0 0;font-size:clamp(48px,5.8vw,96px);line-height:.88;font-weight:1000;letter-spacing:-3px;color:#f5fbff;text-shadow:0 10px 25px rgba(3,12,28,.35)}
+.msTitle .accent{background:linear-gradient(90deg,#fefefe 0%,#3fb8ff 46%,#29d5ff 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.msLead{margin-top:18px;max-width:760px;color:#c9d8e9;font-size:20px;line-height:1.45;font-weight:560}
+.msLead strong{color:#38c6ff;font-weight:920}
+.msCtaRow{display:flex;flex-wrap:wrap;gap:16px;margin-top:28px;align-items:center}
+.msButton{display:inline-flex;align-items:center;gap:10px;padding:18px 24px;border-radius:18px;text-decoration:none;font-size:17px;font-weight:920;letter-spacing:-.3px;transition:transform .15s ease, box-shadow .15s ease}
+.msButton:hover{transform:translateY(-2px)}
+.msButtonPrimary{color:#031523;background:linear-gradient(90deg,#44e3ff 0%,#2db2ff 100%);box-shadow:0 12px 28px rgba(32,181,255,.28)}
+.msButtonGhost{color:#edf6ff;background:rgba(12,32,79,.72);border:1px solid rgba(125,187,255,.30);box-shadow:0 12px 24px rgba(7,16,34,.18)}
+.msMiniNote{font-size:14px;line-height:1.4;color:#91a9c4;font-weight:760;letter-spacing:3px;text-transform:uppercase;max-width:220px}
+.msVisual{position:relative;min-height:470px;display:flex;align-items:center;justify-content:center}
+.msGlowBall{
+  position:relative;width:min(420px,82%);aspect-ratio:1/1;border-radius:50%;
+  background:
+    radial-gradient(circle at 42% 35%, rgba(207,240,255,.9) 0%, rgba(123,191,255,.35) 14%, rgba(7,19,49,.95) 61%, rgba(0,0,0,0) 71%),
+    radial-gradient(circle at 50% 50%, rgba(30,144,255,.24) 0%, rgba(0,0,0,0) 72%);
+  box-shadow:0 0 0 1px rgba(85,171,255,.18),0 0 45px rgba(45,174,255,.34),0 0 100px rgba(29,78,216,.22);
+}
+.msGlowBall:before,.msGlowBall:after{content:"";position:absolute;inset:50%;transform:translate(-50%,-50%);border-radius:50%;border:1px solid rgba(91,184,255,.25)}
+.msGlowBall:before{width:145%;height:145%;box-shadow:0 0 26px rgba(53,149,255,.12)}
+.msGlowBall:after{width:185%;height:185%;opacity:.7}
+.msRing{position:absolute;border-radius:50%;border:1px solid rgba(94,184,255,.22);inset:50%;transform:translate(-50%,-50%)}
+.msRing.r1{width:118%;height:118%}.msRing.r2{width:148%;height:148%}.msRing.r3{width:178%;height:178%}
+.msRing.r4{width:208%;height:208%;opacity:.45}
+.msVisualCaption{position:absolute;right:6%;top:14%;font-size:14px;line-height:1.65;letter-spacing:5px;text-transform:uppercase;color:#8fd6ff;text-align:left}
+.msVisualCaption:after{content:"";display:block;width:56px;height:3px;border-radius:999px;background:linear-gradient(90deg,#1fdbff,#55a2ff);box-shadow:0 0 12px rgba(31,219,255,.7);margin-top:12px}
+.msTagline{position:absolute;right:1%;bottom:8%;font-size:18px;line-height:1.05;color:#56d5ff;font-style:italic;text-align:right;transform:rotate(-8deg);text-shadow:0 0 16px rgba(86,213,255,.45)}
+.matchscopeStatStrip{position:relative;z-index:2;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;padding:8px 10px 4px}
+.msStat{
+  background:linear-gradient(180deg, rgba(4,17,45,.92) 0%, rgba(8,24,56,.94) 100%);border:1px solid rgba(78,142,220,.22);border-radius:22px;padding:18px 18px 16px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.03),0 14px 24px rgba(0,0,0,.18)
+}
+.msStatLabel{font-size:14px;font-weight:760;letter-spacing:3px;text-transform:uppercase;color:#9db7d4}
+.msStatValue{font-size:42px;line-height:1;font-weight:1000;letter-spacing:-1.3px;color:#fff;margin-top:10px}
+.msStatValue.blue{color:#59d6ff}.msStatValue.purple{color:#9b7bff}.msStatValue.green{color:#36f2b0}
+.msStatHelp{margin-top:8px;font-size:15px;color:#c4d6ea;font-weight:650;letter-spacing:2px;text-transform:uppercase}
+@media (max-width:1280px){
+  .matchscopeTopbar{grid-template-columns:1fr;justify-items:start}
+  .matchscopeNav{justify-content:flex-start}
+  .matchscopeActions{justify-content:flex-start}
+  .matchscopeHero{grid-template-columns:1fr}
+  .msVisual{min-height:360px}
+}
+@media (max-width:900px){
+  .matchscopeStatStrip{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .msTitle{font-size:56px}
+  .msLead{font-size:18px}
+}
+@media (max-width:640px){
+  .matchscopeHeader{padding:14px 14px 16px;border-radius:26px}
+  .matchscopeWordmark{font-size:28px}
+  .matchscopeSubmark{font-size:11px;letter-spacing:2.8px}
+  .matchscopeNav{gap:16px}
+  .matchscopeNav a{font-size:12px}
+  .matchscopeActions{gap:8px}
+  .msAction{padding:10px 12px;font-size:12px}
+  .msTitle{font-size:42px;letter-spacing:-1.6px}
+  .msLead{font-size:16px}
+  .msButton{padding:14px 18px;font-size:15px}
+  .msMiniNote{max-width:none;letter-spacing:2px;font-size:12px}
+  .matchscopeStatStrip{grid-template-columns:1fr}
+  .msStatValue{font-size:34px}
+  .msVisual{min-height:290px}
+  .msVisualCaption{position:relative;right:auto;top:auto;align-self:flex-start;margin-top:8px}
+  .msTagline{display:none}
+}
 </style>
 </head>
 <body>
 <div class="container">
 <div id="mainView">
-<div class="topbar">
-<div class="brand">
-<div class="brandIcon"></div>
-<div>Match Scanner <span style="color:#2563eb">Premium</span></div>
+<div class="matchscopeHeader">
+  <div class="matchscopeTopbar">
+    <div class="matchscopeBrand">
+      <svg class="matchscopeLogo" viewBox="0 0 80 80" aria-hidden="true">
+        <defs>
+          <linearGradient id="msLogoGrad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#95f5ff"/>
+            <stop offset="50%" stop-color="#34b8ff"/>
+            <stop offset="100%" stop-color="#1976ff"/>
+          </linearGradient>
+        </defs>
+        <circle cx="40" cy="18" r="5" fill="none" stroke="url(#msLogoGrad)" stroke-width="2.6" opacity=".95"/>
+        <circle cx="40" cy="18" r="12" fill="none" stroke="url(#msLogoGrad)" stroke-width="2" opacity=".55"/>
+        <circle cx="40" cy="18" r="19" fill="none" stroke="url(#msLogoGrad)" stroke-width="1.6" opacity=".33"/>
+        <path d="M10 22 L10 58 L26 42 L40 58 L54 42 L70 58 L70 22 L54 38 L40 52 L26 38 Z" fill="none" stroke="url(#msLogoGrad)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div>
+        <div class="matchscopeWordmark">MATCH<span>SCOPE</span></div>
+        <div class="matchscopeSubmark">Pre-match Intelligence</div>
+      </div>
+    </div>
+    <nav class="matchscopeNav" aria-label="Navigazione principale">
+      <a href="#" class="active">Home</a>
+      <a href="#dateRail">Partite</a>
+      <a href="#marketGrid">Analisi</a>
+      <a href="#listMeta">Statistiche</a>
+      <a href="#">Risorse</a>
+    </nav>
+    <div class="matchscopeActions">
+      <div class="msAction"><span class="icon">🔎</span> Cerca</div>
+      <div class="msAction"><span class="icon">📅</span> Oggi</div>
+      <div class="msAction"><span class="icon">⚽</span> Tutti i campionati</div>
+      <div class="msAction primary"><span class="icon">📊</span> Dashboard</div>
+    </div>
+  </div>
+
+  <section class="matchscopeHero">
+    <div class="msCopy">
+      <div class="msBadge"><span class="msBadgeDot"></span> Football data analysis opportunities</div>
+      <h1 class="msTitle">Analisi pulite.<br>Segnali chiari.<br><span class="accent">Migliori decisioni.</span></h1>
+      <div class="msLead">Statistiche, tendenze e dati avanzati per leggere ogni partita prima che inizi. Il tuo vantaggio comincia qui con <strong>MatchScope</strong>.</div>
+      <div class="msCtaRow">
+        <a href="#matchList" class="msButton msButtonPrimary">📈 Esplora le partite</a>
+        <a href="#marketGrid" class="msButton msButtonGhost">▶ Scopri MatchScope</a>
+        <div class="msMiniNote">Più dati · più consapevolezza · più opportunità</div>
+      </div>
+    </div>
+    <div class="msVisual" aria-hidden="true">
+      <div class="msGlowBall">
+        <div class="msRing r1"></div>
+        <div class="msRing r2"></div>
+        <div class="msRing r3"></div>
+        <div class="msRing r4"></div>
+      </div>
+      <div class="msVisualCaption">Football<br>Data<br>Analysis<br>Opportunities</div>
+      <div class="msTagline">Beyond<br>the next<br>match</div>
+    </div>
+  </section>
+
+  <div class="matchscopeStatStrip">
+    <div class="msStat">
+      <div class="msStatLabel">Partite analizzate</div>
+      <div class="msStatValue blue">2500+</div>
+      <div class="msStatHelp">flusso dati in crescita</div>
+    </div>
+    <div class="msStat">
+      <div class="msStatLabel">Precisione storica</div>
+      <div class="msStatValue purple">75%</div>
+      <div class="msStatHelp">letture più affidabili</div>
+    </div>
+    <div class="msStat">
+      <div class="msStatLabel">Campionati monitorati</div>
+      <div class="msStatValue">50+</div>
+      <div class="msStatHelp">copertura ampia</div>
+    </div>
+    <div class="msStat">
+      <div class="msStatLabel">Dati in tempo reale</div>
+      <div class="msStatValue green">Live</div>
+      <div class="msStatHelp">sempre aggiornati</div>
+    </div>
+  </div>
 </div>
-<div class="topActions">
-<div class="softBtn">Pre-match</div>
-<div class="softBtn">SoccerSTATS workflow</div>
-</div>
-</div>
-<section class="hero heroSingle">
-<div class="heroMain">
-<div class="eyebrow"><span class="eyebrowDot"></span> Dashboard giornaliera</div>
-<div class="heroTitle">Analisi pulita.<br/><span class="accent">Segnali chiari.</span></div>
-<div class="heroChips">
-<div class="heroChip">📊 Mercati consigliati</div>
-<div class="heroChip">⚡ Layout pulito</div>
-<div class="heroChip">🎯 Focus pre-match</div>
-</div>
-</div>
-</section>
+
 <section class="dateSelectorBox">
 <div class="dateSelectorHead">
 <div>
