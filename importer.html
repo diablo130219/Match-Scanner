@@ -26,7 +26,7 @@ h1{font-size:34px;margin:0 0 8px}.sub{color:var(--muted);line-height:1.58}.eyebr
 
 @media(max-width:720px){.grid{grid-template-columns:repeat(2,1fr)}.row{grid-template-columns:1fr}.wrap{padding:16px}h1{font-size:28px}}
 </style></head><body><div class="wrap">
-<div class="top"><div class="brand">MagicScanner <span>Import Center V2.6</span></div><a class="back" href="index.html">← Home</a></div>
+<div class="top"><div class="brand">MagicScanner <span>Import Center V2.6.1</span></div><a class="back" href="index.html">← Home</a></div>
 
 <div class="card">
   <div class="eyebrow">Novità V2.6 · Home automatica</div>
@@ -136,12 +136,96 @@ function buildMatch(home,away,league,time,stats_url){
   const r=recommendation(home,away);
   return {id:slug(home.team+'-'+away.team),league,time:time||'',home:home.team,away:away.team,tags:r.tags,scores:r.scores,summary:r.summary,basic:{'Partite considerate':`${home.gp} / ${away.gp}`,'Vittorie':`${home.w} / ${away.w}`,'Senza segnare':`${home.fts} / ${away.fts}`,'Senza subire':`${home.cs} / ${away.cs}`,'BTTS / Entrambe segnano':`${home.bts} / ${away.bts}`,'Media gol':`${home.tg} / ${away.tg}`,'Gol fatti':`${home.gf} / ${away.gf}`,'Gol subiti':`${home.ga} / ${away.ga}`,'Over 1.5':`${home.o15} / ${away.o15}`,'Over 2.5':`${home.o25} / ${away.o25}`,'Over 3.5':`${home.o35} / ${away.o35}`,'Punti per partita':`${home.ppg} / ${away.ppg}`},timing_loaded:false,recommended:r.recommended,confidence:r.confidence,marketType:r.marketType,signalScore:r.signalScore,date_offset:0,stats_url};
 }
+function parseStatBlockAfterScope(text){
+  const scope=text.match(/last\s+(\d+)/i);
+  if(!scope)return null;
+  const tail=text.slice(scope.index+scope[0].length);
+  const vals=tail.match(/\d+(?:[.,]\d+)?%?/g)||[];
+  if(vals.length<11)return null;
+  let idx=0, gp=Number(scope[1]);
+  if(vals.length>=12 && !vals[0].includes('%') && Number(vals[0])<=30) gp=num(vals[idx++]);
+  const take=()=>vals[idx++]||'0';
+  return {gp,w:take(),fts:take(),cs:take(),bts:take(),tg:take(),gf:take(),ga:take(),o15:take(),o25:take(),o35:take(),ppg:take()};
+}
+function cleanTeamName(x){
+  return String(x||'').replace(/\u00a0/g,' ').replace(/\s+/g,' ').replace(/^[-–—|:]+|[-–—|:]+$/g,'').trim();
+}
+function teamCandidatesFromNode(node){
+  const bad=/^(stats?|results?|scope|gp|w%?|fts|cs|bts|btts|tg|gf|ga|1\.5\+|2\.5\+|3\.5\+|points per game)$/i;
+  const arr=[];
+  for(const a of node.querySelectorAll('a[href]')){
+    const t=cleanTeamName(a.textContent);
+    const h=a.getAttribute('href')||'';
+    if(!t||bad.test(t)||/^\d{1,2}:\d{2}$/.test(t))continue;
+    if(/teamstats\.asp|matchlist\.asp/i.test(h) || (!/matches\.asp|table\.asp|trends\.asp|timing\.asp/i.test(h) && t.length<=55)) arr.push(t);
+  }
+  return [...new Set(arr)];
+}
+function parsePairNode(node,league){
+  const text=node.textContent.replace(/\u00a0/g,' ').replace(/\s+/g,' ').trim();
+  const scopes=[...text.matchAll(/last\s+\d+/ig)];
+  if(scopes.length<2)return null;
+  const firstText=text.slice(scopes[0].index,scopes[1].index);
+  const secondText=text.slice(scopes[1].index);
+  const aStats=parseStatBlockAfterScope(firstText), bStats=parseStatBlockAfterScope(secondText);
+  if(!aStats||!bStats)return null;
+  let teams=teamCandidatesFromNode(node);
+  // fallback: testo prima dei due "last N". In molte pagine SoccerSTATS i nomi non sono link.
+  if(teams.length<2){
+    const before=text.slice(0,scopes[0].index).replace(/\b\d{1,2}:\d{2}\b/g,' ').trim();
+    const between=text.slice(scopes[0].index+scopes[0][0].length,scopes[1].index);
+    // Il secondo nome di solito è dopo il primo blocco numerico e prima del secondo scope.
+    const firstNums=(firstText.match(/\d+(?:[.,]\d+)?%?/g)||[]);
+    let secondGuess='';
+    if(firstNums.length){
+      const lastVal=firstNums[firstNums.length-1];
+      const pos=between.lastIndexOf(lastVal);
+      if(pos>=0) secondGuess=cleanTeamName(between.slice(pos+lastVal.length));
+    }
+    const firstGuess=cleanTeamName(before.split(/\n+/).pop());
+    teams=[firstGuess,secondGuess].filter(Boolean);
+  }
+  if(teams.length<2)return null;
+  const time=(text.match(/\b([01]?\d|2[0-3]):[0-5]\d\b/)||[])[0]||'';
+  const stats_url=statsLinkAround([node]);
+  const home={team:teams[0],...aStats,tr:node};
+  const away={team:teams[1],...bStats,tr:node};
+  return buildMatch(home,away,league,time,stats_url);
+}
+function parseTextFallback(doc){
+  // Ultima rete di sicurezza: usa innerText e riconosce righe del tipo
+  // Squadra | last 8 | GP | W% | FTS | CS | BTS | TG | GF | GA | 1.5+ | 2.5+ | 3.5+ | PPG.
+  const raw=(doc.body?.innerText||'').replace(/\r/g,'');
+  const lines=raw.split('\n').map(x=>x.replace(/\u00a0/g,' ').replace(/[ \t]+/g,' ').trim()).filter(Boolean);
+  const parsed=[];
+  for(let i=0;i<lines.length;i++){
+    if(!/last\s+\d+/i.test(lines[i]))continue;
+    const window=lines.slice(Math.max(0,i-2),Math.min(lines.length,i+4)).join(' ');
+    const st=parseStatBlockAfterScope(window);
+    if(!st)continue;
+    let team='';
+    const before=window.slice(0,window.search(/last\s+\d+/i)).replace(/\b\d{1,2}:\d{2}\b/g,' ').trim();
+    team=cleanTeamName(before.split(/\s{2,}|\|/).pop()||before);
+    if(!team||team.length>60)continue;
+    parsed.push({team,...st,_line:i});
+  }
+  const out=[];
+  for(let i=0;i+1<parsed.length;i+=2){
+    const a=parsed[i],b=parsed[i+1];
+    if(a.team===b.team)continue;
+    out.push(buildMatch(a,b,'SoccerSTATS','', ''));
+  }
+  return out;
+}
 function parseMatchdayHtml(html){
   const doc=new DOMParser().parseFromString(html,'text/html');
   const out=[];
+  const add=m=>{if(m&&m.home&&m.away&&!out.some(x=>x.id===m.id))out.push(m)};
+
+  // 1) Struttura classica: una squadra per TR.
   for(const table of doc.querySelectorAll('table')){
     const tt=table.textContent.replace(/\s+/g,' ');
-    if(!/FTS/i.test(tt)||!/(BTS|BTTS)/i.test(tt)||!/1\.5\+/i.test(tt)||!/Points Per Game/i.test(tt))continue;
+    if(!/FTS/i.test(tt)||!/(BTS|BTTS)/i.test(tt)||!/1\.5\+/i.test(tt))continue;
     const league=leagueForTable(table);
     const rows=[...table.querySelectorAll('tr')];
     const parsedRows=rows.map(parseStatRow);
@@ -149,15 +233,29 @@ function parseMatchdayHtml(html){
       const a=parsedRows[i]; if(!a)continue;
       let j=i+1; while(j<parsedRows.length&&!parsedRows[j])j++;
       const b=parsedRows[j]; if(!b)continue;
-      // Le due righe di una partita sono consecutive e usano lo stesso scope.
       const rowText=(a.tr.textContent+' '+b.tr.textContent).replace(/\s+/g,' ');
       const tm=rowText.match(/\b([01]?\d|2[0-3]):[0-5]\d\b/);
-      const stats_url=statsLinkAround([a.tr,b.tr]);
-      const m=buildMatch(a,b,league,tm?tm[0]:'',stats_url);
-      if(!out.some(x=>x.id===m.id))out.push(m);
+      add(buildMatch(a,b,league,tm?tm[0]:'',statsLinkAround([a.tr,b.tr])));
       i=j;
     }
+
+    // 2) Struttura SoccerSTATS recente: entrambe le squadre possono stare nello stesso TR/blocco.
+    for(const tr of rows) add(parsePairNode(tr,league));
+    for(const tbody of table.querySelectorAll('tbody')) add(parsePairNode(tbody,league));
   }
+
+  // 3) Alcune versioni responsive usano DIV invece di vere righe tabella.
+  if(!out.length){
+    const nodes=[...doc.querySelectorAll('div,section,article')].filter(el=>{
+      const t=el.textContent||'';
+      const n=(t.match(/last\s+\d+/ig)||[]).length;
+      return n===2 && t.length<2500 && /(FTS|BTS|BTTS)/i.test(t);
+    });
+    for(const node of nodes) add(parsePairNode(node,'SoccerSTATS'));
+  }
+
+  // 4) Fallback testuale estremo.
+  if(!out.length) for(const m of parseTextFallback(doc)) add(m);
   return out;
 }
 function renderDay(matches){
@@ -177,7 +275,7 @@ async function importMatchday(){
   const r=await fetch('/api/fetch-matchday',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({url})});
   const data=await r.json().catch(()=>({})); if(!r.ok)throw new Error(data.error||`Errore server ${r.status}`);
   const matches=parseMatchdayHtml(data.html||'');
-  if(!matches.length)throw new Error('Pagina recuperata, ma non sono riuscito a riconoscere le righe della tabella. Inviami uno screenshot/HTML della pagina e adatto il parser.');
+  if(!matches.length){const d=new DOMParser().parseFromString(data.html||'','text/html');const txt=(d.body?.innerText||'').replace(/\s+/g,' ');const diag=`tabelle ${d.querySelectorAll('table').length}, occorrenze last: ${(txt.match(/last\s+\d+/ig)||[]).length}, lunghezza HTML: ${(data.html||'').length}`;throw new Error('Pagina recuperata ma struttura non riconosciuta ('+diag+').');}
   localStorage.setItem(MATCHDAY_KEY,JSON.stringify({source_url:data.url,imported_at:new Date().toISOString(),matches}));
   renderDay(matches);
   document.querySelector('#importPromotedBtn').disabled=!matches.some(m=>m.marketType!=='nobet'&&m.stats_url);
