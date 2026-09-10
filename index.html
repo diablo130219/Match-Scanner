@@ -3861,6 +3861,156 @@ body{background-attachment:fixed!important}
   }
 }
 
+
+/* ===== V2.3 PREMIUM HOME REFINEMENT ===== */
+:root{
+  --home-gap:14px;
+}
+
+/* Banner più basso e cinematografico */
+.magicScannerHomeBanner{
+  height:clamp(190px,21vw,300px)!important;
+  max-height:300px!important;
+  margin-bottom:14px!important;
+  border-radius:24px!important;
+}
+.magicScannerHomeBanner img{
+  width:100%!important;
+  height:100%!important;
+  object-fit:cover!important;
+  object-position:center 48%!important;
+  filter:saturate(.98) contrast(1.02)!important;
+}
+
+/* Sezioni home più compatte */
+.dateSelectorBox,
+.sectionBox{
+  padding:18px!important;
+  border-radius:22px!important;
+  margin-bottom:14px!important;
+}
+.sectionTitle{
+  font-size:20px!important;
+  letter-spacing:-.35px!important;
+}
+.sectionSub{
+  margin-top:4px!important;
+  font-size:12px!important;
+  color:#8fa5bf!important;
+}
+
+/* Date: più pulite, leggibili e premium */
+.dateRail{
+  gap:10px!important;
+  margin-top:14px!important;
+}
+.dateCard{
+  min-height:86px!important;
+  padding:12px 12px 11px!important;
+  border-radius:18px!important;
+  box-shadow:0 8px 22px rgba(0,0,0,.16)!important;
+}
+.dateCard:hover{
+  transform:translateY(-2px)!important;
+}
+.dateDay{
+  font-size:10px!important;
+  letter-spacing:1px!important;
+}
+.dateNum{
+  margin-top:5px!important;
+  font-size:29px!important;
+  line-height:.95!important;
+  letter-spacing:-1.2px!important;
+  color:#f8fbff!important;
+}
+.dateMonth{
+  margin-top:4px!important;
+  font-size:10px!important;
+  letter-spacing:1px!important;
+  color:#67e8f9!important;
+}
+.dateCard.active{
+  transform:none!important;
+  box-shadow:0 12px 26px rgba(37,99,235,.20), inset 0 1px 0 rgba(255,255,255,.05)!important;
+}
+.dateCard.active .dateNum{
+  text-shadow:0 0 16px rgba(103,232,249,.22)!important;
+}
+.dateStatus{
+  padding:7px 11px!important;
+  font-size:10px!important;
+}
+
+/* Mercati più compatti */
+.marketGrid{
+  gap:10px!important;
+  margin-top:14px!important;
+}
+.marketCard{
+  min-height:100px!important;
+  padding:13px 13px 12px!important;
+  border-radius:17px!important;
+}
+.marketCardTitle{
+  font-size:10px!important;
+  letter-spacing:.8px!important;
+}
+.marketCardNum{
+  margin-top:5px!important;
+  font-size:30px!important;
+  line-height:1!important;
+}
+.marketCardHint{
+  margin-top:5px!important;
+  font-size:10px!important;
+  line-height:1.35!important;
+  color:#8fa5bf!important;
+}
+
+/* Topbar leggermente più raffinata */
+.topbar{
+  margin-bottom:14px!important;
+}
+.brand{
+  font-size:19px!important;
+}
+.softBtn{
+  padding:8px 11px!important;
+  font-size:10px!important;
+}
+
+/* cards partite un po' più dense */
+.matchCard{
+  border-radius:17px!important;
+}
+
+@media(max-width:900px){
+  .magicScannerHomeBanner{
+    height:220px!important;
+    max-height:220px!important;
+  }
+  .dateRail{grid-template-columns:repeat(3,minmax(0,1fr))!important;}
+}
+@media(max-width:720px){
+  .magicScannerHomeBanner{
+    height:175px!important;
+    max-height:175px!important;
+    border-radius:18px!important;
+  }
+  .magicScannerHomeBanner img{
+    object-position:center center!important;
+  }
+  .dateSelectorBox,.sectionBox{
+    padding:14px!important;
+    border-radius:18px!important;
+  }
+  .dateRail{grid-template-columns:repeat(2,minmax(0,1fr))!important;}
+  .dateCard{min-height:82px!important;}
+  .marketGrid{grid-template-columns:repeat(2,minmax(0,1fr))!important;}
+  .marketCard{min-height:94px!important;}
+}
+
 </style>
 </head>
 <body>
