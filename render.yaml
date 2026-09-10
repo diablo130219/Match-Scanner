@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: match-scanner
+    name: magicscanner
     runtime: static
     buildCommand: npm install && npm run build
     staticPublishPath: ./dist
