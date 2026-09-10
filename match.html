@@ -2856,7 +2856,6 @@ body{padding:26px}
 </style>
 </head>
 <body>
-
 <div class="detailView show" id="detailView">
 <a class="backBtn backLink" href="index.html">← Torna alla home</a>
 <div id="detailContent">
@@ -3473,16 +3472,15 @@ body{padding:26px}
 </div>
 </section>
 </div>
-
 </div><div id="estrelaBragaFullDetail" style="display:none"><div class="container">
 <section class="hero">
 <div class="heroTop">
 <div class="heroMainFixed">
 <div class="badge"><span class="dot"></span> Scheda partita completa</div>
 <div class="heroTitle" id="heroMatchTitle">
-<span class="heroTeamLine"><img alt="Estrela Amadora" class="heroCrestFixed staticOfficialCrest" data-team="Estrela Amadora" id="crestHome"/><span>Estrela Amadora</span></span>
+<span class="heroTeamLine"><img alt="" class="heroCrestFixed staticOfficialCrest" data-team="Estrela Amadora" id="crestHome" onerror="this.style.display='none';this.removeAttribute('src');"/><span>Estrela Amadora</span></span>
 <span class="heroDash">—</span>
-<span class="heroTeamLine"><img alt="Sporting Braga" class="heroCrestFixed staticOfficialCrest" data-team="Sporting Braga" id="crestAway"/><span>Sporting Braga</span></span>
+<span class="heroTeamLine"><img alt="" class="heroCrestFixed staticOfficialCrest" data-team="Sporting Braga" id="crestAway" onerror="this.style.display='none';this.removeAttribute('src');"/><span>Sporting Braga</span></span>
 </div>
 <div class="heroMeta">
 <div class="metaChip">📅 10 settembre 2026</div>
@@ -3743,9 +3741,9 @@ body{padding:26px}
 <div class="heroMainFixed">
 <div class="badge"><span class="dot"></span> Scheda partita completa</div>
 <div class="heroTitle" id="heroMatchTitle">
-<span class="heroTeamLine"><img alt="Stevenage" class="heroCrestFixed staticOfficialCrest" data-team="Stevenage" id="crestStevenage"/><span>Stevenage</span></span>
+<span class="heroTeamLine"><img alt="" class="heroCrestFixed staticOfficialCrest" data-team="Stevenage" id="crestStevenage" onerror="this.style.display='none';this.removeAttribute('src');"/><span>Stevenage</span></span>
 <span class="heroDash">—</span>
-<span class="heroTeamLine"><img alt="Luton Town" class="heroCrestFixed staticOfficialCrest" data-team="Luton Town" id="crestLuton"/><span>Luton Town</span></span>
+<span class="heroTeamLine"><img alt="" class="heroCrestFixed staticOfficialCrest" data-team="Luton Town" id="crestLuton" onerror="this.style.display='none';this.removeAttribute('src');"/><span>Luton Town</span></span>
 </div>
 <div class="heroMeta">
 <div class="metaChip">📅 10 settembre 2026</div>
@@ -4052,10 +4050,13 @@ async function hydrateStaticOfficialCrests(root=document){
     if(!team) continue;
     const badge=await getOfficialTeamLogo(team);
     if(badge){
+      img.onerror=()=>{ img.style.display='none'; img.removeAttribute('src'); };
       img.src=badge;
       img.style.display='';
-    }else if(!img.src){
-      img.style.visibility='hidden';
+      img.style.visibility='visible';
+    }else{
+      img.style.display='none';
+      img.removeAttribute('src');
     }
   }
 }

@@ -1,12 +1,8 @@
-# Match Scanner - fix multipage + stemmi
+# Match Scanner - fix nomi squadre
 
-Fix principali:
-- Vite configurato come progetto multipagina.
-- `index.html` e `match.html` vengono entrambi generati in `dist`.
-- Il click dalla home apre `match.html?id=...` nella stessa scheda.
-- Gli stemmi noti usano URL salvati nel progetto.
-- Per le altre squadre resta il fallback TheSportsDB.
-
-Render:
-- Build Command: `npm install && npm run build`
-- Publish Directory: `dist`
+Correzione:
+- Stevenage viene mostrato una sola volta.
+- Luton Town viene mostrato una sola volta.
+- Se uno stemma non si carica, il browser non mostra più il testo ALT davanti al nome.
+- Il logo fallito viene nascosto automaticamente.
+- Architettura multipagina invariata: index.html -> match.html -> home.
