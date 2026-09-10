@@ -30,7 +30,7 @@ h1{font-size:34px;margin:0 0 8px}.sub{color:var(--muted);line-height:1.58}.eyebr
 
 <div class="card">
   <div class="eyebrow">Novità V2.7 · Browser Import</div>
-  <h1>Importa la giornata senza 403</h1>
+  <h1>Estrai e importa la giornata</h1>
   <div class="sub">SoccerSTATS blocca le richieste automatiche provenienti da Render. La V2.7 legge invece la pagina che hai già aperto nel tuo browser: usa <b>MagicScanner Extract</b>, poi incolla qui il contenuto oppure carica il file HTML creato dal comando.</div>
 
   <div class="daybox">
@@ -47,7 +47,7 @@ h1{font-size:34px;margin:0 0 8px}.sub{color:var(--muted);line-height:1.58}.eyebr
 
     <div style="height:14px"></div>
     <div class="label">3. Incolla qui l'HTML copiato</div>
-    <textarea id="matchdayHtml" class="paste" placeholder="Dopo aver premuto MagicScanner Extract su SoccerSTATS, incolla qui con CTRL+V..."></textarea>
+    <textarea id="matchdayHtml" class="paste" placeholder="Dopo MagicScanner Extract, incolla qui con CTRL+V il JSON copiato..."></textarea>
     <div class="actions">
       <button class="btn primary" id="parseDayHtmlBtn">Importa giornata dal browser</button>
       <label class="btn secondary" style="cursor:pointer">Carica file .html<input id="matchdayHtmlFile" type="file" accept=".html,.htm,text/html" hidden></label>
@@ -78,7 +78,7 @@ h1{font-size:34px;margin:0 0 8px}.sub{color:var(--muted);line-height:1.58}.eyebr
 <script>
 
 const MATCHDAY_KEY='MAGICSCANNER_MATCHDAY';
-const EXTRACTOR_CODE = `javascript:(()=>{try{const h='<!doctype html>\n'+document.documentElement.outerHTML,t=document.createElement('textarea');t.value=h;t.setAttribute('readonly','');t.style.position='fixed';t.style.left='-99999px';t.style.top='0';document.body.appendChild(t);t.focus();t.select();t.setSelectionRange(0,t.value.length);const ok=document.execCommand('copy');t.remove();if(ok){alert('MagicScanner: pagina copiata! Torna su MagicScanner > Importa SoccerSTATS e incolla con CTRL+V.');}else{prompt('Copia tutto il contenuto qui sotto con CTRL+A e CTRL+C, poi torna su MagicScanner:',h);}}catch(e){alert('MagicScanner Extract: errore '+e.message);}})()`;
+const EXTRACTOR_CODE = `javascript:(()=>{try{const N=s=>(s||'').replace(/\u00a0/g,' ').replace(/\s+/g,' ').trim(),num=s=>{const m=N(s).replace(',','.').match(/-?\d+(?:\.\d+)?/);return m?+m[0]:0},pct=s=>num(s),isNum=s=>/^\d+(?:[.,]\d+)?%?$/.test(s),isTime=s=>/^(?:[01]?\d|2[0-3]):[0-5]\d$/.test(s),stop=s=>/^(?:scope|gp|w%|fts|cs|bts|btts|tg|gf|ga|1\.5\+|2\.5\+|3\.5\+|points|per|game|stats)$/i.test(s),row=(text,pos,prevEnd=0)=>{const t=N(text),tok=t.split(' '),low=tok.map(x=>x.toLowerCase()),idxs=[];for(let i=0;i<tok.length-1;i++)if(low[i]==='last'&&/^\d+$/.test(tok[i+1]))idxs.push(i);if(pos>=idxs.length)return null;const i=idxs[pos],scope=+tok[i+1];let j=i-1,time='';if(j>=0&&isTime(tok[j])){time=tok[j];j--}const name=[];while(j>=0&&!isNum(tok[j])&&!stop(tok[j])&&!isTime(tok[j])&&name.length<8){name.unshift(tok[j]);j--}let k=i+2,gp=scope;if(k<tok.length&&!/%$/.test(tok[k])&&/^\d+$/.test(tok[k])&&+tok[k]<=40)gp=+tok[k++];const vals=[];while(k<tok.length&&vals.length<11){if(/^\d+(?:[.,]\d+)?%?$/.test(tok[k]))vals.push(tok[k]);k++}if(vals.length<11||!name.length)return null;return{team:name.join(' '),time,gp,w:vals[0],fts:vals[1],cs:vals[2],bts:vals[3],tg:vals[4],gf:vals[5],ga:vals[6],o15:vals[7],o25:vals[8],o35:vals[9],ppg:vals[10]}};const statEls=[...document.querySelectorAll('a,button,input[type=button],input[type=submit]')].filter(e=>N(e.textContent||e.value).toLowerCase()==='stats');const blocks=[];const seen=new Set();for(const s of statEls){let n=s;let chosen=null;for(let d=0;d<9&&n;d++,n=n.parentElement){const tx=N(n.innerText||n.textContent),c=(tx.match(/\blast\s+\d+\b/ig)||[]).length;if(c>=2&&tx.length<2600){chosen=n;break}}if(!chosen)continue;const text=N(chosen.innerText||chosen.textContent);if(seen.has(text))continue;const h=row(text,0),a=row(text,1);if(!h||!a||h.team===a.team)continue;seen.add(text);let href='';const anchor=s.closest('a[href]')||s.querySelector?.('a[href]');if(anchor)href=anchor.href;else{const oc=s.getAttribute('onclick')||'';const m=oc.match(/['\"]([^'\"]*(?:pmatch|match)[^'\"]*)['\"]/i);if(m)href=new URL(m[1],location.href).href}let league='SoccerSTATS';let p=chosen;outer:for(let d=0;d<6&&p;d++,p=p.parentElement){let q=p.previousElementSibling,c=0;while(q&&c++<8){const lines=(q.innerText||q.textContent||'').split(/\n+/).map(N).filter(Boolean);for(let z=lines.length-1;z>=0;z--){const x=lines[z];if(x.length>=4&&x.length<=100&&/\s-\s/.test(x)&&!/Matches played|Goals per match/i.test(x)){league=x.replace(/\bstats\b/ig,'').trim();break outer}}q=q.previousElementSibling}}blocks.push({league,time:h.time||a.time||'',stats_url:href,home:h,away:a})}if(!blocks.length){const all=[...document.querySelectorAll('tr,div,section,article')];for(const e of all){const tx=N(e.innerText||e.textContent),c=(tx.match(/\blast\s+\d+\b/ig)||[]).length;if(c!==2||tx.length<80||tx.length>2200)continue;const h=row(tx,0),a=row(tx,1);if(!h||!a||h.team===a.team||seen.has(tx))continue;seen.add(tx);blocks.push({league:'SoccerSTATS',time:h.time||a.time||'',stats_url:'',home:h,away:a})}}const payload=JSON.stringify({magicScannerExtract:2,page:'matchday',source:location.href,extracted_at:new Date().toISOString(),matches:blocks});const ta=document.createElement('textarea');ta.value=payload;ta.style.position='fixed';ta.style.left='-99999px';document.body.appendChild(ta);ta.select();const ok=document.execCommand('copy');ta.remove();alert(ok?`MagicScanner: ${blocks.length} partite estratte e copiate. Torna su MagicScanner e incolla.`:`MagicScanner ha trovato ${blocks.length} partite, ma la copia automatica non è riuscita.`);if(!ok)prompt('Copia questo JSON:',payload)}catch(e){alert('MagicScanner Extract: '+e.message)}})()`;
 window.addEventListener('DOMContentLoaded',()=>{
   const bm=document.querySelector('#bookmarklet');
   if(bm) bm.setAttribute('href', EXTRACTOR_CODE);
@@ -87,12 +87,23 @@ window.addEventListener('DOMContentLoaded',()=>{
 });
 
 function storeMatchdayFromHtml(html, sourceUrl='browser'){
-  if(!html || html.trim().length<100) throw new Error('Incolla l’HTML copiato dalla pagina SoccerSTATS oppure carica il file .html.');
-  const matches=parseMatchdayHtml(html);
-  if(!matches.length) throw new Error(`HTML ricevuto (${html.length.toLocaleString('it-IT')} caratteri), ma non riconosco ancora le righe della giornata.`);
+  if(!html || html.trim().length<20) throw new Error('Incolla i dati copiati da MagicScanner Extract.');
+  let matches=[];
+  const raw=html.trim();
+  if(raw.startsWith('{')){
+    try{
+      const data=JSON.parse(raw);
+      if(data && data.magicScannerExtract===2 && Array.isArray(data.matches)){
+        matches=data.matches.map(x=>buildMatch(x.home,x.away,x.league||'SoccerSTATS',x.time||'',x.stats_url||''));
+        sourceUrl=data.source||sourceUrl;
+      }
+    }catch(e){}
+  }
+  if(!matches.length) matches=parseMatchdayHtml(html);
+  if(!matches.length) throw new Error(`Dati ricevuti (${html.length.toLocaleString('it-IT')} caratteri), ma non riconosco partite. Reinstalla il nuovo MagicScanner Extract V2.7.4 nei preferiti.`);
   localStorage.setItem(MATCHDAY_KEY,JSON.stringify({source_url:sourceUrl,imported_at:new Date().toISOString(),matches}));
   renderDay(matches);
-  dayStatus(`${matches.length} partite importate dal browser. La home “Oggi” è stata aggiornata.`,'good');
+  dayStatus(`${matches.length} partite importate. La home “Oggi” è stata aggiornata.`,'good');
   return matches;
 }
 function clamp(n,a=0,b=100){return Math.max(a,Math.min(b,n))}
