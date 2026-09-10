@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>MagicScanner V2.6 · SoccerSTATS Import Center</title>
+<title>MagicScanner V2.7 · SoccerSTATS Browser Import</title>
 <style>
 :root{color-scheme:dark;--bg:#07101d;--panel:#0b1727;--panel2:#0d1b2d;--line:#203750;--text:#eef6ff;--muted:#8fa6bd;--cyan:#38bdf8;--green:#5ee7b1;--amber:#fbbf24;--red:#fb7185}
 *{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,Arial;background:radial-gradient(circle at 10% 0,#12306a55,transparent 38%),var(--bg);color:var(--text)}
@@ -26,18 +26,35 @@ h1{font-size:34px;margin:0 0 8px}.sub{color:var(--muted);line-height:1.58}.eyebr
 
 @media(max-width:720px){.grid{grid-template-columns:repeat(2,1fr)}.row{grid-template-columns:1fr}.wrap{padding:16px}h1{font-size:28px}}
 </style></head><body><div class="wrap">
-<div class="top"><div class="brand">MagicScanner <span>Import Center V2.6</span></div><a class="back" href="index.html">← Home</a></div>
+<div class="top"><div class="brand">MagicScanner <span>Import Center V2.7</span></div><a class="back" href="index.html">← Home</a></div>
 
 <div class="card">
-  <div class="eyebrow">Novità V2.6 · Home automatica</div>
-  <h1>Importa una giornata completa</h1>
-  <div class="sub">Incolla l’URL della lista giornaliera <b>matches.asp</b> di SoccerSTATS. MagicScanner recupera la pagina, riconosce le partite e i dati di prima scrematura e sostituisce automaticamente la giornata <b>Oggi</b> nella home del tuo browser.</div>
+  <div class="eyebrow">Novità V2.7 · Browser Import</div>
+  <h1>Importa la giornata senza 403</h1>
+  <div class="sub">SoccerSTATS blocca le richieste automatiche provenienti da Render. La V2.7 legge invece la pagina che hai già aperto nel tuo browser: usa <b>MagicScanner Extract</b>, poi incolla qui il contenuto oppure carica il file HTML creato dal comando.</div>
+
   <div class="daybox">
-    <div class="dayrow">
-      <div><div class="label">URL giornata SoccerSTATS</div><input id="matchdayUrl" class="dayurl" value="https://www.soccerstats.com/matches.asp?matchday=201&matchdayn=104" placeholder="https://www.soccerstats.com/matches.asp?matchday=...&matchdayn=..."></div>
-      <button class="btn primary" id="importDayBtn">Analizza giornata</button>
+    <div class="label">1. Installa una volta l'estrattore nel browser</div>
+    <div class="notice">Trascina il pulsante qui sotto nella barra dei preferiti. Poi, quando sei su una pagina SoccerSTATS, cliccalo: prova a copiare l'HTML negli appunti; se il browser non lo consente, scarica automaticamente un file <code>.html</code>.</div>
+    <div class="actions">
+      <a id="bookmarklet" class="btn primary" style="text-decoration:none" href="#">MagicScanner Extract</a>
+      <button class="btn secondary" id="copyExtractorBtn">Copia comando estrattore</button>
     </div>
-    <div class="helper">La V2.6 salva la giornata in <code>localStorage</code>. Non devi modificare <code>matches.js</code>. Se reimporti una giornata, quella precedente viene sostituita.</div>
+
+    <div style="height:16px"></div>
+    <div class="label">2. Apri la pagina giornaliera SoccerSTATS e premi MagicScanner Extract</div>
+    <input id="matchdayUrl" class="dayurl" value="https://www.soccerstats.com/matches.asp?matchday=201&matchdayn=104" placeholder="URL della giornata (solo come riferimento)">
+
+    <div style="height:14px"></div>
+    <div class="label">3. Incolla qui l'HTML copiato</div>
+    <textarea id="matchdayHtml" class="paste" placeholder="Dopo aver premuto MagicScanner Extract su SoccerSTATS, incolla qui con CTRL+V..."></textarea>
+    <div class="actions">
+      <button class="btn primary" id="parseDayHtmlBtn">Importa giornata dal browser</button>
+      <label class="btn secondary" style="cursor:pointer">Carica file .html<input id="matchdayHtmlFile" type="file" accept=".html,.htm,text/html" hidden></label>
+      <a class="btn secondary" style="text-decoration:none" href="index.html">Apri home aggiornata</a>
+      <button class="btn secondary" id="clearDayBtn">Ripristina giornata originale</button>
+    </div>
+    <div class="helper">I dati restano nel tuo browser tramite <code>localStorage</code>. Nessuna richiesta a SoccerSTATS parte da Render.</div>
     <div id="dayStatus" class="status"></div>
     <div class="dayresults">
       <div class="daymetric"><small>Partite trovate</small><b id="dayFound">0</b></div>
@@ -45,27 +62,39 @@ h1{font-size:34px;margin:0 0 8px}.sub{color:var(--muted);line-height:1.58}.eyebr
       <div class="daymetric"><small>No Bet</small><b id="dayNoBet">0</b></div>
       <div class="daymetric"><small>Stats URL</small><b id="dayStatsUrls">0</b></div>
     </div>
-    <div class="actions">
-      <button class="btn success" id="importPromotedBtn" disabled>Importa Stats delle promosse</button>
-      <a class="btn secondary" style="text-decoration:none" href="index.html">Apri home aggiornata</a>
-      <button class="btn secondary" id="clearDayBtn">Ripristina giornata originale</button>
-    </div>
     <div class="daylist" id="dayList" style="display:none"></div>
   </div>
 </div>
 
-<div class="card"><div class="eyebrow">Importazione semplificata</div><h1>Incolla gli URL SoccerSTATS</h1><div class="sub">Puoi incollare più link delle pagine <b>Stats</b>, uno per riga. MagicScanner prova a recuperarli dal server, estrae i dati e li salva <b>nel browser</b>: le schede diventano subito disponibili senza modificare HTML o sostituire file manualmente.</div>
-<div class="tabs"><button class="tab active" data-tab="urlPanel">URL automatici</button><button class="tab" data-tab="pastePanel">Incolla testo</button><button class="tab" data-tab="filePanel">File .md/.txt</button></div>
-<div id="urlPanel" class="panel active"><div class="label">URL delle pagine Stats</div><textarea id="urls" class="urls" placeholder="https://www.soccerstats.com/pmatch.asp?league=...&stats=...\nhttps://www.soccerstats.com/pmatch.asp?league=...&stats=..."></textarea><div class="helper">Massimo 30 URL per importazione. Vengono accettati solo URL di soccerstats.com. Le richieste vengono eseguite in sequenza per evitare raffiche inutili.</div></div>
-<div id="pastePanel" class="panel"><div class="label">Testo completo della pagina Stats</div><textarea id="paste" class="paste" placeholder="Incolla qui il contenuto copiato dalla pagina Stats...\n\nPuoi separare più partite con una riga contenente: ---MATCH---"></textarea><div class="helper">Fallback utile se SoccerSTATS blocca il recupero automatico dal server.</div></div>
-<div id="filePanel" class="panel"><label class="drop"><input id="files" type="file" accept=".md,.txt" multiple hidden><strong>Trascina o scegli più file Stats</strong><small>Compatibile con il metodo della V2.4</small></label></div>
+<div class="card"><div class="eyebrow">Schede dettagliate</div><h1>Importa le pagine Stats</h1><div class="sub">Per le singole pagine <b>Stats</b> puoi usare lo stesso estrattore. Copia l’HTML della pagina e usa <b>Incolla testo/HTML</b>, oppure carica un file <code>.html</code>, <code>.md</code> o <code>.txt</code>.</div>
+<div class="tabs"><button class="tab active" data-tab="pastePanel">Incolla testo/HTML</button><button class="tab" data-tab="filePanel">File .html/.md/.txt</button><button class="tab" data-tab="urlPanel">URL server (fallback)</button></div>
+<div id="urlPanel" class="panel"><div class="label">URL delle pagine Stats</div><textarea id="urls" class="urls" placeholder="https://www.soccerstats.com/pmatch.asp?league=...&stats=...\nhttps://www.soccerstats.com/pmatch.asp?league=...&stats=..."></textarea><div class="helper">Massimo 30 URL per importazione. Vengono accettati solo URL di soccerstats.com. Le richieste vengono eseguite in sequenza per evitare raffiche inutili.</div></div>
+<div id="pastePanel" class="panel active"><div class="label">Testo completo della pagina Stats</div><textarea id="paste" class="paste" placeholder="Incolla qui il contenuto copiato dalla pagina Stats...\n\nPuoi separare più partite con una riga contenente: ---MATCH---"></textarea><div class="helper">Fallback utile se SoccerSTATS blocca il recupero automatico dal server.</div></div>
+<div id="filePanel" class="panel"><label class="drop"><input id="files" type="file" accept=".html,.htm,.md,.txt,text/html" multiple hidden><strong>Trascina o scegli più file Stats</strong><small>Puoi caricare anche l’HTML salvato da MagicScanner Extract</small></label></div>
 <div class="actions"><button class="btn primary" id="importBtn">Importa e salva nel browser</button><button class="btn secondary" id="downloadBtn" disabled>Scarica backup .js</button><button class="btn secondary" id="clearBtn">Svuota archivio importato</button></div><div id="status" class="status"></div>
 <div class="grid"><div class="metric"><span>Sorgenti lette</span><b id="nFiles">0</b></div><div class="metric"><span>Partite riconosciute</span><b id="nMatches">0</b></div><div class="metric"><span>Goal stats</span><b id="nGoals">0</b></div><div class="metric"><span>Timing</span><b id="nTiming">0</b></div></div><div class="list" id="list"></div></div>
-<div class="card"><b>Come usarlo</b><div class="sub" style="margin-top:8px">1) dalla home scegli le partite interessanti; 2) apri il pulsante <b>Stats</b> su SoccerSTATS; 3) copia gli URL nella casella qui sopra; 4) premi <b>Importa e salva nel browser</b>; 5) torna alla home e apri le partite. Il dettaglio importato viene letto automaticamente da <code>localStorage</code>. Il pulsante di backup serve solo se vuoi conservare una copia.</div><div class="notice">Nota: il recupero via URL dipende dal fatto che SoccerSTATS consenta l'accesso automatizzato dal server. Se una pagina viene bloccata, usa la scheda <b>Incolla testo</b> oppure i file Markdown.</div></div>
+<div class="card"><b>Flusso V2.7</b><div class="sub" style="margin-top:8px">Per la home: apri la pagina <b>matches.asp</b> → clicca <b>MagicScanner Extract</b> → incolla qui → <b>Importa giornata dal browser</b>. Per il dettaglio: fai lo stesso dalla pagina <b>Stats</b> e usa la sezione “Incolla testo/HTML”.</div><div class="notice">Il recupero diretto via URL rimane solo come fallback: SoccerSTATS può rispondere HTTP 403 ai server cloud.</div></div>
 </div>
 <script>
 
 const MATCHDAY_KEY='MAGICSCANNER_MATCHDAY';
+const EXTRACTOR_CODE = `javascript:(async()=>{const h='<!doctype html>\\n'+document.documentElement.outerHTML;try{await navigator.clipboard.writeText(h);alert('MagicScanner: pagina copiata. Torna nell Import Center e incolla.')}catch(e){const b=new Blob([h],{type:'text/html'}),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='soccerstats-'+Date.now()+'.html';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),2000);alert('MagicScanner: il browser non ha consentito gli appunti, quindi ho salvato un file HTML. Caricalo nell Import Center.')}})()`;
+window.addEventListener('DOMContentLoaded',()=>{
+  const bm=document.querySelector('#bookmarklet');
+  if(bm) bm.setAttribute('href', EXTRACTOR_CODE);
+  const cb=document.querySelector('#copyExtractorBtn');
+  if(cb) cb.onclick=async()=>{try{await navigator.clipboard.writeText(EXTRACTOR_CODE);dayStatus('Comando estrattore copiato negli appunti.','good')}catch{dayStatus('Non riesco a copiare automaticamente. Trascina “MagicScanner Extract” nella barra preferiti.','error')}};
+});
+
+function storeMatchdayFromHtml(html, sourceUrl='browser'){
+  if(!html || html.trim().length<100) throw new Error('Incolla l’HTML copiato dalla pagina SoccerSTATS oppure carica il file .html.');
+  const matches=parseMatchdayHtml(html);
+  if(!matches.length) throw new Error(`HTML ricevuto (${html.length.toLocaleString('it-IT')} caratteri), ma non riconosco ancora le righe della giornata.`);
+  localStorage.setItem(MATCHDAY_KEY,JSON.stringify({source_url:sourceUrl,imported_at:new Date().toISOString(),matches}));
+  renderDay(matches);
+  dayStatus(`${matches.length} partite importate dal browser. La home “Oggi” è stata aggiornata.`,'good');
+  return matches;
+}
 function clamp(n,a=0,b=100){return Math.max(a,Math.min(b,n))}
 function num(v){const m=String(v??'').replace(',','.').match(/-?\d+(?:\.\d+)?/);return m?Number(m[0]):0}
 function pct(v){return num(v)}
@@ -195,7 +224,7 @@ async function importPromotedDetails(){
   mergeAndStore(rows);dayStatus(`${rows.length} schede dettagliate salvate${errors.length?`; ${errors.length} non riconosciute.`:'.'}`,errors.length?'error':'good');
 }
 
-const $=s=>document.querySelector(s);let parsed={};let activeTab='urlPanel';
+const $=s=>document.querySelector(s);let parsed={};let activeTab='pastePanel';
 for(const b of document.querySelectorAll('.tab')) b.onclick=()=>{document.querySelectorAll('.tab,.panel').forEach(x=>x.classList.remove('active'));b.classList.add('active');activeTab=b.dataset.tab;$('#'+activeTab).classList.add('active')};
 function slug(s){return s.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')}
 function section(t,a,ends){const i=t.indexOf(a);if(i<0)return'';let e=t.length;for(const x of ends){const j=t.indexOf(x,i+a.length);if(j>=0)e=Math.min(e,j)}return t.slice(i,e)}
@@ -214,10 +243,10 @@ $('#importBtn').onclick=async()=>{try{$('#importBtn').disabled=true;if(activeTab
 $('#downloadBtn').onclick=()=>{let all={};try{all=JSON.parse(localStorage.getItem('MAGICSCANNER_IMPORTED_DETAILS')||'{}')}catch{};const text='window.IMPORTED_DETAILS = '+JSON.stringify(all,null,2)+';\n';const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([text],{type:'application/javascript'}));a.download='imported-details.js';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)};
 $('#clearBtn').onclick=()=>{if(!confirm('Vuoi cancellare dal browser tutte le schede importate?'))return;localStorage.removeItem('MAGICSCANNER_IMPORTED_DETAILS');parsed={};render([]);$('#downloadBtn').disabled=true;status('Archivio importato svuotato.','good')};
 
-document.querySelector('#importDayBtn').onclick=async()=>{try{document.querySelector('#importDayBtn').disabled=true;await importMatchday()}catch(e){dayStatus(String(e.message||e),'error')}finally{document.querySelector('#importDayBtn').disabled=false}};
-document.querySelector('#importPromotedBtn').onclick=async()=>{try{document.querySelector('#importPromotedBtn').disabled=true;await importPromotedDetails()}catch(e){dayStatus(String(e.message||e),'error')}finally{let p={};try{p=JSON.parse(localStorage.getItem(MATCHDAY_KEY)||'{}')}catch{};document.querySelector('#importPromotedBtn').disabled=!(p.matches||[]).some(m=>m.marketType!=='nobet'&&m.stats_url)}};
-document.querySelector('#clearDayBtn').onclick=()=>{if(!confirm('Ripristinare la giornata originale inclusa nel progetto?'))return;localStorage.removeItem(MATCHDAY_KEY);renderDay([]);document.querySelector('#importPromotedBtn').disabled=true;dayStatus('Giornata importata rimossa. La home userà di nuovo i dati originali.','good')};
-try{const d=JSON.parse(localStorage.getItem(MATCHDAY_KEY)||'{}');if(Array.isArray(d.matches)&&d.matches.length){renderDay(d.matches);document.querySelector('#importPromotedBtn').disabled=!d.matches.some(m=>m.marketType!=='nobet'&&m.stats_url);dayStatus(`${d.matches.length} partite della giornata già presenti nel browser.`,'good')}}catch{}
+document.querySelector('#parseDayHtmlBtn').onclick=()=>{try{const html=document.querySelector('#matchdayHtml').value;storeMatchdayFromHtml(html,document.querySelector('#matchdayUrl').value.trim()||'browser')}catch(e){dayStatus(String(e.message||e),'error')}};
+document.querySelector('#matchdayHtmlFile').onchange=async(e)=>{const f=e.target.files?.[0];if(!f)return;try{const html=await f.text();document.querySelector('#matchdayHtml').value=html;storeMatchdayFromHtml(html,document.querySelector('#matchdayUrl').value.trim()||f.name)}catch(err){dayStatus(String(err.message||err),'error')}};
+document.querySelector('#clearDayBtn').onclick=()=>{if(!confirm('Ripristinare la giornata originale inclusa nel progetto?'))return;localStorage.removeItem(MATCHDAY_KEY);renderDay([]);dayStatus('Giornata importata rimossa. La home userà di nuovo i dati originali.','good')};
+try{const d=JSON.parse(localStorage.getItem(MATCHDAY_KEY)||'{}');if(Array.isArray(d.matches)&&d.matches.length){renderDay(d.matches);dayStatus(`${d.matches.length} partite della giornata già presenti nel browser.`,'good')}}catch{}
 
 try{const ex=JSON.parse(localStorage.getItem('MAGICSCANNER_IMPORTED_DETAILS')||'{}');if(Object.keys(ex).length){parsed=ex;$('#downloadBtn').disabled=false;status(`${Object.keys(ex).length} scheda/e già presenti nel browser.`,'good')}}catch{}
 </script></body></html>
