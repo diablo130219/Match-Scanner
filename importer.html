@@ -78,21 +78,35 @@ h1{font-size:34px;margin:0 0 8px}.sub{color:var(--muted);line-height:1.58}.eyebr
   </div>
 </div>
 
-<div class="card"><div class="eyebrow">Schede dettagliate</div><h1>Importa le pagine Stats</h1><div class="sub">Per le singole pagine <b>Stats</b> puoi usare lo stesso estrattore. Copia l’HTML della pagina e usa <b>Incolla testo/HTML</b>, oppure carica un file <code>.html</code>, <code>.md</code> o <code>.txt</code>.</div>
+<div class="card" id="promotedQueueCard">
+  <div class="eyebrow">V2.8 · Coda promosse</div>
+  <h1>Dettagli delle partite promosse</h1>
+  <div class="sub">MagicScanner legge tutte le giornate importate e ti mostra soltanto le partite promosse. Apri <b>Stats</b>, usa <b>MagicScanner Extract</b>, torna qui e incolla: quando la scheda viene salvata lo stato passa automaticamente a <b>Dettaglio presente</b>.</div>
+  <div class="grid" style="margin-top:18px">
+    <div class="metric"><span>Promosse totali</span><b id="qTotal">0</b></div>
+    <div class="metric"><span>Dettaglio presente</span><b id="qDone">0</b></div>
+    <div class="metric"><span>Da importare</span><b id="qMissing">0</b></div>
+    <div class="metric"><span>Copertura</span><b id="qCoverage">0%</b></div>
+  </div>
+  <div class="actions"><button class="btn primary" id="openNextMissing">Apri prossima Stats mancante</button><button class="btn secondary" id="refreshQueue">Aggiorna stato</button></div>
+  <div class="list" id="promotedQueue"></div>
+</div>
+
+<div class="card"><div class="eyebrow">Schede dettagliate</div><h1>Importa le pagine Stats</h1><div class="sub">Per le singole pagine <b>Stats</b> usa lo stesso estrattore. Nella V2.8 riconosce automaticamente la pagina di dettaglio: clicca <b>MagicScanner Extract</b>, poi incolla qui il contenuto copiato. Puoi anche caricare un file <code>.html</code>, <code>.md</code> o <code>.txt</code>.</div>
 <div class="tabs"><button class="tab active" data-tab="pastePanel">Incolla testo/HTML</button><button class="tab" data-tab="filePanel">File .html/.md/.txt</button><button class="tab" data-tab="urlPanel">URL server (fallback)</button></div>
 <div id="urlPanel" class="panel"><div class="label">URL delle pagine Stats</div><textarea id="urls" class="urls" placeholder="https://www.soccerstats.com/pmatch.asp?league=...&stats=...\nhttps://www.soccerstats.com/pmatch.asp?league=...&stats=..."></textarea><div class="helper">Massimo 30 URL per importazione. Vengono accettati solo URL di soccerstats.com. Le richieste vengono eseguite in sequenza per evitare raffiche inutili.</div></div>
 <div id="pastePanel" class="panel active"><div class="label">Testo completo della pagina Stats</div><textarea id="paste" class="paste" placeholder="Incolla qui il contenuto copiato dalla pagina Stats...\n\nPuoi separare più partite con una riga contenente: ---MATCH---"></textarea><div class="helper">Fallback utile se SoccerSTATS blocca il recupero automatico dal server.</div></div>
 <div id="filePanel" class="panel"><label class="drop"><input id="files" type="file" accept=".html,.htm,.md,.txt,text/html" multiple hidden><strong>Trascina o scegli più file Stats</strong><small>Puoi caricare anche l’HTML salvato da MagicScanner Extract</small></label></div>
 <div class="actions"><button class="btn primary" id="importBtn">Importa e salva nel browser</button><button class="btn secondary" id="downloadBtn" disabled>Scarica backup .js</button><button class="btn secondary" id="clearBtn">Svuota archivio importato</button></div><div id="status" class="status"></div>
 <div class="grid"><div class="metric"><span>Sorgenti lette</span><b id="nFiles">0</b></div><div class="metric"><span>Partite riconosciute</span><b id="nMatches">0</b></div><div class="metric"><span>Goal stats</span><b id="nGoals">0</b></div><div class="metric"><span>Timing</span><b id="nTiming">0</b></div></div><div class="list" id="list"></div></div>
-<div class="card"><b>Flusso V2.7</b><div class="sub" style="margin-top:8px">Per la home: apri la pagina <b>matches.asp</b> → clicca <b>MagicScanner Extract</b> → incolla qui → <b>Importa giornata dal browser</b>. Per il dettaglio: fai lo stesso dalla pagina <b>Stats</b> e usa la sezione “Incolla testo/HTML”.</div><div class="notice">Il recupero diretto via URL rimane solo come fallback: SoccerSTATS può rispondere HTTP 403 ai server cloud.</div></div>
+<div class="card"><b>Flusso V2.8</b><div class="sub" style="margin-top:8px">Per la home: apri la pagina <b>matches.asp</b> → clicca <b>MagicScanner Extract</b> → incolla qui → <b>Importa giornata dal browser</b>. Per il dettaglio: fai lo stesso dalla pagina <b>Stats</b> e usa la sezione “Incolla testo/HTML”.</div><div class="notice">Il recupero diretto via URL rimane solo come fallback: SoccerSTATS può rispondere HTTP 403 ai server cloud.</div></div>
 </div>
 <script>
 
 const MATCHDAY_KEY='MAGICSCANNER_MATCHDAY';
 const MATCHDAYS_KEY='MAGICSCANNER_MATCHDAYS';
 const LAST_DAY_KEY='MAGICSCANNER_LAST_IMPORTED_DATE';
-const EXTRACTOR_CODE = `javascript:(()=>{try{if(!/(^|\.)soccerstats\.com$/i.test(location.hostname)){alert('Apri prima una pagina di SoccerSTATS.');return;}const N=s=>(s||'').replace(/\u00a0/g,' ').replace(/\s+/g,' ').trim();const rows=[...document.querySelectorAll('tr')].map((tr,i)=>({i,cells:[...tr.querySelectorAll('th,td')].map(c=>N(c.innerText||c.textContent)),text:N(tr.innerText||tr.textContent),links:[...tr.querySelectorAll('a,button,input')].map(a=>({text:N(a.innerText||a.textContent||a.value),href:a.href||'',onclick:a.getAttribute('onclick')||''}))})).filter(r=>r.text);const links=[...document.querySelectorAll('a[href]')].map(a=>({text:N(a.innerText||a.textContent),href:a.href}));const dateCandidates=[...document.querySelectorAll('a,button,div,span,td')].map(e=>({text:N(e.innerText||e.textContent),cls:N(e.className&&typeof e.className==='string'?e.className:''),id:e.id||'',aria:e.getAttribute('aria-current')||'',pressed:e.getAttribute('aria-pressed')||''})).filter(x=>/\b(?:mon|tue|wed|thu|fri|sat|sun|lun|mar|mer|gio|ven|sab|dom)\b/i.test(x.text)&&/\b\d{1,2}(?:st|nd|rd|th)?\b/i.test(x.text)&&x.text.length<80).slice(0,80);const payload=JSON.stringify({magicScannerExtract:4,page:'matchday',source:location.href,title:document.title||'',extracted_at:new Date().toISOString(),dateCandidates,rows,links,bodyText:document.body.innerText||document.body.textContent||''});const ta=document.createElement('textarea');ta.value=payload;ta.style.position='fixed';ta.style.left='-99999px';document.body.appendChild(ta);ta.select();const ok=document.execCommand('copy');ta.remove();alert(ok?'MagicScanner: pagina strutturata copiata. Torna su MagicScanner e incolla.':'Copia automatica non riuscita.');if(!ok)prompt('Copia questi dati:',payload)}catch(e){alert('MagicScanner Extract: '+e.message)}})()`;
+const EXTRACTOR_CODE = `javascript:(()=>{try{if(!/(^|\.)soccerstats\.com$/i.test(location.hostname)){alert('Apri prima una pagina di SoccerSTATS.');return;}const N=s=>(s||'').replace(/\u00a0/g,' ').replace(/\s+/g,' ').trim();const path=(location.pathname||'').toLowerCase();const isDetail=/pmatch|match|head2head|h2h/.test(path)&&!/matches\.asp$/.test(path);const rows=[...document.querySelectorAll('tr')].map((tr,i)=>({i,cells:[...tr.querySelectorAll('th,td')].map(c=>N(c.innerText||c.textContent)),text:N(tr.innerText||tr.textContent),links:[...tr.querySelectorAll('a,button,input')].map(a=>({text:N(a.innerText||a.textContent||a.value),href:a.href||'',onclick:a.getAttribute('onclick')||''}))})).filter(r=>r.text);const links=[...document.querySelectorAll('a[href]')].map(a=>({text:N(a.innerText||a.textContent),href:a.href}));const dateCandidates=[...document.querySelectorAll('a,button,div,span,td')].map(e=>({text:N(e.innerText||e.textContent),cls:N(e.className&&typeof e.className==='string'?e.className:''),id:e.id||'',aria:e.getAttribute('aria-current')||'',pressed:e.getAttribute('aria-pressed')||''})).filter(x=>/\b(?:mon|tue|wed|thu|fri|sat|sun|lun|mar|mer|gio|ven|sab|dom)\b/i.test(x.text)&&/\b\d{1,2}(?:st|nd|rd|th)?\b/i.test(x.text)&&x.text.length<80).slice(0,80);const payload=JSON.stringify({magicScannerExtract:5,page:isDetail?'detail':'matchday',source:location.href,title:document.title||'',extracted_at:new Date().toISOString(),dateCandidates,rows,links,bodyText:document.body.innerText||document.body.textContent||'',html:isDetail?document.documentElement.outerHTML:''});const ta=document.createElement('textarea');ta.value=payload;ta.style.position='fixed';ta.style.left='-99999px';document.body.appendChild(ta);ta.select();const ok=document.execCommand('copy');ta.remove();alert(ok?(isDetail?'MagicScanner: scheda Stats copiata. Torna su MagicScanner e incolla nella sezione dettagli.':'MagicScanner: giornata copiata. Torna su MagicScanner e incolla.'):'Copia automatica non riuscita.');if(!ok)prompt('Copia questi dati:',payload)}catch(e){alert('MagicScanner Extract: '+e.message)}})()`;
 window.addEventListener('DOMContentLoaded',()=>{
   const bm=document.querySelector('#bookmarklet');
   if(bm) bm.setAttribute('href', EXTRACTOR_CODE);
@@ -221,7 +235,7 @@ function storeMatchdayFromHtml(html, sourceUrl='browser'){
   if(raw.startsWith('{')){
     try{
       const data=JSON.parse(raw); extractData=data;
-      if(data && (data.magicScannerExtract===4 || data.magicScannerExtract===3) && Array.isArray(data.rows)){
+      if(data && (data.magicScannerExtract===5 || data.magicScannerExtract===4 || data.magicScannerExtract===3) && data.page!=='detail' && Array.isArray(data.rows)){
         matches=parseExtractV3(data); sourceUrl=data.source||sourceUrl;
       } else if(data && data.magicScannerExtract===2 && Array.isArray(data.matches)){
         matches=data.matches.map(x=>buildMatch(x.home,x.away,x.league||'SoccerSTATS',x.time||'',x.stats_url||'')); sourceUrl=data.source||sourceUrl;
@@ -463,10 +477,54 @@ function timing(block){const o={};let team=null,scope=null,last=null;for(const r
 function parse(text,name,sourceUrl=''){let title='';for(const ln of text.split('\n').slice(0,140)){const m=ln.match(/([^|#*]+?)\s+vs\s+([^|#*]+)/i);if(m){title=m[1].trim()+' vs '+m[2].trim();break}}if(!title)title=name.replace(/\.(md|txt)$/i,'').replace(/-/g,' ');const p=title.split(/\s+vs\s+/i),home=p[0]||title,away=p[1]||'';const goal=section(text,'## Goal statistics',['## Teams scoring stats','## Home vs Away Stats','## Scorelines']);const corners=section(text,'## Corner statistics',['## Teams results table','## Goal statistics']);const gt=section(text,'## Goal times',['## Goal Differences by time segment']);const avg=section(text,'## Average goal times',['## Corner statistics']);const total=section(text,'## Total Goals (GF + GA) stats',['## Featured Highest','## Contextual averages']);const contextual=section(text,'## Contextual averages',['FORM','## Results progression','## Goal times']);const ha=section(text,'## Home vs Away Stats',['## Scorelines','## Home vs Away distribution']);const labels=['Goals scored (GF)','GF per match','Goals conceded (GA)','GA per match','GF+GA per match','GF+GA over 0.5','GF+GA over 1.5','GF+GA over 2.5','GF+GA over 3.5','GF+GA over 4.5','GF+GA over 5.5','GF+GA over 0.5 at HT','GF+GA over 1.5 at HT','GF+GA over 2.5 at HT'];const cl=['AVG Corners For','AVG Corners Against','Total per match','Total Over 7.5','Total Over 8.5','Total Over 9.5','Total Over 10.5','Total Over 11.5','Total Over 12.5','Total Over 13.5'];const onlyRows=b=>b.split('\n').map(x=>x.trim()).filter(x=>x.startsWith('|')&&!/^\|?\s*[-:| ]+\|?$/.test(x));return{id:slug(home+'-'+away),home,away,source_file:name,source_url:sourceUrl,goal_statistics:rowmap(goal,labels),corners:rowmap(corners,cl),average_goal_times_raw:onlyRows(avg).filter(x=>x.includes('Average minute')),total_goals_raw:onlyRows(total),contextual_raw:onlyRows(contextual),home_away_raw:onlyRows(ha),timing:timing(gt)}}
 function htmlToMarkdownish(html){const doc=new DOMParser().parseFromString(html,'text/html');doc.querySelectorAll('script,style,noscript,svg,canvas').forEach(x=>x.remove());const out=[];const walk=(el)=>{if(el.nodeType!==1)return;const tag=el.tagName.toLowerCase();if(/^h[1-4]$/.test(tag)){const lvl=Number(tag[1]);const txt=el.textContent.replace(/\s+/g,' ').trim();if(txt)out.push('#'.repeat(lvl)+' '+txt)}else if(tag==='table'){for(const tr of el.querySelectorAll(':scope > tbody > tr, :scope > thead > tr, :scope > tr')){const cs=[...tr.children].filter(x=>/^(TD|TH)$/.test(x.tagName)).map(x=>x.textContent.replace(/\s+/g,' ').trim());if(cs.length)out.push('| '+cs.join(' | ')+' |')}}else if(['p','div','section','article'].includes(tag)){const own=[...el.childNodes].filter(n=>n.nodeType===3).map(n=>n.textContent).join(' ').replace(/\s+/g,' ').trim();if(own)out.push(own)}for(const c of el.children)if(tag!=='table')walk(c)};walk(doc.body);return out.join('\n')}
 function mergeAndStore(rows){let existing={};try{existing=JSON.parse(localStorage.getItem('MAGICSCANNER_IMPORTED_DETAILS')||'{}')}catch{};for(const d of rows)if(d.id&&d.away)existing[d.id]=d;parsed=existing;localStorage.setItem('MAGICSCANNER_IMPORTED_DETAILS',JSON.stringify(existing));render(rows);$('#downloadBtn').disabled=!Object.keys(existing).length;return existing}
+
+function allImportedPromotedMatches(){
+  let days={};try{days=JSON.parse(localStorage.getItem(MATCHDAYS_KEY)||'{}')||{}}catch{}
+  const seen=new Map();
+  for(const day of Object.values(days)) for(const m of (day?.matches||[])){
+    const type=String(m.marketType||m.type||'').toLowerCase();
+    if(type==='nobet'||type==='no bet'||!m.id) continue;
+    if(!seen.has(m.id)) seen.set(m.id,m);
+  }
+  try{const legacy=JSON.parse(localStorage.getItem(MATCHDAY_KEY)||'{}')||{};for(const m of (legacy.matches||[])){const type=String(m.marketType||m.type||'').toLowerCase();if(type!=='nobet'&&type!=='no bet'&&m.id&&!seen.has(m.id))seen.set(m.id,m)}}catch{}
+  return [...seen.values()];
+}
+function importedDetailMap(){try{return JSON.parse(localStorage.getItem('MAGICSCANNER_IMPORTED_DETAILS')||'{}')||{}}catch{return{}}}
+function renderPromotedQueue(){
+  const list=allImportedPromotedMatches(); const details=importedDetailMap();
+  const done=list.filter(m=>!!details[m.id]).length, missing=list.length-done;
+  $('#qTotal').textContent=list.length;$('#qDone').textContent=done;$('#qMissing').textContent=missing;$('#qCoverage').textContent=list.length?Math.round(done/list.length*100)+'%':'0%';
+  const box=$('#promotedQueue'); if(!box)return;
+  box.innerHTML=list.map(m=>{const ok=!!details[m.id];const url=m.stats_url||m.statsUrl||'';return `<div class="row"><div><b>${m.home} — ${m.away}</b><small>${m.league||''}${m.time?' · '+m.time:''}</small></div><span class="${ok?'ok':'warn'}">${ok?'Dettaglio presente ✓':'Da importare'}</span>${url?`<a class="btn secondary" style="padding:8px 12px;text-decoration:none" target="_blank" rel="noopener" href="${url.replace(/&/g,'&amp;').replace(/"/g,'&quot;')}">${ok?'Apri Stats':'Apri Stats →'}</a>`:'<span class="bad">URL Stats assente</span>'}</div>`}).join('') || '<div class="notice">Nessuna partita promossa importata nelle giornate salvate.</div>';
+}
+function openNextMissing(){const details=importedDetailMap();const m=allImportedPromotedMatches().find(x=>!details[x.id]&&(x.stats_url||x.statsUrl));if(!m){status('Tutte le promosse con URL Stats hanno già il dettaglio.','good');return}window.open(m.stats_url||m.statsUrl,'_blank','noopener')}
+
 function render(rows,errors=[]){$('#nFiles').textContent=rows.length+errors.length;$('#nMatches').textContent=rows.filter(x=>x.away).length;$('#nGoals').textContent=rows.filter(x=>Object.keys(x.goal_statistics||{}).length).length;$('#nTiming').textContent=rows.filter(x=>Object.keys(x.timing||{}).length).length;$('#list').innerHTML=[...rows.map(x=>`<div class="row"><div><b>${x.home}${x.away?' — '+x.away:''}</b><small>${x.source_url||x.source_file||''}</small></div><span class="${Object.keys(x.goal_statistics||{}).length?'ok':'warn'}">Goal stats ${Object.keys(x.goal_statistics||{}).length?'✓':'—'}</span><span class="${Object.keys(x.timing||{}).length?'ok':'warn'}">Timing ${Object.keys(x.timing||{}).length?'✓':'—'}</span></div>`),...errors.map(e=>`<div class="row"><div><b class="bad">Import non riuscito</b><small>${e.url||''}</small></div><span class="bad">${e.error||'Errore'}</span><span></span></div>`)].join('')}
 function status(msg,type='good'){const s=$('#status');s.className='status show '+type;s.textContent=msg}
 async function importUrls(){const urls=$('#urls').value.split(/\r?\n/).map(x=>x.trim()).filter(Boolean);if(!urls.length)throw new Error('Incolla almeno un URL SoccerSTATS.');status('Recupero delle pagine in corso…','good');const r=await fetch('/api/fetch-stats',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({urls})});const data=await r.json().catch(()=>({}));if(!r.ok)throw new Error(data.error||`Errore server ${r.status}`);const rows=[],errors=[];for(const item of data.items||[]){if(!item.ok){errors.push(item);continue}const text=htmlToMarkdownish(item.html);const d=parse(text,'soccerstats-url',item.url);if(d.away)rows.push(d);else errors.push({url:item.url,error:'Nomi delle squadre non riconosciuti'})}mergeAndStore(rows);render(rows,errors);status(`${rows.length} partita/e salvate nel browser${errors.length?`; ${errors.length} non importate.`:'.'}`,errors.length?'error':'good')}
-async function importPaste(){const chunks=$('#paste').value.split(/^---MATCH---\s*$/m).map(x=>x.trim()).filter(Boolean);if(!chunks.length)throw new Error('Incolla almeno una pagina Stats.');const rows=chunks.map((x,i)=>parse(x,`testo-${i+1}`)).filter(x=>x.away);mergeAndStore(rows);status(`${rows.length} partita/e salvate nel browser.`,'good')}
+async function importPaste(){
+  const raw=$('#paste').value.trim(); if(!raw)throw new Error('Incolla almeno una pagina Stats.');
+  let rows=[];
+  if(raw.startsWith('{')){
+    try{
+      const data=JSON.parse(raw);
+      if(data && data.magicScannerExtract>=5 && data.page==='detail'){
+        const text=data.html ? htmlToMarkdownish(data.html) : String(data.bodyText||'');
+        const d=parse(text,'soccerstats-detail',data.source||'');
+        if(d.away) rows=[d];
+      }
+    }catch(e){}
+  }
+  if(!rows.length){
+    const chunks=raw.split(/^---MATCH---\s*$/m).map(x=>x.trim()).filter(Boolean);
+    rows=chunks.map((x,i)=>{
+      if(/^</.test(x)){return parse(htmlToMarkdownish(x),`html-${i+1}`)}
+      return parse(x,`testo-${i+1}`)
+    }).filter(x=>x.away);
+  }
+  if(!rows.length) throw new Error('Non riconosco i nomi delle squadre nella pagina Stats copiata.');
+  mergeAndStore(rows);renderPromotedQueue();status(`${rows.length} partita/e salvate nel browser.`,'good')
+}
 async function importFiles(){const fs=[...$('#files').files];if(!fs.length)throw new Error('Seleziona almeno un file .md o .txt.');const rows=[];for(const f of fs){const d=parse(await f.text(),f.name);if(d.away)rows.push(d)}mergeAndStore(rows);status(`${rows.length} partita/e salvate nel browser.`,'good')}
 $('#importBtn').onclick=async()=>{try{$('#importBtn').disabled=true;if(activeTab==='urlPanel')await importUrls();else if(activeTab==='pastePanel')await importPaste();else await importFiles()}catch(e){status(String(e.message||e),'error')}finally{$('#importBtn').disabled=false}};
 $('#downloadBtn').onclick=()=>{let all={};try{all=JSON.parse(localStorage.getItem('MAGICSCANNER_IMPORTED_DETAILS')||'{}')}catch{};const text='window.IMPORTED_DETAILS = '+JSON.stringify(all,null,2)+';\n';const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([text],{type:'application/javascript'}));a.download='imported-details.js';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)};
@@ -478,4 +536,5 @@ document.querySelector('#clearDayBtn').onclick=()=>{if(!confirm('Rimuovere l’u
 try{const d=JSON.parse(localStorage.getItem(MATCHDAY_KEY)||'{}');if(Array.isArray(d.matches)&&d.matches.length){renderDay(d.matches);dayStatus(`${d.matches.length} partite della giornata già presenti nel browser.`,'good')}}catch{}
 
 try{const ex=JSON.parse(localStorage.getItem('MAGICSCANNER_IMPORTED_DETAILS')||'{}');if(Object.keys(ex).length){parsed=ex;$('#downloadBtn').disabled=false;status(`${Object.keys(ex).length} scheda/e già presenti nel browser.`,'good')}}catch{}
+$('#refreshQueue').onclick=renderPromotedQueue;$('#openNextMissing').onclick=openNextMissing;renderPromotedQueue();
 </script></body></html>

@@ -4270,27 +4270,39 @@ const teamLogoAliases = {
 const teamLogoOverrides = {"Stevenage": "https://assets.footylogos.com/logos/stevenage/stevenage-logo-footylogos.svg", "Luton Town": "https://assets.footylogos.com/logos/luton-town/luton-town-logo-footylogos.svg", "Sporting Braga": "https://assets.footylogos.com/logos/sc-braga/sc-braga-logo-footylogos.svg", "Estrela Amadora": "https://assets.footylogos.com/logos/estrela-amadora/estrela-amadora-logo-footylogos.svg"};
 const logoCache = new Map();
 
+
+function logoNorm(s){return String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/\b(fc|cf|sc|afc|ac|calcio|club|football|futbol|fk|sk)\b/g,' ').replace(/[^a-z0-9]+/g,' ').replace(/\s+/g,' ').trim()}
+function logoCandidates(name){
+  const alias=(typeof teamLogoAliases!=='undefined'&&teamLogoAliases[name])?teamLogoAliases[name]:name;
+  const arr=[alias,name];
+  const stripped=String(alias).replace(/\b(FC|CF|SC|AFC|AC|FK|SK)\b/gi,' ').replace(/\s+/g,' ').trim(); if(stripped)arr.push(stripped);
+  const expanded=String(alias).replace(/\bUtd\b/gi,'United').replace(/\bAth\.\b/gi,'Athletic').replace(/\bBor\.\b/gi,'Borussia'); if(expanded)arr.push(expanded);
+  return [...new Set(arr.filter(Boolean))];
+}
+function fallbackTeamLogo(name){
+  const initials=String(name||'?').split(/\s+/).filter(Boolean).slice(0,3).map(x=>x[0]).join('').toUpperCase().slice(0,3)||'?';
+  const svg=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#15263f"/><stop offset="1" stop-color="#243e64"/></linearGradient></defs><path d="M48 4 84 18v28c0 23-14 38-36 46C26 84 12 69 12 46V18L48 4Z" fill="url(#g)" stroke="#62d4ff" stroke-width="4"/><text x="48" y="56" text-anchor="middle" font-family="Arial,sans-serif" font-size="25" font-weight="800" fill="white">${initials.replace(/[&<>]/g,'')}</text></svg>`;
+  return 'data:image/svg+xml;charset=UTF-8,'+encodeURIComponent(svg);
+}
+function readLogoCache(){try{return JSON.parse(localStorage.getItem('MAGICSCANNER_LOGO_CACHE')||'{}')||{}}catch{return{}}}
+function saveLogoCache(name,url){try{const c=readLogoCache();c[name]=url;localStorage.setItem('MAGICSCANNER_LOGO_CACHE',JSON.stringify(c))}catch{}}
+
 async function getOfficialTeamLogo(name){
+  const name=name;
   if(logoCache.has(name)) return logoCache.get(name);
-  if(teamLogoOverrides[name]){
-    logoCache.set(name, teamLogoOverrides[name]);
-    return teamLogoOverrides[name];
+  if(typeof teamLogoOverrides!=='undefined' && teamLogoOverrides[name]){logoCache.set(name,teamLogoOverrides[name]);saveLogoCache(name,teamLogoOverrides[name]);return teamLogoOverrides[name]}
+  const persisted=readLogoCache()[name]; if(persisted){logoCache.set(name,persisted);return persisted}
+  for(const q of logoCandidates(name)){
+    try{
+      const r=await fetch('https://www.thesportsdb.com/api/v1/json/3/searchteams.php?t='+encodeURIComponent(q));
+      if(!r.ok) continue; const data=await r.json(); const teams=Array.isArray(data?.teams)?data.teams:[];
+      const qn=logoNorm(q), nn=logoNorm(name);
+      const candidates=teams.filter(t=>(t.strSport||'').toLowerCase()==='soccer');
+      const best=candidates.find(t=>logoNorm(t.strTeam)===qn||logoNorm(t.strTeam)===nn||logoNorm(t.strAlternate||'').includes(qn))||candidates[0]||teams[0];
+      const badge=best?.strBadge||''; if(badge){logoCache.set(name,badge);saveLogoCache(name,badge);return badge}
+    }catch(e){}
   }
-  const q = teamLogoAliases[name] || name;
-  try{
-    const url = `https://www.thesportsdb.com/api/v1/json/3/searchteams.php?t=${encodeURIComponent(q)}`;
-    const res = await fetch(url);
-    if(!res.ok) throw new Error('logo lookup failed');
-    const data = await res.json();
-    const teams = Array.isArray(data.teams) ? data.teams : [];
-    const soccer = teams.find(t => (t.strSport || '').toLowerCase() === 'soccer') || teams[0];
-    const badge = soccer && soccer.strBadge ? soccer.strBadge : '';
-    logoCache.set(name, badge);
-    return badge;
-  }catch(e){
-    logoCache.set(name, '');
-    return '';
-  }
+  const fallback=fallbackTeamLogo(name); logoCache.set(name,fallback); return fallback;
 }
 
 
