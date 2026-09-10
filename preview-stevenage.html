@@ -4536,6 +4536,56 @@ img{max-width:100%}
   .radarStage{height:300px!important;min-height:300px!important}
 }
 
+
+/* ===== MAGICSCANNER LOGO FILL NEL BANNER PARTITA ===== */
+.detailHeroWithBrand{position:relative!important;isolation:isolate!important;overflow:hidden!important}
+.detailHeroWithBrand .heroTop{position:relative!important;z-index:2!important}
+.detailHeroWithBrand .heroBrandFill{
+  position:absolute!important;
+  right:24px!important;
+  top:50%!important;
+  transform:translateY(-50%)!important;
+  width:min(40%,520px)!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:flex-end!important;
+  pointer-events:none!important;
+  z-index:1!important;
+  opacity:.26!important;
+}
+.detailHeroWithBrand .heroBrandFill::before{
+  content:""!important;
+  position:absolute!important;
+  inset:6% 4% 6% 28%!important;
+  border-radius:28px!important;
+  background:radial-gradient(circle at center,rgba(56,189,248,.18) 0%,rgba(96,165,250,.12) 38%,rgba(124,58,237,.08) 56%,transparent 76%)!important;
+  filter:blur(28px)!important;
+}
+.detailHeroWithBrand .heroBrandFill img{
+  width:100%!important;
+  max-width:500px!important;
+  height:auto!important;
+  object-fit:contain!important;
+  opacity:.95!important;
+  filter:drop-shadow(0 22px 44px rgba(0,0,0,.35)) saturate(1.08)!important;
+}
+#twenteFullDetail .detailHeroWithBrand .heroBrandFill,
+#estrelaBragaFullDetail .detailHeroWithBrand .heroBrandFill,
+#stevenageLutonFullDetail .detailHeroWithBrand .heroBrandFill{
+  width:min(39%,500px)!important;
+}
+#twenteFullDetail .heroAside,
+#estrelaBragaFullDetail .heroAside,
+#stevenageLutonFullDetail .heroAside{
+  z-index:3!important;
+}
+@media (max-width:1180px){
+  .detailHeroWithBrand .heroBrandFill{width:min(34%,360px)!important;opacity:.22!important;right:18px!important}
+}
+@media (max-width:1000px){
+  .detailHeroWithBrand .heroBrandFill{display:none!important}
+}
+
 </style>
 </head>
 <body>
@@ -4544,7 +4594,8 @@ img{max-width:100%}
 <div id="detailContent">
 <div id="twenteFullDetail" style="display:none">
 <div class="container">
-<section class="hero">
+<section class="hero detailHeroWithBrand">
+<div class="heroBrandFill" aria-hidden="true"><img alt="MagicScanner" src="assets/magicscanner-logo-overlay.png"/></div>
 <div class="heroTop">
 <div style="position:relative;z-index:1;min-width:0">
 <div class="badge"><span class="dot"></span> Scheda partita completa</div>
@@ -5143,7 +5194,8 @@ img{max-width:100%}
 </section>
 </div>
 </div><div id="estrelaBragaFullDetail" style="display:none"><div class="container">
-<section class="hero">
+<section class="hero detailHeroWithBrand">
+<div class="heroBrandFill" aria-hidden="true"><img alt="MagicScanner" src="assets/magicscanner-logo-overlay.png"/></div>
 <div class="heroTop">
 <div class="heroMainFixed">
 <div class="badge"><span class="dot"></span> Scheda partita completa</div>
@@ -5402,7 +5454,8 @@ img{max-width:100%}
 </div>
 </section>
 </div></div><div id="stevenageLutonFullDetail" style="display:none"><div class="container">
-<section class="hero">
+<section class="hero detailHeroWithBrand">
+<div class="heroBrandFill" aria-hidden="true"><img alt="MagicScanner" src="assets/magicscanner-logo-overlay.png"/></div>
 <div class="heroTop">
 <div class="heroMainFixed">
 <div class="badge"><span class="dot"></span> Scheda partita completa</div>
