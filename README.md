@@ -1,14 +1,9 @@
-# Match Scanner - fix apertura/stemmi
+# Match Scanner
+Versione con riconoscimento e caricamento di Stevenage - Luton Town nello stesso index.html.
 
-Correzioni:
-- le partite si aprono nello stesso index.html;
-- nessun `window.location` verso una seconda pagina;
-- click via `data-match-id` + `addEventListener`;
-- rimosso lo scroll forzato a inizio pagina;
-- endpoint TheSportsDB corretto a `/3/`;
-- Estrela Amadora - Sporting Braga contiene i dati completi già caricati.
+Test corrente:
+- Estrela Amadora - Sporting Braga: dettaglio completo
+- Stevenage - Luton Town: dettaglio completo
+- altre partite: dettaglio generico
 
-Render:
-- se il servizio usa già `npm ci && npm run build`, puoi lasciarlo se nel repository è presente package-lock.json;
-- altrimenti usa `npm install && npm run build`;
-- Publish Directory: `dist`.
+Render: npm install && npm run build / dist
