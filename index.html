@@ -2984,6 +2984,63 @@ body{padding:26px}
   }
 }
 
+
+/* ===== TITOLI PARTITA: NOMI COMPLETI ===== */
+.heroMainFixed{
+  width:calc(100% - 390px)!important;
+}
+.heroTitle{
+  width:min(100%,1120px)!important;
+  max-width:1120px!important;
+  padding:14px 20px!important;
+}
+.heroTeamLine{
+  width:100%!important;
+  max-width:1080px!important;
+  grid-template-columns:50px max-content auto 50px max-content!important;
+  justify-content:center!important;
+  column-gap:14px!important;
+  font-size:clamp(28px,2.25vw,44px)!important;
+}
+.heroTeamLine > span:not(.heroDash){
+  overflow:visible!important;
+  text-overflow:clip!important;
+  white-space:nowrap!important;
+  max-width:none!important;
+}
+@media(max-width:1200px){
+  .heroMainFixed{
+    width:calc(100% - 370px)!important;
+  }
+  .heroTitle{
+    width:min(100%,980px)!important;
+  }
+  .heroTeamLine{
+    grid-template-columns:44px max-content auto 44px max-content!important;
+    column-gap:10px!important;
+    font-size:clamp(24px,2vw,38px)!important;
+  }
+}
+@media(max-width:1000px){
+  .heroMainFixed{
+    width:100%!important;
+  }
+  .heroTitle{
+    width:100%!important;
+    max-width:100%!important;
+  }
+}
+@media(max-width:760px){
+  .heroTeamLine{
+    grid-template-columns:38px minmax(0,1fr) auto 38px minmax(0,1fr)!important;
+    font-size:19px!important;
+  }
+  .heroTeamLine > span:not(.heroDash){
+    overflow:hidden!important;
+    text-overflow:ellipsis!important;
+  }
+}
+
 </style>
 </head>
 <body>

@@ -1,10 +1,8 @@
-# Match Scanner - titoli lineari
+# Match Scanner - titoli allargati
 
-Regola fissa per tutte le schede:
-- stemma casa
-- nome squadra casa
-- trattino centrale
-- stemma trasferta
-- nome squadra trasferta
-
-Tutto sulla stessa linea, stessa dimensione stemmi, stesso peso tipografico e allineamento verticale.
+Fix:
+- nomi completi nelle schede partita desktop;
+- niente puntini su Luton Town o altri nomi medi/lunghi;
+- blocco titolo più largo;
+- stemmi e nomi restano sulla stessa linea;
+- su mobile resta il fallback con ellissi solo se lo spazio è insufficiente.
