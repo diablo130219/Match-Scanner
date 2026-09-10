@@ -6,7 +6,8 @@ export default defineConfig({
     rollupOptions: {
       input: {
         main: resolve(__dirname, 'index.html'),
-        match: resolve(__dirname, 'match.html')
+        match: resolve(__dirname, 'match.html'),
+        importer: resolve(__dirname, 'importer.html')
       }
     }
   }
