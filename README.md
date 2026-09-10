@@ -1,10 +1,11 @@
-# Match Scanner - fix layout Stevenage/Luton
+# Match Scanner - architettura corretta
 
-Correzione:
-- la scheda Stevenage - Luton usa lo stesso CSS scoped della scheda Estrela - Braga approvata;
-- stemmi bloccati a dimensione corretta;
-- nomi squadra allineati in una sola riga su desktop;
-- pannello pronostici a destra;
-- responsive corretto;
-- home invariata;
-- navigazione nella stessa pagina invariata.
+- index.html = esclusivamente schermata principale
+- match.html?id=... = pagina singola partita
+- navigazione nella stessa scheda/browser, nessun target=_blank
+- Torna alla home = ritorno a index.html
+
+Schede complete:
+- FC Twente - Telstar
+- Estrela Amadora - Sporting Braga
+- Stevenage - Luton Town
