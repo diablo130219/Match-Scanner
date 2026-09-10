@@ -1,27 +1,14 @@
 # Match Scanner
 
-Progetto frontend del Match Scanner.
+## Struttura attuale
+- `index.html`: home principale con elenco partite, filtri e selettore date.
+- `match-detail.html`: scheda completa Estrela Amadora - Sporting Braga nel layout approvato.
+- Le altre partite usano ancora il dettaglio generico interno alla home.
 
-## Avvio locale
+## Render
+- Build Command: `npm ci && npm run build`
+- Publish Directory: `dist`
+- Branch: `main`
 
-```bash
-npm install
-npm run dev
-```
-
-## Build
-
-```bash
-npm run build
-```
-
-La cartella pubblicata da Render è `dist`.
-
-## Variabili Render / Supabase
-
-Impostare su Render:
-
-- `VITE_SUPABASE_URL`
-- `VITE_SUPABASE_ANON_KEY`
-
-Nota: questa versione contiene il layout frontend attuale. Il collegamento dinamico delle partite a Supabase verrà aggiunto nella fase successiva.
+## Prossimo step
+Collegamento a Supabase per rendere dinamici partite, dettagli e aggiornamenti.
