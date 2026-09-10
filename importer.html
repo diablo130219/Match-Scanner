@@ -165,11 +165,78 @@ function buildMatch(home,away,league,time,stats_url){
   const r=recommendation(home,away);
   return {id:slug(home.team+'-'+away.team),league,time:time||'',home:home.team,away:away.team,tags:r.tags,scores:r.scores,summary:r.summary,basic:{'Partite considerate':`${home.gp} / ${away.gp}`,'Vittorie':`${home.w} / ${away.w}`,'Senza segnare':`${home.fts} / ${away.fts}`,'Senza subire':`${home.cs} / ${away.cs}`,'BTTS / Entrambe segnano':`${home.bts} / ${away.bts}`,'Media gol':`${home.tg} / ${away.tg}`,'Gol fatti':`${home.gf} / ${away.gf}`,'Gol subiti':`${home.ga} / ${away.ga}`,'Over 1.5':`${home.o15} / ${away.o15}`,'Over 2.5':`${home.o25} / ${away.o25}`,'Over 3.5':`${home.o35} / ${away.o35}`,'Punti per partita':`${home.ppg} / ${away.ppg}`},timing_loaded:false,recommended:r.recommended,confidence:r.confidence,marketType:r.marketType,signalScore:r.signalScore,date_offset:0,stats_url};
 }
+function countLastScopes(text){return (text.match(/last\s+\d+/ig)||[]).length}
+function parseStatElement(el){
+  const text=(el.textContent||'').replace(/\u00a0/g,' ').replace(/\s+/g,' ').trim();
+  const scope=text.match(/last\s+(\d+)/i);
+  if(!scope)return null;
+  const scopePos=text.toLowerCase().indexOf(scope[0].toLowerCase());
+  let team=teamAnchorFromRow(el);
+  if(!team){
+    team=text.slice(0,scopePos).replace(/\b([01]?\d|2[0-3]):[0-5]\d\b/g,' ').replace(/\bstats\b/ig,' ').replace(/\s+/g,' ').trim();
+    // se il contenitore include entrambe le squadre, conserva solo l'ultima riga/nome prima di "last N"
+    const bits=team.split(/\s{2,}|\n+/).map(x=>x.trim()).filter(Boolean);
+    if(bits.length)team=bits[bits.length-1];
+  }
+  if(!team||team.length>80)return null;
+  const tail=text.slice(scopePos+scope[0].length);
+  const vals=tail.match(/\d+(?:[.,]\d+)?%?/g)||[];
+  if(vals.length<11)return null;
+  let idx=0, gp=Number(scope[1]);
+  if(vals.length>=12&&!vals[0].includes('%')&&Number(vals[0])<=40)gp=num(vals[idx++]);
+  const take=()=>vals[idx++]||'0';
+  return {team,gp,w:take(),fts:take(),cs:take(),bts:take(),tg:take(),gf:take(),ga:take(),o15:take(),o25:take(),o35:take(),ppg:take(),tr:el};
+}
+function leagueForElement(el){
+  const seen=[];
+  let n=el;
+  for(let depth=0;depth<7&&n;depth++,n=n.parentElement){
+    let p=n.previousElementSibling,c=0;
+    while(p&&c++<8){
+      const t=(p.innerText||p.textContent||'').replace(/\s+/g,' ').trim();
+      if(t)seen.push(t);
+      p=p.previousElementSibling;
+    }
+    const own=(n.innerText||n.textContent||'').split(/\n+/).map(x=>x.replace(/\s+/g,' ').trim()).filter(Boolean).slice(0,8);
+    seen.push(...own);
+  }
+  for(const raw of seen){
+    const line=raw.replace(/\bstats\b/ig,' ').replace(/\s+/g,' ').trim();
+    if(line.length<4||line.length>120)continue;
+    if(/Matches played|Goals per match|Scope|Points Per Game|last\s+\d+/i.test(line))continue;
+    if(/\s-\s/.test(line))return line;
+  }
+  return 'SoccerSTATS';
+}
+function smallestStatElements(doc){
+  const selectors='tr, li, article, section, div';
+  const all=[...doc.querySelectorAll(selectors)];
+  const found=[];
+  for(const el of all){
+    const text=(el.textContent||'').replace(/\u00a0/g,' ').replace(/\s+/g,' ').trim();
+    if(text.length<25||text.length>420)continue;
+    if(countLastScopes(text)!==1)continue;
+    if(!/last\s+\d+/i.test(text))continue;
+    const nums=text.match(/\d+(?:[.,]\d+)?%?/g)||[];
+    if(nums.length<12)continue;
+    // preferisci il nodo più piccolo che contiene davvero la riga statistica
+    const childHas=[...el.children].some(ch=>{
+      const ct=(ch.textContent||'').replace(/\s+/g,' ').trim();
+      return ct.length>=20&&ct.length<text.length&&countLastScopes(ct)===1&&((ct.match(/\d+(?:[.,]\d+)?%?/g)||[]).length>=12);
+    });
+    if(childHas)continue;
+    const parsed=parseStatElement(el);
+    if(parsed)found.push(parsed);
+  }
+  return found;
+}
 function parseMatchdayHtml(html){
   const doc=new DOMParser().parseFromString(html,'text/html');
   const out=[];
+
+  // Metodo 1: tabelle classiche SoccerSTATS.
   for(const table of doc.querySelectorAll('table')){
-    const tt=table.textContent.replace(/\s+/g,' ');
+    const tt=(table.textContent||'').replace(/\s+/g,' ');
     if(!/FTS/i.test(tt)||!/(BTS|BTTS)/i.test(tt)||!/1\.5\+/i.test(tt)||!/Points Per Game/i.test(tt))continue;
     const league=leagueForTable(table);
     const rows=[...table.querySelectorAll('tr')];
@@ -178,14 +245,33 @@ function parseMatchdayHtml(html){
       const a=parsedRows[i]; if(!a)continue;
       let j=i+1; while(j<parsedRows.length&&!parsedRows[j])j++;
       const b=parsedRows[j]; if(!b)continue;
-      // Le due righe di una partita sono consecutive e usano lo stesso scope.
-      const rowText=(a.tr.textContent+' '+b.tr.textContent).replace(/\s+/g,' ');
+      const rowText=((a.tr.textContent||'')+' '+(b.tr.textContent||'')).replace(/\s+/g,' ');
       const tm=rowText.match(/\b([01]?\d|2[0-3]):[0-5]\d\b/);
       const stats_url=statsLinkAround([a.tr,b.tr]);
       const m=buildMatch(a,b,league,tm?tm[0]:'',stats_url);
       if(!out.some(x=>x.id===m.id))out.push(m);
       i=j;
     }
+  }
+  if(out.length)return out;
+
+  // Metodo 2: layout responsive a DIV usato dalla pagina matches.asp.
+  const rows=smallestStatElements(doc);
+  for(let i=0;i<rows.length-1;i++){
+    const a=rows[i], b=rows[i+1];
+    if(!a||!b||a.team===b.team)continue;
+    // Evita di accoppiare righe di blocchi lontani: cerca un antenato comune compatto.
+    let common=a.tr.parentElement;
+    while(common&&!common.contains(b.tr))common=common.parentElement;
+    if(!common)continue;
+    const commonText=(common.textContent||'').replace(/\s+/g,' ').trim();
+    if(commonText.length>1800)continue;
+    const tm=commonText.match(/\b([01]?\d|2[0-3]):[0-5]\d\b/);
+    const stats_url=statsLinkAround([common,a.tr,b.tr]);
+    const league=leagueForElement(common);
+    const m=buildMatch(a,b,league,tm?tm[0]:'',stats_url);
+    if(!out.some(x=>x.id===m.id))out.push(m);
+    i++;
   }
   return out;
 }
