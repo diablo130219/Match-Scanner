@@ -4085,12 +4085,25 @@ body{background-attachment:fixed!important}
 <div class="listWrap" id="matchList"></div>
 </section></div>
 <div class="footerNote">
-      V2 dinamica: la home legge i dati da <b>data/matches.js</b>. Le schede complete possono essere aggiunte in <b>data/details/</b> senza duplicare match.html.
+      V2.6: la home può essere aggiornata direttamente da una giornata SoccerSTATS tramite <b>Import Center</b>. I dati originali in <b>data/matches.js</b> restano come fallback.
     </div>
 </div>
 <script src="./data/matches.js"></script>
 <script>
-const matches = window.MATCHES || [];
+const matches = (()=>{
+  const base = Array.isArray(window.MATCHES) ? window.MATCHES : [];
+  try{
+    const pack = JSON.parse(localStorage.getItem('MAGICSCANNER_MATCHDAY') || '{}');
+    if(Array.isArray(pack.matches) && pack.matches.length){
+      const imported = pack.matches.map(m=>({...m,date_offset:0}));
+      const importedIds = new Set(imported.map(m=>m.id));
+      // La giornata importata sostituisce "Oggi"; ieri/domani originali restano disponibili.
+      const keep = base.filter(m=>Number(m.date_offset)!==0 && !importedIds.has(m.id));
+      return [...keep,...imported];
+    }
+  }catch(e){ console.warn('Giornata importata non leggibile',e); }
+  return base;
+})();
 
 function esc(s) {
   return String(s ?? '')
