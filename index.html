@@ -2607,6 +2607,221 @@ body{padding:26px}
 .matchCard[data-match-id]::after{
   content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;
 }
+
+/* ===== STEVENAGE/LUTON: COPIA ESATTA CSS DETTAGLIO APPROVATO ===== */
+
+
+
+/* ===== DETTAGLIO ESTRELA-BRAGA NELLA STESSA PAGINA ===== */
+#stevenageLutonFullDetail{display:none;width:100%}
+
+#stevenageLutonFullDetail > .container{max-width:none;margin:0;padding:0}
+
+#stevenageLutonFullDetail .hero{margin-top:0;margin-bottom:18px}
+
+
+/* ===== FIX HERO: usa struttura originale senza rompere pageGrid ===== */
+#stevenageLutonFullDetail .heroTop{display:block!important;position:relative!important;min-height:250px!important}
+
+#stevenageLutonFullDetail .heroMainFixed{
+  width:calc(100% - 390px);min-height:235px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;
+  position:relative;z-index:2
+}
+
+#stevenageLutonFullDetail .heroTitle{
+  display:flex!important;align-items:center!important;justify-content:center!important;
+  gap:20px!important;white-space:nowrap!important;width:auto!important;max-width:100%!important;
+  padding:16px 22px!important;margin-top:15px!important;border-radius:25px!important;
+  background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.025))!important;
+  border:1px solid rgba(255,255,255,.11)!important;
+  box-shadow:0 18px 42px rgba(0,0,0,.15)!important;
+  backdrop-filter:blur(10px)
+}
+
+#stevenageLutonFullDetail .heroTeamLine{display:inline-flex;align-items:center;gap:12px;font-size:clamp(34px,3.7vw,56px);font-weight:950;letter-spacing:-1.7px}
+
+#stevenageLutonFullDetail .heroCrestFixed{width:66px;height:66px;object-fit:contain;filter:drop-shadow(0 8px 14px rgba(0,0,0,.3))}
+
+#stevenageLutonFullDetail .heroDash{font-size:30px;font-weight:900;opacity:.55}
+
+#stevenageLutonFullDetail .heroMeta{justify-content:center!important;margin-top:22px!important}
+
+#stevenageLutonFullDetail .heroAside{
+  position:absolute!important;right:0!important;top:50%!important;transform:translateY(-50%)!important;
+  width:360px!important;min-width:360px!important;max-width:360px!important;z-index:5!important
+}
+
+#stevenageLutonFullDetail .heroPickRow{display:grid;grid-template-columns:10px 1fr;gap:10px;align-items:center;padding:11px 0;border-top:1px solid rgba(255,255,255,.08)}
+
+#stevenageLutonFullDetail .heroPickRow:first-of-type{border-top:0}
+
+#stevenageLutonFullDetail .heroPickRow small{display:block;font-size:9px;text-transform:uppercase;letter-spacing:.65px;color:#b7cbe3;font-weight:900}
+
+#stevenageLutonFullDetail .heroPickRow b{display:block;margin-top:2px;font-size:14px}
+
+#stevenageLutonFullDetail .heroPickDot{width:8px;height:8px;border-radius:50%;background:#42d6a4;box-shadow:0 0 14px rgba(66,214,164,.55)}
+
+#stevenageLutonFullDetail .heroPickDot.secondary{background:#59a9ff;box-shadow:0 0 14px rgba(89,169,255,.55)}
+
+#stevenageLutonFullDetail .heroPickDot.alternative{background:#f3b84c;box-shadow:0 0 14px rgba(243,184,76,.55)}
+
+  #stevenageLutonFullDetail .heroMainFixed{width:100%!important;min-height:auto!important}
+
+  #stevenageLutonFullDetail .heroAside{position:relative!important;right:auto!important;top:auto!important;transform:none!important;width:100%!important;min-width:0!important;max-width:none!important;margin-top:18px!important}
+
+  #stevenageLutonFullDetail .heroTitle{white-space:normal!important;flex-wrap:wrap!important}
+
+  #stevenageLutonFullDetail .heroTeamLine{font-size:27px}
+
+  #stevenageLutonFullDetail .heroCrestFixed{width:48px;height:48px}
+
+
+/* Testata risultati: niente W/D duplicate accanto al nome */
+#stevenageLutonFullDetail .resultsTeamHead{
+  justify-content:flex-start !important;
+}
+
+#stevenageLutonFullDetail .resultsTeamHead .teamIdentity{
+  width:100%;
+}
+
+
+/* ===== FIX OVERFLOW TITOLO HERO ===== */
+#stevenageLutonFullDetail .heroMainFixed{
+  width:calc(100% - 430px)!important;
+  min-height:235px!important;
+  padding-right:8px!important;
+}
+
+#stevenageLutonFullDetail .heroTitle{
+  max-width:100%!important;
+  width:auto!important;
+  gap:14px!important;
+  padding:14px 18px!important;
+}
+
+#stevenageLutonFullDetail .heroTeamLine{
+  min-width:0!important;
+  gap:10px!important;
+  font-size:clamp(28px,2.75vw,46px)!important;
+  letter-spacing:-1.35px!important;
+  line-height:1!important;
+}
+
+#stevenageLutonFullDetail .heroCrestFixed{
+  width:56px!important;
+  height:56px!important;
+  flex:0 0 56px!important;
+}
+
+#stevenageLutonFullDetail .heroDash{
+  font-size:24px!important;
+  flex:0 0 auto!important;
+}
+
+  #stevenageLutonFullDetail .heroMainFixed{width:calc(100% - 400px)!important;}
+
+  #stevenageLutonFullDetail .heroTeamLine{font-size:clamp(24px,2.45vw,40px)!important;}
+
+  #stevenageLutonFullDetail .heroCrestFixed{width:50px!important;height:50px!important;flex:0 0 50px!important;}
+
+  #stevenageLutonFullDetail .heroMainFixed{
+    width:100%!important;
+    padding-right:0!important;
+  }
+
+#stevenageLutonFullDetail[style*="display: block"],
+#twenteFullDetail[style*="display: block"],
+#genericDetail[style*="display: block"]{
+  visibility:visible !important;
+  opacity:1 !important;
+}
+
+#stevenageLutonFullDetail .hero{
+  position:relative!important;
+  overflow:hidden!important;
+  min-height:235px!important;
+}
+#stevenageLutonFullDetail .heroTop{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  gap:22px!important;
+}
+#stevenageLutonFullDetail .heroMainFixed{
+  width:calc(100% - 430px)!important;
+  min-height:235px!important;
+  padding-right:8px!important;
+  display:flex!important;
+  flex-direction:column!important;
+  justify-content:center!important;
+  min-width:0!important;
+}
+#stevenageLutonFullDetail .heroTitle{
+  max-width:100%!important;
+  width:auto!important;
+  gap:14px!important;
+  padding:14px 18px!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  flex-wrap:nowrap!important;
+}
+#stevenageLutonFullDetail .heroTeamLine{
+  min-width:0!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  gap:10px!important;
+  font-size:clamp(28px,2.75vw,46px)!important;
+  letter-spacing:-1.35px!important;
+  line-height:1!important;
+  white-space:nowrap!important;
+  flex:0 1 auto!important;
+}
+#stevenageLutonFullDetail .heroCrestFixed{
+  width:56px!important;
+  height:56px!important;
+  max-width:56px!important;
+  max-height:56px!important;
+  flex:0 0 56px!important;
+  object-fit:contain!important;
+}
+#stevenageLutonFullDetail .heroDash{
+  font-size:24px!important;
+  flex:0 0 auto!important;
+}
+#stevenageLutonFullDetail .heroAside{
+  position:absolute!important;
+  right:20px!important;
+  top:50%!important;
+  transform:translateY(-50%)!important;
+  width:380px!important;
+  max-width:380px!important;
+  z-index:2!important;
+}
+@media (max-width:1200px){
+  #stevenageLutonFullDetail .heroMainFixed{width:calc(100% - 400px)!important;}
+  #stevenageLutonFullDetail .heroTeamLine{font-size:clamp(24px,2.45vw,40px)!important;}
+  #stevenageLutonFullDetail .heroCrestFixed{
+    width:50px!important;height:50px!important;max-width:50px!important;max-height:50px!important;flex:0 0 50px!important;
+  }
+}
+@media (max-width:1000px){
+  #stevenageLutonFullDetail .heroTop{display:block!important;}
+  #stevenageLutonFullDetail .heroMainFixed{width:100%!important;padding-right:0!important;min-height:auto!important;}
+  #stevenageLutonFullDetail .heroAside{
+    position:relative!important;right:auto!important;top:auto!important;transform:none!important;
+    width:100%!important;max-width:none!important;margin-top:18px!important;
+  }
+}
+@media (max-width:700px){
+  #stevenageLutonFullDetail .heroTitle{padding:12px!important;gap:8px!important;}
+  #stevenageLutonFullDetail .heroTeamLine{font-size:22px!important;white-space:normal!important;}
+  #stevenageLutonFullDetail .heroCrestFixed{
+    width:42px!important;height:42px!important;max-width:42px!important;max-height:42px!important;flex:0 0 42px!important;
+  }
+}
 </style>
 </head>
 <body>

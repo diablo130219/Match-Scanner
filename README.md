@@ -1,13 +1,10 @@
-# Match Scanner - click definitivo
+# Match Scanner - fix layout Stevenage/Luton
 
-- Home e dettagli nello stesso `index.html`
-- Click con event delegation permanente su `#matchList`
-- Stevenage - Luton Town: dettaglio completo
-- Estrela Amadora - Sporting Braga: dettaglio completo
-- Apertura scheda dall'alto
-- Ritorno alla home nella stessa posizione precedente
-- Stemmi ufficiali via TheSportsDB endpoint `/3/`
-
-Render:
-Build: `npm install && npm run build`
-Publish: `dist`
+Correzione:
+- la scheda Stevenage - Luton usa lo stesso CSS scoped della scheda Estrela - Braga approvata;
+- stemmi bloccati a dimensione corretta;
+- nomi squadra allineati in una sola riga su desktop;
+- pannello pronostici a destra;
+- responsive corretto;
+- home invariata;
+- navigazione nella stessa pagina invariata.
