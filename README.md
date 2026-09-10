@@ -1,8 +1,9 @@
-# Match Scanner - fix nomi squadre
+# Match Scanner - stemmi final fix
 
-Correzione:
-- Stevenage viene mostrato una sola volta.
-- Luton Town viene mostrato una sola volta.
-- Se uno stemma non si carica, il browser non mostra più il testo ALT davanti al nome.
-- Il logo fallito viene nascosto automaticamente.
-- Architettura multipagina invariata: index.html -> match.html -> home.
+Correzioni:
+- Estrela Amadora e Sporting Braga con URL diretti di fallback.
+- Stevenage e Luton Town con URL diretti di fallback.
+- Dimensione stemmi uniforme nel titolo partita.
+- Allineamento verticale corretto.
+- Nessun testo ALT visibile se un'immagine fallisce.
+- Architettura multipagina invariata.

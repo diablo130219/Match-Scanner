@@ -2842,6 +2842,44 @@ body{padding:26px}
   border:1px solid rgba(96,165,250,.45);
   box-shadow:0 0 16px rgba(59,130,246,.22);
 }
+
+/* ===== STEMMI DEFINITIVI ===== */
+.heroTeamLine{
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:12px!important;
+}
+.heroCrestFixed{
+  width:46px!important;
+  height:46px!important;
+  min-width:46px!important;
+  min-height:46px!important;
+  max-width:46px!important;
+  max-height:46px!important;
+  flex:0 0 46px!important;
+  object-fit:contain!important;
+  object-position:center!important;
+  display:block;
+  vertical-align:middle;
+}
+@media (max-width:1200px){
+  .heroCrestFixed{
+    width:44px!important;height:44px!important;
+    min-width:44px!important;min-height:44px!important;
+    max-width:44px!important;max-height:44px!important;
+    flex-basis:44px!important;
+  }
+}
+@media (max-width:700px){
+  .heroCrestFixed{
+    width:38px!important;height:38px!important;
+    min-width:38px!important;min-height:38px!important;
+    max-width:38px!important;max-height:38px!important;
+    flex-basis:38px!important;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -3015,7 +3053,7 @@ const teamLogoAliases = {
   "Telstar":"SC Telstar"
 };
 
-const teamLogoOverrides = {"Estrela Amadora": "https://commons.wikimedia.org/wiki/Special:Redirect/file/S%C3%ADmbolo_Estrela_da_Amadora.svg", "Stevenage": "https://www.thesportsdb.com/images/media/team/badge/6f5v0g1610644196.png", "Luton Town": "https://www.thesportsdb.com/images/media/team/badge/2rwurg1514658900.png", "Sporting Braga": "https://www.thesportsdb.com/images/media/team/badge/x1th751664353141.png"};
+const teamLogoOverrides = {"Estrela Amadora": "https://commons.wikimedia.org/wiki/Special:Redirect/file/S%C3%ADmbolo_Estrela_da_Amadora.svg", "Sporting Braga": "https://toppng.com/public/uploads/preview/sporting-clube-de-braga-vector-logo-11574300417gq81hvr0il.png", "Stevenage": "https://www.thesportsdb.com/images/media/team/badge/6f5v0g1610644196.png", "Luton Town": "https://www.vhv.rs/dpng/d/439-4390487_luton-town-fc-logo-png-luton-town-football.png"};
 const logoCache = new Map();
 
 async function getOfficialTeamLogo(name){

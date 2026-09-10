@@ -2853,6 +2853,44 @@ body{padding:26px}
   visibility:visible!important;
   opacity:1!important;
 }
+
+/* ===== STEMMI DEFINITIVI ===== */
+.heroTeamLine{
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:12px!important;
+}
+.heroCrestFixed{
+  width:46px!important;
+  height:46px!important;
+  min-width:46px!important;
+  min-height:46px!important;
+  max-width:46px!important;
+  max-height:46px!important;
+  flex:0 0 46px!important;
+  object-fit:contain!important;
+  object-position:center!important;
+  display:block;
+  vertical-align:middle;
+}
+@media (max-width:1200px){
+  .heroCrestFixed{
+    width:44px!important;height:44px!important;
+    min-width:44px!important;min-height:44px!important;
+    max-width:44px!important;max-height:44px!important;
+    flex-basis:44px!important;
+  }
+}
+@media (max-width:700px){
+  .heroCrestFixed{
+    width:38px!important;height:38px!important;
+    min-width:38px!important;min-height:38px!important;
+    max-width:38px!important;max-height:38px!important;
+    flex-basis:38px!important;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -3478,9 +3516,9 @@ body{padding:26px}
 <div class="heroMainFixed">
 <div class="badge"><span class="dot"></span> Scheda partita completa</div>
 <div class="heroTitle" id="heroMatchTitle">
-<span class="heroTeamLine"><img alt="" class="heroCrestFixed staticOfficialCrest" data-team="Estrela Amadora" id="crestHome" onerror="this.style.display='none';this.removeAttribute('src');"/><span>Estrela Amadora</span></span>
+<span class="heroTeamLine"><img alt="" class="heroCrestFixed staticOfficialCrest" data-team="Estrela Amadora" id="crestHome" data-team="Estrela Amadora" onerror="this.style.display='none';this.removeAttribute('src');"/><span>Estrela Amadora</span></span>
 <span class="heroDash">—</span>
-<span class="heroTeamLine"><img alt="" class="heroCrestFixed staticOfficialCrest" data-team="Sporting Braga" id="crestAway" onerror="this.style.display='none';this.removeAttribute('src');"/><span>Sporting Braga</span></span>
+<span class="heroTeamLine"><img alt="" class="heroCrestFixed staticOfficialCrest" data-team="Sporting Braga" id="crestAway" data-team="Sporting Braga" onerror="this.style.display='none';this.removeAttribute('src');"/><span>Sporting Braga</span></span>
 </div>
 <div class="heroMeta">
 <div class="metaChip">📅 10 settembre 2026</div>
@@ -3741,9 +3779,9 @@ body{padding:26px}
 <div class="heroMainFixed">
 <div class="badge"><span class="dot"></span> Scheda partita completa</div>
 <div class="heroTitle" id="heroMatchTitle">
-<span class="heroTeamLine"><img alt="" class="heroCrestFixed staticOfficialCrest" data-team="Stevenage" id="crestStevenage" onerror="this.style.display='none';this.removeAttribute('src');"/><span>Stevenage</span></span>
+<span class="heroTeamLine"><img alt="" class="heroCrestFixed staticOfficialCrest" data-team="Stevenage" id="crestStevenage" data-team="Stevenage" onerror="this.style.display='none';this.removeAttribute('src');"/><span>Stevenage</span></span>
 <span class="heroDash">—</span>
-<span class="heroTeamLine"><img alt="" class="heroCrestFixed staticOfficialCrest" data-team="Luton Town" id="crestLuton" onerror="this.style.display='none';this.removeAttribute('src');"/><span>Luton Town</span></span>
+<span class="heroTeamLine"><img alt="" class="heroCrestFixed staticOfficialCrest" data-team="Luton Town" id="crestLuton" data-team="Luton Town" onerror="this.style.display='none';this.removeAttribute('src');"/><span>Luton Town</span></span>
 </div>
 <div class="heroMeta">
 <div class="metaChip">📅 10 settembre 2026</div>
@@ -4011,7 +4049,7 @@ const teamLogoAliases={
   "FC Twente":"FC Twente",
   "Telstar":"SC Telstar"
 };
-const teamLogoOverrides = {"Estrela Amadora": "https://commons.wikimedia.org/wiki/Special:Redirect/file/S%C3%ADmbolo_Estrela_da_Amadora.svg", "Stevenage": "https://www.thesportsdb.com/images/media/team/badge/6f5v0g1610644196.png", "Luton Town": "https://www.thesportsdb.com/images/media/team/badge/2rwurg1514658900.png", "Sporting Braga": "https://www.thesportsdb.com/images/media/team/badge/x1th751664353141.png"};
+const teamLogoOverrides = {"Estrela Amadora": "https://commons.wikimedia.org/wiki/Special:Redirect/file/S%C3%ADmbolo_Estrela_da_Amadora.svg", "Sporting Braga": "https://toppng.com/public/uploads/preview/sporting-clube-de-braga-vector-logo-11574300417gq81hvr0il.png", "Stevenage": "https://www.thesportsdb.com/images/media/team/badge/6f5v0g1610644196.png", "Luton Town": "https://www.vhv.rs/dpng/d/439-4390487_luton-town-fc-logo-png-luton-town-football.png"};
 const logoCache=new Map();
 
 function esc(v){
@@ -4021,22 +4059,26 @@ function esc(v){
 async function getOfficialTeamLogo(team){
   if(logoCache.has(team)) return logoCache.get(team);
 
-  // 1) URL salvato nel progetto: non dipende da una ricerca API.
-  if(teamLogoOverrides && teamLogoOverrides[team]){
-    const direct = teamLogoOverrides[team];
+  const direct = (typeof teamLogoOverrides !== 'undefined' && teamLogoOverrides[team])
+    ? teamLogoOverrides[team]
+    : '';
+
+  if(direct){
     logoCache.set(team,direct);
     return direct;
   }
 
-  // 2) Fallback API per le squadre non ancora mappate.
-  const q = (typeof teamLogoAliases !== 'undefined' && teamLogoAliases[team]) ? teamLogoAliases[team] : team;
+  const q = (typeof teamLogoAliases !== 'undefined' && teamLogoAliases[team])
+    ? teamLogoAliases[team]
+    : team;
+
   try{
     const r = await fetch('https://www.thesportsdb.com/api/v1/json/3/searchteams.php?t=' + encodeURIComponent(q));
     if(!r.ok) throw new Error('logo api');
     const data = await r.json();
-    const badge = data && data.teams && data.teams[0] ? data.teams[0].strBadge : '';
-    logoCache.set(team,badge || '');
-    return badge || '';
+    const badge = data?.teams?.[0]?.strBadge || '';
+    logoCache.set(team,badge);
+    return badge;
   }catch(e){
     logoCache.set(team,'');
     return '';
