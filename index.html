@@ -2822,6 +2822,26 @@ body{padding:26px}
     width:42px!important;height:42px!important;max-width:42px!important;max-height:42px!important;flex:0 0 42px!important;
   }
 }
+
+/* ===== STEMMI: FALLBACK STABILE ===== */
+.teamCrest,.crest,.heroCrestFixed{
+  object-fit:contain;
+}
+.logoFallback{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:34px;
+  height:34px;
+  border-radius:10px;
+  background:linear-gradient(135deg,#172554,#1d4ed8);
+  color:#fff;
+  font-weight:900;
+  font-size:10px;
+  letter-spacing:.04em;
+  border:1px solid rgba(96,165,250,.45);
+  box-shadow:0 0 16px rgba(59,130,246,.22);
+}
 </style>
 </head>
 <body>
@@ -2995,6 +3015,7 @@ const teamLogoAliases = {
   "Telstar":"SC Telstar"
 };
 
+const teamLogoOverrides = {"Estrela Amadora": "https://commons.wikimedia.org/wiki/Special:Redirect/file/S%C3%ADmbolo_Estrela_da_Amadora.svg", "Stevenage": "https://www.thesportsdb.com/images/media/team/badge/6f5v0g1610644196.png", "Luton Town": "https://www.thesportsdb.com/images/media/team/badge/2rwurg1514658900.png", "Sporting Braga": "https://www.thesportsdb.com/images/media/team/badge/x1th751664353141.png"};
 const logoCache = new Map();
 
 async function getOfficialTeamLogo(name){

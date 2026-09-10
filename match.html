@@ -4013,6 +4013,7 @@ const teamLogoAliases={
   "FC Twente":"FC Twente",
   "Telstar":"SC Telstar"
 };
+const teamLogoOverrides = {"Estrela Amadora": "https://commons.wikimedia.org/wiki/Special:Redirect/file/S%C3%ADmbolo_Estrela_da_Amadora.svg", "Stevenage": "https://www.thesportsdb.com/images/media/team/badge/6f5v0g1610644196.png", "Luton Town": "https://www.thesportsdb.com/images/media/team/badge/2rwurg1514658900.png", "Sporting Braga": "https://www.thesportsdb.com/images/media/team/badge/x1th751664353141.png"};
 const logoCache=new Map();
 
 function esc(v){
@@ -4021,13 +4022,23 @@ function esc(v){
 
 async function getOfficialTeamLogo(team){
   if(logoCache.has(team)) return logoCache.get(team);
-  const q=teamLogoAliases[team]||team;
+
+  // 1) URL salvato nel progetto: non dipende da una ricerca API.
+  if(teamLogoOverrides && teamLogoOverrides[team]){
+    const direct = teamLogoOverrides[team];
+    logoCache.set(team,direct);
+    return direct;
+  }
+
+  // 2) Fallback API per le squadre non ancora mappate.
+  const q = (typeof teamLogoAliases !== 'undefined' && teamLogoAliases[team]) ? teamLogoAliases[team] : team;
   try{
-    const r=await fetch('https://www.thesportsdb.com/api/v1/json/3/searchteams.php?t='+encodeURIComponent(q));
-    const data=await r.json();
-    const badge=data?.teams?.[0]?.strBadge||'';
-    logoCache.set(team,badge);
-    return badge;
+    const r = await fetch('https://www.thesportsdb.com/api/v1/json/3/searchteams.php?t=' + encodeURIComponent(q));
+    if(!r.ok) throw new Error('logo api');
+    const data = await r.json();
+    const badge = data && data.teams && data.teams[0] ? data.teams[0].strBadge : '';
+    logoCache.set(team,badge || '');
+    return badge || '';
   }catch(e){
     logoCache.set(team,'');
     return '';
@@ -4044,7 +4055,7 @@ async function hydrateStaticOfficialCrests(root=document){
       img.src=badge;
       img.style.display='';
     }else if(!img.src){
-      img.style.display='none';
+      img.style.visibility='hidden';
     }
   }
 }

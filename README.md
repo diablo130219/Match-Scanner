@@ -1,11 +1,12 @@
-# Match Scanner - architettura corretta
+# Match Scanner - fix multipage + stemmi
 
-- index.html = esclusivamente schermata principale
-- match.html?id=... = pagina singola partita
-- navigazione nella stessa scheda/browser, nessun target=_blank
-- Torna alla home = ritorno a index.html
+Fix principali:
+- Vite configurato come progetto multipagina.
+- `index.html` e `match.html` vengono entrambi generati in `dist`.
+- Il click dalla home apre `match.html?id=...` nella stessa scheda.
+- Gli stemmi noti usano URL salvati nel progetto.
+- Per le altre squadre resta il fallback TheSportsDB.
 
-Schede complete:
-- FC Twente - Telstar
-- Estrela Amadora - Sporting Braga
-- Stevenage - Luton Town
+Render:
+- Build Command: `npm install && npm run build`
+- Publish Directory: `dist`
