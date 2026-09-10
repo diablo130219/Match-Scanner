@@ -4,8 +4,8 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
-<title>Match Scanner Premium</title>
-<meta content="Match Scanner - analisi statistiche pre-match" name="description"/>
+<title>MagicScanner</title>
+<meta content="MagicScanner - analisi statistiche pre-match" name="description"/>
 <style>
 :root{
   --bg:#f4f7fb;
@@ -3250,6 +3250,26 @@ body{padding:26px}
   }
 }
 
+
+/* ===== MAGICSCANNER HOME BANNER ===== */
+.magicBannerWrap{
+  margin-bottom:18px;
+  border-radius:30px;
+  overflow:hidden;
+  box-shadow:0 22px 44px rgba(15,23,42,.16);
+  background:#10254c;
+}
+.magicBannerImage{
+  display:block;
+  width:100%;
+  height:auto;
+  object-fit:cover;
+}
+@media(max-width:720px){
+  .magicBannerWrap{border-radius:22px;margin-bottom:16px}
+  .magicBannerImage{min-height:220px;object-fit:cover;object-position:center}
+}
+
 </style>
 </head>
 <body>
@@ -3258,23 +3278,15 @@ body{padding:26px}
 <div class="topbar">
 <div class="brand">
 <div class="brandIcon"></div>
-<div>Match Scanner <span style="color:#2563eb">Premium</span></div>
+<div>MagicScanner</div>
 </div>
 <div class="topActions">
 <div class="softBtn">Pre-match</div>
 <div class="softBtn">SoccerSTATS workflow</div>
 </div>
 </div>
-<section class="hero heroSingle">
-<div class="heroMain">
-<div class="eyebrow"><span class="eyebrowDot"></span> Dashboard giornaliera</div>
-<div class="heroTitle">Analisi pulita.<br/><span class="accent">Segnali chiari.</span></div>
-<div class="heroChips">
-<div class="heroChip">📊 Mercati consigliati</div>
-<div class="heroChip">⚡ Layout pulito</div>
-<div class="heroChip">🎯 Focus pre-match</div>
-</div>
-</div>
+<section class="magicBannerWrap" aria-label="Banner MagicScanner">
+<img class="magicBannerImage" src="assets/magicscanner-home-banner.jpg" alt="Dashboard giornaliera - Analisi pulita, segnali chiari"/>
 </section>
 <section class="dateSelectorBox">
 <div class="dateSelectorHead">
