@@ -1,8 +1,17 @@
-# Match Scanner - titoli allargati
+# Match Scanner - Template Master Definitivo
 
-Fix:
-- nomi completi nelle schede partita desktop;
-- niente puntini su Luton Town o altri nomi medi/lunghi;
-- blocco titolo più largo;
-- stemmi e nomi restano sulla stessa linea;
-- su mobile resta il fallback con ellissi solo se lo spazio è insufficiente.
+Da questa versione tutte le schede complete usano una sola geometria hero:
+
+- stessa larghezza hero
+- stessa posizione badge
+- stessa capsula titolo
+- stessa dimensione stemmi
+- stessi spazi stemma/nome/trattino
+- stesso font
+- stessa posizione meta
+- stesso pannello pronostici
+- stessa responsività
+
+Template master: geometria Estrela Amadora - Sporting Braga.
+
+Le future partite devono cambiare solo dati, non struttura.

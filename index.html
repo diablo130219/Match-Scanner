@@ -3041,6 +3041,215 @@ body{padding:26px}
   }
 }
 
+
+/* ===== TEMPLATE MASTER DEFINITIVO PER TUTTE LE SCHEDE ===== */
+#twenteFullDetail .hero,
+#estrelaBragaFullDetail .hero,
+#stevenageLutonFullDetail .hero{
+  position:relative!important;
+  overflow:hidden!important;
+  min-height:250px!important;
+  border-radius:28px!important;
+}
+
+#twenteFullDetail .heroTop,
+#estrelaBragaFullDetail .heroTop,
+#stevenageLutonFullDetail .heroTop{
+  display:flex!important;
+  align-items:stretch!important;
+  justify-content:space-between!important;
+  gap:24px!important;
+  min-height:250px!important;
+}
+
+#twenteFullDetail .heroMainFixed,
+#estrelaBragaFullDetail .heroMainFixed,
+#stevenageLutonFullDetail .heroMainFixed{
+  width:calc(100% - 420px)!important;
+  min-height:250px!important;
+  padding:26px 10px 24px 26px!important;
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:center!important;
+  justify-content:center!important;
+  box-sizing:border-box!important;
+  min-width:0!important;
+}
+
+#twenteFullDetail .heroMainFixed .heroBadge,
+#estrelaBragaFullDetail .heroMainFixed .heroBadge,
+#stevenageLutonFullDetail .heroMainFixed .heroBadge{
+  margin-bottom:16px!important;
+  align-self:center!important;
+}
+
+#twenteFullDetail .heroTitle,
+#estrelaBragaFullDetail .heroTitle,
+#stevenageLutonFullDetail .heroTitle{
+  width:min(100%,900px)!important;
+  max-width:900px!important;
+  margin:0 auto!important;
+  padding:14px 18px!important;
+  border-radius:20px!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  box-sizing:border-box!important;
+}
+
+#twenteFullDetail .heroTeamLine,
+#estrelaBragaFullDetail .heroTeamLine,
+#stevenageLutonFullDetail .heroTeamLine{
+  display:grid!important;
+  grid-template-columns:50px max-content auto 50px max-content!important;
+  align-items:center!important;
+  justify-content:center!important;
+  column-gap:12px!important;
+  width:auto!important;
+  max-width:100%!important;
+  font-size:clamp(28px,2.35vw,44px)!important;
+  line-height:1!important;
+  letter-spacing:-1.1px!important;
+  font-weight:900!important;
+  white-space:nowrap!important;
+  text-align:center!important;
+}
+
+#twenteFullDetail .heroTeamLine .heroCrestFixed,
+#estrelaBragaFullDetail .heroTeamLine .heroCrestFixed,
+#stevenageLutonFullDetail .heroTeamLine .heroCrestFixed{
+  width:50px!important;
+  height:50px!important;
+  min-width:50px!important;
+  min-height:50px!important;
+  max-width:50px!important;
+  max-height:50px!important;
+  object-fit:contain!important;
+  object-position:center!important;
+  margin:0!important;
+  display:block!important;
+  align-self:center!important;
+  justify-self:center!important;
+  flex:none!important;
+}
+
+#twenteFullDetail .heroTeamLine .heroDash,
+#estrelaBragaFullDetail .heroTeamLine .heroDash,
+#stevenageLutonFullDetail .heroTeamLine .heroDash{
+  font-size:.68em!important;
+  line-height:1!important;
+  opacity:.72!important;
+  margin:0 2px!important;
+  justify-self:center!important;
+}
+
+#twenteFullDetail .heroTeamLine > span:not(.heroDash),
+#estrelaBragaFullDetail .heroTeamLine > span:not(.heroDash),
+#stevenageLutonFullDetail .heroTeamLine > span:not(.heroDash){
+  overflow:visible!important;
+  text-overflow:clip!important;
+  white-space:nowrap!important;
+  max-width:none!important;
+}
+
+#twenteFullDetail .heroMeta,
+#estrelaBragaFullDetail .heroMeta,
+#stevenageLutonFullDetail .heroMeta{
+  margin-top:18px!important;
+  display:flex!important;
+  justify-content:center!important;
+  align-items:center!important;
+  gap:9px!important;
+  flex-wrap:wrap!important;
+}
+
+#twenteFullDetail .heroAside,
+#estrelaBragaFullDetail .heroAside,
+#stevenageLutonFullDetail .heroAside{
+  width:380px!important;
+  max-width:380px!important;
+  margin:18px 18px 18px 0!important;
+  align-self:stretch!important;
+  display:flex!important;
+  flex-direction:column!important;
+  justify-content:center!important;
+  box-sizing:border-box!important;
+}
+
+@media(max-width:1200px){
+  #twenteFullDetail .heroMainFixed,
+  #estrelaBragaFullDetail .heroMainFixed,
+  #stevenageLutonFullDetail .heroMainFixed{
+    width:calc(100% - 390px)!important;
+    padding-left:20px!important;
+  }
+  #twenteFullDetail .heroAside,
+  #estrelaBragaFullDetail .heroAside,
+  #stevenageLutonFullDetail .heroAside{
+    width:350px!important;
+    max-width:350px!important;
+  }
+  #twenteFullDetail .heroTeamLine,
+  #estrelaBragaFullDetail .heroTeamLine,
+  #stevenageLutonFullDetail .heroTeamLine{
+    grid-template-columns:44px max-content auto 44px max-content!important;
+    font-size:clamp(24px,2vw,38px)!important;
+    column-gap:10px!important;
+  }
+  #twenteFullDetail .heroTeamLine .heroCrestFixed,
+  #estrelaBragaFullDetail .heroTeamLine .heroCrestFixed,
+  #stevenageLutonFullDetail .heroTeamLine .heroCrestFixed{
+    width:44px!important;height:44px!important;
+    min-width:44px!important;min-height:44px!important;
+    max-width:44px!important;max-height:44px!important;
+  }
+}
+
+@media(max-width:1000px){
+  #twenteFullDetail .heroTop,
+  #estrelaBragaFullDetail .heroTop,
+  #stevenageLutonFullDetail .heroTop{
+    display:block!important;
+  }
+  #twenteFullDetail .heroMainFixed,
+  #estrelaBragaFullDetail .heroMainFixed,
+  #stevenageLutonFullDetail .heroMainFixed{
+    width:100%!important;
+    min-height:auto!important;
+    padding:24px 18px!important;
+  }
+  #twenteFullDetail .heroAside,
+  #estrelaBragaFullDetail .heroAside,
+  #stevenageLutonFullDetail .heroAside{
+    width:auto!important;
+    max-width:none!important;
+    margin:0 18px 18px!important;
+  }
+}
+
+@media(max-width:760px){
+  #twenteFullDetail .heroTitle,
+  #estrelaBragaFullDetail .heroTitle,
+  #stevenageLutonFullDetail .heroTitle{
+    width:100%!important;
+    padding:12px!important;
+  }
+  #twenteFullDetail .heroTeamLine,
+  #estrelaBragaFullDetail .heroTeamLine,
+  #stevenageLutonFullDetail .heroTeamLine{
+    grid-template-columns:38px minmax(0,1fr) auto 38px minmax(0,1fr)!important;
+    column-gap:8px!important;
+    font-size:19px!important;
+    width:100%!important;
+  }
+  #twenteFullDetail .heroTeamLine > span:not(.heroDash),
+  #estrelaBragaFullDetail .heroTeamLine > span:not(.heroDash),
+  #stevenageLutonFullDetail .heroTeamLine > span:not(.heroDash){
+    overflow:hidden!important;
+    text-overflow:ellipsis!important;
+  }
+}
+
 </style>
 </head>
 <body>
