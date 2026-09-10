@@ -5,7 +5,7 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <title>Match Scanner Premium</title>
-<meta name="description" content="Match Scanner - analisi statistiche pre-match">
+<meta content="Match Scanner - analisi statistiche pre-match" name="description"/>
 <style>
 :root{
   --bg:#f4f7fb;
@@ -2467,6 +2467,104 @@ body{padding:26px}
   .dateRail{grid-template-columns:repeat(2,minmax(0,1fr)) !important;}
 }
 
+
+/* ===== DETTAGLIO ESTRELA-BRAGA NELLA STESSA PAGINA ===== */
+#estrelaBragaFullDetail{display:none;width:100%}
+#estrelaBragaFullDetail > .container{max-width:none;margin:0;padding:0}
+#estrelaBragaFullDetail .hero{margin-top:0;margin-bottom:18px}
+#genericDetail{width:100%}
+
+/* ===== FIX HERO: usa struttura originale senza rompere pageGrid ===== */
+#estrelaBragaFullDetail .heroTop{display:block!important;position:relative!important;min-height:250px!important}
+#estrelaBragaFullDetail .heroMainFixed{
+  width:calc(100% - 390px);min-height:235px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;
+  position:relative;z-index:2
+}
+#estrelaBragaFullDetail .heroTitle{
+  display:flex!important;align-items:center!important;justify-content:center!important;
+  gap:20px!important;white-space:nowrap!important;width:auto!important;max-width:100%!important;
+  padding:16px 22px!important;margin-top:15px!important;border-radius:25px!important;
+  background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.025))!important;
+  border:1px solid rgba(255,255,255,.11)!important;
+  box-shadow:0 18px 42px rgba(0,0,0,.15)!important;
+  backdrop-filter:blur(10px)
+}
+#estrelaBragaFullDetail .heroTeamLine{display:inline-flex;align-items:center;gap:12px;font-size:clamp(34px,3.7vw,56px);font-weight:950;letter-spacing:-1.7px}
+#estrelaBragaFullDetail .heroCrestFixed{width:66px;height:66px;object-fit:contain;filter:drop-shadow(0 8px 14px rgba(0,0,0,.3))}
+#estrelaBragaFullDetail .heroDash{font-size:30px;font-weight:900;opacity:.55}
+#estrelaBragaFullDetail .heroMeta{justify-content:center!important;margin-top:22px!important}
+#estrelaBragaFullDetail .heroAside{
+  position:absolute!important;right:0!important;top:50%!important;transform:translateY(-50%)!important;
+  width:360px!important;min-width:360px!important;max-width:360px!important;z-index:5!important
+}
+#estrelaBragaFullDetail .heroPickRow{display:grid;grid-template-columns:10px 1fr;gap:10px;align-items:center;padding:11px 0;border-top:1px solid rgba(255,255,255,.08)}
+#estrelaBragaFullDetail .heroPickRow:first-of-type{border-top:0}
+#estrelaBragaFullDetail .heroPickRow small{display:block;font-size:9px;text-transform:uppercase;letter-spacing:.65px;color:#b7cbe3;font-weight:900}
+#estrelaBragaFullDetail .heroPickRow b{display:block;margin-top:2px;font-size:14px}
+#estrelaBragaFullDetail .heroPickDot{width:8px;height:8px;border-radius:50%;background:#42d6a4;box-shadow:0 0 14px rgba(66,214,164,.55)}
+#estrelaBragaFullDetail .heroPickDot.secondary{background:#59a9ff;box-shadow:0 0 14px rgba(89,169,255,.55)}
+#estrelaBragaFullDetail .heroPickDot.alternative{background:#f3b84c;box-shadow:0 0 14px rgba(243,184,76,.55)}
+@media(max-width:1000px){
+  #estrelaBragaFullDetail .heroMainFixed{width:100%!important;min-height:auto!important}
+  #estrelaBragaFullDetail .heroAside{position:relative!important;right:auto!important;top:auto!important;transform:none!important;width:100%!important;min-width:0!important;max-width:none!important;margin-top:18px!important}
+  #estrelaBragaFullDetail .heroTitle{white-space:normal!important;flex-wrap:wrap!important}
+}
+@media(max-width:700px){
+  #estrelaBragaFullDetail .heroTeamLine{font-size:27px}
+  #estrelaBragaFullDetail .heroCrestFixed{width:48px;height:48px}
+}
+
+/* Testata risultati: niente W/D duplicate accanto al nome */
+#estrelaBragaFullDetail .resultsTeamHead{
+  justify-content:flex-start !important;
+}
+#estrelaBragaFullDetail .resultsTeamHead .teamIdentity{
+  width:100%;
+}
+
+/* ===== FIX OVERFLOW TITOLO HERO ===== */
+#estrelaBragaFullDetail .heroMainFixed{
+  width:calc(100% - 430px)!important;
+  min-height:235px!important;
+  padding-right:8px!important;
+}
+#estrelaBragaFullDetail .heroTitle{
+  max-width:100%!important;
+  width:auto!important;
+  gap:14px!important;
+  padding:14px 18px!important;
+}
+#estrelaBragaFullDetail .heroTeamLine{
+  min-width:0!important;
+  gap:10px!important;
+  font-size:clamp(28px,2.75vw,46px)!important;
+  letter-spacing:-1.35px!important;
+  line-height:1!important;
+}
+#estrelaBragaFullDetail .heroCrestFixed{
+  width:56px!important;
+  height:56px!important;
+  flex:0 0 56px!important;
+}
+#estrelaBragaFullDetail .heroDash{
+  font-size:24px!important;
+  flex:0 0 auto!important;
+}
+
+@media (max-width:1200px){
+  #estrelaBragaFullDetail .heroMainFixed{width:calc(100% - 400px)!important;}
+  #estrelaBragaFullDetail .heroTeamLine{font-size:clamp(24px,2.45vw,40px)!important;}
+  #estrelaBragaFullDetail .heroCrestFixed{width:50px!important;height:50px!important;flex:0 0 50px!important;}
+}
+
+@media (max-width:1000px){
+  #estrelaBragaFullDetail .heroMainFixed{
+    width:100%!important;
+    padding-right:0!important;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -2547,8 +2645,8 @@ body{padding:26px}
 <div class="listMeta" id="listMeta">0 partite</div>
 </div>
 <div class="listWrap" id="matchList"></div>
-</div>
-</section>
+</section></div>
+
 <div class="footerNote">
       Workflow attuale: selezioni la partita dalla home, poi mi invii la pagina completa SoccerSTATS per aggiungere
       timing, forma recente, corner e H2H nel dettaglio.
@@ -2564,46 +2662,39 @@ body{padding:26px}
 <div style="position:relative;z-index:1;min-width:0">
 <div class="badge"><span class="dot"></span> Scheda partita completa</div>
 <div class="heroTitle" id="twenteHeroTitle"></div>
-
 </div>
-
 <div class="heroAside predictionPanel" style="position:relative;z-index:1">
-  <div class="predictionHeader">
-    <div>
-      <div class="predictionEyebrow">PRONOSTICI PARTITA</div>
-      <div class="predictionTitle">Le 3 letture principali</div>
-    </div>
-  </div>
-
-  <div class="predictionRows">
-    <div class="predictionRow">
-      <div class="predictionDot dotMain"></div>
-      <div class="predictionText">
-        <span class="predictionLabel">Più certo</span>
-        <strong>Over 2.5 gol</strong>
-      </div>
-    </div>
-
-    <div class="predictionRow">
-      <div class="predictionDot dotSecondary"></div>
-      <div class="predictionText">
-        <span class="predictionLabel">Secondario</span>
-        <strong>Goal / Entrambe segnano</strong>
-      </div>
-    </div>
-
-    <div class="predictionRow">
-      <div class="predictionDot dotAlternative"></div>
-      <div class="predictionText">
-        <span class="predictionLabel">Alternativa · più aggressiva</span>
-        <strong>Over 3.5 gol</strong>
-      </div>
-    </div>
-  </div>
-
-  <div class="predictionFoot">Lettura statistica pre-match sui dati disponibili.</div>
+<div class="predictionHeader">
+<div>
+<div class="predictionEyebrow">PRONOSTICI PARTITA</div>
+<div class="predictionTitle">Le 3 letture principali</div>
 </div>
-
+</div>
+<div class="predictionRows">
+<div class="predictionRow">
+<div class="predictionDot dotMain"></div>
+<div class="predictionText">
+<span class="predictionLabel">Più certo</span>
+<strong>Over 2.5 gol</strong>
+</div>
+</div>
+<div class="predictionRow">
+<div class="predictionDot dotSecondary"></div>
+<div class="predictionText">
+<span class="predictionLabel">Secondario</span>
+<strong>Goal / Entrambe segnano</strong>
+</div>
+</div>
+<div class="predictionRow">
+<div class="predictionDot dotAlternative"></div>
+<div class="predictionText">
+<span class="predictionLabel">Alternativa · più aggressiva</span>
+<strong>Over 3.5 gol</strong>
+</div>
+</div>
+</div>
+<div class="predictionFoot">Lettura statistica pre-match sui dati disponibili.</div>
+</div>
 </div>
 </section>
 <div class="pageGrid">
@@ -3201,6 +3292,8 @@ function confClass(c){
 
 
 const teamLogoAliases = {
+  "Estrela Amadora":"CF Estrela da Amadora",
+  "Sporting Braga":"SC Braga",
   "QP Rangers":"Queens Park Rangers",
   "Rangers":"Rangers FC",
   "D. de Belgrano":"Defensores de Belgrano",
@@ -3508,27 +3601,38 @@ function openDetail(id){
   const m = matches.find(x => x.id === id);
   if(!m) return;
 
-  if(m.home === 'Estrela Amadora' && m.away === 'Sporting Braga'){
-    window.location.href = 'match-detail.html?id=' + encodeURIComponent(m.id);
-    return;
+  const mainView = document.getElementById('mainView');
+  const detailView = document.getElementById('detailView');
+  const twenteDetail = document.getElementById('twenteFullDetail');
+  const estrelaDetail = document.getElementById('estrelaBragaFullDetail');
+  const genericDetail = document.getElementById('genericDetail');
+
+  mainView.style.display = 'none';
+  detailView.classList.add('show');
+
+  if(twenteDetail) twenteDetail.style.display = 'none';
+  if(estrelaDetail) estrelaDetail.style.display = 'none';
+  if(genericDetail){
+    genericDetail.style.display = 'none';
+    genericDetail.innerHTML = '';
   }
 
-  document.getElementById('mainView').style.display = 'none';
-  document.getElementById('detailView').classList.add('show');
-  const full = document.getElementById('twenteFullDetail');
-  const generic = document.getElementById('genericDetail');
-
-  const isTwente = (m.home === 'FC Twente' && m.away === 'Telstar');
+  const isTwente = m.home === 'FC Twente' && m.away === 'Telstar';
+  const isEstrelaBraga = m.home === 'Estrela Amadora' && m.away === 'Sporting Braga';
 
   if(isTwente){
-    full.style.display = 'block';
-    generic.innerHTML = '';
+    twenteDetail.style.display = 'block';
     initTwenteHeroTitle();
-hydrateStaticOfficialCrests(document);
+    hydrateStaticOfficialCrests(twenteDetail);
     activateDetailTabs();
-  } else {
-    full.style.display = 'none';
-    generic.innerHTML = `
+  }
+  else if(isEstrelaBraga){
+    estrelaDetail.style.display = 'block';
+    hydrateStaticOfficialCrests(estrelaDetail);
+  }
+  else{
+    genericDetail.style.display = 'block';
+    genericDetail.innerHTML = `
       <div class="detailHero">
         <div class="detailMeta">${esc(m.league)} · ${esc(m.time)} · PRE-MATCH</div>
         <div class="detailName">${matchTitleWithCrests(m.home, m.away, "detail")}</div>
@@ -3538,7 +3642,6 @@ hydrateStaticOfficialCrests(document);
           <div class="detailRecoHelp">${esc(m.summary || '')}</div>
         </div>
       </div>
-
       <div class="detailGrid">
         <div class="detailCard">
           <div class="detailCardTitle">Statistiche generali</div>
@@ -3547,8 +3650,8 @@ hydrateStaticOfficialCrests(document);
         <div class="detailCard">
           <div class="detailCardTitle">Dettaglio completo non ancora caricato</div>
           <div class="notice">
-            Per questa partita sono disponibili solo i dati generali della schermata principale.
-            Quando mi invii la pagina completa SoccerSTATS, verrà mostrata una scheda completa come FC Twente — Telstar.
+            Per questa partita sono disponibili per ora i dati generali della home.
+            Quando carichiamo la pagina completa SoccerSTATS, questa stessa schermata verrà popolata con il layout completo.
           </div>
         </div>
       </div>
@@ -3559,8 +3662,22 @@ hydrateStaticOfficialCrests(document);
 }
 
 document.getElementById('backBtn').onclick = () => {
-  document.getElementById('detailView').classList.remove('show');
-  document.getElementById('mainView').style.display = 'block';
+  const detailView = document.getElementById('detailView');
+  const mainView = document.getElementById('mainView');
+  const twenteDetail = document.getElementById('twenteFullDetail');
+  const estrelaDetail = document.getElementById('estrelaBragaFullDetail');
+  const genericDetail = document.getElementById('genericDetail');
+
+  detailView.classList.remove('show');
+  mainView.style.display = 'block';
+
+  if(twenteDetail) twenteDetail.style.display = 'none';
+  if(estrelaDetail) estrelaDetail.style.display = 'none';
+  if(genericDetail){
+    genericDetail.style.display = 'none';
+    genericDetail.innerHTML = '';
+  }
+
   window.scrollTo({top:0,behavior:'smooth'});
 };
 
@@ -3641,5 +3758,268 @@ renderCounts();
 renderList();
 initTwenteHeroTitle();
 </script>
-</div></div></div></div></body>
+</div><div id="estrelaBragaFullDetail" style="display:none"><div class="container">
+<section class="hero">
+<div class="heroTop">
+<div class="heroMainFixed">
+<div class="badge"><span class="dot"></span> Scheda partita completa</div>
+<div class="heroTitle" id="heroMatchTitle">
+<span class="heroTeamLine"><img alt="Estrela Amadora" class="heroCrestFixed" id="crestHome"/><span>Estrela Amadora</span></span>
+<span class="heroDash">—</span>
+<span class="heroTeamLine"><img alt="Sporting Braga" class="heroCrestFixed" id="crestAway"/><span>Sporting Braga</span></span>
+</div>
+<div class="heroMeta">
+<div class="metaChip">📅 10 settembre 2026</div>
+<div class="metaChip">🕘 21:15</div>
+<div class="metaChip">🇵🇹 Liga Portugal</div>
+</div>
+</div>
+<div class="heroAside">
+<div class="heroAsideLabel">Pronostici partita</div>
+<div class="heroPickRow"><span class="heroPickDot main"></span><div><small>Più certo</small><b>Over 2.5 gol</b></div></div>
+<div class="heroPickRow"><span class="heroPickDot secondary"></span><div><small>Secondario</small><b>Goal / Entrambe segnano</b></div></div>
+<div class="heroPickRow"><span class="heroPickDot alternative"></span><div><small>Alternativa · più aggressiva</small><b>Over 3.5 gol</b></div></div>
+<div class="heroAsideSub">Lettura statistica pre-match basata sui dati disponibili.</div>
+</div>
+</div>
+</section>
+<div class="pageGrid">
+<div class="stack">
+<section class="card">
+<h2 class="cardTitle">Percentuali 1X2 · stima interna</h2>
+<div class="cardSub">Indicatore interno elaborato sui dati disponibili; non è una percentuale ufficiale SoccerSTATS.</div>
+<div class="segmentWrap">
+<div class="segmentBar">
+<div class="segment seg1" style="width:24%">1</div>
+<div class="segment segX" style="width:27%">X</div>
+<div class="segment seg2" style="width:49%">2</div>
+</div>
+<div class="legend">
+<span><i class="legend1"></i> Segno 1 (24%)</span>
+<span><i class="legendX"></i> Segno X (27%)</span>
+<span><i class="legend2"></i> Segno 2 (49%)</span>
+</div>
+<div class="note">Stima interna indicativa, non probabilità calibrata e non dato SoccerSTATS.</div>
+</div>
+</section>
+<section class="card">
+<div class="formGrid">
+<div>
+<h2 class="cardTitle">Stato forma</h2>
+<div class="cardSub">Progressione ricostruita con regola vittoria +2, pareggio 0, sconfitta -1.</div>
+<div class="chartWrap">
+<svg id="formChart" preserveaspectratio="none" viewbox="0 0 520 250" width="100%">
+<line stroke="#e8eef5" x1="40" x2="505" y1="30" y2="30"></line>
+<line stroke="#e8eef5" x1="40" x2="505" y1="85" y2="85"></line>
+<line stroke="#e8eef5" x1="40" x2="505" y1="140" y2="140"></line>
+<line stroke="#e8eef5" x1="40" x2="505" y1="195" y2="195"></line>
+<polyline fill="none" points="75,195 205,195 335,85 465,85" stroke="#3e9bdd" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"></polyline>
+<polyline fill="none" points="75,195 270,85 465,30" stroke="#ec5f7a" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"></polyline>
+<circle cx="75" cy="195" fill="#fff" r="5" stroke="#3e9bdd" stroke-width="3"></circle>
+<circle cx="205" cy="195" fill="#fff" r="5" stroke="#3e9bdd" stroke-width="3"></circle>
+<circle cx="335" cy="85" fill="#fff" r="5" stroke="#3e9bdd" stroke-width="3"></circle>
+<circle cx="465" cy="85" fill="#fff" r="5" stroke="#3e9bdd" stroke-width="3"></circle>
+<circle cx="75" cy="195" fill="#fff" r="5" stroke="#ec5f7a" stroke-width="3"></circle>
+<circle cx="270" cy="85" fill="#fff" r="5" stroke="#ec5f7a" stroke-width="3"></circle>
+<circle cx="465" cy="30" fill="#fff" r="5" stroke="#ec5f7a" stroke-width="3"></circle>
+</svg>
+<div class="chartLegend"><span><i class="c1"></i>Estrela Amadora</span><span><i class="c2"></i>Sporting Braga</span></div>
+</div>
+</div>
+<div>
+<h2 class="cardTitle">Lettura forma</h2>
+<div class="cardSub">Riassunto immediato del trend recente.</div>
+<div class="summaryPills">
+<div class="pill">Estrela: 1 vittoria, 3 pareggi, 0 sconfitte</div>
+<div class="pill">Braga: 2 vittorie, 1 pareggio, 0 sconfitte</div>
+<div class="pill">Estrela: 9 gol fatti, 8 subiti</div>
+<div class="pill">Braga: 5 gol fatti, 3 subiti</div>
+<div class="pill">PPG split: Estrela casa 1.00 · Braga fuori 2.00</div>
+</div>
+<div class="note" style="margin-top:14px">Braga arriva con rendimento generale migliore; Estrela ha prodotto gare molto aperte e non ha ancora perso nelle quattro partite riportate.</div>
+</div>
+</div>
+</section>
+<section class="card">
+<h2 class="cardTitle">Precedenti storici</h2>
+<div class="cardSub">Nel file importato non sono presenti risultati H2H storici sufficienti per una lettura affidabile.</div>
+<div class="note">Nessun dato inventato: la sezione resta neutra finché la fonte non restituisce i precedenti.</div>
+</section>
+<section class="card">
+<h2 class="cardTitle">Ultimi risultati campionato</h2>
+<div class="cardSub">Forma recente resa come dashboard: sequenza, risultati e rendimento a colpo d'occhio.</div>
+<div class="resultsGrid">
+<div class="resultsTeamCard">
+<div class="resultsTeamHead">
+<div class="teamIdentity"><div class="teamOrb">EST</div><div><div class="resultsTeamName">Estrela Amadora</div><div class="resultsTeamMeta">ultime 4 gare di campionato</div></div></div>
+</div>
+<div class="formHeadline"><span><b>6 punti</b> nelle ultime 4</span><span><b>9 GF</b> · <b>8 GA</b></span></div>
+<div class="resultsList">
+<div class="resultRow2 draw"><div class="resultDate">05/09</div><div class="resultMatch">Estrela Amadora - Famalicao</div><div class="resultScore">2-2</div><div class="resultTag2 D">D</div></div>
+<div class="resultRow2 win"><div class="resultDate">30/08</div><div class="resultMatch">Nacional - Estrela Amadora</div><div class="resultScore">2-3</div><div class="resultTag2 W">W</div></div>
+<div class="resultRow2 draw"><div class="resultDate">15/08</div><div class="resultMatch">Alverca - Estrela Amadora</div><div class="resultScore">2-2</div><div class="resultTag2 D">D</div></div>
+<div class="resultRow2 draw"><div class="resultDate">08/08</div><div class="resultMatch">Estrela Amadora - Sporting CP</div><div class="resultScore">2-2</div><div class="resultTag2 D">D</div></div>
+</div>
+<div class="resultsSummary"><div class="summaryStat"><div class="n" style="color:#0f9f6e">1</div><div class="l">Vittorie</div></div><div class="summaryStat"><div class="n" style="color:#d99110">3</div><div class="l">Pareggi</div></div><div class="summaryStat"><div class="n" style="color:#dc4c64">0</div><div class="l">Sconfitte</div></div></div>
+</div>
+<div class="resultsTeamCard awayTheme">
+<div class="resultsTeamHead">
+<div class="teamIdentity"><div class="teamOrb">SBR</div><div><div class="resultsTeamName">Sporting Braga</div><div class="resultsTeamMeta">ultime 3 gare di campionato</div></div></div>
+</div>
+<div class="formHeadline"><span><b>7 punti</b> nelle ultime 3</span><span><b>5 GF</b> · <b>3 GA</b></span></div>
+<div class="resultsList">
+<div class="resultRow2 win"><div class="resultDate">05/09</div><div class="resultMatch">Alverca - Sporting Braga</div><div class="resultScore">1-2</div><div class="resultTag2 W">W</div></div>
+<div class="resultRow2 win"><div class="resultDate">31/08</div><div class="resultMatch">Sporting Braga - Guimaraes</div><div class="resultScore">1-0</div><div class="resultTag2 W">W</div></div>
+<div class="resultRow2 draw"><div class="resultDate">09/08</div><div class="resultMatch">Moreirense - Sporting Braga</div><div class="resultScore">2-2</div><div class="resultTag2 D">D</div></div>
+</div>
+<div class="resultsSummary"><div class="summaryStat"><div class="n" style="color:#0f9f6e">2</div><div class="l">Vittorie</div></div><div class="summaryStat"><div class="n" style="color:#d99110">1</div><div class="l">Pareggi</div></div><div class="summaryStat"><div class="n" style="color:#dc4c64">0</div><div class="l">Sconfitte</div></div></div>
+</div>
+</div>
+</section>
+<section class="card">
+<h2 class="cardTitle">Goal timing</h2>
+<div class="cardSub">Split specifici: Estrela Amadora in casa e Sporting Braga in trasferta.</div>
+<div class="timingBetterGrid">
+<div class="timingPanel">
+<div class="timingPanelHead"><div><div class="timingPanelTitle">Estrela Amadora · casa</div><div class="timingPanelSub">2 gare interne disponibili</div></div></div>
+<div class="timingSlotGrid">
+<div class="timingSlotCard"><div class="timingSlotLabel">0-15</div><div class="timingStatBox gf timingZero"><div class="timingStatLabel">Gol fatti</div><div class="timingStatVal">0</div></div><div class="timingStatBox ga"><div class="timingStatLabel">Gol subiti</div><div class="timingStatVal">1</div></div></div>
+<div class="timingSlotCard"><div class="timingSlotLabel">16-30</div><div class="timingStatBox gf timingZero"><div class="timingStatLabel">Gol fatti</div><div class="timingStatVal">0</div></div><div class="timingStatBox ga timingZero"><div class="timingStatLabel">Gol subiti</div><div class="timingStatVal">0</div></div></div>
+<div class="timingSlotCard"><div class="timingSlotLabel">31-45</div><div class="timingStatBox gf timingZero"><div class="timingStatLabel">Gol fatti</div><div class="timingStatVal">0</div></div><div class="timingStatBox ga timingZero"><div class="timingStatLabel">Gol subiti</div><div class="timingStatVal">0</div></div></div>
+<div class="timingSlotCard"><div class="timingSlotLabel">46-60</div><div class="timingStatBox gf"><div class="timingStatLabel">Gol fatti</div><div class="timingStatVal">1</div></div><div class="timingStatBox ga"><div class="timingStatLabel">Gol subiti</div><div class="timingStatVal">2</div></div></div>
+<div class="timingSlotCard"><div class="timingSlotLabel">61-75</div><div class="timingStatBox gf"><div class="timingStatLabel">Gol fatti</div><div class="timingStatVal">2</div></div><div class="timingStatBox ga timingZero"><div class="timingStatLabel">Gol subiti</div><div class="timingStatVal">0</div></div></div>
+<div class="timingSlotCard"><div class="timingSlotLabel">76-90</div><div class="timingStatBox gf"><div class="timingStatLabel">Gol fatti</div><div class="timingStatVal">1</div></div><div class="timingStatBox ga"><div class="timingStatLabel">Gol subiti</div><div class="timingStatVal">1</div></div></div>
+</div>
+<div class="note" style="margin-top:12px">Media minuto GF 70' · GA 47'.</div>
+</div>
+<div class="timingPanel">
+<div class="timingPanelHead"><div><div class="timingPanelTitle">Sporting Braga · trasferta</div><div class="timingPanelSub">2 gare esterne disponibili</div></div></div>
+<div class="timingSlotGrid">
+<div class="timingSlotCard"><div class="timingSlotLabel">0-15</div><div class="timingStatBox gf"><div class="timingStatLabel">Gol fatti</div><div class="timingStatVal">1</div></div><div class="timingStatBox ga"><div class="timingStatLabel">Gol subiti</div><div class="timingStatVal">1</div></div></div>
+<div class="timingSlotCard"><div class="timingSlotLabel">16-30</div><div class="timingStatBox gf timingZero"><div class="timingStatLabel">Gol fatti</div><div class="timingStatVal">0</div></div><div class="timingStatBox ga"><div class="timingStatLabel">Gol subiti</div><div class="timingStatVal">1</div></div></div>
+<div class="timingSlotCard"><div class="timingSlotLabel">31-45</div><div class="timingStatBox gf timingZero"><div class="timingStatLabel">Gol fatti</div><div class="timingStatVal">0</div></div><div class="timingStatBox ga timingZero"><div class="timingStatLabel">Gol subiti</div><div class="timingStatVal">0</div></div></div>
+<div class="timingSlotCard"><div class="timingSlotLabel">46-60</div><div class="timingStatBox gf"><div class="timingStatLabel">Gol fatti</div><div class="timingStatVal">2</div></div><div class="timingStatBox ga timingZero"><div class="timingStatLabel">Gol subiti</div><div class="timingStatVal">0</div></div></div>
+<div class="timingSlotCard"><div class="timingSlotLabel">61-75</div><div class="timingStatBox gf"><div class="timingStatLabel">Gol fatti</div><div class="timingStatVal">1</div></div><div class="timingStatBox ga timingZero"><div class="timingStatLabel">Gol subiti</div><div class="timingStatVal">0</div></div></div>
+<div class="timingSlotCard"><div class="timingSlotLabel">76-90</div><div class="timingStatBox gf timingZero"><div class="timingStatLabel">Gol fatti</div><div class="timingStatVal">0</div></div><div class="timingStatBox ga"><div class="timingStatLabel">Gol subiti</div><div class="timingStatVal">1</div></div></div>
+</div>
+<div class="note" style="margin-top:12px">Media minuto GF 45' · GA 42'.</div>
+</div>
+</div>
+</section>
+</div>
+<div class="stack">
+<section class="card">
+<h2 class="cardTitle">Info match</h2>
+<div class="cardSub">Informazioni essenziali della partita.</div>
+<div class="infoList" style="margin-top:16px">
+<div class="infoRow"><span>Match</span><b>Estrela Amadora — Sporting Braga</b></div>
+<div class="infoRow"><span>Ora</span><b>21:15</b></div>
+<div class="infoRow"><span>Lega</span><b>Liga Portugal</b></div>
+</div>
+</section>
+<section class="card">
+<h2 class="cardTitle">Segnali mercato</h2>
+<div class="cardSub">Solo split specifici Estrela casa / Braga trasferta.</div>
+<div class="marketBox">
+<div class="marketRow">
+<div class="marketTop"><div class="marketName">Over 1.5</div><div class="marketStrength s-strong">Molto forte</div></div>
+<div class="marketMeta">media combinata 100%</div>
+<div class="marketBars">
+<div class="compRow"><div class="compLbl">Estrela</div><div class="compTrack"><div class="compFill blue" style="width:100%"></div></div><div class="compNum">100%</div></div>
+<div class="compRow"><div class="compLbl">Braga</div><div class="compTrack"><div class="compFill purple" style="width:100%"></div></div><div class="compNum">100%</div></div>
+</div>
+</div>
+<div class="marketRow">
+<div class="marketTop"><div class="marketName">Over 2.5</div><div class="marketStrength s-strong">Molto forte</div></div>
+<div class="marketMeta">media combinata 100%</div>
+<div class="marketBars">
+<div class="compRow"><div class="compLbl">Estrela</div><div class="compTrack"><div class="compFill blue" style="width:100%"></div></div><div class="compNum">100%</div></div>
+<div class="compRow"><div class="compLbl">Braga</div><div class="compTrack"><div class="compFill purple" style="width:100%"></div></div><div class="compNum">100%</div></div>
+</div>
+</div>
+<div class="marketRow">
+<div class="marketTop"><div class="marketName">Goal / BTS</div><div class="marketStrength s-strong">Molto forte</div></div>
+<div class="marketMeta">media combinata 100%</div>
+<div class="marketBars">
+<div class="compRow"><div class="compLbl">Estrela</div><div class="compTrack"><div class="compFill blue" style="width:100%"></div></div><div class="compNum">100%</div></div>
+<div class="compRow"><div class="compLbl">Braga</div><div class="compTrack"><div class="compFill purple" style="width:100%"></div></div><div class="compNum">100%</div></div>
+</div>
+</div>
+<div class="marketRow">
+<div class="marketTop"><div class="marketName">Over 3.5</div><div class="marketStrength s-mid">Interessante</div></div>
+<div class="marketMeta">media combinata 75%</div>
+<div class="marketBars">
+<div class="compRow"><div class="compLbl">Estrela</div><div class="compTrack"><div class="compFill blue" style="width:100%"></div></div><div class="compNum">100%</div></div>
+<div class="compRow"><div class="compLbl">Braga</div><div class="compTrack"><div class="compFill purple" style="width:50%"></div></div><div class="compNum">50%</div></div>
+</div>
+</div>
+</div>
+<div class="note" style="margin-top:14px">Campione specifico: 2 partite interne Estrela + 2 trasferte Braga.</div>
+</section>
+<section class="card">
+<div class="snapshotHeader">
+<div><h2 class="cardTitle">Panoramica casa / trasferta</h2><div class="cardSub">Confronto diretto dello split più pertinente alla partita.</div></div>
+<div class="snapshotBadge">CASA VS TRASFERTA</div>
+</div>
+<div class="snapshotCompare">
+<div class="teamSnapshot">
+<div class="teamSnapTitle">Estrela Amadora</div><div class="teamSnapSub">rendimento in casa · 2 gare</div>
+<div class="snapshotStats">
+<div class="snapMetric"><div class="snapMetricLabel">Gol fatti</div><div class="snapMetricValue" style="color:#2563eb">2.00</div><div class="snapMetricHint">per partita</div></div>
+<div class="snapMetric"><div class="snapMetricLabel">Gol subiti</div><div class="snapMetricValue" style="color:#dc4c64">2.00</div><div class="snapMetricHint">per partita</div></div>
+<div class="snapMetric"><div class="snapMetricLabel">Corner totali</div><div class="snapMetricValue">9.50</div><div class="snapMetricHint">media partita</div></div>
+</div>
+</div>
+<div class="teamSnapshot away">
+<div class="teamSnapTitle">Sporting Braga</div><div class="teamSnapSub">rendimento in trasferta · 2 gare</div>
+<div class="snapshotStats">
+<div class="snapMetric"><div class="snapMetricLabel">Gol fatti</div><div class="snapMetricValue" style="color:#7c3aed">2.00</div><div class="snapMetricHint">per partita</div></div>
+<div class="snapMetric"><div class="snapMetricLabel">Gol subiti</div><div class="snapMetricValue" style="color:#dc4c64">1.50</div><div class="snapMetricHint">per partita</div></div>
+<div class="snapMetric"><div class="snapMetricLabel">Corner totali</div><div class="snapMetricValue">5.00</div><div class="snapMetricHint">media partita</div></div>
+</div>
+</div>
+</div>
+<div class="cornerSection">
+<div class="cornerSectionHead"><div><div class="cornerSectionTitle">Corner · confronto diretto</div><div class="cornerSectionSub">Valori medi e frequenze Over nello split casa / trasferta.</div></div></div>
+<div class="cornerCompareGrid">
+<div class="cornerHeadCell">Indicatore</div><div class="cornerHeadCell">Estrela casa</div><div class="cornerHeadCell">Braga trasferta</div>
+<div class="cornerLabel">Corner a favore</div><div class="cornerValBox home">5.00</div><div class="cornerValBox away">2.00</div>
+<div class="cornerLabel">Corner contro</div><div class="cornerValBox home">4.50</div><div class="cornerValBox away">3.00</div>
+<div class="cornerLabel">Corner totali</div><div class="cornerValBox home">9.50</div><div class="cornerValBox away">5.00</div>
+</div>
+<div class="overBlock">
+<div class="overRowPremium"><div class="overLabelPremium">Over 7.5</div><div class="overTeamBar"><div class="overTrack"><div class="overFill home" style="width:100%"></div></div><div class="overNum">100%</div></div><div class="overTeamBar"><div class="overTrack"><div class="overFill away" style="width:0%"></div></div><div class="overNum">0%</div></div></div>
+<div class="overRowPremium"><div class="overLabelPremium">Over 8.5</div><div class="overTeamBar"><div class="overTrack"><div class="overFill home" style="width:100%"></div></div><div class="overNum">100%</div></div><div class="overTeamBar"><div class="overTrack"><div class="overFill away" style="width:0%"></div></div><div class="overNum">0%</div></div></div>
+<div class="overRowPremium"><div class="overLabelPremium">Over 9.5</div><div class="overTeamBar"><div class="overTrack"><div class="overFill home" style="width:50%"></div></div><div class="overNum">50%</div></div><div class="overTeamBar"><div class="overTrack"><div class="overFill away" style="width:0%"></div></div><div class="overNum">0%</div></div></div>
+</div>
+<div class="cornerLegend"><span><i class="legendDot home"></i>Estrela casa</span><span><i class="legendDot away"></i>Braga trasferta</span></div>
+</div>
+</section>
+<section class="card">
+<h2 class="cardTitle">Classifica</h2>
+<div class="cardSub">Tabella punti del campionato con evidenza sulle due squadre.</div>
+<div class="standingsWrap"><table class="rankTable"><thead><tr><th>#</th><th>Squadra</th><th>G</th><th>Pt</th></tr></thead><tbody><tr class=""><td>1</td><td>FC Porto</td><td>5</td><td><b>15</b></td></tr><tr class=""><td>2</td><td>Benfica</td><td>5</td><td><b>13</b></td></tr><tr class=""><td>3</td><td>Sporting CP</td><td>5</td><td><b>13</b></td></tr><tr class=""><td>4</td><td>Santa Clara</td><td>5</td><td><b>11</b></td></tr><tr class=""><td>5</td><td>Arouca</td><td>5</td><td><b>10</b></td></tr><tr class="highlight-away"><td>6</td><td>Sporting Braga</td><td>3</td><td><b>7</b></td></tr><tr class=""><td>7</td><td>Gil Vicente</td><td>4</td><td><b>7</b></td></tr><tr class=""><td>8</td><td>Maritimo</td><td>5</td><td><b>7</b></td></tr><tr class="highlight-home"><td>9</td><td>Estrela Amadora</td><td>4</td><td><b>6</b></td></tr><tr class=""><td>10</td><td>Academico Viseu</td><td>5</td><td><b>5</b></td></tr><tr class=""><td>11</td><td>Nacional</td><td>5</td><td><b>4</b></td></tr><tr class=""><td>12</td><td>Guimaraes</td><td>5</td><td><b>4</b></td></tr><tr class=""><td>13</td><td>Moreirense</td><td>5</td><td><b>4</b></td></tr><tr class=""><td>14</td><td>Famalicao</td><td>5</td><td><b>3</b></td></tr><tr class=""><td>15</td><td>Rio Ave</td><td>5</td><td><b>3</b></td></tr><tr class=""><td>16</td><td>Alverca</td><td>5</td><td><b>2</b></td></tr><tr class=""><td>17</td><td>Estoril</td><td>5</td><td><b>2</b></td></tr><tr class=""><td>18</td><td>Casa Pia</td><td>5</td><td><b>1</b></td></tr></tbody></table></div>
+</section>
+</div>
+</div>
+<section class="card finalAnalysisCard">
+<div class="finalAnalysisInner">
+<div class="finalEyebrow"><span class="finalEyebrowDot"></span> Sintesi finale</div>
+<div class="finalAnalysisTitle">Analisi e lettura <span>operativa</span></div>
+<div class="finalAnalysisSub">Ultima sezione della scheda: qui confluiscono i dati principali del match e la loro interpretazione finale.</div>
+<div class="finalTopBar">
+<div class="finalKpi"><div class="finalKpiLabel">Profilo gol</div><div class="finalKpiValue">Over 2.5 e Goal molto presenti negli split casa / trasferta</div></div>
+<div class="finalKpi"><div class="finalKpiLabel">Rendimento</div><div class="finalKpiValue">Sporting Braga superiore nel quadro generale</div></div>
+<div class="finalKpi"><div class="finalKpiLabel">Attenzione</div><div class="finalKpiValue">Campione casa / trasferta ancora ridotto: 2 + 2 gare</div></div>
+</div>
+<div class="finalAnalysisGrid">
+<div class="finalBlock"><div class="finalBlockTitle">Lettura principale</div><div class="finalBlockText">Over 2.5: Estrela casa 100% e Braga trasferta 100% nelle gare disponibili.</div></div>
+<div class="finalBlock"><div class="finalBlockTitle">Lettura secondaria</div><div class="finalBlockText">Goal / Entrambe segnano: 100% per entrambe nei rispettivi split specifici.</div></div>
+<div class="finalBlock"><div class="finalBlockTitle">Alternativa aggressiva</div><div class="finalBlockText">Over 3.5: Estrela casa 100%, Braga fuori 50%. Coerente come opzione più difficile.</div></div>
+<div class="finalBlock"><div class="finalBlockTitle">Rischio statistico</div><div class="finalBlockText">Il campione specifico è piccolo: 2 gare interne per Estrela e 2 trasferte per Braga. Le percentuali non sono garanzie.</div></div>
+</div>
+<div class="finalClosing"><div class="finalClosingText">Conclusione costruita sui dati presenti nella scheda e separata dalle quote.</div><div class="finalClosingBadge">Fine analisi match</div></div>
+</div>
+</section>
+</div></div><div id="genericDetail" style="display:none"></div></div></div></body>
 </html>
