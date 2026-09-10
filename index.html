@@ -3791,6 +3791,76 @@ body{background-attachment:fixed!important}
   .teamNameText{white-space:normal!important}
 }
 
+
+/* ===== V2.2 UI FIX: banner più compatto + date leggibili ===== */
+.magicScannerHomeBanner{
+  height:clamp(240px, 28vw, 390px)!important;
+  max-height:390px!important;
+}
+.magicScannerHomeBanner img{
+  width:100%!important;
+  height:100%!important;
+  object-fit:cover!important;
+  object-position:center center!important;
+}
+
+.dateSelectorBox{
+  background:linear-gradient(180deg,rgba(11,22,40,.92),rgba(8,18,34,.92))!important;
+  border:1px solid rgba(103,232,249,.12)!important;
+}
+.dateCard{
+  background:linear-gradient(145deg,rgba(10,22,40,.96),rgba(12,27,49,.96))!important;
+  border-color:rgba(120,156,203,.16)!important;
+}
+.dateCard::before{
+  background:rgba(148,163,184,.55)!important;
+}
+.dateCard .dateDay{
+  color:#a9bdd6!important;
+}
+.dateCard .dateNum{
+  color:#f8fbff!important;
+  text-shadow:0 0 18px rgba(56,189,248,.12)!important;
+}
+.dateCard .dateMonth{
+  color:#67e8f9!important;
+}
+.dateCard.active{
+  background:linear-gradient(145deg,rgba(31,59,112,.98),rgba(36,45,95,.98))!important;
+  border-color:rgba(103,232,249,.42)!important;
+  box-shadow:0 18px 34px rgba(37,99,235,.18)!important;
+}
+.dateCard.active::before{
+  background:linear-gradient(180deg,#38bdf8 0%,#60a5fa 50%,#22c55e 100%)!important;
+}
+.dateCard.active .dateDay,
+.dateCard.active .dateMonth,
+.dateCard.active .dateNum{
+  color:#ffffff!important;
+}
+#dateStatus{
+  background:rgba(15,23,42,.9)!important;
+  border-color:rgba(103,232,249,.22)!important;
+  color:#eaf6ff!important;
+}
+
+@media(max-width:720px){
+  .magicScannerHomeBanner{
+    height:240px!important;
+    max-height:240px!important;
+    border-radius:20px!important;
+  }
+  .magicScannerHomeBanner img{
+    min-height:0!important;
+  }
+  .dateCard{
+    min-height:96px!important;
+  }
+  .dateNum{
+    font-size:28px!important;
+  }
+}
+
 </style>
 </head>
 <body>
