@@ -1,1 +1,12 @@
-{"name":"magicscanner-v3-3-2","version":"3.3.3","private":true,"type":"commonjs","scripts":{"start":"node server.js"},"dependencies":{"express":"4.21.2"}}
+{
+  "name": "magicscanner-v3-3-4",
+  "version": "3.3.4",
+  "private": true,
+  "type": "commonjs",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "4.21.2"
+  }
+}

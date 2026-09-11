@@ -299,16 +299,30 @@ async function syncServerToBrowser(){
       fetch('/api/matchdays',{cache:'no-store'}).then(r=>r.json()),
       fetch('/api/details',{cache:'no-store'}).then(r=>r.json())
     ]);
-    if(md?.matchdays&&typeof md.matchdays==='object'){
-      localStorage.setItem(MATCHDAYS_KEY,JSON.stringify(md.matchdays));
-      const todayKey=isoLocal(dateFromOffset(0));
-      if(md.matchdays[todayKey]) localStorage.setItem(MATCHDAY_KEY,JSON.stringify(md.matchdays[todayKey]));
-      else localStorage.removeItem(MATCHDAY_KEY);
+    const serverDays=(md?.matchdays&&typeof md.matchdays==='object')?md.matchdays:{};
+    const master=getMasterDays();
+    let browserDays={}; try{browserDays=JSON.parse(localStorage.getItem(MATCHDAYS_KEY)||'{}')||{}}catch{}
+    const keys=new Set([...Object.keys(serverDays),...Object.keys(master),...Object.keys(browserDays)]);
+    const mergedDays={};
+    const republish=[];
+    for(const key of keys){
+      const merged=msUnionPack(serverDays[key],browserDays[key],master[key]);
+      if(!merged)continue;
+      merged.date=key;
+      mergedDays[key]=merged;
+      master[key]=merged;
+      const serverCount=serverDays[key]?.matches?.length||0;
+      if((merged.matches?.length||0)>serverCount) republish.push([key,merged]);
     }
+    localStorage.setItem(MATCHDAYS_KEY,JSON.stringify(mergedDays));
+    setMasterDays(master);
+    const todayKey=isoLocal(dateFromOffset(0));
+    if(mergedDays[todayKey]) localStorage.setItem(MATCHDAY_KEY,JSON.stringify(mergedDays[todayKey])); else localStorage.removeItem(MATCHDAY_KEY);
+    for(const [key,pack] of republish){ try{await publishMatchdayToServer(key,pack)}catch{} }
     if(dt?.details&&typeof dt.details==='object'){
       localStorage.setItem('MAGICSCANNER_IMPORTED_DETAILS',JSON.stringify(dt.details)); parsed=dt.details;
     }
-    setServerSync(`online · ${h.matchdays||0} giornate · ${h.details||0} schede`,true);
+    setServerSync(`online · ${Object.keys(mergedDays).length} giornate · ${h.details||0} schede`,true);
     refreshStoredDaySelect();renderPromotedQueue();
   }catch(e){setServerSync('non raggiungibile: '+e.message,false)}
 }
@@ -816,13 +830,18 @@ function resolveTargetDate(data){
 function storeImportedDay(date,matches,sourceUrl){
   let days={};try{days=JSON.parse(localStorage.getItem(MATCHDAYS_KEY)||'{}')||{}}catch{}
   const key=isoLocal(date);
-  const pack={date:key,source_url:sourceUrl,imported_at:new Date().toISOString(),matches:Array.isArray(matches)?matches:[]};
-  days[key]=pack;
+  const incoming={date:key,source_url:sourceUrl,imported_at:new Date().toISOString(),matches:Array.isArray(matches)?matches:[]};
+  const master=getMasterDays();
+  const merged=msUnionPack(master[key],days[key],incoming)||incoming;
+  merged.date=key; merged.source_url=sourceUrl||merged.source_url||''; merged.imported_at=new Date().toISOString();
+  days[key]=merged;
+  master[key]=merged;
   localStorage.setItem(MATCHDAYS_KEY,JSON.stringify(days));
+  setMasterDays(master);
   localStorage.setItem(LAST_DAY_KEY,key);
-  if(key===isoLocal(dateFromOffset(0))) localStorage.setItem(MATCHDAY_KEY,JSON.stringify(pack));
-  void publishMatchdayToServer(key,pack).catch(()=>{});
-  return key;
+  if(key===isoLocal(dateFromOffset(0))) localStorage.setItem(MATCHDAY_KEY,JSON.stringify(merged));
+  void publishMatchdayToServer(key,merged).catch(()=>{});
+  return {key,pack:merged,incomingCount:incoming.matches.length,totalCount:merged.matches.length};
 }
 function storeMatchdayFromHtml(html, sourceUrl='browser'){
   if(!html || html.trim().length<20) throw new Error('Incolla i dati copiati da MagicScanner Extract.');
@@ -857,14 +876,14 @@ function storeMatchdayFromHtml(html, sourceUrl='browser'){
     }
     throw new Error(`Dati ricevuti (${html.length.toLocaleString('it-IT')} caratteri), ma non riconosco partite${diag}.`);
   }
-  const resolved=resolveTargetDate(extractData||{}); const key=storeImportedDay(resolved.date,matches,sourceUrl);
-  const conserved=(getStoredDays()[key]?.matches||matches);
+  const resolved=resolveTargetDate(extractData||{}); const saved=storeImportedDay(resolved.date,matches,sourceUrl); const key=saved.key;
+  const conserved=saved.pack?.matches||matches;
   renderDay(conserved);
   refreshStoredDaySelect(key);
   const [y,m,d]=key.split('-');
   const label=new Date(Number(y),Number(m)-1,Number(d),12).toLocaleDateString('it-IT',{weekday:'long',day:'numeric',month:'long'});
   const warning=resolved.mode==='fallback'?' Data non riconosciuta: ho usato Oggi; scegli manualmente “Domani” se necessario.':'';
-  const totalStored=(getStoredDays()[key]?.matches||[]).length; const diag=extractData?.__msParserDiag?` · parser ${extractData.__msParserDiag}`:''; dayStatus(`${matches.length} partite lette e pubblicate in ${label} (${resolved.mode})${diag}.${warning}`,'good');
+  const totalStored=saved.totalCount; const diag=extractData?.__msParserDiag?` · parser ${extractData.__msParserDiag}`:''; dayStatus(`${matches.length} lette ora · ${totalStored} partite conservate in ${label} (${resolved.mode})${diag}.${warning}`,'good');
   return matches;
 }
 function clamp(n,a=0,b=100){return Math.max(a,Math.min(b,n))}
