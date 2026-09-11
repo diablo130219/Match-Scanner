@@ -345,9 +345,9 @@ function parseExtractFlexible(data){
   // deduplica righe squadra consecutive/duplicate.
   const uniq=[];
   for(const x of candidates){
-    const key=msNormId?msNormId(x.row.team):x.row.team.toLowerCase();
+    const key=slug(x.row.team||'');
     const last=uniq[uniq.length-1];
-    const lastKey=last?(msNormId?msNormId(last.row.team):last.row.team.toLowerCase()):'';
+    const lastKey=last?slug(last.row.team||''):'';
     if(key && key!==lastKey)uniq.push(x);
   }
 
