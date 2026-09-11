@@ -1,4 +1,5511 @@
 {
-  "matchdays": {},
+  "matchdays": {
+    "2026-09-11": {
+      "date": "2026-09-11",
+      "source_url": "https://www.soccerstats.com/matches.asp?matchday=201&matchdayn=104",
+      "imported_at": "2026-09-11T18:03:47.367Z",
+      "matches": [
+        {
+          "id": "venezia-fiorentina",
+          "league": "Italy - Serie A",
+          "time": "20:45",
+          "home": "Venezia",
+          "away": "Fiorentina",
+          "tags": [
+            "No Bet"
+          ],
+          "scores": {
+            "over": 73,
+            "goal": 33,
+            "favorite": "Venezia",
+            "under": 23,
+            "noBet": 27
+          },
+          "summary": "Dati generali non abbastanza convergenti.",
+          "basic": {
+            "Partite considerate": "3 / 3",
+            "Vittorie": "0% / 0%",
+            "Senza segnare": "67% / 67%",
+            "Senza subire": "0% / 0%",
+            "BTTS / Entrambe segnano": "33% / 33%",
+            "Media gol": "3.00 / 3.33",
+            "Gol fatti": "0.67 / 0.33",
+            "Gol subiti": "2.33 / 3.00",
+            "Over 1.5": "100% / 100%",
+            "Over 2.5": "33% / 100%",
+            "Over 3.5": "33% / 33%",
+            "Punti per partita": "0.00 / 0.00"
+          },
+          "timing_loaded": false,
+          "recommended": "NO BET",
+          "confidence": "Bassa",
+          "marketType": "nobet",
+          "signalScore": 73,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=italy&stats=31-9-20-2027"
+        },
+        {
+          "id": "sevilla-fc-valencia",
+          "league": "Spain - LaLiga",
+          "time": "21:00",
+          "home": "Sevilla FC",
+          "away": "Valencia",
+          "tags": [
+            "Favorite"
+          ],
+          "scores": {
+            "over": 67,
+            "goal": 62,
+            "favorite": "Sevilla FC",
+            "under": 26,
+            "noBet": 0
+          },
+          "summary": "Gap rendimento: PPG 1.75 / 0.25, vittorie 50% / 0%.",
+          "basic": {
+            "Partite considerate": "4 / 4",
+            "Vittorie": "50% / 0%",
+            "Senza segnare": "0% / 75%",
+            "Senza subire": "0% / 25%",
+            "BTTS / Entrambe segnano": "100% / 25%",
+            "Media gol": "3.25 / 2.50",
+            "Gol fatti": "1.75 / 0.25",
+            "Gol subiti": "1.50 / 2.25",
+            "Over 1.5": "100% / 50%",
+            "Over 2.5": "75% / 50%",
+            "Over 3.5": "50% / 50%",
+            "Punti per partita": "1.75 / 0.25"
+          },
+          "timing_loaded": false,
+          "recommended": "Favorita: Sevilla FC",
+          "confidence": "Alta",
+          "marketType": "favorite",
+          "signalScore": 100,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=spain&stats=42-3-18-2027"
+        },
+        {
+          "id": "renne-mar-eille",
+          "league": "France - Ligue 1",
+          "time": "20:45",
+          "home": "Renne",
+          "away": "Mar eille",
+          "tags": [
+            "Favorite"
+          ],
+          "scores": {
+            "over": 88,
+            "goal": 72,
+            "favorite": "Renne",
+            "under": 12,
+            "noBet": 7
+          },
+          "summary": "Gap rendimento: PPG 2.33 / 1.00, vittorie 67% / 33%.",
+          "basic": {
+            "Partite considerate": "3 / 3",
+            "Vittorie": "67% / 33%",
+            "Senza segnare": "0% / 33%",
+            "Senza subire": "0% / 33%",
+            "BTTS / Entrambe segnano": "100% / 33%",
+            "Media gol": "4.00 / 3.67",
+            "Gol fatti": "2.33 / 2.00",
+            "Gol subiti": "1.67 / 1.67",
+            "Over 1.5": "100% / 100%",
+            "Over 2.5": "100% / 67%",
+            "Over 3.5": "67% / 67%",
+            "Punti per partita": "2.33 / 1.00"
+          },
+          "timing_loaded": false,
+          "recommended": "Favorita: Renne",
+          "confidence": "Media-alta",
+          "marketType": "favorite",
+          "signalScore": 93,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/h2h.asp?league=france&fmid=28&t1id=18&t2id=1&ly=2027"
+        },
+        {
+          "id": "union-berlin-schalke-04",
+          "league": "Germany - Bunde liga",
+          "time": "20:30",
+          "home": "Union Berlin",
+          "away": "Schalke 04",
+          "tags": [
+            "No Bet"
+          ],
+          "scores": {
+            "over": 70,
+            "goal": 25,
+            "favorite": "Union Berlin",
+            "under": 18,
+            "noBet": 30
+          },
+          "summary": "Dati generali non abbastanza convergenti.",
+          "basic": {
+            "Partite considerate": "2 / 2",
+            "Vittorie": "0% / 0%",
+            "Senza segnare": "50% / 100%",
+            "Senza subire": "0% / 50%",
+            "BTTS / Entrambe segnano": "50% / 0%",
+            "Media gol": "5.00 / 1.50",
+            "Gol fatti": "1.50 / 0.00",
+            "Gol subiti": "3.50 / 1.50",
+            "Over 1.5": "100% / 50%",
+            "Over 2.5": "100% / 50%",
+            "Over 3.5": "100% / 0%",
+            "Punti per partita": "0.50 / 0.50"
+          },
+          "timing_loaded": false,
+          "recommended": "NO BET",
+          "confidence": "Bassa",
+          "marketType": "nobet",
+          "signalScore": 70,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/h2h.asp?league=germany&fmid=19&t1id=7&t2id=18&ly=2027"
+        },
+        {
+          "id": "az-alkmaar-willem-ii",
+          "league": "Netherland - Eredivi ie",
+          "time": "20:00",
+          "home": "AZ Alkmaar",
+          "away": "Willem II",
+          "tags": [
+            "Favorite"
+          ],
+          "scores": {
+            "over": 87,
+            "goal": 74,
+            "favorite": "AZ Alkmaar",
+            "under": 14,
+            "noBet": 0
+          },
+          "summary": "Gap rendimento: PPG 3.00 / 0.25, vittorie 100% / 0%.",
+          "basic": {
+            "Partite considerate": "5 / 4",
+            "Vittorie": "100% / 0%",
+            "Senza segnare": "0% / 25%",
+            "Senza subire": "40% / 0%",
+            "BTTS / Entrambe segnano": "60% / 75%",
+            "Media gol": "4.20 / 4.25",
+            "Gol fatti": "3.20 / 1.00",
+            "Gol subiti": "1.00 / 3.25",
+            "Over 1.5": "100% / 100%",
+            "Over 2.5": "60% / 100%",
+            "Over 3.5": "60% / 75%",
+            "Punti per partita": "3.00 / 0.25"
+          },
+          "timing_loaded": false,
+          "recommended": "Favorita: AZ Alkmaar",
+          "confidence": "Alta",
+          "marketType": "favorite",
+          "signalScore": 100,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=netherlands&stats=45-9-6-2027"
+        },
+        {
+          "id": "we-t-ham-utd-wrexham",
+          "league": "England - Champion hip",
+          "time": "21:00",
+          "home": "We t Ham Utd",
+          "away": "Wrexham",
+          "tags": [
+            "Top Goal"
+          ],
+          "scores": {
+            "over": 71,
+            "goal": 80,
+            "favorite": "We t Ham Utd",
+            "under": 29,
+            "noBet": 20
+          },
+          "summary": "BTTS favorevole: 83% / 67%.",
+          "basic": {
+            "Partite considerate": "6 / 6",
+            "Vittorie": "50% / 17%",
+            "Senza segnare": "0% / 17%",
+            "Senza subire": "17% / 33%",
+            "BTTS / Entrambe segnano": "83% / 67%",
+            "Media gol": "3.83 / 2.00",
+            "Gol fatti": "2.33 / 1.17",
+            "Gol subiti": "1.50 / 0.83",
+            "Over 1.5": "100% / 83%",
+            "Over 2.5": "83% / 33%",
+            "Over 3.5": "50% / 0%",
+            "Punti per partita": "1.83 / 1.17"
+          },
+          "timing_loaded": false,
+          "recommended": "Goal — entrambe segnano",
+          "confidence": "Media",
+          "marketType": "goal",
+          "signalScore": 80,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=england2&stats=73-22-24-2027"
+        },
+        {
+          "id": "kiddermin-ter-hartlepool",
+          "league": "England - National League",
+          "time": "20:45",
+          "home": "Kiddermin ter",
+          "away": "Hartlepool",
+          "tags": [
+            "No Bet"
+          ],
+          "scores": {
+            "over": 44,
+            "goal": 53,
+            "favorite": "Kiddermin ter",
+            "under": 55,
+            "noBet": 45
+          },
+          "summary": "Dati generali non abbastanza convergenti.",
+          "basic": {
+            "Partite considerate": "6 / 6",
+            "Vittorie": "50% / 50%",
+            "Senza segnare": "17% / 33%",
+            "Senza subire": "17% / 50%",
+            "BTTS / Entrambe segnano": "67% / 17%",
+            "Media gol": "2.83 / 1.50",
+            "Gol fatti": "1.67 / 0.83",
+            "Gol subiti": "1.17 / 0.67",
+            "Over 1.5": "83% / 33%",
+            "Over 2.5": "50% / 17%",
+            "Over 3.5": "33% / 0%",
+            "Punti per partita": "1.83 / 1.50"
+          },
+          "timing_loaded": false,
+          "recommended": "NO BET",
+          "confidence": "Bassa",
+          "marketType": "nobet",
+          "signalScore": 55,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=england5&stats=73-6-7-2027"
+        },
+        {
+          "id": "empoli-arezzo",
+          "league": "Italy - Serie B",
+          "time": "19:00",
+          "home": "Empoli",
+          "away": "Arezzo",
+          "tags": [
+            "Favorite"
+          ],
+          "scores": {
+            "over": 67,
+            "goal": 61,
+            "favorite": "Empoli",
+            "under": 23,
+            "noBet": 15
+          },
+          "summary": "Gap rendimento: PPG 2.00 / 1.00, vittorie 67% / 33%.",
+          "basic": {
+            "Partite considerate": "3 / 3",
+            "Vittorie": "67% / 33%",
+            "Senza segnare": "0% / 33%",
+            "Senza subire": "67% / 0%",
+            "BTTS / Entrambe segnano": "33% / 67%",
+            "Media gol": "2.00 / 4.33",
+            "Gol fatti": "1.00 / 1.33",
+            "Gol subiti": "1.00 / 3.00",
+            "Over 1.5": "33% / 100%",
+            "Over 2.5": "33% / 100%",
+            "Over 3.5": "33% / 67%",
+            "Punti per partita": "2.00 / 1.00"
+          },
+          "timing_loaded": false,
+          "recommended": "Favorita: Empoli",
+          "confidence": "Media-alta",
+          "marketType": "favorite",
+          "signalScore": 85,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=italy2&stats=31-7-12-2027"
+        },
+        {
+          "id": "benevento-hella-verona",
+          "league": "Italy - Serie B",
+          "time": "21:00",
+          "home": "Benevento",
+          "away": "Hella Verona",
+          "tags": [
+            "Favorite"
+          ],
+          "scores": {
+            "over": 63,
+            "goal": 72,
+            "favorite": "Hella Verona",
+            "under": 35,
+            "noBet": 15
+          },
+          "summary": "Gap rendimento: PPG 0.33 / 1.33, vittorie 0% / 33%.",
+          "basic": {
+            "Partite considerate": "3 / 3",
+            "Vittorie": "0% / 33%",
+            "Senza segnare": "33% / 0%",
+            "Senza subire": "0% / 33%",
+            "BTTS / Entrambe segnano": "67% / 67%",
+            "Media gol": "2.00 / 3.33",
+            "Gol fatti": "0.67 / 2.33",
+            "Gol subiti": "1.33 / 1.00",
+            "Over 1.5": "67% / 100%",
+            "Over 2.5": "33% / 67%",
+            "Over 3.5": "0% / 33%",
+            "Punti per partita": "0.33 / 1.33"
+          },
+          "timing_loaded": false,
+          "recommended": "Favorita: Hella Verona",
+          "confidence": "Media-alta",
+          "marketType": "favorite",
+          "signalScore": 85,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=italy2&stats=33-9-15-2027"
+        },
+        {
+          "id": "pi-a-entella",
+          "league": "Italy - Serie B",
+          "time": "21:00",
+          "home": "Pi a",
+          "away": "Entella",
+          "tags": [
+            "Favorite"
+          ],
+          "scores": {
+            "over": 64,
+            "goal": 55,
+            "favorite": "Pi a",
+            "under": 25,
+            "noBet": 0
+          },
+          "summary": "Gap rendimento: PPG 2.00 / 0.33, vittorie 67% / 0%.",
+          "basic": {
+            "Partite considerate": "3 / 3",
+            "Vittorie": "67% / 0%",
+            "Senza segnare": "33% / 33%",
+            "Senza subire": "33% / 0%",
+            "BTTS / Entrambe segnano": "33% / 67%",
+            "Media gol": "2.33 / 2.67",
+            "Gol fatti": "1.67 / 1.00",
+            "Gol subiti": "0.67 / 1.67",
+            "Over 1.5": "67% / 67%",
+            "Over 2.5": "67% / 67%",
+            "Over 3.5": "0% / 33%",
+            "Punti per partita": "2.00 / 0.33"
+          },
+          "timing_loaded": false,
+          "recommended": "Favorita: Pi a",
+          "confidence": "Alta",
+          "marketType": "favorite",
+          "signalScore": 100,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=italy2&stats=32-13-4-2027"
+        },
+        {
+          "id": "burgo-ceuta",
+          "league": "Spain - LaLiga2",
+          "time": "20:30",
+          "home": "Burgo",
+          "away": "Ceuta",
+          "tags": [
+            "Favorite"
+          ],
+          "scores": {
+            "over": 59,
+            "goal": 38,
+            "favorite": "Burgo",
+            "under": 35,
+            "noBet": 12
+          },
+          "summary": "Gap rendimento: PPG 1.25 / 0.00, vittorie 25% / 0%.",
+          "basic": {
+            "Partite considerate": "4 / 4",
+            "Vittorie": "25% / 0%",
+            "Senza segnare": "50% / 75%",
+            "Senza subire": "25% / 0%",
+            "BTTS / Entrambe segnano": "50% / 25%",
+            "Media gol": "2.50 / 3.25",
+            "Gol fatti": "1.25 / 0.25",
+            "Gol subiti": "1.25 / 3.00",
+            "Over 1.5": "50% / 100%",
+            "Over 2.5": "50% / 50%",
+            "Over 3.5": "50% / 25%",
+            "Punti per partita": "1.25 / 0.00"
+          },
+          "timing_loaded": false,
+          "recommended": "Favorita: Burgo",
+          "confidence": "Media-alta",
+          "marketType": "favorite",
+          "signalScore": 88,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=spain2&stats=54-15-4-2027"
+        },
+        {
+          "id": "clermont-boulogne",
+          "league": "France - Ligue 2",
+          "time": "20:00",
+          "home": "Clermont",
+          "away": "Boulogne",
+          "tags": [
+            "Under"
+          ],
+          "scores": {
+            "over": 29,
+            "goal": 50,
+            "favorite": "Clermont",
+            "under": 87,
+            "noBet": 13
+          },
+          "summary": "Profilo più chiuso: Over 2.5 20% / 0% e media gol 1.60 / 1.00.",
+          "basic": {
+            "Partite considerate": "5 / 5",
+            "Vittorie": "0% / 0%",
+            "Senza segnare": "40% / 60%",
+            "Senza subire": "40% / 40%",
+            "BTTS / Entrambe segnano": "60% / 40%",
+            "Media gol": "1.60 / 1.00",
+            "Gol fatti": "0.60 / 0.40",
+            "Gol subiti": "1.00 / 0.60",
+            "Over 1.5": "60% / 40%",
+            "Over 2.5": "20% / 0%",
+            "Over 3.5": "20% / 0%",
+            "Punti per partita": "0.80 / 0.80"
+          },
+          "timing_loaded": false,
+          "recommended": "Under 2.5 gol",
+          "confidence": "Media",
+          "marketType": "under",
+          "signalScore": 87,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=france2&stats=50-15-17-2027"
+        },
+        {
+          "id": "dijon-laval",
+          "league": "France - Ligue 2",
+          "time": "20:00",
+          "home": "Dijon",
+          "away": "Laval",
+          "tags": [
+            "Top Goal"
+          ],
+          "scores": {
+            "over": 67,
+            "goal": 80,
+            "favorite": "Laval",
+            "under": 35,
+            "noBet": 20
+          },
+          "summary": "BTTS favorevole: 80% / 80%.",
+          "basic": {
+            "Partite considerate": "5 / 5",
+            "Vittorie": "0% / 20%",
+            "Senza segnare": "20% / 20%",
+            "Senza subire": "0% / 0%",
+            "BTTS / Entrambe segnano": "80% / 80%",
+            "Media gol": "2.40 / 3.00",
+            "Gol fatti": "1.00 / 1.00",
+            "Gol subiti": "1.40 / 2.00",
+            "Over 1.5": "80% / 100%",
+            "Over 2.5": "20% / 80%",
+            "Over 3.5": "20% / 20%",
+            "Punti per partita": "0.60 / 0.80"
+          },
+          "timing_loaded": false,
+          "recommended": "Goal — entrambe segnano",
+          "confidence": "Media",
+          "marketType": "goal",
+          "signalScore": 80,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=france2&stats=49-10-4-2027"
+        },
+        {
+          "id": "montpellier-pau-fc",
+          "league": "France - Ligue 2",
+          "time": "20:00",
+          "home": "Montpellier",
+          "away": "Pau FC",
+          "tags": [
+            "Under"
+          ],
+          "scores": {
+            "over": 31,
+            "goal": 50,
+            "favorite": "Montpellier",
+            "under": 73,
+            "noBet": 27
+          },
+          "summary": "Profilo più chiuso: Over 2.5 20% / 20% e media gol 1.60 / 1.80.",
+          "basic": {
+            "Partite considerate": "5 / 5",
+            "Vittorie": "40% / 20%",
+            "Senza segnare": "20% / 40%",
+            "Senza subire": "60% / 20%",
+            "BTTS / Entrambe segnano": "40% / 40%",
+            "Media gol": "1.60 / 1.80",
+            "Gol fatti": "0.80 / 0.80",
+            "Gol subiti": "0.80 / 1.00",
+            "Over 1.5": "40% / 40%",
+            "Over 2.5": "20% / 20%",
+            "Over 3.5": "20% / 20%",
+            "Punti per partita": "1.60 / 1.00"
+          },
+          "timing_loaded": false,
+          "recommended": "Under 2.5 gol",
+          "confidence": "Bassa",
+          "marketType": "under",
+          "signalScore": 73,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=france2&stats=48-9-5-2027"
+        },
+        {
+          "id": "nancy-reim",
+          "league": "France - Ligue 2",
+          "time": "20:00",
+          "home": "Nancy",
+          "away": "Reim",
+          "tags": [
+            "No Bet"
+          ],
+          "scores": {
+            "over": 46,
+            "goal": 46,
+            "favorite": "Reim",
+            "under": 46,
+            "noBet": 54
+          },
+          "summary": "Dati generali non abbastanza convergenti.",
+          "basic": {
+            "Partite considerate": "5 / 5",
+            "Vittorie": "40% / 40%",
+            "Senza segnare": "60% / 20%",
+            "Senza subire": "60% / 20%",
+            "BTTS / Entrambe segnano": "0% / 80%",
+            "Media gol": "1.00 / 3.80",
+            "Gol fatti": "0.60 / 2.40",
+            "Gol subiti": "0.40 / 1.40",
+            "Over 1.5": "20% / 80%",
+            "Over 2.5": "0% / 80%",
+            "Over 3.5": "0% / 80%",
+            "Punti per partita": "1.40 / 1.80"
+          },
+          "timing_loaded": false,
+          "recommended": "NO BET",
+          "confidence": "Bassa",
+          "marketType": "nobet",
+          "signalScore": 46,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=france2&stats=47-18-16-2027"
+        },
+        {
+          "id": "rodez-aveyron-grenoble",
+          "league": "France - Ligue 2",
+          "time": "20:00",
+          "home": "Rodez Aveyron",
+          "away": "Grenoble",
+          "tags": [
+            "Over"
+          ],
+          "scores": {
+            "over": 83,
+            "goal": 63,
+            "favorite": "Rodez Aveyron",
+            "under": 14,
+            "noBet": 17
+          },
+          "summary": "Profilo offensivo: Over 2.5 80% / 80% e media gol 4.40 / 3.20.",
+          "basic": {
+            "Partite considerate": "5 / 5",
+            "Vittorie": "40% / 20%",
+            "Senza segnare": "20% / 40%",
+            "Senza subire": "0% / 40%",
+            "BTTS / Entrambe segnano": "80% / 40%",
+            "Media gol": "4.40 / 3.20",
+            "Gol fatti": "2.20 / 1.20",
+            "Gol subiti": "2.20 / 2.00",
+            "Over 1.5": "100% / 80%",
+            "Over 2.5": "80% / 80%",
+            "Over 3.5": "80% / 40%",
+            "Punti per partita": "1.40 / 0.80"
+          },
+          "timing_loaded": false,
+          "recommended": "Over 2.5 gol",
+          "confidence": "Media",
+          "marketType": "over",
+          "signalScore": 83,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=france2&stats=46-3-14-2027"
+        },
+        {
+          "id": "darm-tadt-bielefeld",
+          "league": "Germany - 2. Bunde liga",
+          "time": "18:30",
+          "home": "Darm tadt",
+          "away": "Bielefeld",
+          "tags": [
+            "No Bet"
+          ],
+          "scores": {
+            "over": 72,
+            "goal": 54,
+            "favorite": "Bielefeld",
+            "under": 18,
+            "noBet": 28
+          },
+          "summary": "Dati generali non abbastanza convergenti.",
+          "basic": {
+            "Partite considerate": "4 / 4",
+            "Vittorie": "0% / 25%",
+            "Senza segnare": "75% / 0%",
+            "Senza subire": "0% / 25%",
+            "BTTS / Entrambe segnano": "25% / 75%",
+            "Media gol": "2.25 / 3.75",
+            "Gol fatti": "0.50 / 1.75",
+            "Gol subiti": "1.75 / 2.00",
+            "Over 1.5": "50% / 100%",
+            "Over 2.5": "50% / 100%",
+            "Over 3.5": "25% / 50%",
+            "Punti per partita": "0.25 / 1.00"
+          },
+          "timing_loaded": false,
+          "recommended": "NO BET",
+          "confidence": "Bassa",
+          "marketType": "nobet",
+          "signalScore": 72,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=germany2&stats=38-7-6-2027"
+        },
+        {
+          "id": "fc-nurnberg-hannover-96",
+          "league": "Germany - 2. Bunde liga",
+          "time": "18:30",
+          "home": "FC Nurnberg",
+          "away": "Hannover 96",
+          "tags": [
+            "Favorite"
+          ],
+          "scores": {
+            "over": 76,
+            "goal": 70,
+            "favorite": "FC Nurnberg",
+            "under": 18,
+            "noBet": 0
+          },
+          "summary": "Gap rendimento: PPG 2.50 / 1.00, vittorie 75% / 25%.",
+          "basic": {
+            "Partite considerate": "4 / 4",
+            "Vittorie": "75% / 25%",
+            "Senza segnare": "0% / 25%",
+            "Senza subire": "25% / 25%",
+            "BTTS / Entrambe segnano": "75% / 50%",
+            "Media gol": "4.50 / 2.50",
+            "Gol fatti": "3.25 / 1.00",
+            "Gol subiti": "1.25 / 1.50",
+            "Over 1.5": "100% / 50%",
+            "Over 2.5": "100% / 50%",
+            "Over 3.5": "75% / 50%",
+            "Punti per partita": "2.50 / 1.00"
+          },
+          "timing_loaded": false,
+          "recommended": "Favorita: FC Nurnberg",
+          "confidence": "Alta",
+          "marketType": "favorite",
+          "signalScore": 100,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=germany2&stats=37-15-14-2027"
+        },
+        {
+          "id": "fc-eindhoven-fc-dordrecht",
+          "league": "Netherland - Eer te Divi ie",
+          "time": "20:00",
+          "home": "FC Eindhoven",
+          "away": "FC Dordrecht",
+          "tags": [
+            "No Bet"
+          ],
+          "scores": {
+            "over": 75,
+            "goal": 73,
+            "favorite": "FC Eindhoven",
+            "under": 21,
+            "noBet": 25
+          },
+          "summary": "Dati generali non abbastanza convergenti.",
+          "basic": {
+            "Partite considerate": "5 / 5",
+            "Vittorie": "20% / 20%",
+            "Senza segnare": "20% / 20%",
+            "Senza subire": "40% / 0%",
+            "BTTS / Entrambe segnano": "60% / 80%",
+            "Media gol": "3.40 / 4.80",
+            "Gol fatti": "1.20 / 1.60",
+            "Gol subiti": "2.20 / 3.20",
+            "Over 1.5": "60% / 80%",
+            "Over 2.5": "60% / 80%",
+            "Over 3.5": "60% / 60%",
+            "Punti per partita": "0.80 / 0.80"
+          },
+          "timing_loaded": false,
+          "recommended": "NO BET",
+          "confidence": "Bassa",
+          "marketType": "nobet",
+          "signalScore": 75,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=netherlands2&stats=60-20-9-2027"
+        },
+        {
+          "id": "fc-emmen-de-graaf-chap",
+          "league": "Netherland - Eer te Divi ie",
+          "time": "20:00",
+          "home": "FC Emmen",
+          "away": "De Graaf chap",
+          "tags": [
+            "Favorite"
+          ],
+          "scores": {
+            "over": 85,
+            "goal": 73,
+            "favorite": "FC Emmen",
+            "under": 14,
+            "noBet": 0
+          },
+          "summary": "Gap rendimento: PPG 2.40 / 0.20, vittorie 80% / 0%.",
+          "basic": {
+            "Partite considerate": "5 / 5",
+            "Vittorie": "80% / 0%",
+            "Senza segnare": "20% / 20%",
+            "Senza subire": "20% / 0%",
+            "BTTS / Entrambe segnano": "60% / 80%",
+            "Media gol": "5.40 / 4.40",
+            "Gol fatti": "3.00 / 1.00",
+            "Gol subiti": "2.40 / 3.40",
+            "Over 1.5": "80% / 100%",
+            "Over 2.5": "80% / 80%",
+            "Over 3.5": "80% / 60%",
+            "Punti per partita": "2.40 / 0.20"
+          },
+          "timing_loaded": false,
+          "recommended": "Favorita: FC Emmen",
+          "confidence": "Alta",
+          "marketType": "favorite",
+          "signalScore": 100,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=netherlands2&stats=59-7-14-2027"
+        },
+        {
+          "id": "helmond-sport-jong-psv",
+          "league": "Netherland - Eer te Divi ie",
+          "time": "20:00",
+          "home": "Helmond Sport",
+          "away": "Jong PSV",
+          "tags": [
+            "Over"
+          ],
+          "scores": {
+            "over": 78,
+            "goal": 94,
+            "favorite": "Jong PSV",
+            "under": 26,
+            "noBet": 22
+          },
+          "summary": "Profilo offensivo: Over 2.5 60% / 67% e media gol 3.60 / 3.33.",
+          "basic": {
+            "Partite considerate": "5 / 6",
+            "Vittorie": "20% / 50%",
+            "Senza segnare": "0% / 0%",
+            "Senza subire": "0% / 17%",
+            "BTTS / Entrambe segnano": "100% / 83%",
+            "Media gol": "3.60 / 3.33",
+            "Gol fatti": "1.80 / 1.83",
+            "Gol subiti": "1.80 / 1.50",
+            "Over 1.5": "100% / 83%",
+            "Over 2.5": "60% / 67%",
+            "Over 3.5": "40% / 67%",
+            "Punti per partita": "1.00 / 1.83"
+          },
+          "timing_loaded": false,
+          "recommended": "Over 1.5 gol",
+          "confidence": "Media",
+          "marketType": "over",
+          "signalScore": 78,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=netherlands2&stats=58-13-17-2027"
+        },
+        {
+          "id": "heracle-almelo-jong-az",
+          "league": "Netherland - Eer te Divi ie",
+          "time": "20:00",
+          "home": "Heracle Almelo",
+          "away": "Jong AZ",
+          "tags": [
+            "Favorite"
+          ],
+          "scores": {
+            "over": 92,
+            "goal": 85,
+            "favorite": "Heracle Almelo",
+            "under": 6,
+            "noBet": 0
+          },
+          "summary": "Gap rendimento: PPG 3.00 / 1.50, vittorie 100% / 50%.",
+          "basic": {
+            "Partite considerate": "5 / 6",
+            "Vittorie": "100% / 50%",
+            "Senza segnare": "0% / 17%",
+            "Senza subire": "20% / 0%",
+            "BTTS / Entrambe segnano": "80% / 83%",
+            "Media gol": "5.60 / 4.50",
+            "Gol fatti": "4.20 / 2.50",
+            "Gol subiti": "1.40 / 2.00",
+            "Over 1.5": "100% / 83%",
+            "Over 2.5": "100% / 83%",
+            "Over 3.5": "100% / 50%",
+            "Punti per partita": "3.00 / 1.50"
+          },
+          "timing_loaded": false,
+          "recommended": "Favorita: Heracle Almelo",
+          "confidence": "Alta",
+          "marketType": "favorite",
+          "signalScore": 100,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=netherlands2&stats=57-2-19-2027"
+        },
+        {
+          "id": "jong-ajax-rkc-waalwijk",
+          "league": "Netherland - Eer te Divi ie",
+          "time": "20:00",
+          "home": "Jong Ajax",
+          "away": "RKC Waalwijk",
+          "tags": [
+            "Over"
+          ],
+          "scores": {
+            "over": 80,
+            "goal": 94,
+            "favorite": "RKC Waalwijk",
+            "under": 26,
+            "noBet": 20
+          },
+          "summary": "Profilo offensivo: Over 2.5 67% / 60% e media gol 4.33 / 3.60.",
+          "basic": {
+            "Partite considerate": "6 / 5",
+            "Vittorie": "33% / 20%",
+            "Senza segnare": "0% / 0%",
+            "Senza subire": "17% / 0%",
+            "BTTS / Entrambe segnano": "83% / 100%",
+            "Media gol": "4.33 / 3.60",
+            "Gol fatti": "2.00 / 2.00",
+            "Gol subiti": "2.33 / 1.60",
+            "Over 1.5": "83% / 100%",
+            "Over 2.5": "67% / 60%",
+            "Over 3.5": "50% / 60%",
+            "Punti per partita": "1.17 / 1.40"
+          },
+          "timing_loaded": false,
+          "recommended": "Over 1.5 gol",
+          "confidence": "Media",
+          "marketType": "over",
+          "signalScore": 80,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=netherlands2&stats=56-10-4-2027"
+        },
+        {
+          "id": "mvv-maa-tricht-almere-city",
+          "league": "Netherland - Eer te Divi ie",
+          "time": "20:00",
+          "home": "MVV Maa tricht",
+          "away": "Almere City",
+          "tags": [
+            "Top Goal"
+          ],
+          "scores": {
+            "over": 68,
+            "goal": 76,
+            "favorite": "MVV Maa tricht",
+            "under": 28,
+            "noBet": 24
+          },
+          "summary": "BTTS favorevole: 80% / 60%.",
+          "basic": {
+            "Partite considerate": "5 / 5",
+            "Vittorie": "80% / 60%",
+            "Senza segnare": "0% / 20%",
+            "Senza subire": "20% / 20%",
+            "BTTS / Entrambe segnano": "80% / 60%",
+            "Media gol": "2.80 / 3.00",
+            "Gol fatti": "1.80 / 2.20",
+            "Gol subiti": "1.00 / 0.80",
+            "Over 1.5": "80% / 80%",
+            "Over 2.5": "60% / 60%",
+            "Over 3.5": "20% / 40%",
+            "Punti per partita": "2.60 / 2.00"
+          },
+          "timing_loaded": false,
+          "recommended": "Goal — entrambe segnano",
+          "confidence": "Media",
+          "marketType": "goal",
+          "signalScore": 76,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=netherlands2&stats=55-15-12-2027"
+        },
+        {
+          "id": "nac-breda-jong-utrecht",
+          "league": "Netherland - Eer te Divi ie",
+          "time": "20:00",
+          "home": "NAC Breda",
+          "away": "Jong Utrecht",
+          "tags": [
+            "Favorite"
+          ],
+          "scores": {
+            "over": 86,
+            "goal": 82,
+            "favorite": "NAC Breda",
+            "under": 13,
+            "noBet": 7
+          },
+          "summary": "Gap rendimento: PPG 1.40 / 0.17, vittorie 40% / 0%.",
+          "basic": {
+            "Partite considerate": "5 / 6",
+            "Vittorie": "40% / 0%",
+            "Senza segnare": "20% / 17%",
+            "Senza subire": "0% / 17%",
+            "BTTS / Entrambe segnano": "80% / 83%",
+            "Media gol": "4.00 / 3.33",
+            "Gol fatti": "1.80 / 0.83",
+            "Gol subiti": "2.20 / 2.50",
+            "Over 1.5": "100% / 83%",
+            "Over 2.5": "80% / 83%",
+            "Over 3.5": "60% / 33%",
+            "Punti per partita": "1.40 / 0.17"
+          },
+          "timing_loaded": false,
+          "recommended": "Favorita: NAC Breda",
+          "confidence": "Media-alta",
+          "marketType": "favorite",
+          "signalScore": 93,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=netherlands2&stats=54-6-16-2027"
+        },
+        {
+          "id": "vvv-top-o",
+          "league": "Netherland - Eer te Divi ie",
+          "time": "20:00",
+          "home": "VVV",
+          "away": "TOP O",
+          "tags": [
+            "Favorite"
+          ],
+          "scores": {
+            "over": 81,
+            "goal": 66,
+            "favorite": "VVV",
+            "under": 14,
+            "noBet": 8
+          },
+          "summary": "Gap rendimento: PPG 1.80 / 0.60, vittorie 60% / 20%.",
+          "basic": {
+            "Partite considerate": "5 / 5",
+            "Vittorie": "60% / 20%",
+            "Senza segnare": "0% / 40%",
+            "Senza subire": "40% / 0%",
+            "BTTS / Entrambe segnano": "60% / 60%",
+            "Media gol": "4.40 / 2.60",
+            "Gol fatti": "2.60 / 0.80",
+            "Gol subiti": "1.80 / 1.80",
+            "Over 1.5": "100% / 80%",
+            "Over 2.5": "80% / 80%",
+            "Over 3.5": "60% / 0%",
+            "Punti per partita": "1.80 / 0.60"
+          },
+          "timing_loaded": false,
+          "recommended": "Favorita: VVV",
+          "confidence": "Media-alta",
+          "marketType": "favorite",
+          "signalScore": 92,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=netherlands2&stats=53-1-5-2027"
+        },
+        {
+          "id": "skenderbeu-k-kf-tirana",
+          "league": "Albania - Abi net Superiore",
+          "time": "18:30",
+          "home": "Skenderbeu K.",
+          "away": "KF Tirana",
+          "tags": [
+            "Over"
+          ],
+          "scores": {
+            "over": 79,
+            "goal": 55,
+            "favorite": "KF Tirana",
+            "under": 12,
+            "noBet": 21
+          },
+          "summary": "Profilo offensivo: Over 2.5 67% / 100% e media gol 2.67 / 3.67.",
+          "basic": {
+            "Partite considerate": "3 / 3",
+            "Vittorie": "0% / 33%",
+            "Senza segnare": "33% / 33%",
+            "Senza subire": "0% / 33%",
+            "BTTS / Entrambe segnano": "67% / 33%",
+            "Media gol": "2.67 / 3.67",
+            "Gol fatti": "1.00 / 1.67",
+            "Gol subiti": "1.67 / 2.00",
+            "Over 1.5": "67% / 100%",
+            "Over 2.5": "67% / 100%",
+            "Over 3.5": "33% / 67%",
+            "Punti per partita": "0.33 / 1.00"
+          },
+          "timing_loaded": false,
+          "recommended": "Over 2.5 gol",
+          "confidence": "Media",
+          "marketType": "over",
+          "signalScore": 79,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/h2h.asp?league=albania&fmid=18&t1id=6&t2id=2&ly=2027"
+        },
+        {
+          "id": "newell-velez-sar-field",
+          "league": "Argentina - Liga Profe ional - Clau ura",
+          "time": "22:00",
+          "home": "Newell",
+          "away": "Velez Sar field",
+          "tags": [
+            "No Bet"
+          ],
+          "scores": {
+            "over": 46,
+            "goal": 66,
+            "favorite": "Velez Sar field",
+            "under": 58,
+            "noBet": 34
+          },
+          "summary": "Dati generali non abbastanza convergenti.",
+          "basic": {
+            "Partite considerate": "8 / 8",
+            "Vittorie": "38% / 50%",
+            "Senza segnare": "25% / 0%",
+            "Senza subire": "38% / 38%",
+            "BTTS / Entrambe segnano": "50% / 62%",
+            "Media gol": "2.00 / 2.13",
+            "Gol fatti": "1.13 / 1.38",
+            "Gol subiti": "0.88 / 0.75",
+            "Over 1.5": "62% / 62%",
+            "Over 2.5": "38% / 25%",
+            "Over 3.5": "12% / 25%",
+            "Punti per partita": "1.50 / 2.00"
+          },
+          "timing_loaded": false,
+          "recommended": "NO BET",
+          "confidence": "Bassa",
+          "marketType": "nobet",
+          "signalScore": 66,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=argentina2&stats=128-19-11-2026"
+        },
+        {
+          "id": "defen-a-y-j-g-mendoza",
+          "league": "Argentina - Liga Profe ional - Clau ura",
+          "time": "00:15",
+          "home": "Defen a y J.",
+          "away": "G. Mendoza",
+          "tags": [
+            "No Bet"
+          ],
+          "scores": {
+            "over": 57,
+            "goal": 58,
+            "favorite": "G. Mendoza",
+            "under": 38,
+            "noBet": 42
+          },
+          "summary": "Dati generali non abbastanza convergenti.",
+          "basic": {
+            "Partite considerate": "8 / 8",
+            "Vittorie": "50% / 62%",
+            "Senza segnare": "25% / 25%",
+            "Senza subire": "12% / 38%",
+            "BTTS / Entrambe segnano": "62% / 38%",
+            "Media gol": "2.25 / 2.63",
+            "Gol fatti": "1.13 / 1.75",
+            "Gol subiti": "1.13 / 0.88",
+            "Over 1.5": "75% / 62%",
+            "Over 2.5": "50% / 50%",
+            "Over 3.5": "0% / 38%",
+            "Punti per partita": "1.75 / 2.00"
+          },
+          "timing_loaded": false,
+          "recommended": "NO BET",
+          "confidence": "Bassa",
+          "marketType": "nobet",
+          "signalScore": 58,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=argentina2&stats=131-5-7-2026"
+        },
+        {
+          "id": "ararat-armenia-syunik",
+          "league": "Armenia - Premier League",
+          "time": "17:00",
+          "home": "Ararat-Armenia",
+          "away": "Syunik",
+          "tags": [
+            "Favorite"
+          ],
+          "scores": {
+            "over": 67,
+            "goal": 64,
+            "favorite": "Ararat-Armenia",
+            "under": 29,
+            "noBet": 0
+          },
+          "summary": "Gap rendimento: PPG 2.17 / 0.33, vittorie 67% / 0%.",
+          "basic": {
+            "Partite considerate": "6 / 6",
+            "Vittorie": "67% / 0%",
+            "Senza segnare": "0% / 50%",
+            "Senza subire": "33% / 17%",
+            "BTTS / Entrambe segnano": "67% / 50%",
+            "Media gol": "3.00 / 2.67",
+            "Gol fatti": "1.83 / 0.50",
+            "Gol subiti": "1.17 / 2.17",
+            "Over 1.5": "83% / 83%",
+            "Over 2.5": "50% / 67%",
+            "Over 3.5": "17% / 33%",
+            "Punti per partita": "2.17 / 0.33"
+          },
+          "timing_loaded": false,
+          "recommended": "Favorita: Ararat-Armenia",
+          "confidence": "Alta",
+          "marketType": "favorite",
+          "signalScore": 100,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=armenia&stats=37-6-8-2027"
+        },
+        {
+          "id": "ried-salzburg",
+          "league": "Au tria - Bunde liga",
+          "time": "19:30",
+          "home": "Ried",
+          "away": "Salzburg",
+          "tags": [
+            "Favorite"
+          ],
+          "scores": {
+            "over": 70,
+            "goal": 80,
+            "favorite": "Salzburg",
+            "under": 28,
+            "noBet": 0
+          },
+          "summary": "Gap rendimento: PPG 0.80 / 2.60, vittorie 20% / 80%.",
+          "basic": {
+            "Partite considerate": "5 / 5",
+            "Vittorie": "20% / 80%",
+            "Senza segnare": "0% / 0%",
+            "Senza subire": "20% / 40%",
+            "BTTS / Entrambe segnano": "80% / 60%",
+            "Media gol": "3.20 / 3.40",
+            "Gol fatti": "1.20 / 2.80",
+            "Gol subiti": "2.00 / 0.60",
+            "Over 1.5": "80% / 80%",
+            "Over 2.5": "60% / 60%",
+            "Over 3.5": "40% / 40%",
+            "Punti per partita": "0.80 / 2.60"
+          },
+          "timing_loaded": false,
+          "recommended": "Favorita: Salzburg",
+          "confidence": "Alta",
+          "marketType": "favorite",
+          "signalScore": 100,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=austria&stats=35-8-5-2027"
+        },
+        {
+          "id": "admira-wacker-kapfenberger",
+          "league": "Au tria - 2. Liga",
+          "time": "18:30",
+          "home": "Admira Wacker",
+          "away": "Kapfenberger",
+          "tags": [
+            "No Bet"
+          ],
+          "scores": {
+            "over": 64,
+            "goal": 53,
+            "favorite": "Admira Wacker",
+            "under": 28,
+            "noBet": 36
+          },
+          "summary": "Dati generali non abbastanza convergenti.",
+          "basic": {
+            "Partite considerate": "5 / 5",
+            "Vittorie": "40% / 20%",
+            "Senza segnare": "40% / 40%",
+            "Senza subire": "20% / 0%",
+            "BTTS / Entrambe segnano": "40% / 60%",
+            "Media gol": "2.20 / 3.60",
+            "Gol fatti": "1.20 / 1.20",
+            "Gol subiti": "1.00 / 2.40",
+            "Over 1.5": "60% / 80%",
+            "Over 2.5": "40% / 80%",
+            "Over 3.5": "20% / 60%",
+            "Punti per partita": "1.20 / 0.60"
+          },
+          "timing_loaded": false,
+          "recommended": "NO BET",
+          "confidence": "Bassa",
+          "marketType": "nobet",
+          "signalScore": 64,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=austria2&stats=45-9-5-2027"
+        },
+        {
+          "id": "am-tetten-au-tria-wien-b",
+          "league": "Au tria - 2. Liga",
+          "time": "18:30",
+          "home": "Am tetten",
+          "away": "Au tria Wien B",
+          "tags": [
+            "No Bet"
+          ],
+          "scores": {
+            "over": 61,
+            "goal": 66,
+            "favorite": "Au tria Wien B",
+            "under": 37,
+            "noBet": 34
+          },
+          "summary": "Dati generali non abbastanza convergenti.",
+          "basic": {
+            "Partite considerate": "5 / 5",
+            "Vittorie": "20% / 60%",
+            "Senza segnare": "20% / 20%",
+            "Senza subire": "0% / 40%",
+            "BTTS / Entrambe segnano": "80% / 40%",
+            "Media gol": "2.40 / 2.60",
+            "Gol fatti": "1.20 / 1.40",
+            "Gol subiti": "1.20 / 1.20",
+            "Over 1.5": "80% / 80%",
+            "Over 2.5": "40% / 60%",
+            "Over 3.5": "20% / 20%",
+            "Punti per partita": "1.20 / 1.80"
+          },
+          "timing_loaded": false,
+          "recommended": "NO BET",
+          "confidence": "Bassa",
+          "marketType": "nobet",
+          "signalScore": 66,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=austria2&stats=43-4-7-2027"
+        },
+        {
+          "id": "rapid-wien-b-fir-t-vienna",
+          "league": "Au tria - 2. Liga",
+          "time": "18:30",
+          "home": "Rapid Wien B",
+          "away": "Fir t Vienna",
+          "tags": [
+            "No Bet"
+          ],
+          "scores": {
+            "over": 65,
+            "goal": 63,
+            "favorite": "Fir t Vienna",
+            "under": 28,
+            "noBet": 35
+          },
+          "summary": "Dati generali non abbastanza convergenti.",
+          "basic": {
+            "Partite considerate": "5 / 5",
+            "Vittorie": "40% / 60%",
+            "Senza segnare": "20% / 0%",
+            "Senza subire": "20% / 60%",
+            "BTTS / Entrambe segnano": "60% / 40%",
+            "Media gol": "3.40 / 3.00",
+            "Gol fatti": "1.20 / 1.80",
+            "Gol subiti": "2.20 / 1.20",
+            "Over 1.5": "80% / 60%",
+            "Over 2.5": "60% / 60%",
+            "Over 3.5": "40% / 60%",
+            "Punti per partita": "1.20 / 2.00"
+          },
+          "timing_loaded": false,
+          "recommended": "NO BET",
+          "confidence": "Bassa",
+          "marketType": "nobet",
+          "signalScore": 65,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=austria2&stats=42-10-13-2027"
+        },
+        {
+          "id": "w-inn-bruck-voit-berg",
+          "league": "Au tria - 2. Liga",
+          "time": "20:30",
+          "home": "W. Inn bruck",
+          "away": "Voit berg",
+          "tags": [
+            "Favorite"
+          ],
+          "scores": {
+            "over": 58,
+            "goal": 50,
+            "favorite": "W. Inn bruck",
+            "under": 35,
+            "noBet": 18
+          },
+          "summary": "Gap rendimento: PPG 1.80 / 1.00, vittorie 60% / 20%.",
+          "basic": {
+            "Partite considerate": "5 / 5",
+            "Vittorie": "60% / 20%",
+            "Senza segnare": "40% / 20%",
+            "Senza subire": "60% / 20%",
+            "BTTS / Entrambe segnano": "0% / 80%",
+            "Media gol": "2.40 / 3.40",
+            "Gol fatti": "1.40 / 1.40",
+            "Gol subiti": "1.00 / 2.00",
+            "Over 1.5": "60% / 80%",
+            "Over 2.5": "40% / 60%",
+            "Over 3.5": "20% / 60%",
+            "Punti per partita": "1.80 / 1.00"
+          },
+          "timing_loaded": false,
+          "recommended": "Favorita: W. Inn bruck",
+          "confidence": "Media-alta",
+          "marketType": "favorite",
+          "signalScore": 82,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=austria2&stats=41-1-3-2027"
+        },
+        {
+          "id": "fc-min-k-slavia-mozyr",
+          "league": "Belaru - Vy haya Liga",
+          "time": "19:10",
+          "home": "FC Min k",
+          "away": "Slavia Mozyr",
+          "tags": [
+            "No Bet"
+          ],
+          "scores": {
+            "over": 68,
+            "goal": 58,
+            "favorite": "FC Min k",
+            "under": 22,
+            "noBet": 32
+          },
+          "summary": "Dati generali non abbastanza convergenti.",
+          "basic": {
+            "Partite considerate": "8 / 8",
+            "Vittorie": "50% / 38%",
+            "Senza segnare": "25% / 25%",
+            "Senza subire": "25% / 38%",
+            "BTTS / Entrambe segnano": "50% / 50%",
+            "Media gol": "2.50 / 3.00",
+            "Gol fatti": "1.25 / 1.63",
+            "Gol subiti": "1.25 / 1.38",
+            "Over 1.5": "75% / 75%",
+            "Over 2.5": "75% / 62%",
+            "Over 3.5": "0% / 38%",
+            "Punti per partita": "1.50 / 1.38"
+          },
+          "timing_loaded": false,
+          "recommended": "NO BET",
+          "confidence": "Bassa",
+          "marketType": "nobet",
+          "signalScore": 68,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=belarus&stats=175-11-7-2026"
+        },
+        {
+          "id": "kv-mechelen-anderlecht",
+          "league": "Belgium - Pro League",
+          "time": "20:45",
+          "home": "KV Mechelen",
+          "away": "Anderlecht",
+          "tags": [
+            "Favorite"
+          ],
+          "scores": {
+            "over": 55,
+            "goal": 33,
+            "favorite": "Anderlecht",
+            "under": 35,
+            "noBet": 13
+          },
+          "summary": "Gap rendimento: PPG 0.40 / 1.40, vittorie 0% / 40%.",
+          "basic": {
+            "Partite considerate": "5 / 5",
+            "Vittorie": "0% / 40%",
+            "Senza segnare": "60% / 60%",
+            "Senza subire": "0% / 40%",
+            "BTTS / Entrambe segnano": "40% / 20%",
+            "Media gol": "3.60 / 1.60",
+            "Gol fatti": "1.00 / 0.60",
+            "Gol subiti": "2.60 / 1.00",
+            "Over 1.5": "100% / 40%",
+            "Over 2.5": "60% / 40%",
+            "Over 3.5": "60% / 0%",
+            "Punti per partita": "0.40 / 1.40"
+          },
+          "timing_loaded": false,
+          "recommended": "Favorita: Anderlecht",
+          "confidence": "Media-alta",
+          "marketType": "favorite",
+          "signalScore": 87,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=belgium&stats=46-12-15-2027"
+        },
+        {
+          "id": "beer-chot-lier-e-k",
+          "league": "Belgium - Challenger Pro League",
+          "time": "20:00",
+          "home": "Beer chot",
+          "away": "Lier e K.",
+          "tags": [
+            "Favorite"
+          ],
+          "scores": {
+            "over": 58,
+            "goal": 46,
+            "favorite": "Beer chot",
+            "under": 35,
+            "noBet": 9
+          },
+          "summary": "Gap rendimento: PPG 2.25 / 1.25, vittorie 75% / 25%.",
+          "basic": {
+            "Partite considerate": "4 / 4",
+            "Vittorie": "75% / 25%",
+            "Senza segnare": "25% / 50%",
+            "Senza subire": "50% / 25%",
+            "BTTS / Entrambe segnano": "25% / 50%",
+            "Media gol": "3.25 / 2.00",
+            "Gol fatti": "2.25 / 0.75",
+            "Gol subiti": "1.00 / 1.25",
+            "Over 1.5": "75% / 75%",
+            "Over 2.5": "50% / 50%",
+            "Over 3.5": "50% / 0%",
+            "Punti per partita": "2.25 / 1.25"
+          },
+          "timing_loaded": false,
+          "recommended": "Favorita: Beer chot",
+          "confidence": "Media-alta",
+          "marketType": "favorite",
+          "signalScore": 91,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/h2h.asp?league=belgium2&fmid=30&t1id=11&t2id=10&ly=2027"
+        },
+        {
+          "id": "jong-gent-dender",
+          "league": "Belgium - Challenger Pro League",
+          "time": "20:00",
+          "home": "Jong Gent",
+          "away": "Dender",
+          "tags": [
+            "Favorite"
+          ],
+          "scores": {
+            "over": 58,
+            "goal": 42,
+            "favorite": "Dender",
+            "under": 38,
+            "noBet": 14
+          },
+          "summary": "Gap rendimento: PPG 1.33 / 2.25, vittorie 33% / 75%.",
+          "basic": {
+            "Partite considerate": "3 / 4",
+            "Vittorie": "33% / 75%",
+            "Senza segnare": "33% / 25%",
+            "Senza subire": "33% / 50%",
+            "BTTS / Entrambe segnano": "33% / 25%",
+            "Media gol": "3.33 / 2.00",
+            "Gol fatti": "1.33 / 1.50",
+            "Gol subiti": "2.00 / 0.50",
+            "Over 1.5": "100% / 75%",
+            "Over 2.5": "67% / 25%",
+            "Over 3.5": "67% / 0%",
+            "Punti per partita": "1.33 / 2.25"
+          },
+          "timing_loaded": false,
+          "recommended": "Favorita: Dender",
+          "confidence": "Media-alta",
+          "marketType": "favorite",
+          "signalScore": 86,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/h2h.asp?league=belgium2&fmid=29&t1id=12&t2id=2&ly=2027"
+        },
+        {
+          "id": "celik-r-bijeljina",
+          "league": "Bo nia and Herzegovina - Premier Liga",
+          "time": "20:00",
+          "home": "Celik",
+          "away": "R. Bijeljina",
+          "tags": [
+            "No Bet"
+          ],
+          "scores": {
+            "over": 72,
+            "goal": 69,
+            "favorite": "Celik",
+            "under": 23,
+            "noBet": 28
+          },
+          "summary": "Dati generali non abbastanza convergenti.",
+          "basic": {
+            "Partite considerate": "6 / 6",
+            "Vittorie": "17% / 0%",
+            "Senza segnare": "33% / 17%",
+            "Senza subire": "33% / 17%",
+            "BTTS / Entrambe segnano": "50% / 83%",
+            "Media gol": "2.67 / 3.00",
+            "Gol fatti": "1.17 / 1.00",
+            "Gol subiti": "1.50 / 2.00",
+            "Over 1.5": "83% / 83%",
+            "Over 2.5": "67% / 67%",
+            "Over 3.5": "17% / 33%",
+            "Punti per partita": "0.67 / 0.50"
+          },
+          "timing_loaded": false,
+          "recommended": "NO BET",
+          "confidence": "Bassa",
+          "marketType": "nobet",
+          "signalScore": 72,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/h2h.asp?league=bosnia&fmid=31&t1id=6&t2id=8&ly=2027"
+        },
+        {
+          "id": "cherno-more-lokomotiv-sofia",
+          "league": "Bulgaria - Parva Liga",
+          "time": "20:00",
+          "home": "Cherno More",
+          "away": "Lokomotiv Sofia",
+          "tags": [
+            "Top Goal"
+          ],
+          "scores": {
+            "over": 76,
+            "goal": 81,
+            "favorite": "Cherno More",
+            "under": 23,
+            "noBet": 19
+          },
+          "summary": "BTTS favorevole: 62% / 100%.",
+          "basic": {
+            "Partite considerate": "8 / 7",
+            "Vittorie": "12% / 0%",
+            "Senza segnare": "38% / 0%",
+            "Senza subire": "0% / 0%",
+            "BTTS / Entrambe segnano": "62% / 100%",
+            "Media gol": "3.13 / 3.14",
+            "Gol fatti": "1.00 / 1.14",
+            "Gol subiti": "2.13 / 2.00",
+            "Over 1.5": "75% / 100%",
+            "Over 2.5": "62% / 71%",
+            "Over 3.5": "50% / 43%",
+            "Punti per partita": "0.50 / 0.43"
+          },
+          "timing_loaded": false,
+          "recommended": "Goal — entrambe segnano",
+          "confidence": "Media",
+          "marketType": "goal",
+          "signalScore": 81,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=bulgaria&stats=59-10-14-2027"
+        },
+        {
+          "id": "jaguare-de-c-fortaleza-ceif",
+          "league": "Colombia - Primera A - Clau ura",
+          "time": "01:15",
+          "home": "Jaguare de C.",
+          "away": "Fortaleza CEIF",
+          "tags": [
+            "No Bet"
+          ],
+          "scores": {
+            "over": 57,
+            "goal": 57,
+            "favorite": "Fortaleza CEIF",
+            "under": 40,
+            "noBet": 43
+          },
+          "summary": "Dati generali non abbastanza convergenti.",
+          "basic": {
+            "Partite considerate": "7 / 8",
+            "Vittorie": "14% / 12%",
+            "Senza segnare": "43% / 25%",
+            "Senza subire": "14% / 38%",
+            "BTTS / Entrambe segnano": "43% / 62%",
+            "Media gol": "2.71 / 2.25",
+            "Gol fatti": "1.00 / 1.00",
+            "Gol subiti": "1.71 / 1.25",
+            "Over 1.5": "71% / 75%",
+            "Over 2.5": "43% / 50%",
+            "Over 3.5": "29% / 25%",
+            "Punti per partita": "0.86 / 0.88"
+          },
+          "timing_loaded": false,
+          "recommended": "NO BET",
+          "confidence": "Bassa",
+          "marketType": "nobet",
+          "signalScore": 57,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=colombia2&stats=89-4-18-2026"
+        },
+        {
+          "id": "ael-lima-ol-nea-salami",
+          "league": "Cypru - Cypru League",
+          "time": "19:00",
+          "home": "AEL Lima ol",
+          "away": "Nea Salami",
+          "tags": [
+            "Favorite"
+          ],
+          "scores": {
+            "over": 83,
+            "goal": 58,
+            "favorite": "AEL Lima ol",
+            "under": 18,
+            "noBet": 9
+          },
+          "summary": "Gap rendimento: PPG 1.50 / 0.50, vittorie 50% / 0%.",
+          "basic": {
+            "Partite considerate": "2 / 2",
+            "Vittorie": "50% / 0%",
+            "Senza segnare": "50% / 0%",
+            "Senza subire": "50% / 0%",
+            "BTTS / Entrambe segnano": "0% / 100%",
+            "Media gol": "4.00 / 5.50",
+            "Gol fatti": "1.00 / 2.00",
+            "Gol subiti": "3.00 / 3.50",
+            "Over 1.5": "100% / 100%",
+            "Over 2.5": "50% / 100%",
+            "Over 3.5": "50% / 100%",
+            "Punti per partita": "1.50 / 0.50"
+          },
+          "timing_loaded": false,
+          "recommended": "Favorita: AEL Lima ol",
+          "confidence": "Media-alta",
+          "marketType": "favorite",
+          "signalScore": 91,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/h2h.asp?league=cyprus&fmid=16&t1id=1&t2id=6&ly=2027"
+        },
+        {
+          "id": "trinec-karvina",
+          "league": "CzechRepublic - FNL",
+          "time": "17:00",
+          "home": "Trinec",
+          "away": "Karvina",
+          "tags": [
+            "Favorite"
+          ],
+          "scores": {
+            "over": 65,
+            "goal": 64,
+            "favorite": "Karvina",
+            "under": 30,
+            "noBet": 0
+          },
+          "summary": "Gap rendimento: PPG 0.57 / 2.14, vittorie 0% / 71%.",
+          "basic": {
+            "Partite considerate": "7 / 7",
+            "Vittorie": "0% / 71%",
+            "Senza segnare": "29% / 14%",
+            "Senza subire": "29% / 43%",
+            "BTTS / Entrambe segnano": "71% / 43%",
+            "Media gol": "2.71 / 3.00",
+            "Gol fatti": "1.00 / 2.00",
+            "Gol subiti": "1.71 / 1.00",
+            "Over 1.5": "71% / 86%",
+            "Over 2.5": "57% / 57%",
+            "Over 3.5": "43% / 14%",
+            "Punti per partita": "0.57 / 2.14"
+          },
+          "timing_loaded": false,
+          "recommended": "Favorita: Karvina",
+          "confidence": "Alta",
+          "marketType": "favorite",
+          "signalScore": 100,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=czechrepublic2&stats=57-10-16-2027"
+        },
+        {
+          "id": "dukla-praha-vla-im",
+          "league": "CzechRepublic - FNL",
+          "time": "18:00",
+          "home": "Dukla Praha",
+          "away": "Vla im",
+          "tags": [
+            "Over"
+          ],
+          "scores": {
+            "over": 79,
+            "goal": 83,
+            "favorite": "Dukla Praha",
+            "under": 20,
+            "noBet": 21
+          },
+          "summary": "Profilo offensivo: Over 2.5 71% / 71% e media gol 3.29 / 3.14.",
+          "basic": {
+            "Partite considerate": "7 / 7",
+            "Vittorie": "57% / 29%",
+            "Senza segnare": "0% / 14%",
+            "Senza subire": "29% / 0%",
+            "BTTS / Entrambe segnano": "71% / 86%",
+            "Media gol": "3.29 / 3.14",
+            "Gol fatti": "1.86 / 1.71",
+            "Gol subiti": "1.43 / 1.43",
+            "Over 1.5": "100% / 86%",
+            "Over 2.5": "71% / 71%",
+            "Over 3.5": "57% / 43%",
+            "Punti per partita": "1.86 / 1.29"
+          },
+          "timing_loaded": false,
+          "recommended": "Over 1.5 gol",
+          "confidence": "Media",
+          "marketType": "over",
+          "signalScore": 79,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=czechrepublic2&stats=58-3-14-2027"
+        },
+        {
+          "id": "pribram-banik-o-trava-b",
+          "league": "CzechRepublic - FNL",
+          "time": "18:00",
+          "home": "Pribram",
+          "away": "Banik O trava B",
+          "tags": [
+            "Top Goal"
+          ],
+          "scores": {
+            "over": 71,
+            "goal": 81,
+            "favorite": "Pribram",
+            "under": 25,
+            "noBet": 19
+          },
+          "summary": "BTTS favorevole: 86% / 71%.",
+          "basic": {
+            "Partite considerate": "7 / 7",
+            "Vittorie": "43% / 29%",
+            "Senza segnare": "0% / 29%",
+            "Senza subire": "14% / 0%",
+            "BTTS / Entrambe segnano": "86% / 71%",
+            "Media gol": "3.00 / 3.00",
+            "Gol fatti": "1.71 / 1.71",
+            "Gol subiti": "1.29 / 1.29",
+            "Over 1.5": "86% / 71%",
+            "Over 2.5": "71% / 57%",
+            "Over 3.5": "43% / 43%",
+            "Punti per partita": "1.86 / 1.14"
+          },
+          "timing_loaded": false,
+          "recommended": "Goal — entrambe segnano",
+          "confidence": "Media",
+          "marketType": "goal",
+          "signalScore": 81,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=czechrepublic2&stats=60-12-13-2027"
+        },
+        {
+          "id": "tabor-ko-kladno",
+          "league": "CzechRepublic - FNL",
+          "time": "18:00",
+          "home": "Tabor ko",
+          "away": "Kladno",
+          "tags": [
+            "No Bet"
+          ],
+          "scores": {
+            "over": 53,
+            "goal": 59,
+            "favorite": "Tabor ko",
+            "under": 47,
+            "noBet": 41
+          },
+          "summary": "Dati generali non abbastanza convergenti.",
+          "basic": {
+            "Partite considerate": "7 / 7",
+            "Vittorie": "43% / 29%",
+            "Senza segnare": "29% / 14%",
+            "Senza subire": "43% / 29%",
+            "BTTS / Entrambe segnano": "43% / 57%",
+            "Media gol": "2.00 / 2.43",
+            "Gol fatti": "1.29 / 1.14",
+            "Gol subiti": "0.71 / 1.29",
+            "Over 1.5": "57% / 86%",
+            "Over 2.5": "43% / 43%",
+            "Over 3.5": "14% / 14%",
+            "Punti per partita": "1.71 / 1.14"
+          },
+          "timing_loaded": false,
+          "recommended": "NO BET",
+          "confidence": "Bassa",
+          "marketType": "nobet",
+          "signalScore": 59,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=czechrepublic2&stats=61-2-6-2027"
+        },
+        {
+          "id": "u-ti-nad-labem-jihlava",
+          "league": "CzechRepublic - FNL",
+          "time": "18:00",
+          "home": "U ti nad Labem",
+          "away": "Jihlava",
+          "tags": [
+            "No Bet"
+          ],
+          "scores": {
+            "over": 51,
+            "goal": 54,
+            "favorite": "U ti nad Labem",
+            "under": 44,
+            "noBet": 46
+          },
+          "summary": "Dati generali non abbastanza convergenti.",
+          "basic": {
+            "Partite considerate": "7 / 7",
+            "Vittorie": "57% / 43%",
+            "Senza segnare": "14% / 29%",
+            "Senza subire": "43% / 57%",
+            "BTTS / Entrambe segnano": "57% / 29%",
+            "Media gol": "2.57 / 2.14",
+            "Gol fatti": "1.71 / 1.29",
+            "Gol subiti": "0.86 / 0.86",
+            "Over 1.5": "71% / 57%",
+            "Over 2.5": "43% / 43%",
+            "Over 3.5": "29% / 29%",
+            "Punti per partita": "2.14 / 1.43"
+          },
+          "timing_loaded": false,
+          "recommended": "NO BET",
+          "confidence": "Bassa",
+          "marketType": "nobet",
+          "signalScore": 54,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=czechrepublic2&stats=59-5-7-2027"
+        },
+        {
+          "id": "fc-kobenhavn-ac-hor-en",
+          "league": "Denmark - Superligaen",
+          "time": "19:00",
+          "home": "FC Kobenhavn",
+          "away": "AC Hor en",
+          "tags": [
+            "Favorite"
+          ],
+          "scores": {
+            "over": 85,
+            "goal": 71,
+            "favorite": "FC Kobenhavn",
+            "under": 15,
+            "noBet": 8
+          },
+          "summary": "Gap rendimento: PPG 2.57 / 1.43, vittorie 86% / 43%.",
+          "basic": {
+            "Partite considerate": "7 / 7",
+            "Vittorie": "86% / 43%",
+            "Senza segnare": "14% / 14%",
+            "Senza subire": "43% / 0%",
+            "BTTS / Entrambe segnano": "43% / 86%",
+            "Media gol": "4.00 / 3.57",
+            "Gol fatti": "2.86 / 1.86",
+            "Gol subiti": "1.14 / 1.71",
+            "Over 1.5": "100% / 100%",
+            "Over 2.5": "86% / 71%",
+            "Over 3.5": "86% / 29%",
+            "Punti per partita": "2.57 / 1.43"
+          },
+          "timing_loaded": false,
+          "recommended": "Favorita: FC Kobenhavn",
+          "confidence": "Media-alta",
+          "marketType": "favorite",
+          "signalScore": 92,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=denmark&stats=48-7-9-2027"
+        },
+        {
+          "id": "hobro-vejle-bk",
+          "league": "Denmark - 1 t Divi ion",
+          "time": "18:00",
+          "home": "Hobro",
+          "away": "Vejle BK",
+          "tags": [
+            "Over"
+          ],
+          "scores": {
+            "over": 83,
+            "goal": 83,
+            "favorite": "Vejle BK",
+            "under": 15,
+            "noBet": 17
+          },
+          "summary": "Profilo offensivo: Over 2.5 86% / 71% e media gol 3.00 / 4.43.",
+          "basic": {
+            "Partite considerate": "7 / 7",
+            "Vittorie": "57% / 71%",
+            "Senza segnare": "0% / 14%",
+            "Senza subire": "14% / 29%",
+            "BTTS / Entrambe segnano": "86% / 71%",
+            "Media gol": "3.00 / 4.43",
+            "Gol fatti": "1.43 / 2.86",
+            "Gol subiti": "1.57 / 1.57",
+            "Over 1.5": "86% / 86%",
+            "Over 2.5": "86% / 71%",
+            "Over 3.5": "29% / 71%",
+            "Punti per partita": "1.71 / 2.43"
+          },
+          "timing_loaded": false,
+          "recommended": "Over 2.5 gol",
+          "confidence": "Media",
+          "marketType": "over",
+          "signalScore": 83,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=denmark2&stats=48-11-1-2027"
+        },
+        {
+          "id": "vend-y-el-aarhu-fremad",
+          "league": "Denmark - 1 t Divi ion",
+          "time": "19:00",
+          "home": "Vend y el",
+          "away": "Aarhu Fremad",
+          "tags": [
+            "No Bet"
+          ],
+          "scores": {
+            "over": 64,
+            "goal": 69,
+            "favorite": "Aarhu Fremad",
+            "under": 32,
+            "noBet": 31
+          },
+          "summary": "Dati generali non abbastanza convergenti.",
+          "basic": {
+            "Partite considerate": "7 / 7",
+            "Vittorie": "29% / 43%",
+            "Senza segnare": "14% / 29%",
+            "Senza subire": "29% / 29%",
+            "BTTS / Entrambe segnano": "57% / 71%",
+            "Media gol": "2.86 / 2.14",
+            "Gol fatti": "1.14 / 1.29",
+            "Gol subiti": "1.71 / 0.86",
+            "Over 1.5": "86% / 71%",
+            "Over 2.5": "57% / 57%",
+            "Over 3.5": "29% / 14%",
+            "Punti per partita": "1.14 / 1.71"
+          },
+          "timing_loaded": false,
+          "recommended": "NO BET",
+          "confidence": "Bassa",
+          "marketType": "nobet",
+          "signalScore": 69,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=denmark2&stats=43-6-12-2027"
+        },
+        {
+          "id": "fremad-amager-hellerup-ik",
+          "league": "Denmark - 2nd Divi ion",
+          "time": "19:00",
+          "home": "Fremad Amager",
+          "away": "Hellerup IK",
+          "tags": [
+            "No Bet"
+          ],
+          "scores": {
+            "over": 72,
+            "goal": 70,
+            "favorite": "Fremad Amager",
+            "under": 29,
+            "noBet": 28
+          },
+          "summary": "Dati generali non abbastanza convergenti.",
+          "basic": {
+            "Partite considerate": "6 / 6",
+            "Vittorie": "17% / 33%",
+            "Senza segnare": "17% / 33%",
+            "Senza subire": "17% / 0%",
+            "BTTS / Entrambe segnano": "67% / 67%",
+            "Media gol": "2.83 / 2.67",
+            "Gol fatti": "1.33 / 1.00",
+            "Gol subiti": "1.50 / 1.67",
+            "Over 1.5": "100% / 100%",
+            "Over 2.5": "50% / 67%",
+            "Over 3.5": "33% / 0%",
+            "Punti per partita": "1.17 / 1.17"
+          },
+          "timing_loaded": false,
+          "recommended": "NO BET",
+          "confidence": "Bassa",
+          "marketType": "nobet",
+          "signalScore": 72,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=denmark3&stats=37-2-9-2027"
+        },
+        {
+          "id": "brighton-u21-leice-ter-u21",
+          "league": "England - Premier League 2",
+          "time": "20:00",
+          "home": "Brighton U21",
+          "away": "Leice ter U21",
+          "tags": [
+            "Over"
+          ],
+          "scores": {
+            "over": 100,
+            "goal": 100,
+            "favorite": "Brighton U21",
+            "under": 0,
+            "noBet": 0
+          },
+          "summary": "Profilo offensivo: Over 2.5 100% / 100% e media gol 3.50 / 5.00.",
+          "basic": {
+            "Partite considerate": "2 / 1",
+            "Vittorie": "0% / 0%",
+            "Senza segnare": "0% / 0%",
+            "Senza subire": "0% / 0%",
+            "BTTS / Entrambe segnano": "100% / 100%",
+            "Media gol": "3.50 / 5.00",
+            "Gol fatti": "1.50 / 1.00",
+            "Gol subiti": "2.00 / 4.00",
+            "Over 1.5": "100% / 100%",
+            "Over 2.5": "100% / 100%",
+            "Over 3.5": "50% / 100%",
+            "Punti per partita": "0.50 / 0.00"
+          },
+          "timing_loaded": false,
+          "recommended": "Over 2.5 gol",
+          "confidence": "Media-alta",
+          "marketType": "over",
+          "signalScore": 100,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/h2h.asp?league=england15&fmid=35&t1id=12&t2id=5&ly=2027"
+        },
+        {
+          "id": "derby-c-u21-tottenham-u21",
+          "league": "England - Premier League 2",
+          "time": "20:00",
+          "home": "Derby C. U21",
+          "away": "Tottenham U21",
+          "tags": [
+            "Over"
+          ],
+          "scores": {
+            "over": 100,
+            "goal": 100,
+            "favorite": "Derby C. U21",
+            "under": 0,
+            "noBet": 0
+          },
+          "summary": "Profilo offensivo: Over 2.5 100% / 100% e media gol 6.00 / 5.00.",
+          "basic": {
+            "Partite considerate": "2 / 2",
+            "Vittorie": "50% / 50%",
+            "Senza segnare": "0% / 0%",
+            "Senza subire": "0% / 0%",
+            "BTTS / Entrambe segnano": "100% / 100%",
+            "Media gol": "6.00 / 5.00",
+            "Gol fatti": "3.50 / 3.00",
+            "Gol subiti": "2.50 / 2.00",
+            "Over 1.5": "100% / 100%",
+            "Over 2.5": "100% / 100%",
+            "Over 3.5": "100% / 100%",
+            "Punti per partita": "2.00 / 2.00"
+          },
+          "timing_loaded": false,
+          "recommended": "Over 2.5 gol",
+          "confidence": "Media-alta",
+          "marketType": "over",
+          "signalScore": 100,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/h2h.asp?league=england15&fmid=34&t1id=24&t2id=26&ly=2027"
+        },
+        {
+          "id": "fulham-u21-a-ton-villa-u21",
+          "league": "England - Premier League 2",
+          "time": "20:00",
+          "home": "Fulham U21",
+          "away": "A ton Villa U21",
+          "tags": [
+            "Favorite"
+          ],
+          "scores": {
+            "over": 83,
+            "goal": 58,
+            "favorite": "Fulham U21",
+            "under": 18,
+            "noBet": 0
+          },
+          "summary": "Gap rendimento: PPG 3.00 / 1.50, vittorie 100% / 50%.",
+          "basic": {
+            "Partite considerate": "2 / 2",
+            "Vittorie": "100% / 50%",
+            "Senza segnare": "0% / 50%",
+            "Senza subire": "50% / 0%",
+            "BTTS / Entrambe segnano": "50% / 50%",
+            "Media gol": "5.50 / 2.50",
+            "Gol fatti": "4.00 / 1.00",
+            "Gol subiti": "1.50 / 1.50",
+            "Over 1.5": "100% / 100%",
+            "Over 2.5": "100% / 50%",
+            "Over 3.5": "100% / 0%",
+            "Punti per partita": "3.00 / 1.50"
+          },
+          "timing_loaded": false,
+          "recommended": "Favorita: Fulham U21",
+          "confidence": "Alta",
+          "marketType": "favorite",
+          "signalScore": 100,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/h2h.asp?league=england15&fmid=39&t1id=7&t2id=11&ly=2027"
+        },
+        {
+          "id": "norwich-u21-birmingham-u21",
+          "league": "England - Premier League 2",
+          "time": "20:00",
+          "home": "Norwich U21",
+          "away": "Birmingham U21",
+          "tags": [
+            "Favorite"
+          ],
+          "scores": {
+            "over": 56,
+            "goal": 58,
+            "favorite": "Norwich U21",
+            "under": 35,
+            "noBet": 9
+          },
+          "summary": "Gap rendimento: PPG 2.00 / 1.00, vittorie 50% / 0%.",
+          "basic": {
+            "Partite considerate": "2 / 1",
+            "Vittorie": "50% / 0%",
+            "Senza segnare": "50% / 0%",
+            "Senza subire": "100% / 0%",
+            "BTTS / Entrambe segnano": "0% / 100%",
+            "Media gol": "0.50 / 6.00",
+            "Gol fatti": "0.50 / 3.00",
+            "Gol subiti": "0.00 / 3.00",
+            "Over 1.5": "0% / 100%",
+            "Over 2.5": "0% / 100%",
+            "Over 3.5": "0% / 100%",
+            "Punti per partita": "2.00 / 1.00"
+          },
+          "timing_loaded": false,
+          "recommended": "Favorita: Norwich U21",
+          "confidence": "Media-alta",
+          "marketType": "favorite",
+          "signalScore": 91,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/h2h.asp?league=england15&fmid=33&t1id=18&t2id=31&ly=2027"
+        },
+        {
+          "id": "stoke-city-u21-wolve-u21",
+          "league": "England - Premier League 2",
+          "time": "20:00",
+          "home": "Stoke City U21",
+          "away": "Wolve U21",
+          "tags": [
+            "No Bet"
+          ],
+          "scores": {
+            "over": 70,
+            "goal": 25,
+            "favorite": "Stoke City U21",
+            "under": 18,
+            "noBet": 30
+          },
+          "summary": "Dati generali non abbastanza convergenti.",
+          "basic": {
+            "Partite considerate": "2 / 1",
+            "Vittorie": "0% / 0%",
+            "Senza segnare": "50% / 100%",
+            "Senza subire": "50% / 0%",
+            "BTTS / Entrambe segnano": "50% / 0%",
+            "Media gol": "2.50 / 4.00",
+            "Gol fatti": "1.00 / 0.00",
+            "Gol subiti": "1.50 / 4.00",
+            "Over 1.5": "50% / 100%",
+            "Over 2.5": "50% / 100%",
+            "Over 3.5": "50% / 100%",
+            "Punti per partita": "0.50 / 0.00"
+          },
+          "timing_loaded": false,
+          "recommended": "NO BET",
+          "confidence": "Bassa",
+          "marketType": "nobet",
+          "signalScore": 70,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/h2h.asp?league=england15&fmid=32&t1id=3&t2id=30&ly=2027"
+        },
+        {
+          "id": "sunderland-u21-ip-wich-u21",
+          "league": "England - Premier League 2",
+          "time": "20:00",
+          "home": "Sunderland U21",
+          "away": "Ip wich U21",
+          "tags": [
+            "Over"
+          ],
+          "scores": {
+            "over": 97,
+            "goal": 75,
+            "favorite": "Sunderland U21",
+            "under": 0,
+            "noBet": 3
+          },
+          "summary": "Profilo offensivo: Over 2.5 100% / 100% e media gol 6.00 / 5.00.",
+          "basic": {
+            "Partite considerate": "2 / 2",
+            "Vittorie": "50% / 50%",
+            "Senza segnare": "0% / 50%",
+            "Senza subire": "0% / 0%",
+            "BTTS / Entrambe segnano": "100% / 50%",
+            "Media gol": "6.00 / 5.00",
+            "Gol fatti": "3.00 / 2.00",
+            "Gol subiti": "3.00 / 3.00",
+            "Over 1.5": "100% / 100%",
+            "Over 2.5": "100% / 100%",
+            "Over 3.5": "100% / 100%",
+            "Punti per partita": "1.50 / 1.50"
+          },
+          "timing_loaded": false,
+          "recommended": "Over 2.5 gol",
+          "confidence": "Media-alta",
+          "marketType": "over",
+          "signalScore": 97,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/h2h.asp?league=england15&fmid=31&t1id=21&t2id=28&ly=2027"
+        },
+        {
+          "id": "ab-argir-b68-toftir",
+          "league": "FaroeI land - Premier League",
+          "time": "19:30",
+          "home": "AB Argir",
+          "away": "B68 Toftir",
+          "tags": [
+            "No Bet"
+          ],
+          "scores": {
+            "over": 49,
+            "goal": 46,
+            "favorite": "AB Argir",
+            "under": 47,
+            "noBet": 51
+          },
+          "summary": "Dati generali non abbastanza convergenti.",
+          "basic": {
+            "Partite considerate": "8 / 8",
+            "Vittorie": "25% / 12%",
+            "Senza segnare": "38% / 62%",
+            "Senza subire": "12% / 0%",
+            "BTTS / Entrambe segnano": "50% / 38%",
+            "Media gol": "3.13 / 1.75",
+            "Gol fatti": "1.13 / 0.50",
+            "Gol subiti": "2.00 / 1.25",
+            "Over 1.5": "75% / 50%",
+            "Over 2.5": "50% / 25%",
+            "Over 3.5": "38% / 0%",
+            "Punti per partita": "0.75 / 0.50"
+          },
+          "timing_loaded": false,
+          "recommended": "NO BET",
+          "confidence": "Bassa",
+          "marketType": "nobet",
+          "signalScore": 49,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=faroeislands&stats=106-1-2-2026"
+        },
+        {
+          "id": "ktp-japs",
+          "league": "Finland - Ykko liga",
+          "time": "17:30",
+          "home": "KTP",
+          "away": "JaPS",
+          "tags": [
+            "No Bet"
+          ],
+          "scores": {
+            "over": 48,
+            "goal": 50,
+            "favorite": "KTP",
+            "under": 46,
+            "noBet": 50
+          },
+          "summary": "Dati generali non abbastanza convergenti.",
+          "basic": {
+            "Partite considerate": "8 / 8",
+            "Vittorie": "75% / 50%",
+            "Senza segnare": "12% / 38%",
+            "Senza subire": "38% / 50%",
+            "BTTS / Entrambe segnano": "50% / 25%",
+            "Media gol": "2.50 / 2.00",
+            "Gol fatti": "1.63 / 1.00",
+            "Gol subiti": "0.88 / 1.00",
+            "Over 1.5": "62% / 50%",
+            "Over 2.5": "50% / 38%",
+            "Over 3.5": "12% / 12%",
+            "Punti per partita": "2.38 / 1.63"
+          },
+          "timing_loaded": false,
+          "recommended": "NO BET",
+          "confidence": "Bassa",
+          "marketType": "nobet",
+          "signalScore": 50,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=finland2&stats=111-1-10-2026"
+        },
+        {
+          "id": "kapa-pk-35",
+          "league": "Finland - Ykko liga",
+          "time": "18:00",
+          "home": "KaPa",
+          "away": "PK-35",
+          "tags": [
+            "Favorite"
+          ],
+          "scores": {
+            "over": 61,
+            "goal": 58,
+            "favorite": "PK-35",
+            "under": 33,
+            "noBet": 0
+          },
+          "summary": "Gap rendimento: PPG 0.25 / 1.88, vittorie 0% / 50%.",
+          "basic": {
+            "Partite considerate": "8 / 8",
+            "Vittorie": "0% / 50%",
+            "Senza segnare": "38% / 12%",
+            "Senza subire": "12% / 62%",
+            "BTTS / Entrambe segnano": "62% / 38%",
+            "Media gol": "2.63 / 2.38",
+            "Gol fatti": "0.75 / 1.63",
+            "Gol subiti": "1.88 / 0.75",
+            "Over 1.5": "75% / 75%",
+            "Over 2.5": "62% / 50%",
+            "Over 3.5": "38% / 12%",
+            "Punti per partita": "0.25 / 1.88"
+          },
+          "timing_loaded": false,
+          "recommended": "Favorita: PK-35",
+          "confidence": "Alta",
+          "marketType": "favorite",
+          "signalScore": 100,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=finland2&stats=112-8-3-2026"
+        },
+        {
+          "id": "pari-sg-w-stra-bourg-w",
+          "league": "France - Premiere Ligue Women",
+          "time": "21:00",
+          "home": "Pari SG W",
+          "away": "Stra bourg W",
+          "tags": [
+            "No Bet"
+          ],
+          "scores": {
+            "over": 69,
+            "goal": 66,
+            "favorite": "Pari SG W",
+            "under": 35,
+            "noBet": 31
+          },
+          "summary": "Dati generali non abbastanza convergenti.",
+          "basic": {
+            "Partite considerate": "1 / 1",
+            "Vittorie": "100% / 100%",
+            "Senza segnare": "0% / 0%",
+            "Senza subire": "100% / 0%",
+            "BTTS / Entrambe segnano": "0% / 100%",
+            "Media gol": "2.00 / 5.00",
+            "Gol fatti": "2.00 / 3.00",
+            "Gol subiti": "0.00 / 2.00",
+            "Over 1.5": "100% / 100%",
+            "Over 2.5": "0% / 100%",
+            "Over 3.5": "0% / 100%",
+            "Punti per partita": "3.00 / 3.00"
+          },
+          "timing_loaded": false,
+          "recommended": "NO BET",
+          "confidence": "Bassa",
+          "marketType": "nobet",
+          "signalScore": 69,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/h2h.asp?league=france14&fmid=7&t1id=10&t2id=3&ly=2027"
+        },
+        {
+          "id": "viktoria-koln-han-a-ro-tock",
+          "league": "Germany - 3. Liga",
+          "time": "19:00",
+          "home": "Viktoria Koln",
+          "away": "Han a Ro tock",
+          "tags": [
+            "Over"
+          ],
+          "scores": {
+            "over": 84,
+            "goal": 88,
+            "favorite": "Han a Ro tock",
+            "under": 18,
+            "noBet": 16
+          },
+          "summary": "Profilo offensivo: Over 2.5 75% / 75% e media gol 4.25 / 4.75.",
+          "basic": {
+            "Partite considerate": "4 / 4",
+            "Vittorie": "50% / 50%",
+            "Senza segnare": "25% / 0%",
+            "Senza subire": "0% / 0%",
+            "BTTS / Entrambe segnano": "75% / 100%",
+            "Media gol": "4.25 / 4.75",
+            "Gol fatti": "2.25 / 2.75",
+            "Gol subiti": "2.00 / 2.00",
+            "Over 1.5": "75% / 100%",
+            "Over 2.5": "75% / 75%",
+            "Over 3.5": "75% / 75%",
+            "Punti per partita": "1.50 / 2.00"
+          },
+          "timing_loaded": false,
+          "recommended": "Over 2.5 gol",
+          "confidence": "Media",
+          "marketType": "over",
+          "signalScore": 84,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=germany3&stats=41-5-16-2027"
+        },
+        {
+          "id": "oldenburg-hannover-96-b",
+          "league": "Germany - Regionalliga Nord",
+          "time": "18:30",
+          "home": "Oldenburg",
+          "away": "Hannover 96 B",
+          "tags": [
+            "No Bet"
+          ],
+          "scores": {
+            "over": 74,
+            "goal": 71,
+            "favorite": "Oldenburg",
+            "under": 25,
+            "noBet": 26
+          },
+          "summary": "Dati generali non abbastanza convergenti.",
+          "basic": {
+            "Partite considerate": "7 / 7",
+            "Vittorie": "71% / 57%",
+            "Senza segnare": "14% / 14%",
+            "Senza subire": "14% / 29%",
+            "BTTS / Entrambe segnano": "71% / 57%",
+            "Media gol": "4.29 / 2.86",
+            "Gol fatti": "3.14 / 1.86",
+            "Gol subiti": "1.14 / 1.00",
+            "Over 1.5": "86% / 86%",
+            "Over 2.5": "71% / 57%",
+            "Over 3.5": "57% / 29%",
+            "Punti per partita": "2.29 / 2.00"
+          },
+          "timing_loaded": false,
+          "recommended": "NO BET",
+          "confidence": "Bassa",
+          "marketType": "nobet",
+          "signalScore": 74,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=germany4&stats=68-2-16-2027"
+        },
+        {
+          "id": "weiche-f-hamburger-sv-b",
+          "league": "Germany - Regionalliga Nord",
+          "time": "19:00",
+          "home": "Weiche F.",
+          "away": "Hamburger SV B",
+          "tags": [
+            "Favorite"
+          ],
+          "scores": {
+            "over": 83,
+            "goal": 81,
+            "favorite": "Weiche F.",
+            "under": 20,
+            "noBet": 0
+          },
+          "summary": "Gap rendimento: PPG 2.71 / 1.00, vittorie 86% / 29%.",
+          "basic": {
+            "Partite considerate": "7 / 7",
+            "Vittorie": "86% / 29%",
+            "Senza segnare": "0% / 29%",
+            "Senza subire": "14% / 0%",
+            "BTTS / Entrambe segnano": "86% / 71%",
+            "Media gol": "4.57 / 3.71",
+            "Gol fatti": "3.43 / 1.57",
+            "Gol subiti": "1.14 / 2.14",
+            "Over 1.5": "86% / 100%",
+            "Over 2.5": "71% / 71%",
+            "Over 3.5": "57% / 71%",
+            "Punti per partita": "2.71 / 1.00"
+          },
+          "timing_loaded": false,
+          "recommended": "Favorita: Weiche F.",
+          "confidence": "Alta",
+          "marketType": "favorite",
+          "signalScore": 100,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=germany4&stats=70-8-18-2027"
+        },
+        {
+          "id": "delmenhor-t-drochter-en-a",
+          "league": "Germany - Regionalliga Nord",
+          "time": "19:30",
+          "home": "Delmenhor t",
+          "away": "Drochter en.A.",
+          "tags": [
+            "No Bet"
+          ],
+          "scores": {
+            "over": 77,
+            "goal": 69,
+            "favorite": "Drochter en.A.",
+            "under": 20,
+            "noBet": 23
+          },
+          "summary": "Dati generali non abbastanza convergenti.",
+          "basic": {
+            "Partite considerate": "7 / 7",
+            "Vittorie": "43% / 57%",
+            "Senza segnare": "29% / 14%",
+            "Senza subire": "29% / 0%",
+            "BTTS / Entrambe segnano": "43% / 86%",
+            "Media gol": "3.43 / 4.14",
+            "Gol fatti": "1.86 / 2.57",
+            "Gol subiti": "1.57 / 1.57",
+            "Over 1.5": "71% / 86%",
+            "Over 2.5": "57% / 86%",
+            "Over 3.5": "43% / 57%",
+            "Punti per partita": "1.57 / 1.71"
+          },
+          "timing_loaded": false,
+          "recommended": "NO BET",
+          "confidence": "Bassa",
+          "marketType": "nobet",
+          "signalScore": 77,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=germany4&stats=72-14-3-2027"
+        },
+        {
+          "id": "altglienicke-chemnitzer-fc",
+          "league": "Germany - Regionalliga Nordo t",
+          "time": "19:00",
+          "home": "Altglienicke",
+          "away": "Chemnitzer FC",
+          "tags": [
+            "No Bet"
+          ],
+          "scores": {
+            "over": 72,
+            "goal": 71,
+            "favorite": "Chemnitzer FC",
+            "under": 25,
+            "noBet": 28
+          },
+          "summary": "Dati generali non abbastanza convergenti.",
+          "basic": {
+            "Partite considerate": "7 / 7",
+            "Vittorie": "43% / 71%",
+            "Senza segnare": "14% / 14%",
+            "Senza subire": "0% / 57%",
+            "BTTS / Entrambe segnano": "86% / 43%",
+            "Media gol": "3.43 / 2.71",
+            "Gol fatti": "2.00 / 2.29",
+            "Gol subiti": "1.43 / 0.43",
+            "Over 1.5": "86% / 86%",
+            "Over 2.5": "71% / 57%",
+            "Over 3.5": "57% / 43%",
+            "Punti per partita": "1.71 / 2.43"
+          },
+          "timing_loaded": false,
+          "recommended": "NO BET",
+          "confidence": "Bassa",
+          "marketType": "nobet",
+          "signalScore": 72,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=germany5&stats=69-12-10-2027"
+        },
+        {
+          "id": "rw-erfurt-rsv-eintracht",
+          "league": "Germany - Regionalliga Nordo t",
+          "time": "19:00",
+          "home": "RW Erfurt",
+          "away": "RSV Eintracht",
+          "tags": [
+            "Favorite"
+          ],
+          "scores": {
+            "over": 83,
+            "goal": 78,
+            "favorite": "RW Erfurt",
+            "under": 20,
+            "noBet": 0
+          },
+          "summary": "Gap rendimento: PPG 2.43 / 0.86, vittorie 71% / 14%.",
+          "basic": {
+            "Partite considerate": "7 / 7",
+            "Vittorie": "71% / 14%",
+            "Senza segnare": "0% / 14%",
+            "Senza subire": "29% / 14%",
+            "BTTS / Entrambe segnano": "71% / 71%",
+            "Media gol": "4.00 / 3.71",
+            "Gol fatti": "3.29 / 1.57",
+            "Gol subiti": "0.71 / 2.14",
+            "Over 1.5": "100% / 100%",
+            "Over 2.5": "71% / 71%",
+            "Over 3.5": "57% / 43%",
+            "Punti per partita": "2.43 / 0.86"
+          },
+          "timing_loaded": false,
+          "recommended": "Favorita: RW Erfurt",
+          "confidence": "Alta",
+          "marketType": "favorite",
+          "signalScore": 100,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=germany5&stats=72-3-6-2027"
+        },
+        {
+          "id": "oberhau-en-schalke-04-b",
+          "league": "Germany - Regionalliga We t",
+          "time": "19:30",
+          "home": "Oberhau en",
+          "away": "Schalke 04 B",
+          "tags": [
+            "Favorite"
+          ],
+          "scores": {
+            "over": 87,
+            "goal": 71,
+            "favorite": "Oberhau en",
+            "under": 10,
+            "noBet": 17
+          },
+          "summary": "Gap rendimento: PPG 2.29 / 1.29, vittorie 71% / 43%.",
+          "basic": {
+            "Partite considerate": "7 / 7",
+            "Vittorie": "71% / 43%",
+            "Senza segnare": "14% / 14%",
+            "Senza subire": "43% / 14%",
+            "BTTS / Entrambe segnano": "57% / 71%",
+            "Media gol": "3.00 / 4.57",
+            "Gol fatti": "2.29 / 2.14",
+            "Gol subiti": "0.71 / 2.43",
+            "Over 1.5": "86% / 100%",
+            "Over 2.5": "86% / 86%",
+            "Over 3.5": "29% / 71%",
+            "Punti per partita": "2.29 / 1.29"
+          },
+          "timing_loaded": false,
+          "recommended": "Favorita: Oberhau en",
+          "confidence": "Media-alta",
+          "marketType": "favorite",
+          "signalScore": 83,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=germany6&stats=64-2-17-2027"
+        },
+        {
+          "id": "freiburg-b-sandhau-en",
+          "league": "Germany - Regionalliga Sudwe t",
+          "time": "19:00",
+          "home": "Freiburg B",
+          "away": "Sandhau en",
+          "tags": [
+            "No Bet"
+          ],
+          "scores": {
+            "over": 69,
+            "goal": 67,
+            "favorite": "Freiburg B",
+            "under": 29,
+            "noBet": 31
+          },
+          "summary": "Dati generali non abbastanza convergenti.",
+          "basic": {
+            "Partite considerate": "6 / 6",
+            "Vittorie": "33% / 17%",
+            "Senza segnare": "33% / 33%",
+            "Senza subire": "33% / 17%",
+            "BTTS / Entrambe segnano": "67% / 67%",
+            "Media gol": "3.17 / 4.00",
+            "Gol fatti": "2.00 / 1.50",
+            "Gol subiti": "1.17 / 2.50",
+            "Over 1.5": "67% / 83%",
+            "Over 2.5": "50% / 67%",
+            "Over 3.5": "50% / 67%",
+            "Punti per partita": "1.67 / 0.83"
+          },
+          "timing_loaded": false,
+          "recommended": "NO BET",
+          "confidence": "Bassa",
+          "marketType": "nobet",
+          "signalScore": 69,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=germany7&stats=58-18-9-2027"
+        },
+        {
+          "id": "he-en-ka-el-kicker-offenb",
+          "league": "Germany - Regionalliga Sudwe t",
+          "time": "19:00",
+          "home": "He en Ka el",
+          "away": "Kicker Offenb.",
+          "tags": [
+            "Favorite"
+          ],
+          "scores": {
+            "over": 76,
+            "goal": 66,
+            "favorite": "Kicker Offenb.",
+            "under": 23,
+            "noBet": 0
+          },
+          "summary": "Gap rendimento: PPG 1.00 / 2.67, vittorie 33% / 83%.",
+          "basic": {
+            "Partite considerate": "6 / 6",
+            "Vittorie": "33% / 83%",
+            "Senza segnare": "33% / 0%",
+            "Senza subire": "17% / 33%",
+            "BTTS / Entrambe segnano": "50% / 67%",
+            "Media gol": "3.67 / 3.33",
+            "Gol fatti": "1.67 / 2.50",
+            "Gol subiti": "2.00 / 0.83",
+            "Over 1.5": "83% / 100%",
+            "Over 2.5": "67% / 67%",
+            "Over 3.5": "33% / 50%",
+            "Punti per partita": "1.00 / 2.67"
+          },
+          "timing_loaded": false,
+          "recommended": "Favorita: Kicker Offenb.",
+          "confidence": "Alta",
+          "marketType": "favorite",
+          "signalScore": 100,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=germany7&stats=60-11-5-2027"
+        },
+        {
+          "id": "1860-munchen-schwaben-a",
+          "league": "Germany - Regionalliga Bayern",
+          "time": "19:00",
+          "home": "1860 Munchen",
+          "away": "Schwaben A.",
+          "tags": [
+            "Top Goal"
+          ],
+          "scores": {
+            "over": 74,
+            "goal": 80,
+            "favorite": "1860 Munchen",
+            "under": 26,
+            "noBet": 20
+          },
+          "summary": "BTTS favorevole: 83% / 71%.",
+          "basic": {
+            "Partite considerate": "6 / 7",
+            "Vittorie": "33% / 29%",
+            "Senza segnare": "0% / 29%",
+            "Senza subire": "17% / 0%",
+            "BTTS / Entrambe segnano": "83% / 71%",
+            "Media gol": "3.67 / 2.29",
+            "Gol fatti": "2.17 / 1.00",
+            "Gol subiti": "1.50 / 1.29",
+            "Over 1.5": "100% / 86%",
+            "Over 2.5": "83% / 43%",
+            "Over 3.5": "67% / 0%",
+            "Punti per partita": "1.67 / 1.14"
+          },
+          "timing_loaded": false,
+          "recommended": "Goal — entrambe segnano",
+          "confidence": "Media",
+          "marketType": "goal",
+          "signalScore": 80,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=germany8&stats=68-19-5-2027"
+        },
+        {
+          "id": "aub-tadt-unterhaching",
+          "league": "Germany - Regionalliga Bayern",
+          "time": "19:00",
+          "home": "Aub tadt",
+          "away": "Unterhaching",
+          "tags": [
+            "No Bet"
+          ],
+          "scores": {
+            "over": 62,
+            "goal": 50,
+            "favorite": "Unterhaching",
+            "under": 29,
+            "noBet": 38
+          },
+          "summary": "Dati generali non abbastanza convergenti.",
+          "basic": {
+            "Partite considerate": "6 / 6",
+            "Vittorie": "33% / 50%",
+            "Senza segnare": "17% / 50%",
+            "Senza subire": "17% / 67%",
+            "BTTS / Entrambe segnano": "67% / 17%",
+            "Media gol": "3.67 / 1.67",
+            "Gol fatti": "2.00 / 1.00",
+            "Gol subiti": "1.67 / 0.67",
+            "Over 1.5": "100% / 50%",
+            "Over 2.5": "67% / 50%",
+            "Over 3.5": "50% / 0%",
+            "Punti per partita": "1.33 / 1.83"
+          },
+          "timing_loaded": false,
+          "recommended": "NO BET",
+          "confidence": "Bassa",
+          "marketType": "nobet",
+          "signalScore": 62,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=germany8&stats=66-1-17-2027"
+        },
+        {
+          "id": "buchbach-bayern-munich-b",
+          "league": "Germany - Regionalliga Bayern",
+          "time": "19:00",
+          "home": "Buchbach",
+          "away": "Bayern Munich B",
+          "tags": [
+            "Favorite"
+          ],
+          "scores": {
+            "over": 63,
+            "goal": 67,
+            "favorite": "Buchbach",
+            "under": 38,
+            "noBet": 7
+          },
+          "summary": "Gap rendimento: PPG 2.43 / 1.17, vittorie 71% / 33%.",
+          "basic": {
+            "Partite considerate": "7 / 6",
+            "Vittorie": "71% / 33%",
+            "Senza segnare": "0% / 33%",
+            "Senza subire": "14% / 33%",
+            "BTTS / Entrambe segnano": "86% / 33%",
+            "Media gol": "3.29 / 2.17",
+            "Gol fatti": "2.43 / 1.17",
+            "Gol subiti": "0.86 / 1.00",
+            "Over 1.5": "100% / 83%",
+            "Over 2.5": "57% / 33%",
+            "Over 3.5": "43% / 0%",
+            "Punti per partita": "2.43 / 1.17"
+          },
+          "timing_loaded": false,
+          "recommended": "Favorita: Buchbach",
+          "confidence": "Media-alta",
+          "marketType": "favorite",
+          "signalScore": 93,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=germany8&stats=71-6-13-2027"
+        },
+        {
+          "id": "illerti-en-nurnberg-b",
+          "league": "Germany - Regionalliga Bayern",
+          "time": "19:00",
+          "home": "Illerti en",
+          "away": "Nurnberg B",
+          "tags": [
+            "Over"
+          ],
+          "scores": {
+            "over": 78,
+            "goal": 63,
+            "favorite": "Illerti en",
+            "under": 22,
+            "noBet": 22
+          },
+          "summary": "Profilo offensivo: Over 2.5 71% / 67% e media gol 3.00 / 3.67.",
+          "basic": {
+            "Partite considerate": "7 / 6",
+            "Vittorie": "43% / 33%",
+            "Senza segnare": "29% / 17%",
+            "Senza subire": "43% / 0%",
+            "BTTS / Entrambe segnano": "29% / 83%",
+            "Media gol": "3.00 / 3.67",
+            "Gol fatti": "1.71 / 1.83",
+            "Gol subiti": "1.29 / 1.83",
+            "Over 1.5": "100% / 100%",
+            "Over 2.5": "71% / 67%",
+            "Over 3.5": "29% / 50%",
+            "Punti per partita": "1.57 / 1.17"
+          },
+          "timing_loaded": false,
+          "recommended": "Over 1.5 gol",
+          "confidence": "Media",
+          "marketType": "over",
+          "signalScore": 78,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=germany8&stats=72-4-8-2027"
+        },
+        {
+          "id": "w-burghau-en-land-berg",
+          "league": "Germany - Regionalliga Bayern",
+          "time": "19:00",
+          "home": "W. Burghau en",
+          "away": "Land berg",
+          "tags": [
+            "Favorite"
+          ],
+          "scores": {
+            "over": 74,
+            "goal": 69,
+            "favorite": "W. Burghau en",
+            "under": 25,
+            "noBet": 12
+          },
+          "summary": "Gap rendimento: PPG 1.43 / 0.43, vittorie 43% / 0%.",
+          "basic": {
+            "Partite considerate": "7 / 7",
+            "Vittorie": "43% / 0%",
+            "Senza segnare": "0% / 43%",
+            "Senza subire": "29% / 14%",
+            "BTTS / Entrambe segnano": "71% / 57%",
+            "Media gol": "4.57 / 2.57",
+            "Gol fatti": "2.57 / 0.86",
+            "Gol subiti": "2.00 / 1.71",
+            "Over 1.5": "100% / 71%",
+            "Over 2.5": "86% / 43%",
+            "Over 3.5": "71% / 43%",
+            "Punti per partita": "1.43 / 0.43"
+          },
+          "timing_loaded": false,
+          "recommended": "Favorita: W. Burghau en",
+          "confidence": "Media-alta",
+          "marketType": "favorite",
+          "signalScore": 88,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=germany8&stats=70-12-9-2027"
+        },
+        {
+          "id": "werder-bremen-w-hamburger-sv-w",
+          "league": "Germany - Bunde liga Women",
+          "time": "18:30",
+          "home": "Werder Bremen W",
+          "away": "Hamburger SV W",
+          "tags": [
+            "Favorite"
+          ],
+          "scores": {
+            "over": 70,
+            "goal": 89,
+            "favorite": "Werder Bremen W",
+            "under": 35,
+            "noBet": 0
+          },
+          "summary": "Gap rendimento: PPG 2.00 / 0.67, vittorie 67% / 0%.",
+          "basic": {
+            "Partite considerate": "3 / 3",
+            "Vittorie": "67% / 0%",
+            "Senza segnare": "0% / 0%",
+            "Senza subire": "33% / 0%",
+            "BTTS / Entrambe segnano": "67% / 100%",
+            "Media gol": "3.33 / 2.33",
+            "Gol fatti": "2.00 / 1.00",
+            "Gol subiti": "1.33 / 1.33",
+            "Over 1.5": "100% / 100%",
+            "Over 2.5": "67% / 33%",
+            "Over 3.5": "33% / 0%",
+            "Punti per partita": "2.00 / 0.67"
+          },
+          "timing_loaded": false,
+          "recommended": "Favorita: Werder Bremen W",
+          "confidence": "Alta",
+          "marketType": "favorite",
+          "signalScore": 100,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/h2h.asp?league=germany23&fmid=28&t1id=14&t2id=9&ly=2027"
+        },
+        {
+          "id": "drogheda-utd-sligo-rover",
+          "league": "Ireland - Premier Divi ion",
+          "time": "20:45",
+          "home": "Drogheda Utd",
+          "away": "Sligo Rover",
+          "tags": [
+            "No Bet"
+          ],
+          "scores": {
+            "over": 60,
+            "goal": 50,
+            "favorite": "Drogheda Utd",
+            "under": 36,
+            "noBet": 40
+          },
+          "summary": "Dati generali non abbastanza convergenti.",
+          "basic": {
+            "Partite considerate": "8 / 8",
+            "Vittorie": "12% / 0%",
+            "Senza segnare": "62% / 38%",
+            "Senza subire": "25% / 12%",
+            "BTTS / Entrambe segnano": "38% / 62%",
+            "Media gol": "2.25 / 2.88",
+            "Gol fatti": "0.75 / 1.00",
+            "Gol subiti": "1.50 / 1.88",
+            "Over 1.5": "75% / 88%",
+            "Over 2.5": "38% / 62%",
+            "Over 3.5": "25% / 38%",
+            "Punti per partita": "0.75 / 0.50"
+          },
+          "timing_loaded": false,
+          "recommended": "NO BET",
+          "confidence": "Bassa",
+          "marketType": "nobet",
+          "signalScore": 60,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=ireland&stats=155-4-6-2026"
+        },
+        {
+          "id": "galway-utd-bohemian",
+          "league": "Ireland - Premier Divi ion",
+          "time": "20:45",
+          "home": "Galway Utd",
+          "away": "Bohemian",
+          "tags": [
+            "No Bet"
+          ],
+          "scores": {
+            "over": 67,
+            "goal": 64,
+            "favorite": "Bohemian",
+            "under": 31,
+            "noBet": 33
+          },
+          "summary": "Dati generali non abbastanza convergenti.",
+          "basic": {
+            "Partite considerate": "8 / 8",
+            "Vittorie": "25% / 62%",
+            "Senza segnare": "38% / 0%",
+            "Senza subire": "25% / 50%",
+            "BTTS / Entrambe segnano": "62% / 50%",
+            "Media gol": "2.38 / 3.38",
+            "Gol fatti": "1.00 / 2.25",
+            "Gol subiti": "1.38 / 1.13",
+            "Over 1.5": "75% / 100%",
+            "Over 2.5": "50% / 62%",
+            "Over 3.5": "25% / 25%",
+            "Punti per partita": "1.25 / 2.00"
+          },
+          "timing_loaded": false,
+          "recommended": "NO BET",
+          "confidence": "Bassa",
+          "marketType": "nobet",
+          "signalScore": 67,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=ireland&stats=154-3-9-2026"
+        },
+        {
+          "id": "shelbourne-derry-city",
+          "league": "Ireland - Premier Divi ion",
+          "time": "20:45",
+          "home": "Shelbourne",
+          "away": "Derry City",
+          "tags": [
+            "No Bet"
+          ],
+          "scores": {
+            "over": 70,
+            "goal": 72,
+            "favorite": "Derry City",
+            "under": 31,
+            "noBet": 28
+          },
+          "summary": "Dati generali non abbastanza convergenti.",
+          "basic": {
+            "Partite considerate": "8 / 8",
+            "Vittorie": "12% / 25%",
+            "Senza segnare": "38% / 0%",
+            "Senza subire": "12% / 25%",
+            "BTTS / Entrambe segnano": "62% / 75%",
+            "Media gol": "2.50 / 3.88",
+            "Gol fatti": "1.00 / 1.88",
+            "Gol subiti": "1.50 / 2.00",
+            "Over 1.5": "75% / 100%",
+            "Over 2.5": "62% / 50%",
+            "Over 3.5": "25% / 38%",
+            "Punti per partita": "0.88 / 1.13"
+          },
+          "timing_loaded": false,
+          "recommended": "NO BET",
+          "confidence": "Bassa",
+          "marketType": "nobet",
+          "signalScore": 72,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=ireland&stats=153-2-5-2026"
+        },
+        {
+          "id": "waterford-dundalk",
+          "league": "Ireland - Premier Divi ion",
+          "time": "20:45",
+          "home": "Waterford",
+          "away": "Dundalk",
+          "tags": [
+            "Favorite"
+          ],
+          "scores": {
+            "over": 68,
+            "goal": 79,
+            "favorite": "Waterford",
+            "under": 30,
+            "noBet": 0
+          },
+          "summary": "Gap rendimento: PPG 2.25 / 0.63, vittorie 62% / 12%.",
+          "basic": {
+            "Partite considerate": "8 / 8",
+            "Vittorie": "62% / 12%",
+            "Senza segnare": "25% / 0%",
+            "Senza subire": "50% / 0%",
+            "BTTS / Entrambe segnano": "50% / 100%",
+            "Media gol": "2.50 / 3.50",
+            "Gol fatti": "1.75 / 1.50",
+            "Gol subiti": "0.75 / 2.00",
+            "Over 1.5": "62% / 100%",
+            "Over 2.5": "38% / 75%",
+            "Over 3.5": "38% / 38%",
+            "Punti per partita": "2.25 / 0.63"
+          },
+          "timing_loaded": false,
+          "recommended": "Favorita: Waterford",
+          "confidence": "Alta",
+          "marketType": "favorite",
+          "signalScore": 100,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=ireland&stats=151-1-8-2026"
+        },
+        {
+          "id": "st-patrick-shamrock-rover",
+          "league": "Ireland - Premier Divi ion",
+          "time": "21:00",
+          "home": "St. Patrick",
+          "away": "Shamrock Rover",
+          "tags": [
+            "No Bet"
+          ],
+          "scores": {
+            "over": 57,
+            "goal": 62,
+            "favorite": "Shamrock Rover",
+            "under": 46,
+            "noBet": 38
+          },
+          "summary": "Dati generali non abbastanza convergenti.",
+          "basic": {
+            "Partite considerate": "8 / 8",
+            "Vittorie": "38% / 50%",
+            "Senza segnare": "25% / 25%",
+            "Senza subire": "25% / 38%",
+            "BTTS / Entrambe segnano": "50% / 62%",
+            "Media gol": "2.25 / 2.75",
+            "Gol fatti": "1.25 / 1.75",
+            "Gol subiti": "1.00 / 1.00",
+            "Over 1.5": "100% / 75%",
+            "Over 2.5": "25% / 50%",
+            "Over 3.5": "0% / 38%",
+            "Punti per partita": "1.50 / 2.00"
+          },
+          "timing_loaded": false,
+          "recommended": "NO BET",
+          "confidence": "Bassa",
+          "marketType": "nobet",
+          "signalScore": 62,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=ireland&stats=152-10-7-2026"
+        },
+        {
+          "id": "cork-city-cobh-rambler",
+          "league": "Ireland - Fir t Divi ion",
+          "time": "20:45",
+          "home": "Cork City",
+          "away": "Cobh Rambler",
+          "tags": [
+            "No Bet"
+          ],
+          "scores": {
+            "over": 75,
+            "goal": 70,
+            "favorite": "Cork City",
+            "under": 26,
+            "noBet": 25
+          },
+          "summary": "Dati generali non abbastanza convergenti.",
+          "basic": {
+            "Partite considerate": "8 / 8",
+            "Vittorie": "50% / 38%",
+            "Senza segnare": "0% / 25%",
+            "Senza subire": "25% / 25%",
+            "BTTS / Entrambe segnano": "75% / 50%",
+            "Media gol": "4.25 / 2.63",
+            "Gol fatti": "2.38 / 1.25",
+            "Gol subiti": "1.88 / 1.38",
+            "Over 1.5": "100% / 88%",
+            "Over 2.5": "75% / 50%",
+            "Over 3.5": "62% / 25%",
+            "Punti per partita": "1.75 / 1.38"
+          },
+          "timing_loaded": false,
+          "recommended": "NO BET",
+          "confidence": "Bassa",
+          "marketType": "nobet",
+          "signalScore": 75,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=ireland2&stats=154-3-5-2026"
+        },
+        {
+          "id": "kerry-bray-wanderer",
+          "league": "Ireland - Fir t Divi ion",
+          "time": "20:45",
+          "home": "Kerry",
+          "away": "Bray Wanderer",
+          "tags": [
+            "Over"
+          ],
+          "scores": {
+            "over": 84,
+            "goal": 72,
+            "favorite": "Kerry",
+            "under": 13,
+            "noBet": 16
+          },
+          "summary": "Profilo offensivo: Over 2.5 75% / 88% e media gol 3.13 / 4.00.",
+          "basic": {
+            "Partite considerate": "8 / 8",
+            "Vittorie": "62% / 38%",
+            "Senza segnare": "0% / 12%",
+            "Senza subire": "38% / 25%",
+            "BTTS / Entrambe segnano": "62% / 62%",
+            "Media gol": "3.13 / 4.00",
+            "Gol fatti": "2.13 / 2.25",
+            "Gol subiti": "1.00 / 1.75",
+            "Over 1.5": "88% / 100%",
+            "Over 2.5": "75% / 88%",
+            "Over 3.5": "50% / 50%",
+            "Punti per partita": "2.13 / 1.25"
+          },
+          "timing_loaded": false,
+          "recommended": "Over 2.5 gol",
+          "confidence": "Media",
+          "marketType": "over",
+          "signalScore": 84,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=ireland2&stats=153-2-7-2026"
+        },
+        {
+          "id": "uc-dublin-athlone-town",
+          "league": "Ireland - Fir t Divi ion",
+          "time": "20:45",
+          "home": "UC Dublin",
+          "away": "Athlone Town",
+          "tags": [
+            "No Bet"
+          ],
+          "scores": {
+            "over": 68,
+            "goal": 69,
+            "favorite": "Athlone Town",
+            "under": 31,
+            "noBet": 31
+          },
+          "summary": "Dati generali non abbastanza convergenti.",
+          "basic": {
+            "Partite considerate": "8 / 8",
+            "Vittorie": "38% / 62%",
+            "Senza segnare": "25% / 12%",
+            "Senza subire": "12% / 50%",
+            "BTTS / Entrambe segnano": "75% / 50%",
+            "Media gol": "4.25 / 2.38",
+            "Gol fatti": "2.13 / 1.50",
+            "Gol subiti": "2.13 / 0.88",
+            "Over 1.5": "88% / 75%",
+            "Over 2.5": "62% / 50%",
+            "Over 3.5": "50% / 12%",
+            "Punti per partita": "1.50 / 2.00"
+          },
+          "timing_loaded": false,
+          "recommended": "NO BET",
+          "confidence": "Bassa",
+          "marketType": "nobet",
+          "signalScore": 69,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=ireland2&stats=152-1-9-2026"
+        },
+        {
+          "id": "wexford-finn-harp",
+          "league": "Ireland - Fir t Divi ion",
+          "time": "20:45",
+          "home": "Wexford",
+          "away": "Finn Harp",
+          "tags": [
+            "Favorite"
+          ],
+          "scores": {
+            "over": 67,
+            "goal": 46,
+            "favorite": "Wexford",
+            "under": 26,
+            "noBet": 8
+          },
+          "summary": "Gap rendimento: PPG 1.25 / 0.00, vittorie 38% / 0%.",
+          "basic": {
+            "Partite considerate": "8 / 8",
+            "Vittorie": "38% / 0%",
+            "Senza segnare": "38% / 62%",
+            "Senza subire": "12% / 0%",
+            "BTTS / Entrambe segnano": "50% / 38%",
+            "Media gol": "2.63 / 3.88",
+            "Gol fatti": "1.00 / 0.75",
+            "Gol subiti": "1.63 / 3.13",
+            "Over 1.5": "75% / 75%",
+            "Over 2.5": "50% / 75%",
+            "Over 3.5": "25% / 50%",
+            "Punti per partita": "1.25 / 0.00"
+          },
+          "timing_loaded": false,
+          "recommended": "Favorita: Wexford",
+          "confidence": "Media-alta",
+          "marketType": "favorite",
+          "signalScore": 92,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=ireland2&stats=151-6-10-2026"
+        },
+        {
+          "id": "a-cerignola-giugliano",
+          "league": "Italy - Serie C - Group C",
+          "time": "21:00",
+          "home": "A. Cerignola",
+          "away": "Giugliano",
+          "tags": [
+            "Favorite"
+          ],
+          "scores": {
+            "over": 81,
+            "goal": 72,
+            "favorite": "A. Cerignola",
+            "under": 23,
+            "noBet": 0
+          },
+          "summary": "Gap rendimento: PPG 2.00 / 0.33, vittorie 67% / 0%.",
+          "basic": {
+            "Partite considerate": "3 / 3",
+            "Vittorie": "67% / 0%",
+            "Senza segnare": "0% / 33%",
+            "Senza subire": "33% / 0%",
+            "BTTS / Entrambe segnano": "67% / 67%",
+            "Media gol": "3.33 / 5.00",
+            "Gol fatti": "2.00 / 2.00",
+            "Gol subiti": "1.33 / 3.00",
+            "Over 1.5": "100% / 100%",
+            "Over 2.5": "67% / 67%",
+            "Over 3.5": "67% / 67%",
+            "Punti per partita": "2.00 / 0.33"
+          },
+          "timing_loaded": false,
+          "recommended": "Favorita: A. Cerignola",
+          "confidence": "Alta",
+          "marketType": "favorite",
+          "signalScore": 100,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=italy5&stats=33-9-3-2027"
+        },
+        {
+          "id": "altamura-bari",
+          "league": "Italy - Serie C - Group C",
+          "time": "21:00",
+          "home": "Altamura",
+          "away": "Bari",
+          "tags": [
+            "No Bet"
+          ],
+          "scores": {
+            "over": 43,
+            "goal": 33,
+            "favorite": "Bari",
+            "under": 58,
+            "noBet": 42
+          },
+          "summary": "Dati generali non abbastanza convergenti.",
+          "basic": {
+            "Partite considerate": "3 / 3",
+            "Vittorie": "33% / 67%",
+            "Senza segnare": "33% / 33%",
+            "Senza subire": "33% / 67%",
+            "BTTS / Entrambe segnano": "33% / 0%",
+            "Media gol": "1.67 / 2.33",
+            "Gol fatti": "0.67 / 1.33",
+            "Gol subiti": "1.00 / 1.00",
+            "Over 1.5": "67% / 67%",
+            "Over 2.5": "0% / 67%",
+            "Over 3.5": "0% / 0%",
+            "Punti per partita": "1.33 / 2.00"
+          },
+          "timing_loaded": false,
+          "recommended": "NO BET",
+          "confidence": "Bassa",
+          "marketType": "nobet",
+          "signalScore": 58,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=italy5&stats=34-19-5-2027"
+        },
+        {
+          "id": "ca-arano-barletta",
+          "league": "Italy - Serie C - Group C",
+          "time": "21:00",
+          "home": "Ca arano",
+          "away": "Barletta",
+          "tags": [
+            "Over"
+          ],
+          "scores": {
+            "over": 84,
+            "goal": 72,
+            "favorite": "Barletta",
+            "under": 12,
+            "noBet": 16
+          },
+          "summary": "Profilo offensivo: Over 2.5 67% / 100% e media gol 4.33 / 4.33.",
+          "basic": {
+            "Partite considerate": "3 / 3",
+            "Vittorie": "33% / 33%",
+            "Senza segnare": "33% / 0%",
+            "Senza subire": "0% / 33%",
+            "BTTS / Entrambe segnano": "67% / 67%",
+            "Media gol": "4.33 / 4.33",
+            "Gol fatti": "1.67 / 2.67",
+            "Gol subiti": "2.67 / 1.67",
+            "Over 1.5": "67% / 100%",
+            "Over 2.5": "67% / 100%",
+            "Over 3.5": "67% / 67%",
+            "Punti per partita": "1.00 / 1.67"
+          },
+          "timing_loaded": false,
+          "recommended": "Over 2.5 gol",
+          "confidence": "Media",
+          "marketType": "over",
+          "signalScore": 84,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=italy5&stats=32-2-8-2027"
+        },
+        {
+          "id": "salernitana-potenza",
+          "league": "Italy - Serie C - Group C",
+          "time": "21:00",
+          "home": "Salernitana",
+          "away": "Potenza",
+          "tags": [
+            "Favorite"
+          ],
+          "scores": {
+            "over": 65,
+            "goal": 89,
+            "favorite": "Potenza",
+            "under": 35,
+            "noBet": 0
+          },
+          "summary": "Gap rendimento: PPG 0.67 / 3.00, vittorie 0% / 100%.",
+          "basic": {
+            "Partite considerate": "3 / 3",
+            "Vittorie": "0% / 100%",
+            "Senza segnare": "0% / 0%",
+            "Senza subire": "0% / 33%",
+            "BTTS / Entrambe segnano": "100% / 67%",
+            "Media gol": "2.33 / 3.00",
+            "Gol fatti": "1.00 / 2.33",
+            "Gol subiti": "1.33 / 0.67",
+            "Over 1.5": "100% / 67%",
+            "Over 2.5": "33% / 67%",
+            "Over 3.5": "0% / 33%",
+            "Punti per partita": "0.67 / 3.00"
+          },
+          "timing_loaded": false,
+          "recommended": "Favorita: Potenza",
+          "confidence": "Alta",
+          "marketType": "favorite",
+          "signalScore": 100,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=italy5&stats=31-15-1-2027"
+        },
+        {
+          "id": "riga-fc-auda",
+          "league": "Latvia - Vir liga",
+          "time": "17:00",
+          "home": "Riga FC",
+          "away": "Auda",
+          "tags": [
+            "No Bet"
+          ],
+          "scores": {
+            "over": 56,
+            "goal": 60,
+            "favorite": "Riga FC",
+            "under": 40,
+            "noBet": 40
+          },
+          "summary": "Dati generali non abbastanza convergenti.",
+          "basic": {
+            "Partite considerate": "8 / 8",
+            "Vittorie": "62% / 62%",
+            "Senza segnare": "0% / 12%",
+            "Senza subire": "38% / 62%",
+            "BTTS / Entrambe segnano": "62% / 25%",
+            "Media gol": "3.88 / 1.63",
+            "Gol fatti": "2.75 / 1.13",
+            "Gol subiti": "1.13 / 0.50",
+            "Over 1.5": "100% / 50%",
+            "Over 2.5": "75% / 12%",
+            "Over 3.5": "62% / 0%",
+            "Punti per partita": "2.13 / 2.13"
+          },
+          "timing_loaded": false,
+          "recommended": "NO BET",
+          "confidence": "Bassa",
+          "marketType": "nobet",
+          "signalScore": 60,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=latvia&stats=148-6-9-2026"
+        },
+        {
+          "id": "c-azul-hidaldo-pirata",
+          "league": "Mexico - Liga Expan ion - Apertura",
+          "time": "20:00",
+          "home": "C. Azul Hidaldo",
+          "away": "Pirata",
+          "tags": [
+            "No Bet"
+          ],
+          "scores": {
+            "over": 53,
+            "goal": 43,
+            "favorite": "Pirata",
+            "under": 40,
+            "noBet": 47
+          },
+          "summary": "Dati generali non abbastanza convergenti.",
+          "basic": {
+            "Partite considerate": "7 / 7",
+            "Vittorie": "14% / 43%",
+            "Senza segnare": "43% / 43%",
+            "Senza subire": "29% / 43%",
+            "BTTS / Entrambe segnano": "43% / 29%",
+            "Media gol": "3.14 / 2.00",
+            "Gol fatti": "1.29 / 1.29",
+            "Gol subiti": "1.86 / 0.71",
+            "Over 1.5": "86% / 57%",
+            "Over 2.5": "57% / 29%",
+            "Over 3.5": "29% / 14%",
+            "Punti per partita": "0.86 / 1.57"
+          },
+          "timing_loaded": false,
+          "recommended": "NO BET",
+          "confidence": "Bassa",
+          "marketType": "nobet",
+          "signalScore": 53,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=mexico3&stats=54-14-10-2026"
+        },
+        {
+          "id": "coleraine-ballymena-utd",
+          "league": "Northern Ireland - NIFL Premier hip",
+          "time": "20:45",
+          "home": "Coleraine",
+          "away": "Ballymena Utd",
+          "tags": [
+            "Favorite"
+          ],
+          "scores": {
+            "over": 71,
+            "goal": 55,
+            "favorite": "Coleraine",
+            "under": 23,
+            "noBet": 0
+          },
+          "summary": "Gap rendimento: PPG 2.60 / 1.00, vittorie 80% / 25%.",
+          "basic": {
+            "Partite considerate": "5 / 4",
+            "Vittorie": "80% / 25%",
+            "Senza segnare": "20% / 25%",
+            "Senza subire": "60% / 25%",
+            "BTTS / Entrambe segnano": "40% / 50%",
+            "Media gol": "2.80 / 3.00",
+            "Gol fatti": "2.40 / 1.50",
+            "Gol subiti": "0.40 / 1.50",
+            "Over 1.5": "80% / 100%",
+            "Over 2.5": "60% / 75%",
+            "Over 3.5": "40% / 25%",
+            "Punti per partita": "2.60 / 1.00"
+          },
+          "timing_loaded": false,
+          "recommended": "Favorita: Coleraine",
+          "confidence": "Alta",
+          "marketType": "favorite",
+          "signalScore": 100,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/h2h.asp?league=northernireland&fmid=35&t1id=6&t2id=10&ly=2027"
+        },
+        {
+          "id": "eid-vold-ull-ki-a",
+          "league": "Norway - Divi ion 2 - Gr. 2",
+          "time": "19:00",
+          "home": "Eid vold",
+          "away": "Ull/Ki a",
+          "tags": [
+            "Favorite"
+          ],
+          "scores": {
+            "over": 84,
+            "goal": 71,
+            "favorite": "Eid vold",
+            "under": 13,
+            "noBet": 0
+          },
+          "summary": "Gap rendimento: PPG 2.38 / 0.13, vittorie 75% / 0%.",
+          "basic": {
+            "Partite considerate": "8 / 8",
+            "Vittorie": "75% / 0%",
+            "Senza segnare": "12% / 38%",
+            "Senza subire": "25% / 0%",
+            "BTTS / Entrambe segnano": "75% / 62%",
+            "Media gol": "3.38 / 4.13",
+            "Gol fatti": "2.50 / 0.63",
+            "Gol subiti": "0.88 / 3.50",
+            "Over 1.5": "75% / 100%",
+            "Over 2.5": "75% / 88%",
+            "Over 3.5": "38% / 38%",
+            "Punti per partita": "2.38 / 0.13"
+          },
+          "timing_loaded": false,
+          "recommended": "Favorita: Eid vold",
+          "confidence": "Alta",
+          "marketType": "favorite",
+          "signalScore": 100,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=norway4&stats=128-11-5-2026"
+        },
+        {
+          "id": "roa-w-valerenga-w",
+          "league": "Norway - Topp erien Women",
+          "time": "18:00",
+          "home": "Roa W",
+          "away": "Valerenga W",
+          "tags": [
+            "No Bet"
+          ],
+          "scores": {
+            "over": 77,
+            "goal": 73,
+            "favorite": "Valerenga W",
+            "under": 22,
+            "noBet": 23
+          },
+          "summary": "Dati generali non abbastanza convergenti.",
+          "basic": {
+            "Partite considerate": "8 / 8",
+            "Vittorie": "12% / 50%",
+            "Senza segnare": "12% / 25%",
+            "Senza subire": "25% / 12%",
+            "BTTS / Entrambe segnano": "75% / 62%",
+            "Media gol": "2.88 / 4.00",
+            "Gol fatti": "1.00 / 2.38",
+            "Gol subiti": "1.88 / 1.63",
+            "Over 1.5": "75% / 100%",
+            "Over 2.5": "50% / 88%",
+            "Over 3.5": "38% / 38%",
+            "Punti per partita": "0.75 / 1.50"
+          },
+          "timing_loaded": false,
+          "recommended": "NO BET",
+          "confidence": "Bassa",
+          "marketType": "nobet",
+          "signalScore": 77,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=norway11&stats=86-10-6-2026"
+        },
+        {
+          "id": "bodo-glimt-w-aale-und-w",
+          "league": "Norway - Topp erien Women",
+          "time": "19:00",
+          "home": "Bodo/Glimt W",
+          "away": "Aale und W",
+          "tags": [
+            "Favorite"
+          ],
+          "scores": {
+            "over": 87,
+            "goal": 81,
+            "favorite": "Aale und W",
+            "under": 13,
+            "noBet": 0
+          },
+          "summary": "Gap rendimento: PPG 0.13 / 2.63, vittorie 0% / 88%.",
+          "basic": {
+            "Partite considerate": "8 / 8",
+            "Vittorie": "0% / 88%",
+            "Senza segnare": "12% / 0%",
+            "Senza subire": "0% / 38%",
+            "BTTS / Entrambe segnano": "88% / 62%",
+            "Media gol": "5.50 / 4.00",
+            "Gol fatti": "0.88 / 3.13",
+            "Gol subiti": "4.63 / 0.88",
+            "Over 1.5": "100% / 88%",
+            "Over 2.5": "88% / 75%",
+            "Over 3.5": "62% / 38%",
+            "Punti per partita": "0.13 / 2.63"
+          },
+          "timing_loaded": false,
+          "recommended": "Favorita: Aale und W",
+          "confidence": "Alta",
+          "marketType": "favorite",
+          "signalScore": 100,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=norway11&stats=90-11-3-2026"
+        },
+        {
+          "id": "s-ameliano-san-lorenzo",
+          "league": "Paraguay - Primera Div. - Clau ura",
+          "time": "21:00",
+          "home": "S. Ameliano",
+          "away": "San Lorenzo",
+          "tags": [
+            "Favorite"
+          ],
+          "scores": {
+            "over": 58,
+            "goal": 52,
+            "favorite": "S. Ameliano",
+            "under": 39,
+            "noBet": 2
+          },
+          "summary": "Gap rendimento: PPG 1.50 / 0.00, vittorie 38% / 0%.",
+          "basic": {
+            "Partite considerate": "8 / 8",
+            "Vittorie": "38% / 0%",
+            "Senza segnare": "12% / 75%",
+            "Senza subire": "12% / 0%",
+            "BTTS / Entrambe segnano": "75% / 25%",
+            "Media gol": "2.50 / 2.25",
+            "Gol fatti": "1.25 / 0.25",
+            "Gol subiti": "1.25 / 2.00",
+            "Over 1.5": "88% / 62%",
+            "Over 2.5": "50% / 50%",
+            "Over 3.5": "12% / 12%",
+            "Punti per partita": "1.50 / 0.00"
+          },
+          "timing_loaded": false,
+          "recommended": "Favorita: S. Ameliano",
+          "confidence": "Alta",
+          "marketType": "favorite",
+          "signalScore": 98,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=paraguay2&stats=57-3-8-2026"
+        },
+        {
+          "id": "2-de-mayo-libertad",
+          "league": "Paraguay - Primera Div. - Clau ura",
+          "time": "23:30",
+          "home": "2 de Mayo",
+          "away": "Libertad",
+          "tags": [
+            "No Bet"
+          ],
+          "scores": {
+            "over": 67,
+            "goal": 75,
+            "favorite": "2 de Mayo",
+            "under": 26,
+            "noBet": 25
+          },
+          "summary": "Dati generali non abbastanza convergenti.",
+          "basic": {
+            "Partite considerate": "8 / 8",
+            "Vittorie": "62% / 62%",
+            "Senza segnare": "12% / 12%",
+            "Senza subire": "38% / 12%",
+            "BTTS / Entrambe segnano": "62% / 75%",
+            "Media gol": "2.13 / 3.25",
+            "Gol fatti": "1.38 / 1.88",
+            "Gol subiti": "0.75 / 1.38",
+            "Over 1.5": "62% / 88%",
+            "Over 2.5": "50% / 75%",
+            "Over 3.5": "12% / 25%",
+            "Punti per partita": "2.25 / 2.00"
+          },
+          "timing_loaded": false,
+          "recommended": "NO BET",
+          "confidence": "Bassa",
+          "marketType": "nobet",
+          "signalScore": 75,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=paraguay2&stats=56-1-6-2026"
+        },
+        {
+          "id": "cajamarca-juan-pablo-ii",
+          "league": "Peru - Liga 1 - Clau ura",
+          "time": "22:00",
+          "home": "Cajamarca",
+          "away": "Juan Pablo II",
+          "tags": [
+            "Favorite"
+          ],
+          "scores": {
+            "over": 65,
+            "goal": 64,
+            "favorite": "Juan Pablo II",
+            "under": 35,
+            "noBet": 8
+          },
+          "summary": "Gap rendimento: PPG 0.25 / 1.50, vittorie 0% / 38%.",
+          "basic": {
+            "Partite considerate": "8 / 8",
+            "Vittorie": "0% / 38%",
+            "Senza segnare": "25% / 38%",
+            "Senza subire": "12% / 25%",
+            "BTTS / Entrambe segnano": "75% / 50%",
+            "Media gol": "3.38 / 3.13",
+            "Gol fatti": "1.00 / 1.75",
+            "Gol subiti": "2.38 / 1.38",
+            "Over 1.5": "75% / 88%",
+            "Over 2.5": "62% / 38%",
+            "Over 3.5": "62% / 38%",
+            "Punti per partita": "0.25 / 1.50"
+          },
+          "timing_loaded": false,
+          "recommended": "Favorita: Juan Pablo II",
+          "confidence": "Media-alta",
+          "marketType": "favorite",
+          "signalScore": 92,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=peru2&stats=81-12-2-2026"
+        },
+        {
+          "id": "rakow-c-motor-lublin",
+          "league": "Poland - Ek trakla a",
+          "time": "18:00",
+          "home": "Rakow C.",
+          "away": "Motor Lublin",
+          "tags": [
+            "Top Goal"
+          ],
+          "scores": {
+            "over": 76,
+            "goal": 79,
+            "favorite": "Motor Lublin",
+            "under": 21,
+            "noBet": 21
+          },
+          "summary": "BTTS favorevole: 83% / 71%.",
+          "basic": {
+            "Partite considerate": "6 / 7",
+            "Vittorie": "0% / 14%",
+            "Senza segnare": "17% / 14%",
+            "Senza subire": "0% / 14%",
+            "BTTS / Entrambe segnano": "83% / 71%",
+            "Media gol": "3.33 / 3.00",
+            "Gol fatti": "1.00 / 1.14",
+            "Gol subiti": "2.33 / 1.86",
+            "Over 1.5": "83% / 86%",
+            "Over 2.5": "83% / 57%",
+            "Over 3.5": "17% / 43%",
+            "Punti per partita": "0.00 / 0.71"
+          },
+          "timing_loaded": false,
+          "recommended": "Goal — entrambe segnano",
+          "confidence": "Media",
+          "marketType": "goal",
+          "signalScore": 79,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=poland&stats=68-11-14-2027"
+        },
+        {
+          "id": "wi-la-krakow-jagiellonia",
+          "league": "Poland - Ek trakla a",
+          "time": "20:30",
+          "home": "Wi la Krakow",
+          "away": "Jagiellonia",
+          "tags": [
+            "Over"
+          ],
+          "scores": {
+            "over": 78,
+            "goal": 81,
+            "favorite": "Jagiellonia",
+            "under": 22,
+            "noBet": 22
+          },
+          "summary": "Profilo offensivo: Over 2.5 71% / 67% e media gol 3.43 / 3.17.",
+          "basic": {
+            "Partite considerate": "7 / 6",
+            "Vittorie": "43% / 67%",
+            "Senza segnare": "0% / 17%",
+            "Senza subire": "14% / 17%",
+            "BTTS / Entrambe segnano": "86% / 67%",
+            "Media gol": "3.43 / 3.17",
+            "Gol fatti": "1.86 / 1.83",
+            "Gol subiti": "1.57 / 1.33",
+            "Over 1.5": "100% / 83%",
+            "Over 2.5": "71% / 67%",
+            "Over 3.5": "29% / 17%",
+            "Punti per partita": "1.57 / 2.00"
+          },
+          "timing_loaded": false,
+          "recommended": "Over 1.5 gol",
+          "confidence": "Media",
+          "marketType": "over",
+          "signalScore": 78,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=poland&stats=72-15-5-2027"
+        },
+        {
+          "id": "polonia-war-zaw-polonia-bytom",
+          "league": "Poland - 1. Liga",
+          "time": "18:00",
+          "home": "Polonia War zaw",
+          "away": "Polonia Bytom",
+          "tags": [
+            "Top Goal"
+          ],
+          "scores": {
+            "over": 73,
+            "goal": 81,
+            "favorite": "Polonia War zaw",
+            "under": 25,
+            "noBet": 19
+          },
+          "summary": "BTTS favorevole: 71% / 86%.",
+          "basic": {
+            "Partite considerate": "7 / 7",
+            "Vittorie": "43% / 14%",
+            "Senza segnare": "14% / 14%",
+            "Senza subire": "14% / 14%",
+            "BTTS / Entrambe segnano": "71% / 86%",
+            "Media gol": "3.00 / 3.86",
+            "Gol fatti": "1.57 / 1.71",
+            "Gol subiti": "1.43 / 2.14",
+            "Over 1.5": "71% / 86%",
+            "Over 2.5": "57% / 71%",
+            "Over 3.5": "43% / 57%",
+            "Punti per partita": "1.43 / 1.00"
+          },
+          "timing_loaded": false,
+          "recommended": "Goal — entrambe segnano",
+          "confidence": "Media",
+          "marketType": "goal",
+          "signalScore": 81,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=poland2&stats=69-16-1-2027"
+        },
+        {
+          "id": "pu-zcza-niepolo-lks-lodz",
+          "league": "Poland - 1. Liga",
+          "time": "20:45",
+          "home": "Pu zcza Niepolo",
+          "away": "LKS Lodz",
+          "tags": [
+            "No Bet"
+          ],
+          "scores": {
+            "over": 52,
+            "goal": 49,
+            "favorite": "LKS Lodz",
+            "under": 46,
+            "noBet": 48
+          },
+          "summary": "Dati generali non abbastanza convergenti.",
+          "basic": {
+            "Partite considerate": "6 / 7",
+            "Vittorie": "33% / 43%",
+            "Senza segnare": "67% / 14%",
+            "Senza subire": "17% / 29%",
+            "BTTS / Entrambe segnano": "17% / 71%",
+            "Media gol": "2.00 / 2.43",
+            "Gol fatti": "0.83 / 1.57",
+            "Gol subiti": "1.17 / 0.86",
+            "Over 1.5": "50% / 86%",
+            "Over 2.5": "33% / 57%",
+            "Over 3.5": "17% / 14%",
+            "Punti per partita": "1.00 / 1.71"
+          },
+          "timing_loaded": false,
+          "recommended": "NO BET",
+          "confidence": "Bassa",
+          "marketType": "nobet",
+          "signalScore": 52,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=poland2&stats=68-15-8-2027"
+        },
+        {
+          "id": "re-ovia-rze-zow-falubaz-zielona",
+          "league": "Poland - 2. Liga",
+          "time": "17:30",
+          "home": "Re ovia Rze zow",
+          "away": "Falubaz Zielona",
+          "tags": [
+            "Top Goal"
+          ],
+          "scores": {
+            "over": 75,
+            "goal": 78,
+            "favorite": "Falubaz Zielona",
+            "under": 25,
+            "noBet": 22
+          },
+          "summary": "BTTS favorevole: 57% / 100%.",
+          "basic": {
+            "Partite considerate": "7 / 7",
+            "Vittorie": "0% / 29%",
+            "Senza segnare": "43% / 0%",
+            "Senza subire": "0% / 0%",
+            "BTTS / Entrambe segnano": "57% / 100%",
+            "Media gol": "3.00 / 3.86",
+            "Gol fatti": "0.86 / 2.14",
+            "Gol subiti": "2.14 / 1.71",
+            "Over 1.5": "71% / 100%",
+            "Over 2.5": "57% / 71%",
+            "Over 3.5": "43% / 57%",
+            "Punti per partita": "0.43 / 1.29"
+          },
+          "timing_loaded": false,
+          "recommended": "Goal — entrambe segnano",
+          "confidence": "Media",
+          "marketType": "goal",
+          "signalScore": 78,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=poland3&stats=65-2-13-2027"
+        },
+        {
+          "id": "znicz-pru-zkow-tychy",
+          "league": "Poland - 2. Liga",
+          "time": "18:00",
+          "home": "Znicz Pru zkow",
+          "away": "Tychy",
+          "tags": [
+            "No Bet"
+          ],
+          "scores": {
+            "over": 60,
+            "goal": 73,
+            "favorite": "Znicz Pru zkow",
+            "under": 35,
+            "noBet": 27
+          },
+          "summary": "Dati generali non abbastanza convergenti.",
+          "basic": {
+            "Partite considerate": "7 / 7",
+            "Vittorie": "71% / 57%",
+            "Senza segnare": "14% / 0%",
+            "Senza subire": "14% / 43%",
+            "BTTS / Entrambe segnano": "71% / 57%",
+            "Media gol": "3.29 / 2.29",
+            "Gol fatti": "2.14 / 1.57",
+            "Gol subiti": "1.14 / 0.71",
+            "Over 1.5": "71% / 71%",
+            "Over 2.5": "57% / 43%",
+            "Over 3.5": "43% / 14%",
+            "Punti per partita": "2.29 / 2.14"
+          },
+          "timing_loaded": false,
+          "recommended": "NO BET",
+          "confidence": "Bassa",
+          "marketType": "nobet",
+          "signalScore": 73,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=poland3&stats=72-1-18-2027"
+        },
+        {
+          "id": "torreen-e-leixoe",
+          "league": "Portugal - Liga Portugal 2",
+          "time": "19:45",
+          "home": "Torreen e",
+          "away": "Leixoe",
+          "tags": [
+            "Favorite"
+          ],
+          "scores": {
+            "over": 66,
+            "goal": 60,
+            "favorite": "Leixoe",
+            "under": 28,
+            "noBet": 18
+          },
+          "summary": "Gap rendimento: PPG 1.00 / 1.80, vittorie 20% / 60%.",
+          "basic": {
+            "Partite considerate": "5 / 5",
+            "Vittorie": "20% / 60%",
+            "Senza segnare": "20% / 20%",
+            "Senza subire": "20% / 40%",
+            "BTTS / Entrambe segnano": "60% / 40%",
+            "Media gol": "3.20 / 2.80",
+            "Gol fatti": "1.40 / 1.60",
+            "Gol subiti": "1.80 / 1.20",
+            "Over 1.5": "100% / 60%",
+            "Over 2.5": "80% / 40%",
+            "Over 3.5": "40% / 40%",
+            "Punti per partita": "1.00 / 1.80"
+          },
+          "timing_loaded": false,
+          "recommended": "Favorita: Leixoe",
+          "confidence": "Media-alta",
+          "marketType": "favorite",
+          "signalScore": 82,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=portugal2&stats=46-12-16-2027"
+        },
+        {
+          "id": "academica-benfica-b",
+          "league": "Portugal - Liga Portugal 2",
+          "time": "21:45",
+          "home": "Académica",
+          "away": "Benfica B",
+          "tags": [
+            "No Bet"
+          ],
+          "scores": {
+            "over": 47,
+            "goal": 50,
+            "favorite": "Académica",
+            "under": 53,
+            "noBet": 47
+          },
+          "summary": "Dati generali non abbastanza convergenti.",
+          "basic": {
+            "Partite considerate": "5 / 5",
+            "Vittorie": "60% / 40%",
+            "Senza segnare": "20% / 40%",
+            "Senza subire": "40% / 20%",
+            "BTTS / Entrambe segnano": "40% / 40%",
+            "Media gol": "3.00 / 1.80",
+            "Gol fatti": "1.60 / 0.80",
+            "Gol subiti": "1.40 / 1.00",
+            "Over 1.5": "80% / 60%",
+            "Over 2.5": "40% / 20%",
+            "Over 3.5": "40% / 0%",
+            "Punti per partita": "1.80 / 1.40"
+          },
+          "timing_loaded": false,
+          "recommended": "NO BET",
+          "confidence": "Bassa",
+          "marketType": "nobet",
+          "signalScore": 53,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=portugal2&stats=54-14-15-2027"
+        },
+        {
+          "id": "al-rayyan-al-ahli-doha",
+          "league": "Qatar - Star League",
+          "time": "18:15",
+          "home": "Al Rayyan",
+          "away": "Al Ahli Doha",
+          "tags": [
+            "Favorite"
+          ],
+          "scores": {
+            "over": 60,
+            "goal": 78,
+            "favorite": "Al Rayyan",
+            "under": 35,
+            "noBet": 15
+          },
+          "summary": "Gap rendimento: PPG 2.33 / 1.33, vittorie 67% / 33%.",
+          "basic": {
+            "Partite considerate": "3 / 3",
+            "Vittorie": "67% / 33%",
+            "Senza segnare": "0% / 0%",
+            "Senza subire": "33% / 33%",
+            "BTTS / Entrambe segnano": "67% / 67%",
+            "Media gol": "2.00 / 3.67",
+            "Gol fatti": "1.33 / 1.67",
+            "Gol subiti": "0.67 / 2.00",
+            "Over 1.5": "67% / 67%",
+            "Over 2.5": "33% / 67%",
+            "Over 3.5": "0% / 67%",
+            "Punti per partita": "2.33 / 1.33"
+          },
+          "timing_loaded": false,
+          "recommended": "Favorita: Al Rayyan",
+          "confidence": "Media-alta",
+          "marketType": "favorite",
+          "signalScore": 85,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/h2h.asp?league=qatar&fmid=21&t1id=3&t2id=12&ly=2027"
+        },
+        {
+          "id": "farul-con-tanta-uta-arad",
+          "league": "Romania - Liga 1",
+          "time": "17:00",
+          "home": "Farul Con tanta",
+          "away": "UTA Arad",
+          "tags": [
+            "No Bet"
+          ],
+          "scores": {
+            "over": 58,
+            "goal": 58,
+            "favorite": "Farul Con tanta",
+            "under": 37,
+            "noBet": 42
+          },
+          "summary": "Dati generali non abbastanza convergenti.",
+          "basic": {
+            "Partite considerate": "8 / 8",
+            "Vittorie": "25% / 25%",
+            "Senza segnare": "25% / 50%",
+            "Senza subire": "38% / 25%",
+            "BTTS / Entrambe segnano": "62% / 50%",
+            "Media gol": "2.25 / 2.75",
+            "Gol fatti": "1.25 / 1.38",
+            "Gol subiti": "1.00 / 1.38",
+            "Over 1.5": "75% / 62%",
+            "Over 2.5": "38% / 62%",
+            "Over 3.5": "25% / 50%",
+            "Punti per partita": "1.38 / 1.13"
+          },
+          "timing_loaded": false,
+          "recommended": "NO BET",
+          "confidence": "Bassa",
+          "marketType": "nobet",
+          "signalScore": 58,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=romania&stats=69-10-8-2027"
+        },
+        {
+          "id": "c-ik-zereda-din-buchare-t",
+          "league": "Romania - Liga 1",
+          "time": "20:00",
+          "home": "C ik zereda",
+          "away": "Din. Buchare t",
+          "tags": [
+            "Favorite"
+          ],
+          "scores": {
+            "over": 58,
+            "goal": 54,
+            "favorite": "Din. Buchare t",
+            "under": 35,
+            "noBet": 0
+          },
+          "summary": "Gap rendimento: PPG 0.13 / 2.13, vittorie 0% / 62%.",
+          "basic": {
+            "Partite considerate": "8 / 8",
+            "Vittorie": "0% / 62%",
+            "Senza segnare": "62% / 12%",
+            "Senza subire": "12% / 25%",
+            "BTTS / Entrambe segnano": "38% / 62%",
+            "Media gol": "2.88 / 2.75",
+            "Gol fatti": "0.63 / 2.00",
+            "Gol subiti": "2.25 / 0.75",
+            "Over 1.5": "62% / 75%",
+            "Over 2.5": "50% / 50%",
+            "Over 3.5": "38% / 25%",
+            "Punti per partita": "0.13 / 2.13"
+          },
+          "timing_loaded": false,
+          "recommended": "Favorita: Din. Buchare t",
+          "confidence": "Alta",
+          "marketType": "favorite",
+          "signalScore": 100,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=romania&stats=71-14-12-2027"
+        },
+        {
+          "id": "krylya-sovetov-rodina-mo-cow",
+          "league": "Ru ia - Premier League",
+          "time": "17:00",
+          "home": "Krylya Sovetov",
+          "away": "Rodina Mo cow",
+          "tags": [
+            "Over"
+          ],
+          "scores": {
+            "over": 78,
+            "goal": 59,
+            "favorite": "Krylya Sovetov",
+            "under": 20,
+            "noBet": 22
+          },
+          "summary": "Profilo offensivo: Over 2.5 57% / 86% e media gol 3.14 / 3.86.",
+          "basic": {
+            "Partite considerate": "7 / 7",
+            "Vittorie": "14% / 14%",
+            "Senza segnare": "29% / 43%",
+            "Senza subire": "29% / 0%",
+            "BTTS / Entrambe segnano": "57% / 57%",
+            "Media gol": "3.14 / 3.86",
+            "Gol fatti": "1.43 / 1.14",
+            "Gol subiti": "1.71 / 2.71",
+            "Over 1.5": "86% / 100%",
+            "Over 2.5": "57% / 86%",
+            "Over 3.5": "43% / 43%",
+            "Punti per partita": "1.00 / 0.57"
+          },
+          "timing_loaded": false,
+          "recommended": "Over 1.5 gol",
+          "confidence": "Media",
+          "marketType": "over",
+          "signalScore": 78,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=russia&stats=57-4-10-2027"
+        },
+        {
+          "id": "al-quadi-iya-al-ittifaq",
+          "league": "Saudi Arabia - Profe ional League",
+          "time": "17:25",
+          "home": "Al Quadi iya",
+          "away": "Al Ittifaq",
+          "tags": [
+            "No Bet"
+          ],
+          "scores": {
+            "over": 57,
+            "goal": 52,
+            "favorite": "Al Quadi iya",
+            "under": 35,
+            "noBet": 43
+          },
+          "summary": "Dati generali non abbastanza convergenti.",
+          "basic": {
+            "Partite considerate": "6 / 6",
+            "Vittorie": "83% / 50%",
+            "Senza segnare": "17% / 33%",
+            "Senza subire": "33% / 50%",
+            "BTTS / Entrambe segnano": "50% / 33%",
+            "Media gol": "3.00 / 2.67",
+            "Gol fatti": "2.17 / 1.33",
+            "Gol subiti": "0.83 / 1.33",
+            "Over 1.5": "83% / 50%",
+            "Over 2.5": "50% / 50%",
+            "Over 3.5": "50% / 33%",
+            "Punti per partita": "2.50 / 1.67"
+          },
+          "timing_loaded": false,
+          "recommended": "NO BET",
+          "confidence": "Bassa",
+          "marketType": "nobet",
+          "signalScore": 57,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=saudiarabia&stats=60-6-11-2027"
+        },
+        {
+          "id": "al-fai-aly-al-ittihad",
+          "league": "Saudi Arabia - Profe ional League",
+          "time": "17:45",
+          "home": "Al Fai aly",
+          "away": "Al Ittihad",
+          "tags": [
+            "Favorite"
+          ],
+          "scores": {
+            "over": 53,
+            "goal": 61,
+            "favorite": "Al Ittihad",
+            "under": 46,
+            "noBet": 0
+          },
+          "summary": "Gap rendimento: PPG 0.50 / 2.33, vittorie 0% / 67%.",
+          "basic": {
+            "Partite considerate": "6 / 6",
+            "Vittorie": "0% / 67%",
+            "Senza segnare": "50% / 17%",
+            "Senza subire": "33% / 33%",
+            "BTTS / Entrambe segnano": "50% / 67%",
+            "Media gol": "2.33 / 2.33",
+            "Gol fatti": "0.67 / 1.50",
+            "Gol subiti": "1.67 / 0.83",
+            "Over 1.5": "67% / 67%",
+            "Over 2.5": "33% / 50%",
+            "Over 3.5": "33% / 17%",
+            "Punti per partita": "0.50 / 2.33"
+          },
+          "timing_loaded": false,
+          "recommended": "Favorita: Al Ittihad",
+          "confidence": "Alta",
+          "marketType": "favorite",
+          "signalScore": 100,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=saudiarabia&stats=61-10-17-2027"
+        },
+        {
+          "id": "al-ahli-jeddah-al-hazm",
+          "league": "Saudi Arabia - Profe ional League",
+          "time": "20:00",
+          "home": "Al Ahli Jeddah",
+          "away": "Al Hazm",
+          "tags": [
+            "No Bet"
+          ],
+          "scores": {
+            "over": 60,
+            "goal": 52,
+            "favorite": "Al Ahli Jeddah",
+            "under": 29,
+            "noBet": 40
+          },
+          "summary": "Dati generali non abbastanza convergenti.",
+          "basic": {
+            "Partite considerate": "6 / 6",
+            "Vittorie": "50% / 33%",
+            "Senza segnare": "17% / 33%",
+            "Senza subire": "50% / 33%",
+            "BTTS / Entrambe segnano": "33% / 50%",
+            "Media gol": "3.67 / 2.00",
+            "Gol fatti": "2.17 / 1.00",
+            "Gol subiti": "1.50 / 1.00",
+            "Over 1.5": "83% / 50%",
+            "Over 2.5": "83% / 33%",
+            "Over 3.5": "67% / 17%",
+            "Punti per partita": "1.50 / 1.33"
+          },
+          "timing_loaded": false,
+          "recommended": "NO BET",
+          "confidence": "Bassa",
+          "marketType": "nobet",
+          "signalScore": 60,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=saudiarabia&stats=63-4-2-2027"
+        },
+        {
+          "id": "greenock-morton-living-ton",
+          "league": "Scotland - Champion hip",
+          "time": "20:30",
+          "home": "Greenock Morton",
+          "away": "Living ton",
+          "tags": [
+            "Favorite"
+          ],
+          "scores": {
+            "over": 39,
+            "goal": 36,
+            "favorite": "Living ton",
+            "under": 69,
+            "noBet": 13
+          },
+          "summary": "Gap rendimento: PPG 0.20 / 1.20, vittorie 0% / 40%.",
+          "basic": {
+            "Partite considerate": "5 / 5",
+            "Vittorie": "0% / 40%",
+            "Senza segnare": "40% / 60%",
+            "Senza subire": "0% / 40%",
+            "BTTS / Entrambe segnano": "60% / 0%",
+            "Media gol": "2.20 / 1.60",
+            "Gol fatti": "0.60 / 0.80",
+            "Gol subiti": "1.60 / 0.80",
+            "Over 1.5": "80% / 60%",
+            "Over 2.5": "40% / 0%",
+            "Over 3.5": "0% / 0%",
+            "Punti per partita": "0.20 / 1.20"
+          },
+          "timing_loaded": false,
+          "recommended": "Favorita: Living ton",
+          "confidence": "Media-alta",
+          "marketType": "favorite",
+          "signalScore": 87,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/h2h.asp?league=scotland2&fmid=28&t1id=7&t2id=3&ly=2027"
+        },
+        {
+          "id": "z-pancevo-macva-sabac",
+          "league": "Serbia - Super Liga",
+          "time": "18:30",
+          "home": "Z. Pancevo",
+          "away": "Macva Sabac",
+          "tags": [
+            "No Bet"
+          ],
+          "scores": {
+            "over": 52,
+            "goal": 48,
+            "favorite": "Z. Pancevo",
+            "under": 42,
+            "noBet": 48
+          },
+          "summary": "Dati generali non abbastanza convergenti.",
+          "basic": {
+            "Partite considerate": "6 / 8",
+            "Vittorie": "33% / 25%",
+            "Senza segnare": "50% / 38%",
+            "Senza subire": "17% / 38%",
+            "BTTS / Entrambe segnano": "50% / 38%",
+            "Media gol": "2.67 / 2.25",
+            "Gol fatti": "1.50 / 0.63",
+            "Gol subiti": "1.17 / 1.63",
+            "Over 1.5": "67% / 62%",
+            "Over 2.5": "50% / 38%",
+            "Over 3.5": "33% / 25%",
+            "Punti per partita": "1.33 / 1.00"
+          },
+          "timing_loaded": false,
+          "recommended": "NO BET",
+          "confidence": "Bassa",
+          "marketType": "nobet",
+          "signalScore": 52,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=serbia&stats=119-1-4-2027"
+        },
+        {
+          "id": "gro-uplje-nafta",
+          "league": "Slovenia - Prva Liga",
+          "time": "20:15",
+          "home": "Gro uplje",
+          "away": "Nafta",
+          "tags": [
+            "No Bet"
+          ],
+          "scores": {
+            "over": 74,
+            "goal": 66,
+            "favorite": "Nafta",
+            "under": 27,
+            "noBet": 26
+          },
+          "summary": "Dati generali non abbastanza convergenti.",
+          "basic": {
+            "Partite considerate": "8 / 8",
+            "Vittorie": "25% / 38%",
+            "Senza segnare": "25% / 25%",
+            "Senza subire": "12% / 12%",
+            "BTTS / Entrambe segnano": "62% / 62%",
+            "Media gol": "3.25 / 3.50",
+            "Gol fatti": "1.38 / 1.88",
+            "Gol subiti": "1.88 / 1.63",
+            "Over 1.5": "100% / 88%",
+            "Over 2.5": "62% / 62%",
+            "Over 3.5": "25% / 50%",
+            "Punti per partita": "1.00 / 1.25"
+          },
+          "timing_loaded": false,
+          "recommended": "NO BET",
+          "confidence": "Bassa",
+          "marketType": "nobet",
+          "signalScore": 74,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=slovenia&stats=84-6-1-2027"
+        },
+        {
+          "id": "stellenbo-ch-sekhukhune",
+          "league": "South Africa - Premier Divi ion",
+          "time": "19:30",
+          "home": "Stellenbo ch",
+          "away": "Sekhukhune",
+          "tags": [
+            "Under"
+          ],
+          "scores": {
+            "over": 32,
+            "goal": 26,
+            "favorite": "Sekhukhune",
+            "under": 69,
+            "noBet": 31
+          },
+          "summary": "Profilo più chiuso: Over 2.5 40% / 0% e media gol 2.40 / 1.40.",
+          "basic": {
+            "Partite considerate": "5 / 5",
+            "Vittorie": "20% / 40%",
+            "Senza segnare": "60% / 60%",
+            "Senza subire": "20% / 60%",
+            "BTTS / Entrambe segnano": "40% / 0%",
+            "Media gol": "2.40 / 1.40",
+            "Gol fatti": "1.20 / 0.60",
+            "Gol subiti": "1.20 / 0.80",
+            "Over 1.5": "40% / 60%",
+            "Over 2.5": "40% / 0%",
+            "Over 3.5": "40% / 0%",
+            "Punti per partita": "1.00 / 1.40"
+          },
+          "timing_loaded": false,
+          "recommended": "Under 2.5 gol",
+          "confidence": "Bassa",
+          "marketType": "under",
+          "signalScore": 69,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=southafrica&stats=98-1-7-2027"
+        },
+        {
+          "id": "barakaldo-cd-extremadura",
+          "league": "Spain - Primera RFEF - Gr. 1",
+          "time": "19:00",
+          "home": "Barakaldo",
+          "away": "CD Extremadura",
+          "tags": [
+            "Favorite"
+          ],
+          "scores": {
+            "over": 51,
+            "goal": 58,
+            "favorite": "CD Extremadura",
+            "under": 42,
+            "noBet": 9
+          },
+          "summary": "Gap rendimento: PPG 0.50 / 1.50, vittorie 0% / 50%.",
+          "basic": {
+            "Partite considerate": "2 / 2",
+            "Vittorie": "0% / 50%",
+            "Senza segnare": "50% / 0%",
+            "Senza subire": "50% / 50%",
+            "BTTS / Entrambe segnano": "50% / 50%",
+            "Media gol": "2.50 / 2.00",
+            "Gol fatti": "0.50 / 1.00",
+            "Gol subiti": "2.00 / 1.00",
+            "Over 1.5": "50% / 50%",
+            "Over 2.5": "50% / 50%",
+            "Over 3.5": "50% / 0%",
+            "Punti per partita": "0.50 / 1.50"
+          },
+          "timing_loaded": false,
+          "recommended": "Favorita: CD Extremadura",
+          "confidence": "Media-alta",
+          "marketType": "favorite",
+          "signalScore": 91,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/h2h.asp?league=spain3&fmid=29&t1id=17&t2id=6&ly=2027"
+        },
+        {
+          "id": "gimna-tic-t-algecira",
+          "league": "Spain - Primera RFEF - Gr. 2",
+          "time": "21:15",
+          "home": "Gimna tic T.",
+          "away": "Algecira",
+          "tags": [
+            "Favorite"
+          ],
+          "scores": {
+            "over": 57,
+            "goal": 58,
+            "favorite": "Gimna tic T.",
+            "under": 42,
+            "noBet": 0
+          },
+          "summary": "Gap rendimento: PPG 2.00 / 0.00, vittorie 50% / 0%.",
+          "basic": {
+            "Partite considerate": "2 / 2",
+            "Vittorie": "50% / 0%",
+            "Senza segnare": "50% / 0%",
+            "Senza subire": "100% / 0%",
+            "BTTS / Entrambe segnano": "0% / 100%",
+            "Media gol": "1.00 / 3.50",
+            "Gol fatti": "1.00 / 1.00",
+            "Gol subiti": "0.00 / 2.50",
+            "Over 1.5": "50% / 100%",
+            "Over 2.5": "0% / 100%",
+            "Over 3.5": "0% / 50%",
+            "Punti per partita": "2.00 / 0.00"
+          },
+          "timing_loaded": false,
+          "recommended": "Favorita: Gimna tic T.",
+          "confidence": "Alta",
+          "marketType": "favorite",
+          "signalScore": 100,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/h2h.asp?league=spain4&fmid=22&t1id=3&t2id=17&ly=2027"
+        },
+        {
+          "id": "hacken-mjallby",
+          "league": "Sweden - All ven kan",
+          "time": "19:00",
+          "home": "Hacken",
+          "away": "Mjallby",
+          "tags": [
+            "No Bet"
+          ],
+          "scores": {
+            "over": 55,
+            "goal": 43,
+            "favorite": "Hacken",
+            "under": 37,
+            "noBet": 45
+          },
+          "summary": "Dati generali non abbastanza convergenti.",
+          "basic": {
+            "Partite considerate": "8 / 8",
+            "Vittorie": "38% / 12%",
+            "Senza segnare": "38% / 50%",
+            "Senza subire": "62% / 12%",
+            "BTTS / Entrambe segnano": "25% / 50%",
+            "Media gol": "1.88 / 3.13",
+            "Gol fatti": "1.00 / 0.88",
+            "Gol subiti": "0.88 / 2.25",
+            "Over 1.5": "62% / 75%",
+            "Over 2.5": "38% / 62%",
+            "Over 3.5": "12% / 38%",
+            "Punti per partita": "1.50 / 0.50"
+          },
+          "timing_loaded": false,
+          "recommended": "NO BET",
+          "confidence": "Bassa",
+          "marketType": "nobet",
+          "signalScore": 55,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=sweden&stats=164-13-4-2026"
+        },
+        {
+          "id": "lund-ro-engard",
+          "league": "Sweden - Div 1 - Sodra",
+          "time": "19:00",
+          "home": "Lund",
+          "away": "Ro engard",
+          "tags": [
+            "No Bet"
+          ],
+          "scores": {
+            "over": 74,
+            "goal": 75,
+            "favorite": "Lund",
+            "under": 27,
+            "noBet": 25
+          },
+          "summary": "Dati generali non abbastanza convergenti.",
+          "basic": {
+            "Partite considerate": "8 / 8",
+            "Vittorie": "38% / 38%",
+            "Senza segnare": "25% / 25%",
+            "Senza subire": "12% / 25%",
+            "BTTS / Entrambe segnano": "75% / 75%",
+            "Media gol": "3.63 / 3.75",
+            "Gol fatti": "2.25 / 2.13",
+            "Gol subiti": "1.38 / 1.63",
+            "Over 1.5": "88% / 75%",
+            "Over 2.5": "62% / 62%",
+            "Over 3.5": "38% / 62%",
+            "Punti per partita": "1.63 / 1.63"
+          },
+          "timing_loaded": false,
+          "recommended": "NO BET",
+          "confidence": "Bassa",
+          "marketType": "nobet",
+          "signalScore": 75,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=sweden4&stats=161-10-9-2026"
+        },
+        {
+          "id": "trollhattan-ut-ikten",
+          "league": "Sweden - Div 1 - Sodra",
+          "time": "19:00",
+          "home": "Trollhattan",
+          "away": "Ut ikten",
+          "tags": [
+            "Favorite"
+          ],
+          "scores": {
+            "over": 63,
+            "goal": 66,
+            "favorite": "Trollhattan",
+            "under": 35,
+            "noBet": 6
+          },
+          "summary": "Gap rendimento: PPG 1.63 / 0.50, vittorie 50% / 0%.",
+          "basic": {
+            "Partite considerate": "8 / 8",
+            "Vittorie": "50% / 0%",
+            "Senza segnare": "25% / 25%",
+            "Senza subire": "25% / 0%",
+            "BTTS / Entrambe segnano": "50% / 75%",
+            "Media gol": "2.63 / 3.00",
+            "Gol fatti": "1.38 / 1.00",
+            "Gol subiti": "1.25 / 2.00",
+            "Over 1.5": "62% / 100%",
+            "Over 2.5": "38% / 62%",
+            "Over 3.5": "25% / 38%",
+            "Punti per partita": "1.63 / 0.50"
+          },
+          "timing_loaded": false,
+          "recommended": "Favorita: Trollhattan",
+          "confidence": "Alta",
+          "marketType": "favorite",
+          "signalScore": 94,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=sweden4&stats=162-7-5-2026"
+        },
+        {
+          "id": "lau-anne-ouchy-wil",
+          "league": "Switzerland - Challenge League",
+          "time": "19:30",
+          "home": "Lau anne Ouchy",
+          "away": "Wil",
+          "tags": [
+            "Favorite"
+          ],
+          "scores": {
+            "over": 65,
+            "goal": 66,
+            "favorite": "Lau anne Ouchy",
+            "under": 40,
+            "noBet": 0
+          },
+          "summary": "Gap rendimento: PPG 2.43 / 0.86, vittorie 71% / 14%.",
+          "basic": {
+            "Partite considerate": "7 / 7",
+            "Vittorie": "71% / 14%",
+            "Senza segnare": "0% / 29%",
+            "Senza subire": "57% / 0%",
+            "BTTS / Entrambe segnano": "43% / 71%",
+            "Media gol": "2.29 / 3.86",
+            "Gol fatti": "1.86 / 1.43",
+            "Gol subiti": "0.43 / 2.43",
+            "Over 1.5": "100% / 100%",
+            "Over 2.5": "29% / 57%",
+            "Over 3.5": "0% / 43%",
+            "Punti per partita": "2.43 / 0.86"
+          },
+          "timing_loaded": false,
+          "recommended": "Favorita: Lau anne Ouchy",
+          "confidence": "Alta",
+          "marketType": "favorite",
+          "signalScore": 100,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=switzerland2&stats=77-1-4-2027"
+        },
+        {
+          "id": "rapper-wil-yverdon",
+          "league": "Switzerland - Challenge League",
+          "time": "19:30",
+          "home": "Rapper wil",
+          "away": "Yverdon",
+          "tags": [
+            "Favorite"
+          ],
+          "scores": {
+            "over": 75,
+            "goal": 81,
+            "favorite": "Yverdon",
+            "under": 30,
+            "noBet": 0
+          },
+          "summary": "Gap rendimento: PPG 0.57 / 2.14, vittorie 14% / 57%.",
+          "basic": {
+            "Partite considerate": "7 / 7",
+            "Vittorie": "14% / 57%",
+            "Senza segnare": "29% / 0%",
+            "Senza subire": "0% / 14%",
+            "BTTS / Entrambe segnano": "71% / 86%",
+            "Media gol": "3.71 / 3.00",
+            "Gol fatti": "1.43 / 2.00",
+            "Gol subiti": "2.29 / 1.00",
+            "Over 1.5": "100% / 100%",
+            "Over 2.5": "57% / 57%",
+            "Over 3.5": "29% / 29%",
+            "Punti per partita": "0.57 / 2.14"
+          },
+          "timing_loaded": false,
+          "recommended": "Favorita: Yverdon",
+          "confidence": "Alta",
+          "marketType": "favorite",
+          "signalScore": 100,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=switzerland2&stats=78-3-8-2027"
+        },
+        {
+          "id": "stade-nyonnai-neuchatel-xamax",
+          "league": "Switzerland - Challenge League",
+          "time": "19:30",
+          "home": "Stade Nyonnai",
+          "away": "Neuchatel Xamax",
+          "tags": [
+            "Favorite"
+          ],
+          "scores": {
+            "over": 78,
+            "goal": 66,
+            "favorite": "Neuchatel Xamax",
+            "under": 15,
+            "noBet": 12
+          },
+          "summary": "Gap rendimento: PPG 0.29 / 1.29, vittorie 0% / 43%.",
+          "basic": {
+            "Partite considerate": "7 / 7",
+            "Vittorie": "0% / 43%",
+            "Senza segnare": "43% / 14%",
+            "Senza subire": "14% / 14%",
+            "BTTS / Entrambe segnano": "57% / 71%",
+            "Media gol": "2.86 / 3.14",
+            "Gol fatti": "0.71 / 1.29",
+            "Gol subiti": "2.14 / 1.86",
+            "Over 1.5": "86% / 86%",
+            "Over 2.5": "71% / 86%",
+            "Over 3.5": "29% / 29%",
+            "Punti per partita": "0.29 / 1.29"
+          },
+          "timing_loaded": false,
+          "recommended": "Favorita: Neuchatel Xamax",
+          "confidence": "Media-alta",
+          "marketType": "favorite",
+          "signalScore": 88,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=switzerland2&stats=76-2-5-2027"
+        },
+        {
+          "id": "etoile-carouge-winterthur",
+          "league": "Switzerland - Challenge League",
+          "time": "20:15",
+          "home": "Etoile Carouge",
+          "away": "Winterthur",
+          "tags": [
+            "No Bet"
+          ],
+          "scores": {
+            "over": 61,
+            "goal": 52,
+            "favorite": "Winterthur",
+            "under": 35,
+            "noBet": 39
+          },
+          "summary": "Dati generali non abbastanza convergenti.",
+          "basic": {
+            "Partite considerate": "7 / 7",
+            "Vittorie": "29% / 43%",
+            "Senza segnare": "43% / 14%",
+            "Senza subire": "29% / 43%",
+            "BTTS / Entrambe segnano": "43% / 43%",
+            "Media gol": "2.00 / 3.29",
+            "Gol fatti": "1.00 / 2.29",
+            "Gol subiti": "1.00 / 1.00",
+            "Over 1.5": "71% / 100%",
+            "Over 2.5": "43% / 57%",
+            "Over 3.5": "0% / 57%",
+            "Punti per partita": "1.29 / 1.71"
+          },
+          "timing_loaded": false,
+          "recommended": "NO BET",
+          "confidence": "Bassa",
+          "marketType": "nobet",
+          "signalScore": 61,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=switzerland2&stats=79-9-7-2027"
+        },
+        {
+          "id": "be-ikta-erzurum-bb",
+          "league": "Turkey - Super Lig",
+          "time": "19:00",
+          "home": "Be ikta",
+          "away": "Erzurum BB",
+          "tags": [
+            "Favorite"
+          ],
+          "scores": {
+            "over": 56,
+            "goal": 46,
+            "favorite": "Be ikta",
+            "under": 35,
+            "noBet": 3
+          },
+          "summary": "Gap rendimento: PPG 2.25 / 1.00, vittorie 75% / 25%.",
+          "basic": {
+            "Partite considerate": "4 / 4",
+            "Vittorie": "75% / 25%",
+            "Senza segnare": "25% / 50%",
+            "Senza subire": "25% / 25%",
+            "BTTS / Entrambe segnano": "50% / 25%",
+            "Media gol": "3.25 / 2.50",
+            "Gol fatti": "2.25 / 0.50",
+            "Gol subiti": "1.00 / 2.00",
+            "Over 1.5": "50% / 75%",
+            "Over 2.5": "50% / 50%",
+            "Over 3.5": "25% / 25%",
+            "Punti per partita": "2.25 / 1.00"
+          },
+          "timing_loaded": false,
+          "recommended": "Favorita: Be ikta",
+          "confidence": "Alta",
+          "marketType": "favorite",
+          "signalScore": 97,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=turkey&stats=38-13-16-2027"
+        },
+        {
+          "id": "sariyer-bandirma-por",
+          "league": "Turkey - 1. Lig",
+          "time": "19:00",
+          "home": "Sariyer",
+          "away": "Bandirma por",
+          "tags": [
+            "No Bet"
+          ],
+          "scores": {
+            "over": 55,
+            "goal": 52,
+            "favorite": "Sariyer",
+            "under": 44,
+            "noBet": 45
+          },
+          "summary": "Dati generali non abbastanza convergenti.",
+          "basic": {
+            "Partite considerate": "6 / 6",
+            "Vittorie": "50% / 33%",
+            "Senza segnare": "17% / 33%",
+            "Senza subire": "33% / 50%",
+            "BTTS / Entrambe segnano": "50% / 33%",
+            "Media gol": "2.50 / 2.33",
+            "Gol fatti": "1.33 / 1.83",
+            "Gol subiti": "1.17 / 0.50",
+            "Over 1.5": "100% / 67%",
+            "Over 2.5": "50% / 33%",
+            "Over 3.5": "0% / 17%",
+            "Punti per partita": "1.67 / 1.50"
+          },
+          "timing_loaded": false,
+          "recommended": "NO BET",
+          "confidence": "Bassa",
+          "marketType": "nobet",
+          "signalScore": 55,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=turkey2&stats=66-11-3-2027"
+        },
+        {
+          "id": "ajman-ittihad-kalba",
+          "league": "UAE - Pro League",
+          "time": "18:15",
+          "home": "Ajman",
+          "away": "Ittihad Kalba",
+          "tags": [
+            "Favorite"
+          ],
+          "scores": {
+            "over": 90,
+            "goal": 62,
+            "favorite": "Ajman",
+            "under": 9,
+            "noBet": 0
+          },
+          "summary": "Gap rendimento: PPG 2.25 / 0.25, vittorie 75% / 0%.",
+          "basic": {
+            "Partite considerate": "4 / 4",
+            "Vittorie": "75% / 0%",
+            "Senza segnare": "25% / 50%",
+            "Senza subire": "0% / 0%",
+            "BTTS / Entrambe segnano": "75% / 50%",
+            "Media gol": "4.50 / 3.50",
+            "Gol fatti": "2.25 / 0.75",
+            "Gol subiti": "2.25 / 2.75",
+            "Over 1.5": "100% / 100%",
+            "Over 2.5": "100% / 75%",
+            "Over 3.5": "50% / 50%",
+            "Punti per partita": "2.25 / 0.25"
+          },
+          "timing_loaded": false,
+          "recommended": "Favorita: Ajman",
+          "confidence": "Alta",
+          "marketType": "favorite",
+          "signalScore": 100,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=uae&stats=35-4-2-2027"
+        },
+        {
+          "id": "al-wahda-al-sharjah",
+          "league": "UAE - Pro League",
+          "time": "18:15",
+          "home": "Al Wahda",
+          "away": "Al Sharjah",
+          "tags": [
+            "No Bet"
+          ],
+          "scores": {
+            "over": 68,
+            "goal": 58,
+            "favorite": "Al Sharjah",
+            "under": 26,
+            "noBet": 32
+          },
+          "summary": "Dati generali non abbastanza convergenti.",
+          "basic": {
+            "Partite considerate": "4 / 4",
+            "Vittorie": "50% / 75%",
+            "Senza segnare": "25% / 25%",
+            "Senza subire": "25% / 25%",
+            "BTTS / Entrambe segnano": "50% / 50%",
+            "Media gol": "2.50 / 4.00",
+            "Gol fatti": "1.25 / 2.50",
+            "Gol subiti": "1.25 / 1.50",
+            "Over 1.5": "50% / 100%",
+            "Over 2.5": "50% / 75%",
+            "Over 3.5": "25% / 50%",
+            "Punti per partita": "1.50 / 2.25"
+          },
+          "timing_loaded": false,
+          "recommended": "NO BET",
+          "confidence": "Bassa",
+          "marketType": "nobet",
+          "signalScore": 68,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=uae&stats=34-3-6-2027"
+        },
+        {
+          "id": "one-knoxville-naple",
+          "league": "USA - USL League One",
+          "time": "01:00",
+          "home": "One Knoxville",
+          "away": "Naple",
+          "tags": [
+            "No Bet"
+          ],
+          "scores": {
+            "over": 68,
+            "goal": 71,
+            "favorite": "One Knoxville",
+            "under": 31,
+            "noBet": 29
+          },
+          "summary": "Dati generali non abbastanza convergenti.",
+          "basic": {
+            "Partite considerate": "8 / 8",
+            "Vittorie": "25% / 38%",
+            "Senza segnare": "12% / 38%",
+            "Senza subire": "0% / 12%",
+            "BTTS / Entrambe segnano": "88% / 50%",
+            "Media gol": "2.63 / 3.00",
+            "Gol fatti": "1.25 / 1.13",
+            "Gol subiti": "1.38 / 1.88",
+            "Over 1.5": "88% / 88%",
+            "Over 2.5": "50% / 62%",
+            "Over 3.5": "25% / 38%",
+            "Punti per partita": "1.25 / 1.13"
+          },
+          "timing_loaded": false,
+          "recommended": "NO BET",
+          "confidence": "Bassa",
+          "marketType": "nobet",
+          "signalScore": 71,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=usa3&stats=234-4-1-2026"
+        },
+        {
+          "id": "r-loui-ville-w-gotham-fc-w",
+          "league": "USA - NWSL",
+          "time": "00:30",
+          "home": "R. Loui ville W",
+          "away": "Gotham FC W",
+          "tags": [
+            "No Bet"
+          ],
+          "scores": {
+            "over": 68,
+            "goal": 69,
+            "favorite": "Gotham FC W",
+            "under": 26,
+            "noBet": 31
+          },
+          "summary": "Dati generali non abbastanza convergenti.",
+          "basic": {
+            "Partite considerate": "8 / 8",
+            "Vittorie": "50% / 50%",
+            "Senza segnare": "12% / 25%",
+            "Senza subire": "0% / 50%",
+            "BTTS / Entrambe segnano": "88% / 38%",
+            "Media gol": "4.13 / 1.88",
+            "Gol fatti": "2.00 / 1.00",
+            "Gol subiti": "2.13 / 0.88",
+            "Over 1.5": "100% / 50%",
+            "Over 2.5": "88% / 38%",
+            "Over 3.5": "62% / 12%",
+            "Punti per partita": "1.50 / 1.88"
+          },
+          "timing_loaded": false,
+          "recommended": "NO BET",
+          "confidence": "Bassa",
+          "marketType": "nobet",
+          "signalScore": 69,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=usa6&stats=183-10-4-2026"
+        },
+        {
+          "id": "lexington-w-carolina-a-w",
+          "league": "USA - USL Super League",
+          "time": "01:30",
+          "home": "Lexington W",
+          "away": "Carolina A. W",
+          "tags": [
+            "Over"
+          ],
+          "scores": {
+            "over": 80,
+            "goal": 66,
+            "favorite": "Carolina A. W",
+            "under": 9,
+            "noBet": 20
+          },
+          "summary": "Profilo offensivo: Over 2.5 100% / 75% e media gol 3.00 / 2.75.",
+          "basic": {
+            "Partite considerate": "2 / 4",
+            "Vittorie": "50% / 75%",
+            "Senza segnare": "0% / 0%",
+            "Senza subire": "50% / 50%",
+            "BTTS / Entrambe segnano": "50% / 50%",
+            "Media gol": "3.00 / 2.75",
+            "Gol fatti": "2.00 / 2.00",
+            "Gol subiti": "1.00 / 0.75",
+            "Over 1.5": "100% / 75%",
+            "Over 2.5": "100% / 75%",
+            "Over 3.5": "0% / 25%",
+            "Punti per partita": "1.50 / 2.25"
+          },
+          "timing_loaded": false,
+          "recommended": "Over 2.5 gol",
+          "confidence": "Media",
+          "marketType": "over",
+          "signalScore": 80,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/h2h.asp?league=usa7&fmid=15&t1id=1&t2id=4&ly=2027"
+        },
+        {
+          "id": "airbu-uk-the-new-saint",
+          "league": "Wale - Cymru Premier",
+          "time": "20:45",
+          "home": "Airbu UK",
+          "away": "The New Saint",
+          "tags": [
+            "Favorite"
+          ],
+          "scores": {
+            "over": 49,
+            "goal": 45,
+            "favorite": "The New Saint",
+            "under": 45,
+            "noBet": 17
+          },
+          "summary": "Gap rendimento: PPG 1.71 / 2.71, vittorie 57% / 86%.",
+          "basic": {
+            "Partite considerate": "7 / 7",
+            "Vittorie": "57% / 86%",
+            "Senza segnare": "29% / 14%",
+            "Senza subire": "43% / 71%",
+            "BTTS / Entrambe segnano": "29% / 29%",
+            "Media gol": "3.14 / 2.86",
+            "Gol fatti": "1.86 / 2.43",
+            "Gol subiti": "1.29 / 0.43",
+            "Over 1.5": "71% / 57%",
+            "Over 2.5": "29% / 43%",
+            "Over 3.5": "29% / 43%",
+            "Punti per partita": "1.71 / 2.71"
+          },
+          "timing_loaded": false,
+          "recommended": "Favorita: The New Saint",
+          "confidence": "Media-alta",
+          "marketType": "favorite",
+          "signalScore": 83,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=wales&stats=64-10-14-2027"
+        },
+        {
+          "id": "ammanford-caernarfon",
+          "league": "Wale - Cymru Premier",
+          "time": "20:45",
+          "home": "Ammanford",
+          "away": "Caernarfon",
+          "tags": [
+            "Favorite"
+          ],
+          "scores": {
+            "over": 75,
+            "goal": 57,
+            "favorite": "Caernarfon",
+            "under": 25,
+            "noBet": 0
+          },
+          "summary": "Gap rendimento: PPG 0.29 / 2.14, vittorie 0% / 71%.",
+          "basic": {
+            "Partite considerate": "7 / 7",
+            "Vittorie": "0% / 71%",
+            "Senza segnare": "57% / 0%",
+            "Senza subire": "0% / 43%",
+            "BTTS / Entrambe segnano": "43% / 57%",
+            "Media gol": "2.86 / 3.86",
+            "Gol fatti": "0.57 / 2.57",
+            "Gol subiti": "2.29 / 1.29",
+            "Over 1.5": "100% / 100%",
+            "Over 2.5": "43% / 86%",
+            "Over 3.5": "29% / 29%",
+            "Punti per partita": "0.29 / 2.14"
+          },
+          "timing_loaded": false,
+          "recommended": "Favorita: Caernarfon",
+          "confidence": "Alta",
+          "marketType": "favorite",
+          "signalScore": 100,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=wales&stats=63-6-16-2027"
+        },
+        {
+          "id": "barry-llandudno",
+          "league": "Wale - Cymru Premier",
+          "time": "20:45",
+          "home": "Barry",
+          "away": "Llandudno",
+          "tags": [
+            "No Bet"
+          ],
+          "scores": {
+            "over": 72,
+            "goal": 66,
+            "favorite": "Barry",
+            "under": 25,
+            "noBet": 28
+          },
+          "summary": "Dati generali non abbastanza convergenti.",
+          "basic": {
+            "Partite considerate": "7 / 7",
+            "Vittorie": "86% / 71%",
+            "Senza segnare": "14% / 14%",
+            "Senza subire": "14% / 43%",
+            "BTTS / Entrambe segnano": "71% / 43%",
+            "Media gol": "3.57 / 3.14",
+            "Gol fatti": "2.43 / 2.14",
+            "Gol subiti": "1.14 / 1.00",
+            "Over 1.5": "71% / 100%",
+            "Over 2.5": "71% / 57%",
+            "Over 3.5": "57% / 43%",
+            "Punti per partita": "2.57 / 2.14"
+          },
+          "timing_loaded": false,
+          "recommended": "NO BET",
+          "confidence": "Bassa",
+          "marketType": "nobet",
+          "signalScore": 72,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=wales&stats=62-7-1-2027"
+        },
+        {
+          "id": "cambrian-utd-holywell",
+          "league": "Wale - Cymru Premier",
+          "time": "20:45",
+          "home": "Cambrian Utd",
+          "away": "Holywell",
+          "tags": [
+            "Favorite"
+          ],
+          "scores": {
+            "over": 86,
+            "goal": 83,
+            "favorite": "Cambrian Utd",
+            "under": 15,
+            "noBet": 13
+          },
+          "summary": "Gap rendimento: PPG 1.29 / 0.14, vittorie 29% / 0%.",
+          "basic": {
+            "Partite considerate": "7 / 7",
+            "Vittorie": "29% / 0%",
+            "Senza segnare": "14% / 0%",
+            "Senza subire": "29% / 0%",
+            "BTTS / Entrambe segnano": "57% / 100%",
+            "Media gol": "2.86 / 5.29",
+            "Gol fatti": "1.43 / 1.43",
+            "Gol subiti": "1.43 / 3.86",
+            "Over 1.5": "86% / 100%",
+            "Over 2.5": "71% / 86%",
+            "Over 3.5": "29% / 86%",
+            "Punti per partita": "1.29 / 0.14"
+          },
+          "timing_loaded": false,
+          "recommended": "Favorita: Cambrian Utd",
+          "confidence": "Media-alta",
+          "marketType": "favorite",
+          "signalScore": 87,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=wales&stats=61-8-12-2027"
+        },
+        {
+          "id": "flint-cardiff-mu",
+          "league": "Wale - Cymru Premier",
+          "time": "20:45",
+          "home": "Flint",
+          "away": "Cardiff MU",
+          "tags": [
+            "Favorite"
+          ],
+          "scores": {
+            "over": 69,
+            "goal": 50,
+            "favorite": "Cardiff MU",
+            "under": 25,
+            "noBet": 0
+          },
+          "summary": "Gap rendimento: PPG 0.14 / 1.86, vittorie 0% / 57%.",
+          "basic": {
+            "Partite considerate": "7 / 7",
+            "Vittorie": "0% / 57%",
+            "Senza segnare": "43% / 29%",
+            "Senza subire": "0% / 43%",
+            "BTTS / Entrambe segnano": "57% / 29%",
+            "Media gol": "2.86 / 3.86",
+            "Gol fatti": "0.86 / 2.57",
+            "Gol subiti": "2.00 / 1.29",
+            "Over 1.5": "71% / 86%",
+            "Over 2.5": "57% / 71%",
+            "Over 3.5": "29% / 57%",
+            "Punti per partita": "0.14 / 1.86"
+          },
+          "timing_loaded": false,
+          "recommended": "Favorita: Cardiff MU",
+          "confidence": "Alta",
+          "marketType": "favorite",
+          "signalScore": 100,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=wales&stats=59-2-11-2027"
+        },
+        {
+          "id": "haverfordwe-t-briton-ferry",
+          "league": "Wale - Cymru Premier",
+          "time": "20:45",
+          "home": "Haverfordwe t",
+          "away": "Briton Ferry",
+          "tags": [
+            "No Bet"
+          ],
+          "scores": {
+            "over": 54,
+            "goal": 38,
+            "favorite": "Briton Ferry",
+            "under": 44,
+            "noBet": 46
+          },
+          "summary": "Dati generali non abbastanza convergenti.",
+          "basic": {
+            "Partite considerate": "7 / 7",
+            "Vittorie": "14% / 29%",
+            "Senza segnare": "71% / 43%",
+            "Senza subire": "0% / 14%",
+            "BTTS / Entrambe segnano": "29% / 43%",
+            "Media gol": "2.29 / 2.43",
+            "Gol fatti": "0.43 / 0.71",
+            "Gol subiti": "1.86 / 1.71",
+            "Over 1.5": "86% / 71%",
+            "Over 2.5": "43% / 43%",
+            "Over 3.5": "0% / 14%",
+            "Punti per partita": "0.57 / 1.00"
+          },
+          "timing_loaded": false,
+          "recommended": "NO BET",
+          "confidence": "Bassa",
+          "marketType": "nobet",
+          "signalScore": 54,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=wales&stats=58-9-5-2027"
+        },
+        {
+          "id": "trefelin-penybont",
+          "league": "Wale - Cymru Premier",
+          "time": "20:45",
+          "home": "Trefelin",
+          "away": "Penybont",
+          "tags": [
+            "Favorite"
+          ],
+          "scores": {
+            "over": 62,
+            "goal": 55,
+            "favorite": "Penybont",
+            "under": 35,
+            "noBet": 0
+          },
+          "summary": "Gap rendimento: PPG 0.29 / 2.14, vittorie 0% / 57%.",
+          "basic": {
+            "Partite considerate": "7 / 7",
+            "Vittorie": "0% / 57%",
+            "Senza segnare": "57% / 14%",
+            "Senza subire": "0% / 43%",
+            "BTTS / Entrambe segnano": "43% / 57%",
+            "Media gol": "3.00 / 2.29",
+            "Gol fatti": "0.43 / 1.57",
+            "Gol subiti": "2.57 / 0.71",
+            "Over 1.5": "100% / 71%",
+            "Over 2.5": "43% / 57%",
+            "Over 3.5": "29% / 14%",
+            "Punti per partita": "0.29 / 2.14"
+          },
+          "timing_loaded": false,
+          "recommended": "Favorita: Penybont",
+          "confidence": "Alta",
+          "marketType": "favorite",
+          "signalScore": 100,
+          "date_offset": 0,
+          "stats_url": "https://www.soccerstats.com/pmatch.asp?league=wales&stats=57-4-13-2027"
+        }
+      ]
+    }
+  },
   "details": {}
 }

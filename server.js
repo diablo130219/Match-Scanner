@@ -6,11 +6,16 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const DATA_DIR = process.env.MAGICSCANNER_DATA_DIR || path.join(__dirname, 'data');
 const STORE_FILE = path.join(DATA_DIR, 'store.json');
+const SEED_FILE = path.join(__dirname, 'data', 'store.json');
 const ADMIN_TOKEN = String(process.env.ADMIN_TOKEN || '').trim();
 
 fs.mkdirSync(DATA_DIR, { recursive: true });
 if (!fs.existsSync(STORE_FILE)) {
-  fs.writeFileSync(STORE_FILE, JSON.stringify({ matchdays: {}, details: {} }, null, 2));
+  let seed = { matchdays: {}, details: {} };
+  try {
+    if (fs.existsSync(SEED_FILE)) seed = JSON.parse(fs.readFileSync(SEED_FILE, 'utf8') || '{}');
+  } catch (e) { console.error('Seed read error:', e.message); }
+  fs.writeFileSync(STORE_FILE, JSON.stringify({ matchdays: seed.matchdays || {}, details: seed.details || {} }, null, 2));
 }
 
 function readStore() {
@@ -47,7 +52,7 @@ app.get('/api/health', (req, res) => {
   const store = readStore();
   res.json({
     ok: true,
-    version: '3.2.7',
+    version: '3.3.0',
     storage: 'server-json',
     admin_token_required: !!ADMIN_TOKEN,
     matchdays: Object.keys(store.matchdays).length,

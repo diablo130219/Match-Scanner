@@ -432,7 +432,7 @@ function msBodyCanonicalMatches(data){
   return out;
 }
 
-// V3.2.8 — parser principale: scansiona anche la grande riga aggregata di SoccerSTATS.
+// V3.3.0 — parser principale: scansiona anche la grande riga aggregata di SoccerSTATS.
 function parseFlatCellMatchday(data){
   const rows=Array.isArray(data&&data.rows)?data.rows:[];
   const out=[];
@@ -461,7 +461,7 @@ function parseFlatCellMatchday(data){
   return out;
 }
 
-// V3.2.5 — parser deterministico della giornata SoccerSTATS.
+// V3.3.0 — parser deterministico della giornata SoccerSTATS.
 // Usa esclusivamente coppie di righe consecutive: HOME con orario + last 8, poi AWAY + last 8.
 function parseDeterministicMatchday(data){
   const rows=Array.isArray(data&&data.rows)?data.rows:[];
