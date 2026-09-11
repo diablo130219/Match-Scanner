@@ -4141,7 +4141,7 @@ body{background-attachment:fixed!important}
 <div class="listWrap" id="matchList"></div>
 </section></div>
 <div class="footerNote">
-      MagicScanner V3.2.1 · Dashboard pubblica con archivio server condiviso. Le giornate e i dettagli vengono gestiti dal pannello amministrativo separato.
+      MagicScanner V3.2.6 · Dashboard pubblica con archivio server condiviso. Le giornate e i dettagli vengono gestiti dal pannello amministrativo separato.
     </div>
 </div>
 <script>
@@ -4403,14 +4403,16 @@ async function hydrateStaticOfficialCrests(root=document){
 }
 
 function badgeType(m){
+  const mt=String(m.marketType||'').toLowerCase().replace(/[^a-z]/g,'');
+  if(['favorite','over','goal','under','nobet'].includes(mt)) return mt;
   const rec=(m.recommended||'').toLowerCase();
   const tags=(m.tags||[]).join(' ').toLowerCase();
   if(rec.includes('no bet') || tags.includes('no bet')) return 'nobet';
+  if(rec.includes('favorita') || rec.includes('vincente') || tags.includes('favorita')) return 'favorite';
   if(rec.includes('under')) return 'under';
-  if(rec.includes('goal')) return 'goal';
-  if(rec.includes('vincente') || tags.includes('favorita')) return 'favorite';
+  if(rec.includes('goal') || rec.includes('entrambe')) return 'goal';
   if(rec.includes('over')) return 'over';
-  return 'over';
+  return 'nobet';
 }
 
 function badgeLabel(m){

@@ -1235,29 +1235,32 @@ function timingStructuredByGroups(data,home,away){
 }
 function recentResultsFromPayload(data){
   const rows=Array.isArray(data?.rows)?data.rows:[]; const out=[];
-  let active=false;
-  for(const r of rows){
-    const t=String(r?.text||'').replace(/\s+/g,' ').trim();
-    if(/Latest results in the league/i.test(t)){active=true;continue}
-    if(active && /Points Per Game|PPG/i.test(t))break;
-    if(!active)continue;
-    const c=cellsOfPayloadRow(r);
+  let start=rows.findIndex(r=>/Latest results in the league/i.test(String(r?.text||'')));
+  if(start<0) start=0;
+  let stop=rows.findIndex((r,i)=>i>start && /Points Per Game|\bPPG\b/i.test(String(r?.text||'')));
+  if(stop<0) stop=Math.min(rows.length,start+40);
+  for(let i=start;i<stop;i++){
+    const r=rows[i], c=cellsOfPayloadRow(r);
+    const hasMatchLink=(r?.links||[]).some(l=>/pmatch\.asp/i.test(String(l?.href||'')));
     const scores=c.filter(x=>/^\d+\s*[:\-]\s*\d+$/.test(x));
-    if(scores.length && c.length>=3)out.push(c);
-    if(out.length>=8)break;
+    if((scores.length||hasMatchLink) && c.some(x=>/[A-Za-zÀ-ÿ]/.test(x))){out.push(c); if(out.length>=8)break}
   }
   return out;
 }
 function standingsFromPayload(data){
-  const rows=Array.isArray(data?.rows)?data.rows:[]; const out=[]; let active=false;
-  for(const r of rows){
-    const t=String(r?.text||'').replace(/\s+/g,' ').trim(); const c=cellsOfPayloadRow(r);
-    if(/^Points$/i.test(t) || (c.length===1&&/^Points$/i.test(c[0]))){active=true;continue}
-    if(active && /PPG|Points Per Game|Form/i.test(t) && out.length)break;
-    if(!active)continue;
+  const rows=Array.isArray(data?.rows)?data.rows:[]; const out=[];
+  let start=-1;
+  for(let i=0;i<rows.length;i++){
+    const c=cellsOfPayloadRow(rows[i]),t=String(rows[i]?.text||'').replace(/\s+/g,' ').trim();
+    if(c.some(x=>/^Points$/i.test(x)) || /^Points$/i.test(t) || /\bPoints\b/.test(t) && c.some(x=>/^pts$/i.test(x))){start=i;break}
+  }
+  if(start<0)return out;
+  for(let i=start;i<Math.min(rows.length,start+35);i++){
+    const c=cellsOfPayloadRow(rows[i]); if(!c.length)continue;
+    if(i>start && c.some(x=>/^(PPG|Form|Goal stats|Home vs Away)$/i.test(x)))break;
+    const team=c.find(x=>/[A-Za-zÀ-ÿ]/.test(x)&&!/^(GP|pts|Points|Home|Away|Total)$/i.test(x));
     const nums=c.filter(x=>/^\d+(?:\.\d+)?$/.test(x));
-    const team=c.find(x=>/[A-Za-zÀ-ÿ]/.test(x)&&!/^(GP|pts|Points)$/i.test(x));
-    if(team&&nums.length>=1){out.push(c);if(out.length>=12)break}
+    if(team&&nums.length>=1){out.push(c); if(out.length>=14)break}
   }
   return out;
 }
@@ -1267,7 +1270,7 @@ function timingHasValues(t){
 }
 function parseStructuredDetailPayload(data, exactMatch=null){
   const goalLabels=['Goals scored (GF)','GF per match','Goals conceded (GA)','GA per match','GF+GA per match','GF+GA over 0.5','GF+GA over 1.5','GF+GA over 2.5','GF+GA over 3.5','GF+GA over 4.5','GF+GA over 5.5','GF+GA over 0.5 at HT','GF+GA over 1.5 at HT','GF+GA over 2.5 at HT'];
-  const cornerLabels=['AVG Corners For','AVG Corners Against','Total per match','Total Over 7.5','Total Over 8.5','Total Over 9.5','Total Over 10.5','Total Over 11.5','Total Over 12.5','Total Over 13.5'];
+  const cornerLabels=['AVG Corners For','AVG Corners Against','Corners For per match','Corners Against per match','Total per match','Total corners per match','Total Over 7.5','Total Over 8.5','Total Over 9.5','Total Over 10.5','Total Over 11.5','Total Over 12.5','Total Over 13.5'];
   const goalRows=detailSectionRowsFromPayload(data,['Goal statistics'],['Teams scoring stats vs league average','Home vs Away Stats','Scorelines','Corner statistics']);
   const cornerRows=detailSectionRowsFromPayload(data,['Corner statistics'],['Teams results table','Goal statistics','Results progression and current form']);
   const avgRows=detailSectionRowsFromPayload(data,['Average goal times'],['Corner statistics']);
