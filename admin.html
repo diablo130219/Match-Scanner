@@ -63,6 +63,26 @@ h1{font-size:34px;margin:0 0 8px}.sub{color:var(--muted);line-height:1.58}.eyebr
 @media(max-width:900px){.dayresults{grid-template-columns:repeat(2,minmax(0,1fr))!important}.dayitem{grid-template-columns:64px minmax(0,1fr) 92px!important}.dayitem>b:last-child{grid-column:2/-1}.searchToolbar{grid-template-columns:1fr 1fr}}
 @media(max-width:640px){.wrap{padding:14px!important}.card{padding:16px!important}.daybox{padding:14px!important}.actions>*{width:100%;max-width:none!important}.dayresults{grid-template-columns:1fr 1fr!important}.dayitem{grid-template-columns:58px minmax(0,1fr)!important}.dayitem>span,.dayitem>b:last-child{grid-column:2}.searchToolbar{grid-template-columns:1fr}.top{align-items:flex-start}.brand{font-size:20px}}
 
+
+/* V3.1.5 — clean matchday list */
+.daylist{max-height:520px!important;background:#071321;border:1px solid #1b3855!important;overflow:auto!important}
+.dayitem{display:grid!important;grid-template-columns:72px minmax(360px,1fr) 190px 92px 82px!important;gap:14px!important;align-items:center!important;padding:13px 16px!important;min-height:78px!important;background:linear-gradient(180deg,#091828,#081522)!important;border-bottom:1px solid #17324b!important}
+.dayitem:hover{background:linear-gradient(180deg,#0d2034,#0a1929)!important}
+.fixtureTime{font-size:14px;font-weight:950;color:#eaf4ff;padding:8px 10px;border-radius:10px;background:#102945;border:1px solid #1e4d78;text-align:center}
+.fixtureTeams{display:flex;align-items:center;gap:11px;min-width:0}
+.fixtureTeam{display:flex;align-items:center;gap:8px;min-width:0;font-weight:900;color:#fff}
+.fixtureTeamName{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:220px}
+.fixtureDash{color:#58738d;font-weight:900;flex:0 0 auto}
+.fixtureCrest{width:34px;height:34px;object-fit:contain;flex:0 0 34px;filter:drop-shadow(0 4px 8px #0008)}
+.fixtureMeta{display:block;margin-top:5px;color:#7891a9;font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fixturePick{min-width:0}
+.fixturePick .pill{margin-bottom:6px}.fixturePick b{display:block;color:#f4f8ff;font-size:13px;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fixtureConfidence{font-size:18px;font-weight:950;color:#fff;text-align:center}.fixtureConfidence small{display:block;color:#6f8aa4;font-size:9px;text-transform:uppercase;letter-spacing:.09em;margin-top:3px}
+.fixtureStatsBtn{display:inline-flex;justify-content:center;align-items:center;padding:9px 11px;border-radius:10px;border:1px solid #244b6e;background:#102238;color:#bfe9ff;text-decoration:none;font-weight:900;font-size:12px}
+.fixtureStatsBtn:hover{border-color:#38bdf8;color:#fff}
+@media(max-width:980px){.dayitem{grid-template-columns:62px minmax(0,1fr) 150px 72px!important}.fixtureStatsBtn{grid-column:2/-1;width:max-content}.fixtureTeamName{max-width:150px}}
+@media(max-width:700px){.dayitem{grid-template-columns:56px minmax(0,1fr)!important}.fixturePick,.fixtureConfidence,.fixtureStatsBtn{grid-column:2}.fixtureTeams{flex-wrap:wrap}.fixtureTeamName{max-width:190px}}
+
 </style></head><body>
 <div id="adminGate" class="adminGate">
   <div class="adminGateCard">
@@ -210,10 +230,18 @@ function msHeaderish(v){
   if(/^(?:scope|gp|w%|fts|cs|bts|btts|tg|gf|ga|1\.5\+|2\.5\+|3\.5\+|points per game|stats)$/i.test(s))return true;
   return false;
 }
+function msCleanTeamName(v){
+  let s=String(v||'').replace(/\u00a0/g,' ').replace(/\s+/g,' ').trim();
+  if(!s)return '';
+  s=s.split(/\blast\s+\d+\b/i)[0].trim();
+  s=s.replace(/\b(?:[01]?\d|2[0-3]):[0-5]\d\b/g,' ').replace(/\bstats\b$/i,' ').replace(/\s+/g,' ').trim();
+  s=s.replace(/(?:\s+[-–—]?\s*\d+(?:[.,]\d+)?%?){2,}.*$/,'').trim();
+  return s;
+}
 function msTeamFromRowLinks(r){
   const links=Array.isArray(r?.links)?r.links:[];
   const names=links.filter(a=>/teamstats\.asp|matchlist\.asp/i.test(String(a?.href||'')))
-    .map(a=>String(a?.text||'').replace(/\u00a0/g,' ').replace(/\s+/g,' ').trim())
+    .map(a=>msCleanTeamName(a?.text||''))
     .filter(x=>x && x.length<=80 && !msHeaderish(x) && !/^stats$/i.test(x));
   return names[0]||'';
 }
@@ -240,15 +268,17 @@ function parseExtractV3(data){
     const sm=cells[scopeIndex].match(/last\s+(\d+)/i);
     if(!sm)return null;
     let team=msTeamFromRowLinks(r); let time='';
+    const scopeCell=cells[scopeIndex]||'';
+    if(!team){const embedded=msCleanTeamName(scopeCell); if(msValidTeamName(embedded))team=embedded;}
     for(let i=0;i<scopeIndex;i++){
       const c=cells[i];
       if(isTime(c)){time=c;continue}
       if(msHeaderish(c))continue;
-      if(!team && !/^\d+(?:[.,]\d+)?%?$/.test(c) && c.length<=80 && msValidTeamName(c)) team=c;
+      if(!team && !/^\d+(?:[.,]\d+)?%?$/.test(c) && c.length<=80 && msValidTeamName(c)) team=msCleanTeamName(c);
     }
     if(!team){
       const before=clean((r.text||'').split(/last\s+\d+/i)[0]).replace(/\b(?:[01]?\d|2[0-3]):[0-5]\d\b/g,' ').trim();
-      team=before.split(/\s{2,}|\|/).map(clean).filter(Boolean).pop()||before;
+      team=msCleanTeamName(before.split(/\s{2,}|\|/).map(clean).filter(Boolean).pop()||before);
     }
     let vals=[];
     for(let i=scopeIndex+1;i<cells.length;i++) vals.push(...numberTokens(cells[i]));
@@ -308,12 +338,12 @@ function msParseStatChunk(text, explicitTeam='', explicitTime=''){
   const after=clean.slice(sm.index+sm[0].length);
   const vals=(after.match(/\d+(?:[.,]\d+)?%?/g)||[]);
   if(vals.length<11)return null;
-  let team=msCleanText(explicitTeam);
+  let team=msCleanTeamName(explicitTeam);
   let time=explicitTime||((before.match(/\b(?:[01]?\d|2[0-3]):[0-5]\d\b/)||[])[0]||'');
   if(!team){
     let b=before.replace(/\b(?:[01]?\d|2[0-3]):[0-5]\d\b/g,' ').trim();
     const pieces=b.split(/\t|\||\s{2,}/).map(msCleanText).filter(Boolean);
-    team=[...pieces].reverse().find(msLooksLikeTeam)||'';
+    team=msCleanTeamName([...pieces].reverse().find(msLooksLikeTeam)||'');
   }
   if(!msLooksLikeTeam(team))return null;
   let k=0, gp=Number(sm[1]);
@@ -341,10 +371,11 @@ function parseExtractFlexible(data){
       for(let si=0;si<scopeIdx.length;si++){
         const idx=scopeIdx[si], end=si+1<scopeIdx.length?scopeIdx[si+1]:cells.length;
         let team=msTeamFromRowLinks(r); let time='';
+        if(!team){const embedded=msCleanTeamName(cells[idx]); if(msLooksLikeTeam(embedded))team=embedded;}
         for(let j=idx-1;j>=0;j--){
           const c=cells[j];
           if(!time && /^(?:[01]?\d|2[0-3]):[0-5]\d$/.test(c))time=c;
-          if(!team && msLooksLikeTeam(c) && !msHeaderish(c)){team=c;break}
+          if(!team && msLooksLikeTeam(c) && !msHeaderish(c)){team=msCleanTeamName(c);break}
         }
         const chunk=[team,time,cells[idx],...cells.slice(idx+1,end)].filter(Boolean).join('\t');
         const p=msParseStatChunk(chunk,team,time); if(p)candidates.push({league,row:p});
@@ -570,7 +601,7 @@ function recommendation(home,away){
 }
 function buildMatch(home,away,league,time,stats_url){
   const r=recommendation(home,away);
-  return {id:slug(home.team+'-'+away.team),league,time:time||'',home:home.team,away:away.team,tags:r.tags,scores:r.scores,summary:r.summary,basic:{'Partite considerate':`${home.gp} / ${away.gp}`,'Vittorie':`${home.w} / ${away.w}`,'Senza segnare':`${home.fts} / ${away.fts}`,'Senza subire':`${home.cs} / ${away.cs}`,'BTTS / Entrambe segnano':`${home.bts} / ${away.bts}`,'Media gol':`${home.tg} / ${away.tg}`,'Gol fatti':`${home.gf} / ${away.gf}`,'Gol subiti':`${home.ga} / ${away.ga}`,'Over 1.5':`${home.o15} / ${away.o15}`,'Over 2.5':`${home.o25} / ${away.o25}`,'Over 3.5':`${home.o35} / ${away.o35}`,'Punti per partita':`${home.ppg} / ${away.ppg}`},timing_loaded:false,recommended:r.recommended,confidence:r.confidence,marketType:r.marketType,signalScore:r.signalScore,date_offset:0,stats_url};
+  home.team=msCleanTeamName(home.team);away.team=msCleanTeamName(away.team);return {id:slug(home.team+'-'+away.team),league,time:time||'',home:home.team,away:away.team,tags:r.tags,scores:r.scores,summary:r.summary,basic:{'Partite considerate':`${home.gp} / ${away.gp}`,'Vittorie':`${home.w} / ${away.w}`,'Senza segnare':`${home.fts} / ${away.fts}`,'Senza subire':`${home.cs} / ${away.cs}`,'BTTS / Entrambe segnano':`${home.bts} / ${away.bts}`,'Media gol':`${home.tg} / ${away.tg}`,'Gol fatti':`${home.gf} / ${away.gf}`,'Gol subiti':`${home.ga} / ${away.ga}`,'Over 1.5':`${home.o15} / ${away.o15}`,'Over 2.5':`${home.o25} / ${away.o25}`,'Over 3.5':`${home.o35} / ${away.o35}`,'Punti per partita':`${home.ppg} / ${away.ppg}`},timing_loaded:false,recommended:r.recommended,confidence:r.confidence,marketType:r.marketType,signalScore:r.signalScore,date_offset:0,stats_url};
 }
 function countLastScopes(text){return (text.match(/last\s+\d+/ig)||[]).length}
 function parseStatElement(el){
@@ -730,14 +761,34 @@ function removeStoredDay(key){
   return true;
 }
 
+const ADMIN_LOGO_ALIASES={"Stevenage":"Stevenage FC","Luton Town":"Luton Town FC","Estrela Amadora":"CF Estrela da Amadora","Sporting Braga":"SC Braga","West Brom":"West Bromwich Albion","St. Mirren":"St Mirren","St. Johnstone":"St Johnstone"};
+function adminFallbackLogo(name){const ini=String(name||'?').split(/\s+/).filter(Boolean).slice(0,3).map(x=>x[0]).join('').toUpperCase().slice(0,3)||'?';const svg=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96"><path d="M48 4 84 18v28c0 23-14 38-36 46C26 84 12 69 12 46V18L48 4Z" fill="#142a45" stroke="#4fdcff" stroke-width="4"/><text x="48" y="57" text-anchor="middle" font-family="Arial" font-size="25" font-weight="800" fill="white">${ini}</text></svg>`;return 'data:image/svg+xml;charset=UTF-8,'+encodeURIComponent(svg)}
+function adminLogoCache(){try{return JSON.parse(localStorage.getItem('MAGICSCANNER_LOGO_CACHE')||'{}')||{}}catch{return{}}}
+async function adminTeamLogo(name){const c=adminLogoCache();if(c[name])return c[name];const q=ADMIN_LOGO_ALIASES[name]||name;try{const r=await fetch('https://www.thesportsdb.com/api/v1/json/3/searchteams.php?t='+encodeURIComponent(q));if(r.ok){const j=await r.json();const t=(j?.teams||[]).find(x=>(x.strSport||'').toLowerCase()==='soccer')||(j?.teams||[])[0];if(t?.strBadge){c[name]=t.strBadge;localStorage.setItem('MAGICSCANNER_LOGO_CACHE',JSON.stringify(c));return t.strBadge}}}catch{}return adminFallbackLogo(name)}
+function adminCrest(name){const id='admcrest_'+Math.random().toString(36).slice(2);queueMicrotask(async()=>{const el=document.getElementById(id);if(el)el.src=await adminTeamLogo(name)});return `<img id="${id}" class="fixtureCrest" src="${adminFallbackLogo(name)}" alt="${String(name||'').replace(/"/g,'&quot;')}">`}
+function cleanRecommended(m){let s=String(m?.recommended||'').trim();s=s.replace(/\blast\s+\d+.*$/i,'').trim();if(!s){const k=m?.marketType||'nobet';return k==='favorite'?`Favorita: ${m.home}`:k==='over'?'Over 2.5 gol':k==='goal'?'Goal / BTTS':k==='under'?'Under': 'NO BET'}return s}
+
 function renderDay(matches){
   document.querySelector('#dayFound').textContent=matches.length;
-  const promoted=matches.filter(m=>m.marketType!=='nobet');
-  document.querySelector('#dayPromoted').textContent=promoted.length;
-  document.querySelector('#dayNoBet').textContent=matches.length-promoted.length;
-  document.querySelector('#dayStatsUrls').textContent=matches.filter(m=>m.stats_url).length;
-  const box=document.querySelector('#dayList');box.style.display=matches.length?'block':'none';
-  box.innerHTML=matches.slice(0,120).map(m=>`<div class="dayitem"><b>${m.time||'—'}</b><div><b>${m.home} — ${m.away}</b><small style="display:block;color:#7991a8;margin-top:3px">${m.league}</small></div><span class="pill ${m.marketType}">${m.marketType==='nobet'?'NO BET':m.marketType}</span><b>${m.recommended}</b></div>`).join('');
+  document.querySelector('#dayPromoted').textContent=matches.filter(x=>x.marketType!=='nobet'&&x.marketType!=='noBet').length;
+  document.querySelector('#dayNoBet').textContent=matches.filter(x=>x.marketType==='nobet'||x.marketType==='noBet').length;
+  document.querySelector('#dayStats').textContent=matches.filter(x=>x.stats_url).length;
+  const box=document.querySelector('#dayList');
+  if(!matches.length){box.innerHTML='';return}
+  box.innerHTML=matches.slice(0,160).map(m=>{
+    const home=msCleanTeamName(m.home), away=msCleanTeamName(m.away);
+    const mt=(m.marketType||'nobet').toLowerCase();
+    const pill=mt==='nobet'||mt==='nobet'?'NO BET':mt.toUpperCase();
+    const pick=cleanRecommended({...m,home,away});
+    const conf=Math.round(Number(m.confidence||m.signalScore||0));
+    return `<div class="dayitem">
+      <div class="fixtureTime">${m.time||'—'}</div>
+      <div><div class="fixtureTeams"><span class="fixtureTeam">${adminCrest(home)}<span class="fixtureTeamName">${home}</span></span><span class="fixtureDash">—</span><span class="fixtureTeam"><span class="fixtureTeamName">${away}</span>${adminCrest(away)}</span></div><small class="fixtureMeta">${m.league||'SoccerSTATS'}</small></div>
+      <div class="fixturePick"><span class="pill ${mt}">${pill}</span><b>${pick}</b></div>
+      <div class="fixtureConfidence">${conf||'—'}<small>affidabilità</small></div>
+      ${m.stats_url?`<a class="fixtureStatsBtn" href="${m.stats_url}" target="_blank" rel="noopener">Stats →</a>`:'<span></span>'}
+    </div>`
+  }).join('');
 }
 function dayStatus(msg,type='good'){const s=document.querySelector('#dayStatus');s.className='status show '+type;s.textContent=msg}
 async function importMatchday(){
