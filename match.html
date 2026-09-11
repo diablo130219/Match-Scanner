@@ -6093,6 +6093,23 @@ body{background:radial-gradient(circle at 50% -10%,rgba(13,97,161,.12),transpare
 .v327metrics{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px}.v327metric{background:#071d31;border:1px solid rgba(38,132,193,.28);border-radius:9px;padding:14px 12px}.v327metric span{display:block;color:#9db0c5;font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.08em}.v327metric b{display:block;color:#fff;font-size:21px;margin-top:6px}.v327section{margin-top:10px}.v327cardNote{color:#9fb3c8;font-size:12px;line-height:1.55}.v327empty{display:none!important}@media(max-width:1000px){.v327metrics{grid-template-columns:repeat(3,minmax(0,1fr))}}@media(max-width:620px){.v327metrics{grid-template-columns:repeat(2,minmax(0,1fr))}}
 
 </style>
+
+/* ===== V3.2.8 visual cleanup ===== */
+:root{--v3panel:#081c30;--v3panel2:#0a2239;--v3border:rgba(55,151,212,.30);--v3muted:#9fb4c8}
+#genericDetail{max-width:1460px!important;margin:0 auto!important;padding:18px 24px 42px!important}
+.v3app{gap:16px!important}.v3topbar{border-radius:14px!important;padding:14px 18px!important}.v3hero{border-radius:18px!important;overflow:hidden!important;min-height:178px!important}
+.v3teamName{font-size:27px!important;line-height:1.1!important}.v3teamSub{font-size:12px!important;color:var(--v3muted)!important}.v3crest{width:86px!important;height:86px!important;object-fit:contain!important}
+.v3picks{gap:12px!important}.v3pick{min-height:118px!important;border-radius:13px!important;padding:14px 12px!important}.v3pick b{font-size:21px!important}.v3pick strong{font-size:17px!important}
+.v3card{min-height:0!important;border-radius:14px!important;padding:17px 18px!important;background:linear-gradient(180deg,var(--v3panel2),var(--v3panel))!important;border-color:var(--v3border)!important}.v3cardTitle{font-size:13px!important;letter-spacing:.055em!important;margin-bottom:14px!important;color:#f8fbff!important}
+.v327metrics{grid-template-columns:repeat(6,minmax(120px,1fr))!important;gap:12px!important}.v327metric{min-height:78px!important;padding:14px!important;border-radius:12px!important}.v327metric b{font-size:22px!important}.v327metric span{font-size:10px!important}
+.v3grid3{grid-template-columns:minmax(330px,.85fr) minmax(0,1.65fr)!important;gap:16px!important}.v3analysisCard{grid-column:auto!important}.v327cardNote{font-size:14px!important;line-height:1.65!important;max-width:920px!important}
+.v3gridForm,.v3gridBottom{grid-template-columns:repeat(auto-fit,minmax(380px,1fr))!important;gap:16px!important;align-items:start!important}.v3gridForm>.v3card,.v3gridBottom>.v3card{width:auto!important}
+.v3formCols{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:16px!important}.v3formCol{min-width:0!important}.v3formRow{padding:10px 12px!important;margin:7px 0!important;border-radius:9px!important;background:rgba(255,255,255,.035)!important;border:1px solid rgba(121,178,218,.12)!important;color:#dbe8f4!important;font-size:12px!important;line-height:1.45!important;overflow-wrap:anywhere!important}.v3miniEmpty{color:var(--v3muted);font-size:12px;padding:10px 0}.v3splitHead{font-size:13px!important;margin-bottom:10px!important}
+.v3table{font-size:13px!important}.v3table th,.v3table td{padding:10px 8px!important;border-bottom:1px solid rgba(116,171,210,.12)!important}.v3table thead th{color:#dcecff!important}.v3table tbody th{color:#a9bfd3!important;font-weight:800!important}.v3table td:first-child{text-align:left!important}.v3table td:last-child{text-align:right!important}
+.v3bars{gap:20px!important}.v3barChart{height:170px!important;padding-top:24px!important}.v3bar i{font-size:10px!important}.v3bar span{font-size:11px!important}.v3split{gap:14px!important}.v3splitBox{padding:14px!important;border-radius:12px!important}.v3kv{padding:7px 0!important;font-size:12px!important}
+.v3summary{grid-template-columns:minmax(0,1fr) minmax(250px,330px)!important;gap:16px!important}.v3summaryText,.v3reliability{border-radius:14px!important}.v3summaryText p{font-size:14px!important}.v3Unavailable{min-height:110px!important}
+@media(max-width:1100px){#genericDetail{padding:12px!important}.v3grid3,.v3summary{grid-template-columns:1fr!important}.v327metrics{grid-template-columns:repeat(3,minmax(0,1fr))!important}.v3formCols{grid-template-columns:1fr!important}}
+@media(max-width:720px){.v3teamName{font-size:21px!important}.v3crest{width:64px!important;height:64px!important}.v327metrics{grid-template-columns:repeat(2,minmax(0,1fr))!important}.v3gridForm,.v3gridBottom{grid-template-columns:1fr!important}.v3picks{grid-template-columns:1fr!important}.v3summary{grid-template-columns:1fr!important}}
 </style>
 </head>
 <body>
@@ -6295,16 +6312,28 @@ function v3DetailPair(arr){
   if(!a.length)return ['—','—']; return [a[0]??'—',a[a.length-1]??'—'];
 }
 function v3FindDetail(d,label){return v3DetailPair(d?.goal_statistics?.[label])}
-function v3RecentForm(m,d){
+function v3CleanRecentRows(d){
   const rows=Array.isArray(d?.recent_results_raw)?d.recent_results_raw:[];
-  if(!rows.length)return v3Unavailable('Forma recente non disponibile nel dettaglio importato.');
+  return rows.map(r=>Array.isArray(r)?r:[]).map(r=>r.map(x=>String(x??'').replace(/\s+/g,' ').trim()).filter(Boolean)).filter(r=>{
+    if(!r.length||r.some(x=>x.length>120))return false;
+    const joined=r.join(' ');
+    if(/Scoring rate|Average|Goal Difference|Dangerous attack|Shot on target|pre-match|Clean-sheet rate|Failed-To-Score|Corner/i.test(joined))return false;
+    return /\b\d+\s*[:\-]\s*\d+\b/.test(joined);
+  }).slice(0,10);
+}
+function v3RecentForm(m,d){
+  const rows=v3CleanRecentRows(d);
+  if(!rows.length)return '';
   const left=[],right=[];
-  for(const c of rows.slice(0,6)){
-    const scores=c.map((x,i)=>[x,i]).filter(([x])=>/^\d+\s*[:\-]\s*\d+$/.test(x));
-    if(scores[0])left.push(c.slice(0,scores[0][1]+1).filter(Boolean).join(' · '));
-    if(scores[1])right.push(c.slice(scores[1][1]).filter(Boolean).join(' · '));
+  for(const c of rows){
+    const scoreIdx=c.findIndex(x=>/^\d+\s*[:\-]\s*\d+$/.test(x));
+    if(scoreIdx<0)continue;
+    const line=c.join(' · ');
+    if(new RegExp(m.home.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),'i').test(line))left.push(line);
+    else if(new RegExp(m.away.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),'i').test(line))right.push(line);
+    else if(left.length<=right.length)left.push(line);else right.push(line);
   }
-  const col=(name,arr)=>`<div><div class="v3splitHead">${esc(name)}</div>${arr.length?arr.map(x=>`<div class="v3formRow">${esc(x)}</div>`).join(''):v3Unavailable('Nessun risultato recente estratto.')}</div>`;
+  const col=(name,arr)=>`<div class="v3formCol"><div class="v3splitHead">${esc(name)}</div>${arr.length?arr.slice(0,5).map(x=>`<div class="v3formRow">${esc(x)}</div>`).join(''):`<div class="v3miniEmpty">Nessun risultato recente pulito.</div>`}</div>`;
   return `<div class="v3formCols">${col(m.home,left)}${col(m.away,right)}</div>`;
 }
 function v3Standings(d){
@@ -6313,17 +6342,9 @@ function v3Standings(d){
   return `<table class="v3table"><tbody>${rows.slice(0,10).map((c,i)=>{const team=c.find(x=>/[A-Za-zÀ-ÿ]/.test(x)&&!/^(GP|pts|Points)$/i.test(x))||'—';const nums=c.filter(x=>/^\d+(?:\.\d+)?$/.test(x));return `<tr><td>${i+1}</td><th>${esc(team)}</th><td>${esc(nums[nums.length-1]||'—')}</td></tr>`}).join('')}</tbody></table>`;
 }
 function v3GoalTable(m,d){
-  const detail=d?.goal_statistics||{};
-  let rows;
-  if(Object.keys(detail).length){
-    const gf=v3FindDetail(d,'GF per match'),ga=v3FindDetail(d,'GA per match'),o25=v3FindDetail(d,'GF+GA over 2.5'),btts=v3DetailPair((d?.total_goals_raw||[]).find(r=>Array.isArray(r) ? r.some(x=>/^BTS$/i.test(String(x||''))) : /(^|\s)BTS($|\s)/i.test(String(r||'')))||[]),tg=v3FindDetail(d,'GF+GA per match');
-    const scored=v3FindDetail(d,'Goals scored (GF)'), conceded=v3FindDetail(d,'Goals conceded (GA)');
-    rows=[['Gol fatti',scored[0]!=='—'?scored[0]:gf[0],scored[1]!=='—'?scored[1]:gf[1]],['Gol subiti',conceded[0]!=='—'?conceded[0]:ga[0],conceded[1]!=='—'?conceded[1]:ga[1]],['Over 2.5',o25[0],o25[1]],['Entrambe segnano',btts[0],btts[1]],['GF per match',gf[0],gf[1]],['GA per match',ga[0],ga[1]],['Media gol',tg[0],tg[1]]];
-  }else{
-    const [gfH,gfA]=v3Pair(m.basic?.['Gol fatti']),[gaH,gaA]=v3Pair(m.basic?.['Gol subiti']),[o25H,o25A]=v3Pair(m.basic?.['Over 2.5']),[bttsH,bttsA]=v3Pair(m.basic?.['BTTS / Entrambe segnano']),[tgH,tgA]=v3Pair(m.basic?.['Media gol']);
-    rows=[['Gol fatti',gfH,gfA],['Gol subiti',gaH,gaA],['Over 2.5',o25H,o25A],['Entrambe segnano',bttsH,bttsA],['Media gol',tgH,tgA]];
-  }
-  return `<table class="v3table"><thead><tr><th>${esc(m.home)}</th><th></th><th>${esc(m.away)}</th></tr></thead><tbody>${rows.map(r=>`<tr><td>${esc(r[1])}</td><th>${esc(r[0])}</th><td>${esc(r[2])}</td></tr>`).join('')}</tbody></table>`;
+  const [gfH,gfA]=v3Pair(m.basic?.['Gol fatti']),[gaH,gaA]=v3Pair(m.basic?.['Gol subiti']),[o15H,o15A]=v3Pair(m.basic?.['Over 1.5']),[o25H,o25A]=v3Pair(m.basic?.['Over 2.5']),[o35H,o35A]=v3Pair(m.basic?.['Over 3.5']),[bttsH,bttsA]=v3Pair(m.basic?.['BTTS / Entrambe segnano']),[tgH,tgA]=v3Pair(m.basic?.['Media gol']),[ppgH,ppgA]=v3Pair(m.basic?.['Punti per partita']);
+  const rows=[['PPG',ppgH,ppgA],['Gol fatti',gfH,gfA],['Gol subiti',gaH,gaA],['Media gol',tgH,tgA],['Over 1.5',o15H,o15A],['Over 2.5',o25H,o25A],['Over 3.5',o35H,o35A],['Entrambe segnano',bttsH,bttsA]];
+  return `<table class="v3table"><thead><tr><th>${esc(m.home)}</th><th>Ultimi 8</th><th>${esc(m.away)}</th></tr></thead><tbody>${rows.map(r=>`<tr><td>${esc(r[1])}</td><th>${esc(r[0])}</th><td>${esc(r[2])}</td></tr>`).join('')}</tbody></table>`;
 }
 function v3CornerTable(m,d){
   const obj=d?.corners||{}; const entries=Object.entries(obj);
@@ -6354,7 +6375,8 @@ function v327Metrics(m){
 function buildPremiumDetailMarkup(m,d){
   const picks=v3MarketRows(m), conf=v3Confidence(m); const confLabel=conf==null?'—':conf+'%';
   const dateLabel=m.date_label||m.date||'Giornata importata';
-  const hasRecent=Array.isArray(d?.recent_results_raw)&&d.recent_results_raw.length;
+  const cleanRecent=d?v3CleanRecentRows(d):[];
+  const hasRecent=cleanRecent.length>0;
   const hasCorners=v327Has(d?.corners);
   const hasTiming=v327Has(d?.timing);
   const hasStandings=Array.isArray(d?.standings_raw)&&d.standings_raw.length;
@@ -6362,20 +6384,20 @@ function buildPremiumDetailMarkup(m,d){
   const summary=m.summary||`Lettura pre-match di ${m.home} - ${m.away} basata sui dati SoccerSTATS disponibili.`;
   const optional=[];
   if(hasRecent) optional.push(`<div class="v3card"><div class="v3cardTitle">Forma recente</div>${v3RecentForm(m,d)}</div>`);
-  if(hasGoal) optional.push(`<div class="v3card"><div class="v3cardTitle">Goal stats · casa vs trasferta</div>${v3GoalTable(m,d)}</div>`);
+  if(hasGoal) optional.push(`<div class="v3card"><div class="v3cardTitle">Statistiche base · ultimi 8</div>${v3GoalTable(m,d)}</div>`);
   if(hasCorners) optional.push(`<div class="v3card"><div class="v3cardTitle">Corner · casa vs trasferta</div>${v3CornerTable(m,d)}</div>`);
   const bottom=[];
   if(hasTiming) bottom.push(`<div class="v3card"><div class="v3cardTitle">Goal timing</div>${v3Timing(m,d)}</div>`);
   bottom.push(`<div class="v3card"><div class="v3cardTitle">Rendimento casa / trasferta</div>${v3Split(m)}</div>`);
   if(hasStandings) bottom.push(`<div class="v3card"><div class="v3cardTitle">Classifica</div>${v3Standings(d)}</div>`);
   return `<div class="v3app">
-    <header class="v3topbar"><div class="v3brand"><div class="v3brandMark">▥</div><div><div class="v3brandName"><span>Magic</span>Scanner <small style="font-size:11px;color:#cbd5e1">V3.2.7</small></div><div class="v3brandSub">Statistiche. Analisi. Pronostici.</div></div></div><nav class="v3nav"><a href="index.html">Home</a></nav><div class="v3date"><b>${esc(dateLabel)}</b><small>Dashboard Match Premium</small></div></header>
+    <header class="v3topbar"><div class="v3brand"><div class="v3brandMark">▥</div><div><div class="v3brandName"><span>Magic</span>Scanner <small style="font-size:11px;color:#cbd5e1">V3.2.8</small></div><div class="v3brandSub">Statistiche. Analisi. Pronostici.</div></div></div><nav class="v3nav"><a href="index.html">Home</a></nav><div class="v3date"><b>${esc(dateLabel)}</b><small>Dashboard Match Premium</small></div></header>
     <div class="v3leagueRow"><a class="v3back" href="index.html">← Torna alla home</a><div class="v3league">⚽ ${esc(m.league||'Competizione')}</div><div class="v3metaRight"><span class="v3metaPill">◷ ${esc(m.time||'—')}</span><span class="v3metaPill">${d?'✓ Dati Stats':'◌ Dati giornata'}</span></div></div>
     <section class="v3hero"><div class="v3team"><img class="v3crest staticOfficialCrest" data-team="${esc(m.home)}" alt="${esc(m.home)}"><div><div class="v3teamName">${esc(m.home)}</div><div class="v3teamSub">Casa</div></div></div>
       <div class="v3pickCenter"><div class="v3kick">${esc(dateLabel)} · ${esc(m.time||'—')}</div><div class="v3picks">${picks.map(x=>`<div class="v3pick ${x.cls}"><small>${esc(x.k)}</small><b>${esc(x.v)}</b><strong>${x.p==null?'—':esc(x.p)+'%'}</strong><em>${esc(x.s)}</em></div>`).join('')}</div></div>
       <div class="v3team away"><div><div class="v3teamName">${esc(m.away)}</div><div class="v3teamSub">Trasferta</div></div><img class="v3crest staticOfficialCrest" data-team="${esc(m.away)}" alt="${esc(m.away)}"></div></section>
     <section class="v3card v327section"><div class="v3cardTitle">Indicatori principali</div>${v327Metrics(m)}</section>
-    <section class="v3grid3"><div class="v3card"><div class="v3cardTitle">Panoramica match</div><div class="v3info"><div class="v3infoRow"><span>Competizione</span><b>${esc(m.league||'—')}</b></div><div class="v3infoRow"><span>Data</span><b>${esc(dateLabel)}</b></div><div class="v3infoRow"><span>Orario</span><b>${esc(m.time||'—')}</b></div><div class="v3infoRow"><span>Pronostico</span><b>${esc(m.recommended||'—')}</b></div><div class="v3infoRow"><span>Affidabilità</span><b>${confLabel}</b></div></div></div><div class="v3card" style="grid-column:span 2"><div class="v3cardTitle">Lettura MagicScanner</div><div class="v327cardNote">${esc(summary)}</div>${d?`<div class="v327cardNote" style="margin-top:10px">Il dettaglio Stats è stato associato a questa partita. Le sezioni vengono mostrate solo quando i dati sono realmente presenti.</div>`:''}</div></section>
+    <section class="v3grid3"><div class="v3card"><div class="v3cardTitle">Panoramica match</div><div class="v3info"><div class="v3infoRow"><span>Competizione</span><b>${esc(m.league||'—')}</b></div><div class="v3infoRow"><span>Data</span><b>${esc(dateLabel)}</b></div><div class="v3infoRow"><span>Orario</span><b>${esc(m.time||'—')}</b></div><div class="v3infoRow"><span>Pronostico</span><b>${esc(m.recommended||'—')}</b></div><div class="v3infoRow"><span>Affidabilità</span><b>${confLabel}</b></div></div></div><div class="v3card v3analysisCard"><div class="v3cardTitle">Lettura MagicScanner</div><div class="v327cardNote">${esc(summary)}</div>${d?`<div class="v327cardNote" style="margin-top:10px">Il dettaglio Stats è stato associato a questa partita. Le sezioni vengono mostrate solo quando i dati sono realmente presenti.</div>`:''}</div></section>
     ${optional.length?`<section class="v3gridForm">${optional.join('')}</section>`:''}
     ${bottom.length?`<section class="v3gridBottom">${bottom.join('')}</section>`:''}
     <section class="v3summary"><div class="v3summaryText"><div class="v3summaryTitle">▣ Sintesi finale</div><p>${esc(summary)}</p></div><div class="v3reliability"><small>Affidabilità analisi</small><div class="v3relLine"><div class="v3track"><div class="v3fill" style="width:${conf||0}%"></div></div><b>${confLabel}</b></div></div></section>
