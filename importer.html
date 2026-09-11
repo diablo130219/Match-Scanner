@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>MagicScanner V2.7.7 · SoccerSTATS Browser Import</title>
+<title>MagicScanner V3.0.3 · SoccerSTATS Browser Import</title>
 <style>
 :root{color-scheme:dark;--bg:#07101d;--panel:#0b1727;--panel2:#0d1b2d;--line:#203750;--text:#eef6ff;--muted:#8fa6bd;--cyan:#38bdf8;--green:#5ee7b1;--amber:#fbbf24;--red:#fb7185}
 *{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,Arial;background:radial-gradient(circle at 10% 0,#12306a55,transparent 38%),var(--bg);color:var(--text)}
@@ -25,8 +25,19 @@ h1{font-size:34px;margin:0 0 8px}.sub{color:var(--muted);line-height:1.58}.eyebr
 @media(max-width:720px){.dayrow{grid-template-columns:1fr}.dayresults{grid-template-columns:repeat(2,1fr)}.dayitem{grid-template-columns:55px minmax(0,1fr);}.dayitem>*:nth-child(3),.dayitem>*:nth-child(4){display:none}}
 
 @media(max-width:720px){.grid{grid-template-columns:repeat(2,1fr)}.row{grid-template-columns:1fr}.wrap{padding:16px}h1{font-size:28px}}
+
+
+.matchSearchToolbar{display:grid;grid-template-columns:minmax(0,1fr) 190px 190px;gap:10px;margin-top:16px}
+.matchSearchInput,.matchSearchSelect{width:100%;border:1px solid #2b4765;border-radius:13px;background:#071524;color:#eef6ff;padding:12px 14px;font:14px Inter,system-ui,Arial;outline:none}
+.matchSearchInput:focus,.matchSearchSelect:focus{border-color:var(--cyan);box-shadow:0 0 0 3px #38bdf81a}
+.searchMeta{margin-top:9px;color:#7891aa;font-size:12px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.queueDate{display:inline-flex;margin-left:7px;padding:3px 7px;border-radius:999px;background:#102237;border:1px solid #213d59;color:#9ec5e8;font-size:10px;font-weight:800}
+.queueAction{display:flex;gap:8px;align-items:center;justify-content:flex-end;flex-wrap:wrap}
+.jumpBtn{padding:8px 10px!important}
+@media(max-width:800px){.matchSearchToolbar{grid-template-columns:1fr}.queueAction{justify-content:flex-start}}
+
 </style></head><body><div class="wrap">
-<div class="top"><div class="brand">MagicScanner <span>Import Center V2.7.7</span></div><a class="back" href="index.html">← Home</a></div>
+<div class="top"><div class="brand">MagicScanner <span>Import Center V3.0.3</span></div><a class="back" href="index.html">← Home</a></div>
 
 <div class="card">
   <div class="eyebrow">Novità V2.7 · Browser Import</div>
@@ -81,20 +92,26 @@ h1{font-size:34px;margin:0 0 8px}.sub{color:var(--muted);line-height:1.58}.eyebr
 </div>
 
 <div class="card" id="promotedQueueCard">
-  <div class="eyebrow">V2.8 · Coda promosse</div>
-  <h1>Dettagli delle partite promosse</h1>
-  <div class="sub">MagicScanner legge tutte le giornate importate e ti mostra soltanto le partite promosse. Apri <b>Stats</b>, usa <b>MagicScanner Extract</b>, torna qui e incolla: quando la scheda viene salvata lo stato passa automaticamente a <b>Dettaglio presente</b>.</div>
+  <div class="eyebrow">V3.0.3 · Ricerca schede Stats</div>
+  <h1>Trova una partita e carica il dettaglio</h1>
+  <div class="sub">Cerca rapidamente tra <b>tutte le partite importate</b>. Premi <b>Apri Stats →</b>, sulla pagina SoccerSTATS usa <b>MagicScanner Extract</b>, poi torna qui e incolla nella sezione “Importa le pagine Stats”. Quando salvi, la partita passa automaticamente a <b>Dettaglio presente ✓</b>.</div>
   <div class="grid" style="margin-top:18px">
-    <div class="metric"><span>Promosse totali</span><b id="qTotal">0</b></div>
+    <div class="metric"><span>Partite totali</span><b id="qAll">0</b></div>
+    <div class="metric"><span>Promosse</span><b id="qTotal">0</b></div>
     <div class="metric"><span>Dettaglio presente</span><b id="qDone">0</b></div>
     <div class="metric"><span>Da importare</span><b id="qMissing">0</b></div>
-    <div class="metric"><span>Copertura</span><b id="qCoverage">0%</b></div>
   </div>
-  <div class="actions"><button class="btn primary" id="openNextMissing">Apri prossima Stats mancante</button><button class="btn secondary" id="refreshQueue">Aggiorna stato</button></div>
+  <div class="matchSearchToolbar">
+    <input id="matchDetailSearch" class="matchSearchInput" type="search" placeholder="Cerca squadra o campionato…" autocomplete="off">
+    <select id="matchScopeFilter" class="matchSearchSelect"><option value="all">Tutte le partite</option><option value="promoted">Solo promosse</option></select>
+    <select id="matchStatusFilter" class="matchSearchSelect"><option value="all">Tutti gli stati</option><option value="missing">Da importare</option><option value="done">Dettaglio presente</option></select>
+  </div>
+  <div class="searchMeta"><span id="queueSearchInfo">0 risultati</span><span>Puoi cercare anche solo una parte del nome, es. “Sevilla” o “Premier”.</span></div>
+  <div class="actions"><button class="btn primary" id="openNextMissing">Apri prossima Stats mancante</button><button class="btn secondary" id="refreshQueue">Aggiorna stato</button><button class="btn secondary" id="jumpToPaste">Vai a “Incolla Stats” ↓</button></div>
   <div class="list" id="promotedQueue"></div>
 </div>
 
-<div class="card"><div class="eyebrow">Schede dettagliate</div><h1>Importa le pagine Stats</h1><div class="sub">Per le singole pagine <b>Stats</b> usa lo stesso estrattore. Nella V2.8 riconosce automaticamente la pagina di dettaglio: clicca <b>MagicScanner Extract</b>, poi incolla qui il contenuto copiato. Puoi anche caricare un file <code>.html</code>, <code>.md</code> o <code>.txt</code>.</div>
+<div class="card" id="detailImportCard"><div class="eyebrow">Schede dettagliate</div><h1>Importa le pagine Stats</h1><div class="sub">Per le singole pagine <b>Stats</b> usa lo stesso estrattore. Nella V2.8 riconosce automaticamente la pagina di dettaglio: clicca <b>MagicScanner Extract</b>, poi incolla qui il contenuto copiato. Puoi anche caricare un file <code>.html</code>, <code>.md</code> o <code>.txt</code>.</div>
 <div class="tabs"><button class="tab active" data-tab="pastePanel">Incolla testo/HTML</button><button class="tab" data-tab="filePanel">File .html/.md/.txt</button><button class="tab" data-tab="urlPanel">URL server (fallback)</button></div>
 <div id="urlPanel" class="panel"><div class="label">URL delle pagine Stats</div><textarea id="urls" class="urls" placeholder="https://www.soccerstats.com/pmatch.asp?league=...&stats=...\nhttps://www.soccerstats.com/pmatch.asp?league=...&stats=..."></textarea><div class="helper">Massimo 30 URL per importazione. Vengono accettati solo URL di soccerstats.com. Le richieste vengono eseguite in sequenza per evitare raffiche inutili.</div></div>
 <div id="pastePanel" class="panel active"><div class="label">Testo completo della pagina Stats</div><textarea id="paste" class="paste" placeholder="Incolla qui il contenuto copiato dalla pagina Stats...\n\nPuoi separare più partite con una riga contenente: ---MATCH---"></textarea><div class="helper">Fallback utile se SoccerSTATS blocca il recupero automatico dal server.</div></div>
@@ -529,26 +546,64 @@ function parse(text,name,sourceUrl=''){let title='';for(const ln of text.split('
 function htmlToMarkdownish(html){const doc=new DOMParser().parseFromString(html,'text/html');doc.querySelectorAll('script,style,noscript,svg,canvas').forEach(x=>x.remove());const out=[];const walk=(el)=>{if(el.nodeType!==1)return;const tag=el.tagName.toLowerCase();if(/^h[1-4]$/.test(tag)){const lvl=Number(tag[1]);const txt=el.textContent.replace(/\s+/g,' ').trim();if(txt)out.push('#'.repeat(lvl)+' '+txt)}else if(tag==='table'){for(const tr of el.querySelectorAll(':scope > tbody > tr, :scope > thead > tr, :scope > tr')){const cs=[...tr.children].filter(x=>/^(TD|TH)$/.test(x.tagName)).map(x=>x.textContent.replace(/\s+/g,' ').trim());if(cs.length)out.push('| '+cs.join(' | ')+' |')}}else if(['p','div','section','article'].includes(tag)){const own=[...el.childNodes].filter(n=>n.nodeType===3).map(n=>n.textContent).join(' ').replace(/\s+/g,' ').trim();if(own)out.push(own)}for(const c of el.children)if(tag!=='table')walk(c)};walk(doc.body);return out.join('\n')}
 function mergeAndStore(rows){let existing={};try{existing=JSON.parse(localStorage.getItem('MAGICSCANNER_IMPORTED_DETAILS')||'{}')}catch{};for(const d of rows)if(d.id&&d.away)existing[d.id]=d;parsed=existing;localStorage.setItem('MAGICSCANNER_IMPORTED_DETAILS',JSON.stringify(existing));render(rows);$('#downloadBtn').disabled=!Object.keys(existing).length;return existing}
 
-function allImportedPromotedMatches(){
+function allImportedMatches(){
   let days={};try{days=JSON.parse(localStorage.getItem(MATCHDAYS_KEY)||'{}')||{}}catch{}
   const seen=new Map();
-  for(const day of Object.values(days)) for(const m of (day?.matches||[])){
-    const type=String(m.marketType||m.type||'').toLowerCase();
-    if(type==='nobet'||type==='no bet'||!m.id) continue;
-    if(!seen.has(m.id)) seen.set(m.id,m);
+  for(const [dateKey,day] of Object.entries(days)) for(const m of (day?.matches||[])){
+    if(!m?.id) continue;
+    const current=seen.get(m.id)||{};
+    seen.set(m.id,{...current,...m,_dateKey:dateKey});
   }
-  try{const legacy=JSON.parse(localStorage.getItem(MATCHDAY_KEY)||'{}')||{};for(const m of (legacy.matches||[])){const type=String(m.marketType||m.type||'').toLowerCase();if(type!=='nobet'&&type!=='no bet'&&m.id&&!seen.has(m.id))seen.set(m.id,m)}}catch{}
-  return [...seen.values()];
+  try{
+    const legacy=JSON.parse(localStorage.getItem(MATCHDAY_KEY)||'{}')||{};
+    const todayKey=isoLocal(dateFromOffset(0));
+    for(const m of (legacy.matches||[])) if(m?.id&&!seen.has(m.id)) seen.set(m.id,{...m,_dateKey:todayKey});
+  }catch{}
+  return [...seen.values()].sort((a,b)=>String(a._dateKey||'').localeCompare(String(b._dateKey||'')) || String(a.time||'').localeCompare(String(b.time||'')) || String(a.home||'').localeCompare(String(b.home||'')));
 }
+function isPromotedMatch(m){
+  const type=String(m.marketType||m.type||'').toLowerCase().replace(/\s+/g,'');
+  return type!=='nobet' && type!=='no-bet' && type!=='no bet';
+}
+function allImportedPromotedMatches(){return allImportedMatches().filter(isPromotedMatch)}
 function importedDetailMap(){try{return JSON.parse(localStorage.getItem('MAGICSCANNER_IMPORTED_DETAILS')||'{}')||{}}catch{return{}}}
-function renderPromotedQueue(){
-  const list=allImportedPromotedMatches(); const details=importedDetailMap();
-  const done=list.filter(m=>!!details[m.id]).length, missing=list.length-done;
-  $('#qTotal').textContent=list.length;$('#qDone').textContent=done;$('#qMissing').textContent=missing;$('#qCoverage').textContent=list.length?Math.round(done/list.length*100)+'%':'0%';
-  const box=$('#promotedQueue'); if(!box)return;
-  box.innerHTML=list.map(m=>{const ok=!!details[m.id];const url=m.stats_url||m.statsUrl||'';return `<div class="row"><div><b>${m.home} — ${m.away}</b><small>${m.league||''}${m.time?' · '+m.time:''}</small></div><span class="${ok?'ok':'warn'}">${ok?'Dettaglio presente ✓':'Da importare'}</span>${url?`<a class="btn secondary" style="padding:8px 12px;text-decoration:none" target="_blank" rel="noopener" href="${url.replace(/&/g,'&amp;').replace(/"/g,'&quot;')}">${ok?'Apri Stats':'Apri Stats →'}</a>`:'<span class="bad">URL Stats assente</span>'}</div>`}).join('') || '<div class="notice">Nessuna partita promossa importata nelle giornate salvate.</div>';
+function detailMatchesQuery(m,q){
+  if(!q)return true;
+  const hay=[m.home,m.away,m.league,m.time,m._dateKey,m.recommended,m.marketType].join(' ').toLocaleLowerCase('it-IT');
+  return hay.includes(q.toLocaleLowerCase('it-IT'));
 }
-function openNextMissing(){const details=importedDetailMap();const m=allImportedPromotedMatches().find(x=>!details[x.id]&&(x.stats_url||x.statsUrl));if(!m){status('Tutte le promosse con URL Stats hanno già il dettaglio.','good');return}window.open(m.stats_url||m.statsUrl,'_blank','noopener')}
+function filteredDetailQueue(){
+  const details=importedDetailMap();
+  const q=String(document.querySelector('#matchDetailSearch')?.value||'').trim();
+  const scope=document.querySelector('#matchScopeFilter')?.value||'all';
+  const state=document.querySelector('#matchStatusFilter')?.value||'all';
+  return allImportedMatches().filter(m=>{
+    if(scope==='promoted'&&!isPromotedMatch(m))return false;
+    const done=!!details[m.id];
+    if(state==='done'&&!done)return false;
+    if(state==='missing'&&done)return false;
+    return detailMatchesQuery(m,q);
+  });
+}
+function queueDateLabel(key){
+  if(!key)return '';
+  try{const [y,m,d]=key.split('-').map(Number);return new Date(y,m-1,d,12).toLocaleDateString('it-IT',{weekday:'short',day:'numeric',month:'short'}).replace(/\./g,'')}catch{return key}
+}
+function renderPromotedQueue(){
+  const all=allImportedMatches(); const promoted=all.filter(isPromotedMatch); const details=importedDetailMap();
+  const done=all.filter(m=>!!details[m.id]).length, missing=all.length-done;
+  $('#qAll').textContent=all.length;$('#qTotal').textContent=promoted.length;$('#qDone').textContent=done;$('#qMissing').textContent=missing;
+  const list=filteredDetailQueue();
+  const info=document.querySelector('#queueSearchInfo');if(info)info.textContent=`${list.length} ${list.length===1?'risultato':'risultati'} · ${list.filter(m=>!details[m.id]).length} da importare`;
+  const box=$('#promotedQueue'); if(!box)return;
+  box.innerHTML=list.map(m=>{
+    const ok=!!details[m.id];const url=m.stats_url||m.statsUrl||'';
+    const date=m._dateKey?`<span class="queueDate">${queueDateLabel(m._dateKey)}</span>`:'';
+    const promo=isPromotedMatch(m)?'<span class="queueDate">PROMOSSA</span>':'';
+    return `<div class="row"><div><b>${m.home} — ${m.away}</b>${date}${promo}<small>${m.league||''}${m.time?' · '+m.time:''}</small></div><span class="${ok?'ok':'warn'}">${ok?'Dettaglio presente ✓':'Da importare'}</span><div class="queueAction">${url?`<a class="btn secondary jumpBtn" target="_blank" rel="noopener" href="${url.replace(/&/g,'&amp;').replace(/"/g,'&quot;')}">${ok?'Apri Stats':'Apri Stats →'}</a>`:'<span class="bad">URL Stats assente</span>'}<a class="btn secondary jumpBtn" href="match.html?id=${encodeURIComponent(m.id)}" target="_blank" rel="noopener">Scheda</a></div></div>`
+  }).join('') || '<div class="notice">Nessuna partita corrisponde alla ricerca o ai filtri selezionati.</div>';
+}
+function openNextMissing(){const details=importedDetailMap();const m=filteredDetailQueue().find(x=>!details[x.id]&&(x.stats_url||x.statsUrl));if(!m){status('Nessuna partita visibile con dettaglio mancante e URL Stats disponibile.','good');return}window.open(m.stats_url||m.statsUrl,'_blank','noopener')}
 
 function render(rows,errors=[]){$('#nFiles').textContent=rows.length+errors.length;$('#nMatches').textContent=rows.filter(x=>x.away).length;$('#nGoals').textContent=rows.filter(x=>Object.keys(x.goal_statistics||{}).length).length;$('#nTiming').textContent=rows.filter(x=>Object.keys(x.timing||{}).length).length;$('#list').innerHTML=[...rows.map(x=>`<div class="row"><div><b>${x.home}${x.away?' — '+x.away:''}</b><small>${x.source_url||x.source_file||''}</small></div><span class="${Object.keys(x.goal_statistics||{}).length?'ok':'warn'}">Goal stats ${Object.keys(x.goal_statistics||{}).length?'✓':'—'}</span><span class="${Object.keys(x.timing||{}).length?'ok':'warn'}">Timing ${Object.keys(x.timing||{}).length?'✓':'—'}</span></div>`),...errors.map(e=>`<div class="row"><div><b class="bad">Import non riuscito</b><small>${e.url||''}</small></div><span class="bad">${e.error||'Errore'}</span><span></span></div>`)].join('')}
 function status(msg,type='good'){const s=$('#status');s.className='status show '+type;s.textContent=msg}
@@ -590,5 +645,5 @@ try{const d=JSON.parse(localStorage.getItem(MATCHDAY_KEY)||'{}');if(Array.isArra
 refreshStoredDaySelect();
 
 try{const ex=JSON.parse(localStorage.getItem('MAGICSCANNER_IMPORTED_DETAILS')||'{}');if(Object.keys(ex).length){parsed=ex;$('#downloadBtn').disabled=false;status(`${Object.keys(ex).length} scheda/e già presenti nel browser.`,'good')}}catch{}
-$('#refreshQueue').onclick=renderPromotedQueue;$('#openNextMissing').onclick=openNextMissing;renderPromotedQueue();
+$('#refreshQueue').onclick=renderPromotedQueue;$('#openNextMissing').onclick=openNextMissing;document.querySelector('#matchDetailSearch').addEventListener('input',renderPromotedQueue);document.querySelector('#matchScopeFilter').addEventListener('change',renderPromotedQueue);document.querySelector('#matchStatusFilter').addEventListener('change',renderPromotedQueue);document.querySelector('#jumpToPaste').onclick=()=>{document.querySelector('#detailImportCard')?.scrollIntoView({behavior:'smooth',block:'start'});setTimeout(()=>document.querySelector('#paste')?.focus(),450)};renderPromotedQueue();
 </script></body></html>
