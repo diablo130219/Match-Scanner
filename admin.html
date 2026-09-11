@@ -870,7 +870,8 @@ function storeMatchdayFromHtml(html, sourceUrl='browser'){
     throw new Error(`Dati ricevuti (${html.length.toLocaleString('it-IT')} caratteri), ma non riconosco partite${diag}.`);
   }
   const resolved=resolveTargetDate(extractData||{}); const key=storeImportedDay(resolved.date,matches,sourceUrl);
-  renderDay(matches);
+  const conserved=(getMasterDays()[key]?.matches||getStoredDays()[key]?.matches||matches);
+  renderDay(conserved);
   refreshStoredDaySelect(key);
   const [y,m,d]=key.split('-');
   const label=new Date(Number(y),Number(m)-1,Number(d),12).toLocaleDateString('it-IT',{weekday:'long',day:'numeric',month:'long'});

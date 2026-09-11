@@ -6094,7 +6094,7 @@ body{background:radial-gradient(circle at 50% -10%,rgba(13,97,161,.12),transpare
 
 </style>
 
-/* ===== V3.3.0 visual cleanup ===== */
+/* ===== V3.3.1 visual cleanup ===== */
 :root{--v3panel:#081c30;--v3panel2:#0a2239;--v3border:rgba(55,151,212,.30);--v3muted:#9fb4c8}
 #genericDetail{max-width:1460px!important;margin:0 auto!important;padding:18px 24px 42px!important}
 .v3app{gap:16px!important}.v3topbar{border-radius:14px!important;padding:14px 18px!important}.v3hero{border-radius:18px!important;overflow:hidden!important;min-height:178px!important}
@@ -6111,7 +6111,7 @@ body{background:radial-gradient(circle at 50% -10%,rgba(13,97,161,.12),transpare
 @media(max-width:1100px){#genericDetail{padding:12px!important}.v3grid3,.v3summary{grid-template-columns:1fr!important}.v327metrics{grid-template-columns:repeat(3,minmax(0,1fr))!important}.v3formCols{grid-template-columns:1fr!important}}
 @media(max-width:720px){.v3teamName{font-size:21px!important}.v3crest{width:64px!important;height:64px!important}.v327metrics{grid-template-columns:repeat(2,minmax(0,1fr))!important}.v3gridForm,.v3gridBottom{grid-template-columns:1fr!important}.v3picks{grid-template-columns:1fr!important}.v3summary{grid-template-columns:1fr!important}}
 
-/* ===== V3.3.0 layout cleanup ===== */
+/* ===== V3.3.1 layout cleanup ===== */
 .v3app{max-width:1480px;margin:0 auto;gap:14px!important}
 .v3grid3,.v3gridForm,.v3gridBottom{display:grid!important;grid-template-columns:repeat(auto-fit,minmax(320px,1fr))!important;gap:14px!important;align-items:stretch}
 .v3grid3>.v3card,.v3gridForm>.v3card,.v3gridBottom>.v3card{min-width:0;height:auto!important;min-height:0!important}
@@ -6415,7 +6415,7 @@ function buildPremiumDetailMarkup(m,d){
   bottom.push(`<div class="v3card"><div class="v3cardTitle">Rendimento casa / trasferta</div>${v3Split(m)}</div>`);
   if(hasStandings) bottom.push(`<div class="v3card"><div class="v3cardTitle">Classifica</div>${v3Standings(d)}</div>`);
   return `<div class="v3app">
-    <header class="v3topbar"><div class="v3brand"><div class="v3brandMark">▥</div><div><div class="v3brandName"><span>Magic</span>Scanner <small style="font-size:11px;color:#cbd5e1">V3.3.0</small></div><div class="v3brandSub">Statistiche. Analisi. Pronostici.</div></div></div><nav class="v3nav"><a href="index.html">Home</a></nav><div class="v3date"><b>${esc(dateLabel)}</b><small>Dashboard Match Premium</small></div></header>
+    <header class="v3topbar"><div class="v3brand"><div class="v3brandMark">▥</div><div><div class="v3brandName"><span>Magic</span>Scanner <small style="font-size:11px;color:#cbd5e1">V3.3.1</small></div><div class="v3brandSub">Statistiche. Analisi. Pronostici.</div></div></div><nav class="v3nav"><a href="index.html">Home</a></nav><div class="v3date"><b>${esc(dateLabel)}</b><small>Dashboard Match Premium</small></div></header>
     <div class="v3leagueRow"><a class="v3back" href="index.html">← Torna alla home</a><div class="v3league">⚽ ${esc(m.league||'Competizione')}</div><div class="v3metaRight"><span class="v3metaPill">◷ ${esc(m.time||'—')}</span><span class="v3metaPill">${d?'✓ Dati Stats':'◌ Dati giornata'}</span></div></div>
     <section class="v3hero"><div class="v3team"><img class="v3crest staticOfficialCrest" data-team="${esc(m.home)}" alt="${esc(m.home)}"><div><div class="v3teamName">${esc(m.home)}</div><div class="v3teamSub">Casa</div></div></div>
       <div class="v3pickCenter"><div class="v3kick">${esc(dateLabel)} · ${esc(m.time||'—')}</div><div class="v3picks">${picks.map(x=>`<div class="v3pick ${x.cls}"><small>${esc(x.k)}</small><b>${esc(x.v)}</b><strong>${x.p==null?'—':esc(x.p)+'%'}</strong><em>${esc(x.s)}</em></div>`).join('')}</div></div>
