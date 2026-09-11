@@ -6132,6 +6132,15 @@ body{background:radial-gradient(circle at 50% -10%,rgba(13,97,161,.12),transpare
 @media(max-width:1100px){.v327metrics{grid-template-columns:repeat(3,minmax(0,1fr))!important}.v3hero{grid-template-columns:1fr!important}.v3summary{grid-template-columns:1fr!important}}
 @media(max-width:680px){.v327metrics{grid-template-columns:repeat(2,minmax(0,1fr))!important}.v3grid3,.v3gridForm,.v3gridBottom{grid-template-columns:1fr!important}.v3card{padding:13px!important}}
 </style>
+
+<style id="v332-css-fix">
+#genericDetail{max-width:1500px!important;margin:0 auto!important;padding:18px 22px 34px!important}
+.v3app{width:100%!important;max-width:1500px!important;margin:0 auto!important}.v3topbar{min-height:66px!important}.v3hero{grid-template-columns:minmax(240px,.9fr) minmax(430px,1.35fr) minmax(240px,.9fr)!important;gap:14px!important;align-items:stretch!important}.v3team{min-height:132px!important;padding:18px!important}.v3crest{width:78px!important;height:78px!important;object-fit:contain!important}.v3teamName{font-size:24px!important}.v3picks{gap:10px!important}.v3pick{min-height:112px!important;padding:13px 10px!important}.v3pick b{font-size:18px!important;line-height:1.15!important}.v3pick strong{font-size:18px!important}
+.v327section{margin-top:14px!important}.v327metrics{display:grid!important;grid-template-columns:repeat(6,minmax(0,1fr))!important;gap:10px!important}.v327metric{min-height:72px!important;padding:12px!important}.v327metric b{font-size:19px!important}
+.v3grid3,.v3gridForm,.v3gridBottom{display:grid!important;grid-template-columns:repeat(auto-fit,minmax(360px,1fr))!important;gap:14px!important;align-items:start!important;margin-top:14px!important}.v3grid3>.v3card,.v3gridForm>.v3card,.v3gridBottom>.v3card{height:auto!important;min-height:0!important;align-self:start!important}.v3card{padding:16px!important;border-radius:14px!important;overflow:hidden!important}.v3cardTitle{margin-bottom:12px!important;font-size:14px!important}.v3infoRow{min-height:38px!important;padding:8px 10px!important}.v327cardNote{font-size:13px!important;line-height:1.55!important}
+.v3formCols{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:12px!important}.v3formRow{padding:9px 10px!important;margin-top:7px!important;font-size:12px!important;line-height:1.35!important;white-space:normal!important;overflow-wrap:anywhere!important;max-height:none!important}.v3table{font-size:12px!important}.v3table th,.v3table td{padding:9px 8px!important}.v3bars{gap:16px!important}.v3barChart{height:145px!important}.v3split{gap:10px!important}.v3splitBox{padding:12px!important}.v3kv{padding:6px 0!important}.v3summary{margin-top:14px!important;grid-template-columns:minmax(0,1fr) 260px!important;gap:14px!important;align-items:stretch!important}.v3summaryText,.v3reliability{min-height:92px!important}
+@media(max-width:1100px){.v3hero{grid-template-columns:1fr!important}.v327metrics{grid-template-columns:repeat(3,minmax(0,1fr))!important}.v3summary{grid-template-columns:1fr!important}}@media(max-width:760px){#genericDetail{padding:10px!important}.v327metrics{grid-template-columns:repeat(2,minmax(0,1fr))!important}.v3grid3,.v3gridForm,.v3gridBottom,.v3formCols{grid-template-columns:1fr!important}.v3crest{width:64px!important;height:64px!important}.v3teamName{font-size:21px!important}}
+</style>
 </head>
 <body>
 <div class="detailView show" id="detailView">
@@ -6335,28 +6344,29 @@ function v3DetailPair(arr){
 function v3FindDetail(d,label){return v3DetailPair(d?.goal_statistics?.[label])}
 function v3CleanRecentRows(d){
   const rows=Array.isArray(d?.recent_results_raw)?d.recent_results_raw:[];
-  return rows.map(r=>Array.isArray(r)?r:[])
-    .map(r=>r.map(x=>String(x??'').replace(/\s+/g,' ').trim()).filter(Boolean))
-    .filter(r=>{
-      if(r.length<2||r.length>8||r.some(x=>x.length>80))return false;
-      const joined=r.join(' ');
-      if(joined.length>180)return false;
-      if(/Scoring rate|Average|Goal Difference|Dangerous attack|Shot on target|pre-match|Clean-sheet rate|Failed-To-Score|Corner|Attack|Possession|Goal event/i.test(joined))return false;
-      return /\b\d+\s*[:\-]\s*\d+\b/.test(joined);
-    }).slice(0,8);
+  const bad=/Scoring rate|Average|Goal Difference|Dangerous attack|Shot on target|pre-match|Clean-sheet|Failed-To-Score|Corner|Possession|Goal event|Attack|rate at home|rate away/i;
+  const out=[];
+  for(const raw of rows){
+    const c=(Array.isArray(raw)?raw:[]).map(x=>String(x??'').replace(/\s+/g,' ').trim()).filter(Boolean);
+    const si=c.findIndex(x=>/^\d+\s*[:\-]\s*\d+$/.test(x));
+    if(si<0)continue;
+    const keep=[];
+    for(let i=Math.max(0,si-2);i<=Math.min(c.length-1,si+2);i++){
+      const x=c[i]; if(!x||bad.test(x)||x.length>46)continue; keep.push(x);
+    }
+    if(!keep.some(x=>/^\d+\s*[:\-]\s*\d+$/.test(x)))keep.push(c[si]);
+    const line=keep.join(' · ');
+    if(line.length<=120&&!out.includes(line))out.push(line);
+  }
+  return out.slice(0,10).map(x=>[x]);
 }
 function v3RecentForm(m,d){
-  const rows=v3CleanRecentRows(d);
+  const rows=v3CleanRecentRows(d).map(r=>Array.isArray(r)?r.join(' · '):String(r));
   if(!rows.length)return '';
   const left=[],right=[];
-  for(const c of rows){
-    const scoreIdx=c.findIndex(x=>/^\d+\s*[:\-]\s*\d+$/.test(x));
-    if(scoreIdx<0)continue;
-    const line=c.join(' · ');
-    if(new RegExp(m.home.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),'i').test(line))left.push(line);
-    else if(new RegExp(m.away.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),'i').test(line))right.push(line);
-    else if(left.length<=right.length)left.push(line);else right.push(line);
-  }
+  const escRe=x=>String(x||'').replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+  const eh=new RegExp(escRe(m.home),'i'), ea=new RegExp(escRe(m.away),'i');
+  for(const line of rows){if(eh.test(line))left.push(line);else if(ea.test(line))right.push(line);else (left.length<=right.length?left:right).push(line)}
   const col=(name,arr)=>`<div class="v3formCol"><div class="v3splitHead">${esc(name)}</div>${arr.length?arr.slice(0,5).map(x=>`<div class="v3formRow">${esc(x)}</div>`).join(''):`<div class="v3miniEmpty">Nessun risultato recente pulito.</div>`}</div>`;
   return `<div class="v3formCols">${col(m.home,left)}${col(m.away,right)}</div>`;
 }
@@ -6415,7 +6425,7 @@ function buildPremiumDetailMarkup(m,d){
   bottom.push(`<div class="v3card"><div class="v3cardTitle">Rendimento casa / trasferta</div>${v3Split(m)}</div>`);
   if(hasStandings) bottom.push(`<div class="v3card"><div class="v3cardTitle">Classifica</div>${v3Standings(d)}</div>`);
   return `<div class="v3app">
-    <header class="v3topbar"><div class="v3brand"><div class="v3brandMark">▥</div><div><div class="v3brandName"><span>Magic</span>Scanner <small style="font-size:11px;color:#cbd5e1">V3.3.1</small></div><div class="v3brandSub">Statistiche. Analisi. Pronostici.</div></div></div><nav class="v3nav"><a href="index.html">Home</a></nav><div class="v3date"><b>${esc(dateLabel)}</b><small>Dashboard Match Premium</small></div></header>
+    <header class="v3topbar"><div class="v3brand"><div class="v3brandMark">▥</div><div><div class="v3brandName"><span>Magic</span>Scanner <small style="font-size:11px;color:#cbd5e1">V3.3.2</small></div><div class="v3brandSub">Statistiche. Analisi. Pronostici.</div></div></div><nav class="v3nav"><a href="index.html">Home</a></nav><div class="v3date"><b>${esc(dateLabel)}</b><small>Dashboard Match Premium</small></div></header>
     <div class="v3leagueRow"><a class="v3back" href="index.html">← Torna alla home</a><div class="v3league">⚽ ${esc(m.league||'Competizione')}</div><div class="v3metaRight"><span class="v3metaPill">◷ ${esc(m.time||'—')}</span><span class="v3metaPill">${d?'✓ Dati Stats':'◌ Dati giornata'}</span></div></div>
     <section class="v3hero"><div class="v3team"><img class="v3crest staticOfficialCrest" data-team="${esc(m.home)}" alt="${esc(m.home)}"><div><div class="v3teamName">${esc(m.home)}</div><div class="v3teamSub">Casa</div></div></div>
       <div class="v3pickCenter"><div class="v3kick">${esc(dateLabel)} · ${esc(m.time||'—')}</div><div class="v3picks">${picks.map(x=>`<div class="v3pick ${x.cls}"><small>${esc(x.k)}</small><b>${esc(x.v)}</b><strong>${x.p==null?'—':esc(x.p)+'%'}</strong><em>${esc(x.s)}</em></div>`).join('')}</div></div>

@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>MagicScanner V3.3.0 · SoccerSTATS Browser Import</title>
+<title>MagicScanner V3.3.2 · SoccerSTATS Browser Import</title>
 <style>
 :root{color-scheme:dark;--bg:#07101d;--panel:#0b1727;--panel2:#0d1b2d;--line:#203750;--text:#eef6ff;--muted:#8fa6bd;--cyan:#38bdf8;--green:#5ee7b1;--amber:#fbbf24;--red:#fb7185}
 *{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,Arial;background:radial-gradient(circle at 10% 0,#12306a55,transparent 38%),var(--bg);color:var(--text)}
@@ -83,6 +83,14 @@ h1{font-size:34px;margin:0 0 8px}.sub{color:var(--muted);line-height:1.58}.eyebr
 @media(max-width:980px){.dayitem{grid-template-columns:62px minmax(0,1fr) 150px 72px!important}.fixtureStatsBtn{grid-column:2/-1;width:max-content}.fixtureTeamName{max-width:150px}}
 @media(max-width:700px){.dayitem{grid-template-columns:56px minmax(0,1fr)!important}.fixturePick,.fixtureConfidence,.fixtureStatsBtn{grid-column:2}.fixtureTeams{flex-wrap:wrap}.fixtureTeamName{max-width:190px}}
 
+
+/* V3.3.2 — admin responsive cleanup */
+.daylist{max-height:620px!important;border-radius:16px!important;overflow:auto!important}
+.dayitem{grid-template-columns:76px minmax(300px,1.45fr) minmax(170px,.8fr) 100px 88px!important;gap:14px!important;padding:14px 16px!important;min-height:72px!important}
+.fixtureTeams{display:flex!important;align-items:center!important;gap:9px!important;min-width:0}.fixtureTeam{display:flex!important;align-items:center!important;gap:7px!important;min-width:0}.fixtureTeamName{white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important}.fixtureCrest{width:30px!important;height:30px!important;object-fit:contain!important;flex:0 0 30px!important}.fixturePick b{display:block!important;margin-top:5px!important;line-height:1.25!important}.fixtureConfidence{text-align:center!important}.fixtureConfidence small{display:block!important;margin-top:3px!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important}.fixtureStatsBtn{justify-self:end!important;white-space:nowrap!important}.paste{font-size:12px!important;line-height:1.45!important}.card{overflow:hidden!important}
+@media(max-width:980px){.dayitem{grid-template-columns:70px minmax(0,1fr) 150px 84px!important}.fixtureStatsBtn{grid-column:2/-1;justify-self:start!important}.fixtureConfidence{justify-self:end!important}}
+@media(max-width:700px){.dayitem{grid-template-columns:64px minmax(0,1fr)!important}.fixturePick,.fixtureConfidence,.fixtureStatsBtn{grid-column:2!important;justify-self:start!important;text-align:left!important}.fixtureTeamName{max-width:130px!important}}
+
 </style></head><body>
 <div id="adminGate" class="adminGate">
   <div class="adminGateCard">
@@ -151,7 +159,7 @@ h1{font-size:34px;margin:0 0 8px}.sub{color:var(--muted);line-height:1.58}.eyebr
 </div>
 
 <div class="card" id="promotedQueueCard">
-  <div class="eyebrow">V3.3.0 · Ricerca schede Stats</div>
+  <div class="eyebrow">V3.3.2 · Ricerca schede Stats</div>
   <h1>Trova una partita e carica il dettaglio</h1>
   <div class="sub">Cerca rapidamente tra <b>tutte le partite importate</b>. Premi <b>Apri Stats →</b>, sulla pagina SoccerSTATS usa <b>MagicScanner Extract</b>, poi torna qui e incolla nella sezione “Importa le pagine Stats”. Quando pubblichi, la partita passa automaticamente a <b>Dettaglio presente ✓</b> per tutti gli utenti.</div>
   <div class="grid" style="margin-top:18px">
@@ -291,41 +299,21 @@ async function syncServerToBrowser(){
       fetch('/api/matchdays',{cache:'no-store'}).then(r=>r.json()),
       fetch('/api/details',{cache:'no-store'}).then(r=>r.json())
     ]);
-    if(md?.matchdays && typeof md.matchdays==='object'){
-      const local=JSON.parse(localStorage.getItem(MATCHDAYS_KEY)||'{}')||{};
-      const master=getMasterDays();
-      const merged={};
-      const allKeys=new Set([...Object.keys(master),...Object.keys(local),...Object.keys(md.matchdays)]);
-      for(const key of allKeys){
-        const union=msPreferFullPack(md.matchdays[key],master[key],local[key]);
-        if(!union)continue;
-        merged[key]=union;
-        master[key]=union;
-        const sc=Array.isArray(md.matchdays[key]?.matches)?md.matchdays[key].matches.length:0;
-        const uc=Array.isArray(union.matches)?union.matches.length:0;
-        if(uc>sc)void publishMatchdayToServer(key,union).catch(()=>{});
-      }
-      localStorage.setItem(MATCHDAYS_KEY,JSON.stringify(merged));
-      setMasterDays(master);
+    if(md?.matchdays&&typeof md.matchdays==='object'){
+      localStorage.setItem(MATCHDAYS_KEY,JSON.stringify(md.matchdays));
       const todayKey=isoLocal(dateFromOffset(0));
-      if(merged[todayKey]){
-        localStorage.setItem(MATCHDAY_KEY,JSON.stringify(merged[todayKey]));
-        renderDay(merged[todayKey].matches||[]);
-      }
+      if(md.matchdays[todayKey]) localStorage.setItem(MATCHDAY_KEY,JSON.stringify(md.matchdays[todayKey]));
+      else localStorage.removeItem(MATCHDAY_KEY);
     }
-    if(dt?.details && typeof dt.details==='object'){
-      const local=JSON.parse(localStorage.getItem('MAGICSCANNER_IMPORTED_DETAILS')||'{}')||{};
-      const merged={...local,...dt.details};
-      localStorage.setItem('MAGICSCANNER_IMPORTED_DETAILS',JSON.stringify(merged));
-      parsed=merged;
+    if(dt?.details&&typeof dt.details==='object'){
+      localStorage.setItem('MAGICSCANNER_IMPORTED_DETAILS',JSON.stringify(dt.details)); parsed=dt.details;
     }
     setServerSync(`online · ${h.matchdays||0} giornate · ${h.details||0} schede`,true);
-    refreshStoredDaySelect();
-    renderPromotedQueue();
+    refreshStoredDaySelect();renderPromotedQueue();
   }catch(e){setServerSync('non raggiungibile: '+e.message,false)}
 }
 
-const EXTRACTOR_CODE = `javascript:(()=>{try{if(!/(^|\.)soccerstats\.com$/i.test(location.hostname)){alert('Apri prima una pagina di SoccerSTATS.');return;}const N=s=>(s||'').replace(/\u00a0/g,' ').replace(/\s+/g,' ').trim();const path=(location.pathname||'').toLowerCase();const isDetail=/pmatch|match|head2head|h2h/.test(path)&&!/matches\.asp$/.test(path);const rows=[...document.querySelectorAll('tr')].map((tr,i)=>({i,cells:[...tr.querySelectorAll('th,td')].map(c=>N(c.innerText||c.textContent)),text:N(tr.innerText||tr.textContent),links:[...tr.querySelectorAll('a,button,input')].map(a=>({text:N(a.innerText||a.textContent||a.value),href:a.href||'',onclick:a.getAttribute('onclick')||''}))})).filter(r=>r.text);const links=[...document.querySelectorAll('a[href]')].map(a=>({text:N(a.innerText||a.textContent),href:a.href}));const dateCandidates=[...document.querySelectorAll('a,button,div,span,td')].map(e=>({text:N(e.textContent||e.innerText),cls:N(e.className&&typeof e.className==='string'?e.className:''),id:e.id||'',aria:e.getAttribute('aria-current')||'',pressed:e.getAttribute('aria-pressed')||''})).filter(x=>/\b(?:mon|tue|wed|thu|fri|sat|sun|lun|mar|mer|gio|ven|sab|dom)\b/i.test(x.text)&&/\b\d{1,2}(?:st|nd|rd|th)?\b/i.test(x.text)&&x.text.length<80).slice(0,80);const payload=JSON.stringify({magicScannerExtract:6,page:isDetail?'detail':'matchday',source:location.href,title:document.title||'',extracted_at:new Date().toISOString(),dateCandidates,rows,links,bodyText:document.body.innerText||document.body.textContent||'',html:isDetail?document.documentElement.outerHTML:''});const ta=document.createElement('textarea');ta.value=payload;ta.style.position='fixed';ta.style.left='-99999px';document.body.appendChild(ta);ta.select();const ok=document.execCommand('copy');ta.remove();alert(ok?(isDetail?'MagicScanner: scheda Stats copiata. Torna su MagicScanner e incolla nella sezione dettagli.':'MagicScanner: giornata copiata. Torna su MagicScanner e incolla.'):'Copia automatica non riuscita.');if(!ok)prompt('Copia questi dati:',payload)}catch(e){alert('MagicScanner Extract: '+e.message)}})()`;
+const EXTRACTOR_CODE = `javascript:(()=>{try{if(!/(^|\.)soccerstats\.com$/i.test(location.hostname)){alert('Apri prima una pagina di SoccerSTATS.');return;}const N=s=>(s||'').replace(/\u00a0/g,' ').replace(/\s+/g,' ').trim();const path=(location.pathname||'').toLowerCase();const isDetail=/pmatch|match|head2head|h2h/.test(path)&&!/matches\.asp$/.test(path);if(!isDetail){document.querySelectorAll('tr').forEach(tr=>tr.style.setProperty('display','table-row','important'));void document.body.offsetHeight;}const rows=[...document.querySelectorAll('tr')].map((tr,i)=>({i,cells:[...tr.querySelectorAll('th,td')].map(c=>N(c.innerText||c.textContent)),text:N(tr.innerText||tr.textContent),links:[...tr.querySelectorAll('a,button,input')].map(a=>({text:N(a.innerText||a.textContent||a.value),href:a.href||'',onclick:a.getAttribute('onclick')||''}))})).filter(r=>r.text);const links=[...document.querySelectorAll('a[href]')].map(a=>({text:N(a.innerText||a.textContent),href:a.href}));const dateCandidates=[...document.querySelectorAll('a,button,div,span,td')].map(e=>({text:N(e.innerText||e.textContent),cls:N(e.className&&typeof e.className==='string'?e.className:''),id:e.id||'',aria:e.getAttribute('aria-current')||'',pressed:e.getAttribute('aria-pressed')||''})).filter(x=>/\b(?:mon|tue|wed|thu|fri|sat|sun|lun|mar|mer|gio|ven|sab|dom)\b/i.test(x.text)&&/\b\d{1,2}(?:st|nd|rd|th)?\b/i.test(x.text)&&x.text.length<80).slice(0,80);const payload=JSON.stringify({magicScannerExtract:7,page:isDetail?'detail':'matchday',allRowsExpanded:!isDetail,source:location.href,title:document.title||'',extracted_at:new Date().toISOString(),dateCandidates,rows,links,bodyText:document.body.innerText||'',html:isDetail?document.documentElement.outerHTML:''});const ta=document.createElement('textarea');ta.value=payload;ta.style.position='fixed';ta.style.left='-99999px';document.body.appendChild(ta);ta.select();const ok=document.execCommand('copy');ta.remove();alert(ok?(isDetail?'MagicScanner: scheda Stats copiata.':'MagicScanner: giornata completa copiata (tutte le righe mostrate).'):'Copia automatica non riuscita.');if(!ok)prompt('Copia questi dati:',payload)}catch(e){alert('MagicScanner Extract: '+e.message)}})()`;
 window.addEventListener('DOMContentLoaded',()=>{
   const bm=document.querySelector('#bookmarklet');
   if(bm) bm.setAttribute('href', EXTRACTOR_CODE);
@@ -828,14 +816,12 @@ function resolveTargetDate(data){
 function storeImportedDay(date,matches,sourceUrl){
   let days={};try{days=JSON.parse(localStorage.getItem(MATCHDAYS_KEY)||'{}')||{}}catch{}
   const key=isoLocal(date);
-  const incoming={date:key,source_url:sourceUrl,imported_at:new Date().toISOString(),matches:Array.isArray(matches)?matches:[]};
-  const merged=msPreferFullPack(getMasterDays()[key],days[key],incoming)||incoming;
-  days[key]=merged;
+  const pack={date:key,source_url:sourceUrl,imported_at:new Date().toISOString(),matches:Array.isArray(matches)?matches:[]};
+  days[key]=pack;
   localStorage.setItem(MATCHDAYS_KEY,JSON.stringify(days));
   localStorage.setItem(LAST_DAY_KEY,key);
-  const masterPack=mergeIntoMaster(key,merged);
-  if(key===isoLocal(dateFromOffset(0))) localStorage.setItem(MATCHDAY_KEY,JSON.stringify(masterPack));
-  void publishMatchdayToServer(key,masterPack).catch(()=>{});
+  if(key===isoLocal(dateFromOffset(0))) localStorage.setItem(MATCHDAY_KEY,JSON.stringify(pack));
+  void publishMatchdayToServer(key,pack).catch(()=>{});
   return key;
 }
 function storeMatchdayFromHtml(html, sourceUrl='browser'){
@@ -845,16 +831,18 @@ function storeMatchdayFromHtml(html, sourceUrl='browser'){
   if(raw.startsWith('{')){
     try{
       const data=JSON.parse(raw); extractData=data;
-      if(data && (data.magicScannerExtract===6 || data.magicScannerExtract===5 || data.magicScannerExtract===4 || data.magicScannerExtract===3) && data.page!=='detail' && Array.isArray(data.rows)){
-        const namedCandidates=[['flat',parseFlatCellMatchday(data)],['det',parseDeterministicMatchday(data)],['exact',parseExactPayloadV319(data)],['legacy',parseExtractExact(data)]];
+      if(data && data.magicScannerExtract===7 && data.page!=='detail' && data.allRowsExpanded===true && Array.isArray(data.rows)){
+        const namedCandidates=[['det',parseDeterministicMatchday(data)],['flat',parseFlatCellMatchday(data)],['exact',parseExactPayloadV319(data)]];
         namedCandidates.sort((a,b)=>b[1].length-a[1].length);
         matches=namedCandidates[0]?.[1]||[];
         data.__msParserDiag=namedCandidates.map(x=>`${x[0]}:${x[1].length}`).join(' · ');
         sourceUrl=data.source||sourceUrl;
+      } else if(data && data.magicScannerExtract && data.page!=='detail'){
+        throw new Error('Estrattore vecchio: aggiorna il preferito MagicScanner Extract dalla V3.3.2. La V7 apre tutte le righe SoccerSTATS prima di copiarle.');
       } else if(data && data.magicScannerExtract===2 && Array.isArray(data.matches)){
         matches=data.matches.map(x=>buildMatch(x.home,x.away,x.league||'SoccerSTATS',x.time||'',x.stats_url||'')); sourceUrl=data.source||sourceUrl;
       }
-    }catch(e){}
+    }catch(e){if(String(e?.message||'').startsWith('Estrattore vecchio:'))throw e;}
 
   }
   if(!matches.length) matches=parseMatchdayHtml(html);
@@ -870,13 +858,13 @@ function storeMatchdayFromHtml(html, sourceUrl='browser'){
     throw new Error(`Dati ricevuti (${html.length.toLocaleString('it-IT')} caratteri), ma non riconosco partite${diag}.`);
   }
   const resolved=resolveTargetDate(extractData||{}); const key=storeImportedDay(resolved.date,matches,sourceUrl);
-  const conserved=(getMasterDays()[key]?.matches||getStoredDays()[key]?.matches||matches);
+  const conserved=(getStoredDays()[key]?.matches||matches);
   renderDay(conserved);
   refreshStoredDaySelect(key);
   const [y,m,d]=key.split('-');
   const label=new Date(Number(y),Number(m)-1,Number(d),12).toLocaleDateString('it-IT',{weekday:'long',day:'numeric',month:'long'});
   const warning=resolved.mode==='fallback'?' Data non riconosciuta: ho usato Oggi; scegli manualmente “Domani” se necessario.':'';
-  const totalStored=(getMasterDays()[key]?.matches||getStoredDays()[key]?.matches||[]).length; const diag=extractData?.__msParserDiag?` · parser ${extractData.__msParserDiag}`:''; dayStatus(`${matches.length} lette ora · ${totalStored} partite conservate in ${label} (${resolved.mode})${diag}.${warning}`,'good');
+  const totalStored=(getStoredDays()[key]?.matches||[]).length; const diag=extractData?.__msParserDiag?` · parser ${extractData.__msParserDiag}`:''; dayStatus(`${matches.length} partite lette e pubblicate in ${label} (${resolved.mode})${diag}.${warning}`,'good');
   return matches;
 }
 function clamp(n,a=0,b=100){return Math.max(a,Math.min(b,n))}
@@ -1092,6 +1080,7 @@ function removeStoredDay(key){
   const days=getStoredDays();
   if(!key || !days[key]) return false;
   delete days[key];
+  const master=getMasterDays(); if(master[key]){delete master[key];setMasterDays(master);}
   const keys=Object.keys(days).sort();
   localStorage.setItem(MATCHDAYS_KEY, JSON.stringify(days));
   const todayKey=isoLocal(dateFromOffset(0));
@@ -1579,7 +1568,7 @@ document.querySelector('#parseDayHtmlBtn').onclick=()=>{try{const html=document.
 document.querySelector('#matchdayHtmlFile').onchange=async(e)=>{const f=e.target.files?.[0];if(!f)return;try{const html=await f.text();document.querySelector('#matchdayHtml').value=html;storeMatchdayFromHtml(html,document.querySelector('#matchdayUrl').value.trim()||f.name)}catch(err){dayStatus(String(err.message||err),'error')}};
 document.querySelector('#storedDaySelect').onchange=syncClearDayButton;
 document.querySelector('#clearDayBtn').onclick=()=>{const sel=document.querySelector('#storedDaySelect');const key=(sel&&sel.value)||localStorage.getItem(LAST_DAY_KEY)||'';if(!key){dayStatus('Seleziona prima una giornata da cancellare.','error');return}if(!confirm(`Rimuovere la giornata ${formatStoredDayLabel(key)} dal browser?`))return;const ok=removeStoredDay(key);if(!ok){dayStatus('Giornata non trovata nel browser.','error');return}void apiFetch('/api/matchdays/'+encodeURIComponent(key),{method:'DELETE'}).then(()=>setServerSync(`giornata ${key} eliminata dal server`,true)).catch(e=>setServerSync('eliminazione server fallita: '+e.message,false));const days=getStoredDays();const keys=Object.keys(days).sort();const nextKey=keys.includes((sel&&sel.value)||'')?(sel&&sel.value):(keys[keys.length-1]||'');refreshStoredDaySelect(nextKey);if(nextKey&&days[nextKey]&&Array.isArray(days[nextKey].matches)) renderDay(days[nextKey].matches); else renderDay([]);dayStatus(`Giornata ${formatStoredDayLabel(key)} rimossa dal browser.`,'good')};
-document.querySelector('#clearAllDaysBtn').onclick=()=>{const days=getStoredDays();const n=Object.keys(days).length;if(!n){dayStatus('Non ci sono giornate importate da cancellare.','error');return}if(!confirm(`Vuoi cancellare tutte le ${n} giornate importate dal browser?`))return;localStorage.removeItem(MATCHDAYS_KEY);localStorage.removeItem(MATCHDAY_KEY);localStorage.removeItem(LAST_DAY_KEY);void apiFetch('/api/matchdays',{method:'DELETE'}).then(()=>setServerSync('tutte le giornate eliminate dal server',true)).catch(e=>setServerSync('eliminazione server fallita: '+e.message,false));renderDay([]);refreshStoredDaySelect();dayStatus('Tutte le giornate importate sono state rimosse.','good')};
+document.querySelector('#clearAllDaysBtn').onclick=()=>{const days=getStoredDays();const n=Object.keys(days).length;if(!n){dayStatus('Non ci sono giornate importate da cancellare.','error');return}if(!confirm(`Vuoi cancellare tutte le ${n} giornate importate dal browser?`))return;localStorage.removeItem(MATCHDAYS_KEY);localStorage.removeItem(MATCHDAY_KEY);localStorage.removeItem(LAST_DAY_KEY);localStorage.removeItem(MASTER_DAYS_KEY);void apiFetch('/api/matchdays',{method:'DELETE'}).then(()=>setServerSync('tutte le giornate eliminate dal server',true)).catch(e=>setServerSync('eliminazione server fallita: '+e.message,false));renderDay([]);refreshStoredDaySelect();dayStatus('Tutte le giornate importate sono state rimosse.','good')};
 try{const d=JSON.parse(localStorage.getItem(MATCHDAY_KEY)||'{}');if(Array.isArray(d.matches)&&d.matches.length){renderDay(d.matches);dayStatus(`${d.matches.length} partite della giornata già presenti nel browser.`,'good')}}catch{}
 refreshStoredDaySelect();
 
