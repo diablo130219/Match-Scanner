@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>MagicScanner V3.3.2 · SoccerSTATS Browser Import</title>
+<title>MagicScanner V3.3.3 · SoccerSTATS Browser Import</title>
 <style>
 :root{color-scheme:dark;--bg:#07101d;--panel:#0b1727;--panel2:#0d1b2d;--line:#203750;--text:#eef6ff;--muted:#8fa6bd;--cyan:#38bdf8;--green:#5ee7b1;--amber:#fbbf24;--red:#fb7185}
 *{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,Arial;background:radial-gradient(circle at 10% 0,#12306a55,transparent 38%),var(--bg);color:var(--text)}
@@ -84,7 +84,7 @@ h1{font-size:34px;margin:0 0 8px}.sub{color:var(--muted);line-height:1.58}.eyebr
 @media(max-width:700px){.dayitem{grid-template-columns:56px minmax(0,1fr)!important}.fixturePick,.fixtureConfidence,.fixtureStatsBtn{grid-column:2}.fixtureTeams{flex-wrap:wrap}.fixtureTeamName{max-width:190px}}
 
 
-/* V3.3.2 — admin responsive cleanup */
+/* V3.3.3 — admin responsive cleanup */
 .daylist{max-height:620px!important;border-radius:16px!important;overflow:auto!important}
 .dayitem{grid-template-columns:76px minmax(300px,1.45fr) minmax(170px,.8fr) 100px 88px!important;gap:14px!important;padding:14px 16px!important;min-height:72px!important}
 .fixtureTeams{display:flex!important;align-items:center!important;gap:9px!important;min-width:0}.fixtureTeam{display:flex!important;align-items:center!important;gap:7px!important;min-width:0}.fixtureTeamName{white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important}.fixtureCrest{width:30px!important;height:30px!important;object-fit:contain!important;flex:0 0 30px!important}.fixturePick b{display:block!important;margin-top:5px!important;line-height:1.25!important}.fixtureConfidence{text-align:center!important}.fixtureConfidence small{display:block!important;margin-top:3px!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important}.fixtureStatsBtn{justify-self:end!important;white-space:nowrap!important}.paste{font-size:12px!important;line-height:1.45!important}.card{overflow:hidden!important}
@@ -159,7 +159,7 @@ h1{font-size:34px;margin:0 0 8px}.sub{color:var(--muted);line-height:1.58}.eyebr
 </div>
 
 <div class="card" id="promotedQueueCard">
-  <div class="eyebrow">V3.3.2 · Ricerca schede Stats</div>
+  <div class="eyebrow">V3.3.3 · Ricerca schede Stats</div>
   <h1>Trova una partita e carica il dettaglio</h1>
   <div class="sub">Cerca rapidamente tra <b>tutte le partite importate</b>. Premi <b>Apri Stats →</b>, sulla pagina SoccerSTATS usa <b>MagicScanner Extract</b>, poi torna qui e incolla nella sezione “Importa le pagine Stats”. Quando pubblichi, la partita passa automaticamente a <b>Dettaglio presente ✓</b> per tutti gli utenti.</div>
   <div class="grid" style="margin-top:18px">
@@ -313,7 +313,7 @@ async function syncServerToBrowser(){
   }catch(e){setServerSync('non raggiungibile: '+e.message,false)}
 }
 
-const EXTRACTOR_CODE = `javascript:(()=>{try{if(!/(^|\.)soccerstats\.com$/i.test(location.hostname)){alert('Apri prima una pagina di SoccerSTATS.');return;}const N=s=>(s||'').replace(/\u00a0/g,' ').replace(/\s+/g,' ').trim();const path=(location.pathname||'').toLowerCase();const isDetail=/pmatch|match|head2head|h2h/.test(path)&&!/matches\.asp$/.test(path);if(!isDetail){document.querySelectorAll('tr').forEach(tr=>tr.style.setProperty('display','table-row','important'));void document.body.offsetHeight;}const rows=[...document.querySelectorAll('tr')].map((tr,i)=>({i,cells:[...tr.querySelectorAll('th,td')].map(c=>N(c.innerText||c.textContent)),text:N(tr.innerText||tr.textContent),links:[...tr.querySelectorAll('a,button,input')].map(a=>({text:N(a.innerText||a.textContent||a.value),href:a.href||'',onclick:a.getAttribute('onclick')||''}))})).filter(r=>r.text);const links=[...document.querySelectorAll('a[href]')].map(a=>({text:N(a.innerText||a.textContent),href:a.href}));const dateCandidates=[...document.querySelectorAll('a,button,div,span,td')].map(e=>({text:N(e.innerText||e.textContent),cls:N(e.className&&typeof e.className==='string'?e.className:''),id:e.id||'',aria:e.getAttribute('aria-current')||'',pressed:e.getAttribute('aria-pressed')||''})).filter(x=>/\b(?:mon|tue|wed|thu|fri|sat|sun|lun|mar|mer|gio|ven|sab|dom)\b/i.test(x.text)&&/\b\d{1,2}(?:st|nd|rd|th)?\b/i.test(x.text)&&x.text.length<80).slice(0,80);const payload=JSON.stringify({magicScannerExtract:7,page:isDetail?'detail':'matchday',allRowsExpanded:!isDetail,source:location.href,title:document.title||'',extracted_at:new Date().toISOString(),dateCandidates,rows,links,bodyText:document.body.innerText||'',html:isDetail?document.documentElement.outerHTML:''});const ta=document.createElement('textarea');ta.value=payload;ta.style.position='fixed';ta.style.left='-99999px';document.body.appendChild(ta);ta.select();const ok=document.execCommand('copy');ta.remove();alert(ok?(isDetail?'MagicScanner: scheda Stats copiata.':'MagicScanner: giornata completa copiata (tutte le righe mostrate).'):'Copia automatica non riuscita.');if(!ok)prompt('Copia questi dati:',payload)}catch(e){alert('MagicScanner Extract: '+e.message)}})()`;
+const EXTRACTOR_CODE = `javascript:(()=>{try{if(!/(^|\.)soccerstats\.com$/i.test(location.hostname)){alert('Apri prima una pagina di SoccerSTATS.');return;}const N=s=>(s||'').replace(/\u00a0/g,' ').replace(/\s+/g,' ').trim();const path=(location.pathname||'').toLowerCase();const isDetail=/pmatch|match|head2head|h2h/.test(path)&&!/matches\.asp$/.test(path);const rows=[...document.querySelectorAll('tr')].map((tr,i)=>({i,cells:[...tr.querySelectorAll('th,td')].map(c=>N(c.textContent||'')),visibleCells:[...tr.querySelectorAll('th,td')].map(c=>N(c.innerText||'')),text:N(tr.textContent||''),visibleText:N(tr.innerText||''),links:[...tr.querySelectorAll('a,button,input')].map(a=>({text:N(a.textContent||a.innerText||a.value),href:a.href||'',onclick:a.getAttribute('onclick')||''}))})).filter(r=>r.text);const links=[...document.querySelectorAll('a[href]')].map(a=>({text:N(a.textContent||a.innerText),href:a.href}));const dateCandidates=[...document.querySelectorAll('a,button,div,span,td')].map(e=>({text:N(e.innerText||e.textContent),cls:N(e.className&&typeof e.className==='string'?e.className:''),id:e.id||'',aria:e.getAttribute('aria-current')||'',pressed:e.getAttribute('aria-pressed')||''})).filter(x=>/\b(?:mon|tue|wed|thu|fri|sat|sun|lun|mar|mer|gio|ven|sab|dom)\b/i.test(x.text)&&/\b\d{1,2}(?:st|nd|rd|th)?\b/i.test(x.text)&&x.text.length<80).slice(0,80);const payload=JSON.stringify({magicScannerExtract:8,page:isDetail?'detail':'matchday',rawDom:true,source:location.href,title:document.title||'',extracted_at:new Date().toISOString(),dateCandidates,rows,links,bodyText:document.body.textContent||'',visibleBodyText:document.body.innerText||'',html:isDetail?document.documentElement.outerHTML:''});const ta=document.createElement('textarea');ta.value=payload;ta.style.position='fixed';ta.style.left='-99999px';document.body.appendChild(ta);ta.select();const ok=document.execCommand('copy');ta.remove();alert(ok?(isDetail?'MagicScanner V8: scheda Stats copiata.':'MagicScanner V8: giornata completa copiata dal DOM, incluse le competizioni nascoste.'):'Copia automatica non riuscita.');if(!ok)prompt('Copia questi dati:',payload)}catch(e){alert('MagicScanner Extract V8: '+e.message)}})()`
 window.addEventListener('DOMContentLoaded',()=>{
   const bm=document.querySelector('#bookmarklet');
   if(bm) bm.setAttribute('href', EXTRACTOR_CODE);
@@ -831,14 +831,14 @@ function storeMatchdayFromHtml(html, sourceUrl='browser'){
   if(raw.startsWith('{')){
     try{
       const data=JSON.parse(raw); extractData=data;
-      if(data && data.magicScannerExtract===7 && data.page!=='detail' && data.allRowsExpanded===true && Array.isArray(data.rows)){
+      if(data && data.magicScannerExtract===8 && data.page!=='detail' && data.rawDom===true && Array.isArray(data.rows)){
         const namedCandidates=[['det',parseDeterministicMatchday(data)],['flat',parseFlatCellMatchday(data)],['exact',parseExactPayloadV319(data)]];
         namedCandidates.sort((a,b)=>b[1].length-a[1].length);
         matches=namedCandidates[0]?.[1]||[];
         data.__msParserDiag=namedCandidates.map(x=>`${x[0]}:${x[1].length}`).join(' · ');
         sourceUrl=data.source||sourceUrl;
       } else if(data && data.magicScannerExtract && data.page!=='detail'){
-        throw new Error('Estrattore vecchio: aggiorna il preferito MagicScanner Extract dalla V3.3.2. La V7 apre tutte le righe SoccerSTATS prima di copiarle.');
+        throw new Error('Estrattore vecchio: aggiorna il preferito MagicScanner Extract dalla V3.3.3. Serve la V8, che legge il DOM grezzo incluse le competizioni nascoste.');
       } else if(data && data.magicScannerExtract===2 && Array.isArray(data.matches)){
         matches=data.matches.map(x=>buildMatch(x.home,x.away,x.league||'SoccerSTATS',x.time||'',x.stats_url||'')); sourceUrl=data.source||sourceUrl;
       }
