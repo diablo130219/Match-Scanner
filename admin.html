@@ -43,6 +43,26 @@ h1{font-size:34px;margin:0 0 8px}.sub{color:var(--muted);line-height:1.58}.eyebr
 .adminGateCard{width:min(470px,100%);padding:28px;border-radius:24px;background:linear-gradient(180deg,#0d1c30,#081320);border:1px solid #27496d;box-shadow:0 30px 90px #000b}
 .adminGateBrand{font-size:25px;font-weight:950}.adminGateBrand span{color:#38bdf8}.adminGateCard h2{font-size:30px;margin:20px 0 8px}.adminGateCard p{color:#93a9bf;line-height:1.6}.adminGateInput{width:100%;padding:14px 15px;margin-top:14px;border-radius:14px;border:1px solid #2c4d6f;background:#071524;color:#fff;font-size:18px;letter-spacing:.12em;outline:none}.adminGateInput:focus{border-color:#38bdf8;box-shadow:0 0 0 3px #38bdf820}.adminGateActions{display:flex;gap:10px;margin-top:15px}.adminGateError{min-height:20px;margin-top:10px;color:#fda4af;font-size:13px}.adminTopNote{margin:-8px 0 18px;padding:10px 13px;border:1px solid #20415e;border-radius:13px;background:#081827;color:#83a2bf;font-size:12px}.adminTopNote b{color:#dcecff}
 
+
+/* ===== V3.1.4 ADMIN UI CLEANUP ===== */
+.wrap{max-width:1280px!important;padding:24px 22px 48px!important}
+.card{padding:24px!important;border-radius:24px!important}
+.daybox{padding:20px!important;border-radius:20px!important}
+.actions{align-items:center!important}
+.actions .btn,.actions .dayurl{min-height:46px}
+#storedDaySelect{min-width:250px;max-width:320px!important}
+#matchdayHtml{min-height:210px!important}
+.dayresults{grid-template-columns:repeat(4,minmax(150px,1fr))!important}
+.daymetric{min-height:86px;display:flex;flex-direction:column;justify-content:center}
+.daylist{max-height:520px!important;background:#081421}
+.dayitem{grid-template-columns:72px minmax(0,1fr) 110px minmax(160px,240px)!important;padding:13px 14px!important;min-height:68px}
+.dayitem>div{min-width:0}.dayitem>div>b{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dayitem>div>small{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dayitem>span{justify-self:start}.dayitem>b:last-child{white-space:normal;line-height:1.35}
+.searchToolbar{display:grid;grid-template-columns:minmax(260px,1fr) 180px 180px;gap:10px;align-items:center}
+@media(max-width:900px){.dayresults{grid-template-columns:repeat(2,minmax(0,1fr))!important}.dayitem{grid-template-columns:64px minmax(0,1fr) 92px!important}.dayitem>b:last-child{grid-column:2/-1}.searchToolbar{grid-template-columns:1fr 1fr}}
+@media(max-width:640px){.wrap{padding:14px!important}.card{padding:16px!important}.daybox{padding:14px!important}.actions>*{width:100%;max-width:none!important}.dayresults{grid-template-columns:1fr 1fr!important}.dayitem{grid-template-columns:58px minmax(0,1fr)!important}.dayitem>span,.dayitem>b:last-child{grid-column:2}.searchToolbar{grid-template-columns:1fr}.top{align-items:flex-start}.brand{font-size:20px}}
+
 </style></head><body>
 <div id="adminGate" class="adminGate">
   <div class="adminGateCard">
@@ -179,6 +199,33 @@ window.addEventListener('DOMContentLoaded',()=>{
 });
 
 
+
+function msHeaderish(v){
+  const s=String(v||'').replace(/\u00a0/g,' ').replace(/\s+/g,' ').trim().toLowerCase();
+  if(!s)return true;
+  const hits=['scope','gp','w%','fts','cs','bts','btts','tg','gf','ga','1.5+','2.5+','3.5+','points per game'].filter(x=>s.includes(x)).length;
+  if(hits>=3)return true;
+  if(/scope.*gp.*w%.*fts/i.test(s))return true;
+  if(/points per game.*stats?/i.test(s))return true;
+  if(/^(?:scope|gp|w%|fts|cs|bts|btts|tg|gf|ga|1\.5\+|2\.5\+|3\.5\+|points per game|stats)$/i.test(s))return true;
+  return false;
+}
+function msTeamFromRowLinks(r){
+  const links=Array.isArray(r?.links)?r.links:[];
+  const names=links.filter(a=>/teamstats\.asp|matchlist\.asp/i.test(String(a?.href||'')))
+    .map(a=>String(a?.text||'').replace(/\u00a0/g,' ').replace(/\s+/g,' ').trim())
+    .filter(x=>x && x.length<=80 && !msHeaderish(x) && !/^stats$/i.test(x));
+  return names[0]||'';
+}
+function msValidTeamName(v){
+  const s=String(v||'').replace(/\u00a0/g,' ').replace(/\s+/g,' ').trim();
+  if(!s||s.length<2||s.length>80||msHeaderish(s))return false;
+  if(/^last\s+\d+/i.test(s))return false;
+  if(/^fan or supporter members only$/i.test(s))return false;
+  if(!/[A-Za-zÀ-ÿ]/.test(s))return false;
+  return true;
+}
+
 function parseExtractV3(data){
   const out=[];
   let league='SoccerSTATS';
@@ -192,12 +239,12 @@ function parseExtractV3(data){
     if(scopeIndex<0)return null;
     const sm=cells[scopeIndex].match(/last\s+(\d+)/i);
     if(!sm)return null;
-    let team=''; let time='';
+    let team=msTeamFromRowLinks(r); let time='';
     for(let i=0;i<scopeIndex;i++){
       const c=cells[i];
       if(isTime(c)){time=c;continue}
-      if(/^(scope|gp|w%|fts|cs|bts|tg|gf|ga|1\.5\+|2\.5\+|3\.5\+|points per game|stats)$/i.test(c))continue;
-      if(!/^\d+(?:[.,]\d+)?%?$/.test(c) && c.length<=80) team=c;
+      if(msHeaderish(c))continue;
+      if(!team && !/^\d+(?:[.,]\d+)?%?$/.test(c) && c.length<=80 && msValidTeamName(c)) team=c;
     }
     if(!team){
       const before=clean((r.text||'').split(/last\s+\d+/i)[0]).replace(/\b(?:[01]?\d|2[0-3]):[0-5]\d\b/g,' ').trim();
@@ -209,7 +256,7 @@ function parseExtractV3(data){
       const tail=(r.text||'').split(/last\s+\d+/i).slice(1).join(' ');
       vals=numberTokens(tail);
     }
-    if(vals.length<11 || !team)return null;
+    if(vals.length<11 || !msValidTeamName(team))return null;
     let k=0, gp=Number(sm[1]);
     if(vals.length>=12 && !vals[0].includes('%') && Number(vals[0].replace(',','.'))<=40) gp=num(vals[k++]);
     const take=()=>vals[k++]||'0';
@@ -236,7 +283,7 @@ function parseExtractV3(data){
     if(!pending){pending={league,row:parsed};continue}
     if(pending.row.team!==parsed.team){
       const stats_url=parsed.stats_url||pending.row.stats_url||'';
-      out.push(buildMatch(pending.row,parsed,pending.league||league,pending.row.time||parsed.time||'',stats_url));
+      if(msValidTeamName(pending.row.team)&&msValidTeamName(parsed.team)&&!msHeaderish(pending.row.team)&&!msHeaderish(parsed.team)) out.push(buildMatch(pending.row,parsed,pending.league||league,pending.row.time||parsed.time||'',stats_url));
       pending=null;
     }else pending={league,row:parsed};
   }
@@ -249,7 +296,8 @@ function msCleanText(v){return String(v||'').replace(/\u00a0/g,' ').replace(/\r/
 function msLooksLikeTeam(v){
   const s=msCleanText(v);
   if(!s||s.length<2||s.length>80||!/\p{L}/u.test(s))return false;
-  if(/^(?:scope|gp|w%|fts|cs|bts|btts|tg|gf|ga|points per game|stats|matches played|goals per match|last\s+\d+|home|away)$/i.test(s))return false;
+  if(msHeaderish(s))return false;
+  if(/^(?:matches played|goals per match|last\s+\d+|home|away)$/i.test(s))return false;
   if(/^(?:\d+(?:[.,]\d+)?%?|[01]?\d:[0-5]\d)$/i.test(s))return false;
   return true;
 }
@@ -292,11 +340,11 @@ function parseExtractFlexible(data){
     if(scopeIdx.length){
       for(let si=0;si<scopeIdx.length;si++){
         const idx=scopeIdx[si], end=si+1<scopeIdx.length?scopeIdx[si+1]:cells.length;
-        let team=''; let time='';
+        let team=msTeamFromRowLinks(r); let time='';
         for(let j=idx-1;j>=0;j--){
           const c=cells[j];
           if(!time && /^(?:[01]?\d|2[0-3]):[0-5]\d$/.test(c))time=c;
-          if(msLooksLikeTeam(c)){team=c;break}
+          if(!team && msLooksLikeTeam(c) && !msHeaderish(c)){team=c;break}
         }
         const chunk=[team,time,cells[idx],...cells.slice(idx+1,end)].filter(Boolean).join('\t');
         const p=msParseStatChunk(chunk,team,time); if(p)candidates.push({league,row:p});
@@ -359,6 +407,8 @@ function parseExtractFlexible(data){
     const a=uniq[i],b=uniq[i+1];
     if(!a?.row||!b?.row||a.row.team===b.row.team)continue;
     const stats_url=uniqueLinks[out.length]||a.row.stats_url||b.row.stats_url||'';
+    if(!msValidTeamName(a.row.team)||!msValidTeamName(b.row.team))continue;
+    if(msHeaderish(a.row.team)||msHeaderish(b.row.team))continue;
     const m=buildMatch(a.row,b.row,a.league||b.league||'SoccerSTATS',a.row.time||b.row.time||'',stats_url);
     if(!out.some(x=>x.id===m.id))out.push(m);
   }
@@ -432,6 +482,8 @@ function storeMatchdayFromHtml(html, sourceUrl='browser'){
     if(!matches.length && extractData && Array.isArray(extractData.rows)) matches=parseExtractFlexible(extractData);
   }
   if(!matches.length) matches=parseMatchdayHtml(html);
+  matches=(matches||[]).filter(m=>m&&msValidTeamName(m.home)&&msValidTeamName(m.away)&&!msHeaderish(m.home)&&!msHeaderish(m.away)&&m.home!==m.away);
+  const dedupMap=new Map(); for(const m of matches){const k=slug(m.home)+'__'+slug(m.away)+'__'+String(m.time||''); if(!dedupMap.has(k))dedupMap.set(k,m)} matches=[...dedupMap.values()];
   if(!matches.length){
     let diag='';
     if(extractData){
