@@ -686,6 +686,28 @@ function isPromotedMatch(m){
 }
 function allImportedPromotedMatches(){return allImportedMatches().filter(isPromotedMatch)}
 function importedDetailMap(){try{return JSON.parse(localStorage.getItem('MAGICSCANNER_IMPORTED_DETAILS')||'{}')||{}}catch{return{}}}
+function normalizeUrlKey(u){
+  try{
+    const x=new URL(String(u||''),location.href);
+    x.hash='';
+    return x.origin.toLowerCase()+x.pathname.toLowerCase()+'?'+[...x.searchParams.entries()].sort((a,b)=>a[0].localeCompare(b[0])||a[1].localeCompare(b[1])).map(([k,v])=>encodeURIComponent(k)+'='+encodeURIComponent(v)).join('&');
+  }catch{return String(u||'').trim().toLowerCase()}
+}
+function findImportedMatchByStatsUrl(url){
+  const wanted=normalizeUrlKey(url);
+  if(!wanted)return null;
+  return allImportedMatches().find(m=>normalizeUrlKey(m.stats_url||m.statsUrl||'')===wanted)||null;
+}
+function isSoccerstatsDetailPayload(data){
+  const src=String(data?.source||'').toLowerCase();
+  return data && (data.page==='detail' || /\/pmatch\.asp|\/match\.asp|head2head|h2h/.test(src));
+}
+function bindDetailToImportedMatch(d,data){
+  const m=findImportedMatchByStatsUrl(data?.source||d?.source_url||'');
+  if(!m)return d;
+  return {...d,id:m.id,home:m.home,away:m.away,league:m.league||d.league,matched_by:'stats_url'};
+}
+
 function detailMatchesQuery(m,q){
   if(!q)return true;
   const hay=[m.home,m.away,m.league,m.time,m._dateKey,m.recommended,m.marketType].join(' ').toLocaleLowerCase('it-IT');
@@ -729,16 +751,24 @@ function status(msg,type='good'){const s=$('#status');s.className='status show '
 async function importUrls(){const urls=$('#urls').value.split(/\r?\n/).map(x=>x.trim()).filter(Boolean);if(!urls.length)throw new Error('Incolla almeno un URL SoccerSTATS.');status('Recupero delle pagine in corso…','good');const r=await fetch('/api/fetch-stats',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({urls})});const data=await r.json().catch(()=>({}));if(!r.ok)throw new Error(data.error||`Errore server ${r.status}`);const rows=[],errors=[];for(const item of data.items||[]){if(!item.ok){errors.push(item);continue}const text=htmlToMarkdownish(item.html);const d=parse(text,'soccerstats-url',item.url);if(d.away)rows.push(d);else errors.push({url:item.url,error:'Nomi delle squadre non riconosciuti'})}mergeAndStore(rows);render(rows,errors);status(`${rows.length} partita/e salvate nel browser${errors.length?`; ${errors.length} non importate.`:'.'}`,errors.length?'error':'good')}
 async function importPaste(){
   const raw=$('#paste').value.trim(); if(!raw)throw new Error('Incolla almeno una pagina Stats.');
-  let rows=[];
+  let rows=[]; let exactMatch=null; let parsedJson=null;
   if(raw.startsWith('{')){
     try{
-      const data=JSON.parse(raw);
-      if(data && data.magicScannerExtract>=5 && data.page==='detail'){
-        const text=data.html ? htmlToMarkdownish(data.html) : String(data.bodyText||'');
-        const d=parse(text,'soccerstats-detail',data.source||'');
+      const data=JSON.parse(raw); parsedJson=data;
+      if(data && data.magicScannerExtract && isSoccerstatsDetailPayload(data)){
+        exactMatch=findImportedMatchByStatsUrl(data.source||'');
+        let text='';
+        if(data.html) text=htmlToMarkdownish(data.html);
+        else if(data.bodyText) text=String(data.bodyText||'').replace(/\n/g,'\n').replace(/\t/g,'\t');
+        else if(Array.isArray(data.rows)) text=data.rows.map(r=>Array.isArray(r.cells)?r.cells.join('\t'):(r.text||'')).join('\n');
+        let d=parse(text,'soccerstats-detail',data.source||'');
+        d=bindDetailToImportedMatch(d,data);
+        if(exactMatch && !d.away){
+          d={...d,id:exactMatch.id,home:exactMatch.home,away:exactMatch.away,league:exactMatch.league||'',source_url:data.source||'',goal_statistics:d.goal_statistics||{},corners:d.corners||{},timing:d.timing||{}};
+        }
         if(d.away) rows=[d];
       }
-    }catch(e){}
+    }catch(e){console.warn('JSON detail import',e)}
   }
   if(!rows.length){
     const chunks=raw.split(/^---MATCH---\s*$/m).map(x=>x.trim()).filter(Boolean);
@@ -747,8 +777,11 @@ async function importPaste(){
       return parse(x,`testo-${i+1}`)
     }).filter(x=>x.away);
   }
-  if(!rows.length) throw new Error('Non riconosco i nomi delle squadre nella pagina Stats copiata.');
-  mergeAndStore(rows);renderPromotedQueue();status(`${rows.length} partita/e salvate nel browser.`,'good')
+  if(!rows.length) throw new Error('Non riconosco la pagina Stats. Aprila dal pulsante “Apri Stats” della partita e usa MagicScanner Extract.');
+  mergeAndStore(rows);
+  renderPromotedQueue();
+  const bound=rows.filter(x=>x.matched_by==='stats_url').length;
+  status(`${rows.length} partita/e salvate nel browser${bound?' e associate alla partita corretta tramite URL Stats':''}.`,'good')
 }
 async function importFiles(){const fs=[...$('#files').files];if(!fs.length)throw new Error('Seleziona almeno un file .md o .txt.');const rows=[];for(const f of fs){const d=parse(await f.text(),f.name);if(d.away)rows.push(d)}mergeAndStore(rows);status(`${rows.length} partita/e salvate nel browser.`,'good')}
 $('#importBtn').onclick=async()=>{try{$('#importBtn').disabled=true;if(activeTab==='urlPanel')await importUrls();else if(activeTab==='pastePanel')await importPaste();else await importFiles()}catch(e){status(String(e.message||e),'error')}finally{$('#importBtn').disabled=false}};
