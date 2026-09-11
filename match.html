@@ -6083,6 +6083,8 @@ body{background:radial-gradient(circle at 50% -10%,rgba(13,97,161,.12),transpare
 @media(max-width:1150px){.v3topbar{position:relative}.v3hero,.v3grid3,.v3gridForm,.v3gridBottom,.v3summary{grid-template-columns:1fr}.v3leagueRow{grid-template-columns:1fr}.v3league{text-align:left}.v3metaRight{justify-content:flex-start}.v3team.away{justify-content:flex-start;text-align:left}.v3team.away .v3formDots{justify-content:flex-start}.v3picks{grid-template-columns:1fr 1fr 1fr}.v3tabs{grid-template-columns:repeat(4,1fr)}}
 @media(max-width:720px){#detailView{padding:0 8px 24px!important}.v3topbar{margin:0 -8px;padding:9px}.v3brand{min-width:0}.v3brandName{font-size:18px}.v3brandSub,.v3nav,.v3date{display:none}.v3hero{grid-template-columns:1fr}.v3team{min-height:120px;padding:14px}.v3crest{width:78px;height:78px}.v3teamName{font-size:22px}.v3picks{grid-template-columns:1fr}.v3tabs{grid-template-columns:repeat(2,1fr)}.v3split,.v3bars{grid-template-columns:1fr}.v3summary{grid-template-columns:1fr}}
 
+
+<style>.v3formCols{display:grid;grid-template-columns:1fr 1fr;gap:14px}.v3formRow{padding:8px 0;border-bottom:1px solid rgba(148,163,184,.12);font-size:12px;color:#dbe7f3}@media(max-width:720px){.v3formCols{grid-template-columns:1fr}}</style>
 </style>
 </head>
 <body>
@@ -6277,19 +6279,46 @@ function v3MarketRows(m){
   return rows;
 }
 function v3Unavailable(text){return `<div class="v3Unavailable">${esc(text)}</div>`}
+
+function v3DetailPair(arr){
+  const a=Array.isArray(arr)?arr.filter(x=>x!==''&&x!=null):[];
+  if(!a.length)return ['—','—']; return [a[0]??'—',a[a.length-1]??'—'];
+}
+function v3FindDetail(d,label){return v3DetailPair(d?.goal_statistics?.[label])}
+function v3RecentForm(m,d){
+  const rows=Array.isArray(d?.recent_results_raw)?d.recent_results_raw:[];
+  if(!rows.length)return v3Unavailable('Forma recente non disponibile nel dettaglio importato.');
+  const left=[],right=[];
+  for(const c of rows.slice(0,6)){
+    const scores=c.map((x,i)=>[x,i]).filter(([x])=>/^\d+\s*[:\-]\s*\d+$/.test(x));
+    if(scores[0])left.push(c.slice(0,scores[0][1]+1).filter(Boolean).join(' · '));
+    if(scores[1])right.push(c.slice(scores[1][1]).filter(Boolean).join(' · '));
+  }
+  const col=(name,arr)=>`<div><div class="v3splitHead">${esc(name)}</div>${arr.length?arr.map(x=>`<div class="v3formRow">${esc(x)}</div>`).join(''):v3Unavailable('Nessun risultato recente estratto.')}</div>`;
+  return `<div class="v3formCols">${col(m.home,left)}${col(m.away,right)}</div>`;
+}
+function v3Standings(d){
+  const rows=Array.isArray(d?.standings_raw)?d.standings_raw:[];
+  if(!rows.length)return v3Unavailable('Classifica non rilevata nella pagina Stats importata.');
+  return `<table class="v3table"><tbody>${rows.slice(0,10).map((c,i)=>{const team=c.find(x=>/[A-Za-zÀ-ÿ]/.test(x)&&!/^(GP|pts|Points)$/i.test(x))||'—';const nums=c.filter(x=>/^\d+(?:\.\d+)?$/.test(x));return `<tr><td>${i+1}</td><th>${esc(team)}</th><td>${esc(nums[nums.length-1]||'—')}</td></tr>`}).join('')}</tbody></table>`;
+}
 function v3GoalTable(m,d){
-  const [gfH,gfA]=v3Pair(m.basic?.['Gol fatti']);
-  const [gaH,gaA]=v3Pair(m.basic?.['Gol subiti']);
-  const [o25H,o25A]=v3Pair(m.basic?.['Over 2.5']);
-  const [bttsH,bttsA]=v3Pair(m.basic?.['BTTS / Entrambe segnano']);
-  const [tgH,tgA]=v3Pair(m.basic?.['Media gol']);
-  const rows=[['Gol fatti',gfH,gfA],['Gol subiti',gaH,gaA],['Over 2.5',o25H,o25A],['Under 2.5','—','—'],['Entrambe segnano',bttsH,bttsA],['Media gol',tgH,tgA]];
+  const detail=d?.goal_statistics||{};
+  let rows;
+  if(Object.keys(detail).length){
+    const gf=v3FindDetail(d,'GF per match'),ga=v3FindDetail(d,'GA per match'),o25=v3FindDetail(d,'GF+GA over 2.5'),btts=v3DetailPair((d?.total_goals_raw||[]).find(r=>r.some(x=>/^BTS$/i.test(x)))||[]),tg=v3FindDetail(d,'GF+GA per match');
+    const scored=v3FindDetail(d,'Goals scored (GF)'), conceded=v3FindDetail(d,'Goals conceded (GA)');
+    rows=[['Gol fatti',scored[0]!=='—'?scored[0]:gf[0],scored[1]!=='—'?scored[1]:gf[1]],['Gol subiti',conceded[0]!=='—'?conceded[0]:ga[0],conceded[1]!=='—'?conceded[1]:ga[1]],['Over 2.5',o25[0],o25[1]],['GF per match',gf[0],gf[1]],['GA per match',ga[0],ga[1]],['Media gol',tg[0],tg[1]]];
+  }else{
+    const [gfH,gfA]=v3Pair(m.basic?.['Gol fatti']),[gaH,gaA]=v3Pair(m.basic?.['Gol subiti']),[o25H,o25A]=v3Pair(m.basic?.['Over 2.5']),[bttsH,bttsA]=v3Pair(m.basic?.['BTTS / Entrambe segnano']),[tgH,tgA]=v3Pair(m.basic?.['Media gol']);
+    rows=[['Gol fatti',gfH,gfA],['Gol subiti',gaH,gaA],['Over 2.5',o25H,o25A],['Entrambe segnano',bttsH,bttsA],['Media gol',tgH,tgA]];
+  }
   return `<table class="v3table"><thead><tr><th>${esc(m.home)}</th><th></th><th>${esc(m.away)}</th></tr></thead><tbody>${rows.map(r=>`<tr><td>${esc(r[1])}</td><th>${esc(r[0])}</th><td>${esc(r[2])}</td></tr>`).join('')}</tbody></table>`;
 }
 function v3CornerTable(m,d){
   const obj=d?.corners||{}; const entries=Object.entries(obj);
   if(!entries.length) return v3Unavailable('Dati corner non ancora disponibili. Importa la pagina Stats per completare questa sezione.');
-  return `<table class="v3table"><tbody>${entries.slice(0,7).map(([k,v])=>{const a=Array.isArray(v)?v:[];return `<tr><td>${esc(a[0]||'—')}</td><th>${esc(k)}</th><td>${esc(a[1]||'—')}</td></tr>`}).join('')}</tbody></table>`;
+  return `<table class="v3table"><tbody>${entries.slice(0,7).map(([k,v])=>{const a=Array.isArray(v)?v:[];return `<tr><td>${esc(a[0]||'—')}</td><th>${esc(k)}</th><td>${esc(a[a.length-1]||'—')}</td></tr>`}).join('')}</tbody></table>`;
 }
 function v3Timing(m,d){
   const segs=['0-15','16-30','31-45','46-60','61-75','76-90'];
@@ -6306,15 +6335,15 @@ function buildPremiumDetailMarkup(m,d){
   const picks=v3MarketRows(m), conf=v3Confidence(m); const confLabel=conf==null?'—':conf+'%'; const dateLabel=m.date_label||m.date||'Data importata';
   const summary=m.summary||`Analisi pre-match di ${m.home} - ${m.away}. Il layout resta completo anche quando alcuni dati dettagliati non sono ancora stati importati.`;
   return `<div class="v3app">
-    <header class="v3topbar"><div class="v3brand"><div class="v3brandMark">▥</div><div><div class="v3brandName"><span>Magic</span>Scanner <small style="font-size:11px;color:#cbd5e1">V3.0</small></div><div class="v3brandSub">Statistiche. Analisi. Pronostici.</div></div></div><nav class="v3nav"><a href="index.html">Home</a><span>Giornate</span><span>Promosse</span><a href="importer.html">Import</a><span>Preferiti</span><span>Guida</span></nav><div class="v3date"><b>${esc(dateLabel)}</b><small>Dashboard Match Premium</small></div></header>
+    <header class="v3topbar"><div class="v3brand"><div class="v3brandMark">▥</div><div><div class="v3brandName"><span>Magic</span>Scanner <small style="font-size:11px;color:#cbd5e1">V3.0</small></div><div class="v3brandSub">Statistiche. Analisi. Pronostici.</div></div></div><nav class="v3nav"><a href="index.html">Home</a><span>Giornate</span><span>Promosse</span><span>Preferiti</span><span>Guida</span></nav><div class="v3date"><b>${esc(dateLabel)}</b><small>Dashboard Match Premium</small></div></header>
     <div class="v3leagueRow"><a class="v3back" href="index.html">← Torna alla home</a><div class="v3league">⚽ ${esc(m.league||'Competizione')}</div><div class="v3metaRight"><span class="v3metaPill">◷ ${esc(m.time||'—')}</span><span class="v3metaPill">${d?'✓ Stats complete':'◌ Dati base'}</span></div></div>
-    <section class="v3hero"><div class="v3team"><img class="v3crest staticOfficialCrest" data-team="${esc(m.home)}" alt="${esc(m.home)}"><div><div class="v3teamName">${esc(m.home)}</div><div class="v3teamSub">Squadra casa</div><div class="v3teamSub">Forma recente: dati non importati</div></div></div>
+    <section class="v3hero"><div class="v3team"><img class="v3crest staticOfficialCrest" data-team="${esc(m.home)}" alt="${esc(m.home)}"><div><div class="v3teamName">${esc(m.home)}</div><div class="v3teamSub">Squadra casa</div><div class="v3teamSub">Forma recente: ${d?.recent_results_raw?.length?'importata':'in attesa'}</div></div></div>
       <div class="v3pickCenter"><div class="v3kick">${esc(dateLabel)} — ${esc(m.time||'—')}</div><div class="v3picks">${picks.map(x=>`<div class="v3pick ${x.cls}"><small>${esc(x.k)}</small><b>${esc(x.v)}</b><strong>${x.p==null?'—':esc(x.p)+'%'}</strong><em>${esc(x.s)}</em></div>`).join('')}</div></div>
-      <div class="v3team away"><div><div class="v3teamName">${esc(m.away)}</div><div class="v3teamSub">Squadra trasferta</div><div class="v3teamSub">Forma recente: dati non importati</div></div><img class="v3crest staticOfficialCrest" data-team="${esc(m.away)}" alt="${esc(m.away)}"></div></section>
+      <div class="v3team away"><div><div class="v3teamName">${esc(m.away)}</div><div class="v3teamSub">Squadra trasferta</div><div class="v3teamSub">Forma recente: ${d?.recent_results_raw?.length?'importata':'in attesa'}</div></div><img class="v3crest staticOfficialCrest" data-team="${esc(m.away)}" alt="${esc(m.away)}"></div></section>
     <div class="v3tabs"><div class="v3tab active">Panoramica</div><div class="v3tab">Quote</div><div class="v3tab">Statistiche</div><div class="v3tab">Forma</div><div class="v3tab">Goal</div><div class="v3tab">Corner</div><div class="v3tab">Testa a Testa</div><div class="v3tab">Classifica</div></div>
     <section class="v3grid3"><div class="v3card radarMount"></div><div class="v3card"><div class="v3cardTitle">Panoramica match</div><div class="v3info"><div class="v3infoRow"><span>Competizione</span><b>${esc(m.league||'—')}</b></div><div class="v3infoRow"><span>Data</span><b>${esc(dateLabel)}</b></div><div class="v3infoRow"><span>Orario</span><b>${esc(m.time||'—')}</b></div><div class="v3infoRow"><span>Sorgente</span><b>${d?'SoccerSTATS dettagli':'Import giornata'}</b></div><div class="v3infoRow"><span>Mercato</span><b>${esc(m.marketType||'Analisi')}</b></div><div class="v3infoRow"><span>Affidabilità</span><b>${confLabel}</b></div></div></div><div class="v3card"><div class="v3cardTitle">Confronto diretto (ultime 10)</div>${v3Unavailable('Storico H2H non presente nei dati attuali. Il blocco rimane pronto e verrà compilato quando disponibile.')}</div></section>
-    <section class="v3gridForm"><div class="v3card"><div class="v3cardTitle">Forma recente</div>${v3Unavailable('La forma partita-per-partita non è ancora inclusa nell’import corrente. Il layout resta stabile senza creare buchi.')}</div><div class="v3card"><div class="v3cardTitle">Goal stats (stagione)</div>${v3GoalTable(m,d)}</div><div class="v3card"><div class="v3cardTitle">Corner (stagione)</div>${v3CornerTable(m,d)}</div></section>
-    <section class="v3gridBottom"><div class="v3card"><div class="v3cardTitle">Goal timing</div>${v3Timing(m,d)}</div><div class="v3card"><div class="v3cardTitle">Split casa / trasferta</div>${v3Split(m)}</div><div class="v3card"><div class="v3cardTitle">Classifica (estratto)</div>${v3Unavailable('Classifica non presente nell’import attuale. Se il dettaglio la contiene, la sezione potrà essere collegata in una versione successiva.')}</div></section>
+    <section class="v3gridForm"><div class="v3card"><div class="v3cardTitle">Forma recente</div>${v3RecentForm(m,d)}</div><div class="v3card"><div class="v3cardTitle">Goal stats (stagione)</div>${v3GoalTable(m,d)}</div><div class="v3card"><div class="v3cardTitle">Corner (stagione)</div>${v3CornerTable(m,d)}</div></section>
+    <section class="v3gridBottom"><div class="v3card"><div class="v3cardTitle">Goal timing</div>${v3Timing(m,d)}</div><div class="v3card"><div class="v3cardTitle">Split casa / trasferta</div>${v3Split(m)}</div><div class="v3card"><div class="v3cardTitle">Classifica (estratto)</div>${v3Standings(d)}</div></section>
     <section class="v3summary"><div class="v3summaryText"><div class="v3summaryTitle">▣ Sintesi finale</div><p>${esc(summary)} ${d?'Sono stati caricati anche i dati dettagliati disponibili dalla pagina Stats.':'Per completare corner, timing e altre sezioni, importa la pagina Stats della partita.'}</p></div><div class="v3reliability"><small>Affidabilità analisi</small><div class="v3relLine"><div class="v3track"><div class="v3fill" style="width:${conf}%"></div></div><b>${confLabel}</b></div></div></section>
   </div>`;
 }
