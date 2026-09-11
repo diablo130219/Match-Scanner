@@ -6522,74 +6522,82 @@ function renderRadar(m,root){
 
 let SERVER_MATCHDAYS={};
 let SERVER_DETAILS={};
-async function loadServerMatchData(){
-  try{
-    const [md,dt]=await Promise.all([
-      fetch('/api/matchdays',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error(`matchdays HTTP ${r.status}`);return r.json()}),
-      fetch('/api/details',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error(`details HTTP ${r.status}`);return r.json()})
-    ]);
-    SERVER_MATCHDAYS=md?.matchdays||{};
-    SERVER_DETAILS=dt?.details||{};
-  }catch(e){
-    console.warn('Server data non disponibili, uso fallback locale',e);
-    SERVER_MATCHDAYS={};SERVER_DETAILS={};
-  }
-}
 
 function msNormId(v){
   return String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
 }
-function getImportedMatch(id){
+
+function showMatchError(title,message){
+  const el=document.getElementById('genericDetail');
+  if(!el) return;
+  el.style.display='block';
+  el.innerHTML=`<div class="detailCard" style="max-width:900px;margin:34px auto"><div class="detailCardTitle">${esc(title)}</div><div class="notice">${esc(message)}</div><div style="margin-top:14px"><a class="v3back" href="index.html">← Torna alla home</a></div></div>`;
+}
+
+async function fetchServerMatch(id){
+  const r=await fetch('/api/match/'+encodeURIComponent(id),{cache:'no-store'});
+  if(r.status===404) return null;
+  if(!r.ok) throw new Error(`API partita HTTP ${r.status}`);
+  const data=await r.json();
+  if(!data || !data.ok || !data.match) return null;
+  return data;
+}
+
+function getLocalImportedMatch(id){
   const wanted=msNormId(id);
   const candidates=[];
-  for(const pack of Object.values(SERVER_MATCHDAYS||{})) if(pack&&Array.isArray(pack.matches)) candidates.push(...pack.matches);
   try{
     const days=JSON.parse(localStorage.getItem('MAGICSCANNER_MATCHDAYS')||'{}')||{};
     for(const pack of Object.values(days)) if(pack&&Array.isArray(pack.matches)) candidates.push(...pack.matches);
-  }catch(e){console.warn('Giornate importate locali non leggibili',e)}
+  }catch{}
   try{
     const today=JSON.parse(localStorage.getItem('MAGICSCANNER_MATCHDAY')||'{}')||{};
-    if(Array.isArray(today.matches))candidates.push(...today.matches);
+    if(Array.isArray(today.matches)) candidates.push(...today.matches);
   }catch{}
-  return candidates.find(x=>msNormId(x.id)===wanted||msNormId((x.home||'')+'-'+(x.away||''))===wanted)||null;
+  return candidates.find(x=>msNormId(x?.id)===wanted||msNormId(`${x?.home||''}-${x?.away||''}`)===wanted)||null;
 }
 
 async function initMatchPage(){
-  await loadServerMatchData();
-  const id=new URLSearchParams(location.search).get('id') || 'stevenage-luton-town';
-  const staticMatch=matches.find(x=>x.id===id);
-  const importedMatch=getImportedMatch(id);
-  const m=importedMatch ? {...(staticMatch||{}),...importedMatch} : staticMatch;
-
-  if(!m){
-    const el=document.getElementById('genericDetail');
+  const el=document.getElementById('genericDetail');
+  if(el){
     el.style.display='block';
-    el.innerHTML='<div class="detailCard"><div class="detailCardTitle">Partita non trovata</div><div class="notice">Torna alla home e seleziona una partita.</div></div>';
-    return;
+    el.innerHTML='<div class="detailCard" style="max-width:900px;margin:34px auto"><div class="detailCardTitle">Caricamento partita…</div><div class="notice">Sto recuperando la scheda dal server MagicScanner.</div></div>';
   }
+  try{
+    const id=new URLSearchParams(location.search).get('id');
+    if(!id){ showMatchError('Partita non trovata','Manca l’identificativo della partita. Torna alla home e seleziona un match.'); return; }
 
-  document.title=`${m.home} vs ${m.away} · Match Scanner`;
+    let serverPack=null;
+    try{ serverPack=await fetchServerMatch(id); }catch(e){ console.warn('API match non disponibile',e); }
 
-  const embeddedDetail=(window.MATCH_DETAIL_HTML||{})[id];
-  const detailFile=(window.MATCH_DETAIL_FILES||{})[id];
-  let localImported={};
-  try{ localImported=JSON.parse(localStorage.getItem('MAGICSCANNER_IMPORTED_DETAILS')||'{}'); }catch(e){ console.warn('Archivio import locale non leggibile',e); }
-  let importedDetail=(SERVER_DETAILS||{})[id] || (localImported||{})[id] || (window.IMPORTED_DETAILS||{})[id];
-  if(!importedDetail){
-    const allDetails={...(window.IMPORTED_DETAILS||{}),...(localImported||{}),...(SERVER_DETAILS||{})};
-    importedDetail=Object.values(allDetails).find(d=>d && msNormId((d.home||'')+'-'+(d.away||''))===msNormId(id)) || null;
+    const staticMatch=matches.find(x=>msNormId(x.id)===msNormId(id));
+    const localMatch=getLocalImportedMatch(id);
+    const m=serverPack?.match || localMatch || staticMatch || null;
+    if(!m){ showMatchError('Partita non trovata',`Non trovo “${id}” nell’archivio pubblicato. Torna alla home e riapri la partita.`); return; }
+
+    document.title=`${m.home} vs ${m.away} · MagicScanner`;
+
+    let importedDetail=serverPack?.detail || null;
+    if(!importedDetail){
+      let localImported={};
+      try{localImported=JSON.parse(localStorage.getItem('MAGICSCANNER_IMPORTED_DETAILS')||'{}')||{}}catch{}
+      importedDetail=localImported[m.id] || localImported[id] || (window.IMPORTED_DETAILS||{})[m.id] || (window.IMPORTED_DETAILS||{})[id] || null;
+      if(!importedDetail){
+        const all=Object.values({...localImported,...(window.IMPORTED_DETAILS||{})});
+        importedDetail=all.find(d=>d&&msNormId(`${d.home||''}-${d.away||''}`)===msNormId(`${m.home||''}-${m.away||''}`))||null;
+      }
+    }
+
+    if(importedDetail) showAutoDetail(m,importedDetail);
+    else showGeneric(m);
+    window.scrollTo(0,0);
+  }catch(e){
+    console.error('Errore apertura scheda partita',e);
+    showMatchError('Errore caricamento scheda',e && e.message ? e.message : 'Errore imprevisto durante il caricamento della partita.');
   }
-  if(importedDetail){
-    showAutoDetail(m,importedDetail);
-  }else if(embeddedDetail || detailFile){
-    showGeneric(m);
-  }else{
-    showGeneric(m);
-  }
-
-  window.scrollTo(0,0);
 }
 
-document.addEventListener('DOMContentLoaded',initMatchPage);
+if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',initMatchPage);
+else initMatchPage();
 </script></body>
 </html>

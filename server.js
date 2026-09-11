@@ -47,7 +47,7 @@ app.get('/api/health', (req, res) => {
   const store = readStore();
   res.json({
     ok: true,
-    version: '3.2.2',
+    version: '3.2.3',
     storage: 'server-json',
     admin_token_required: !!ADMIN_TOKEN,
     matchdays: Object.keys(store.matchdays).length,
@@ -95,6 +95,37 @@ app.delete('/api/matchdays', requireAdmin, (req, res) => {
   res.json({ ok: true, deleted: count });
 });
 
+
+function normId(v) {
+  return String(v || '')
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase().replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '');
+}
+
+app.get('/api/match/:id', (req, res) => {
+  const wanted = normId(req.params.id);
+  const store = readStore();
+  let match = null;
+  let date = null;
+  for (const [dayKey, pack] of Object.entries(store.matchdays || {})) {
+    if (!pack || !Array.isArray(pack.matches)) continue;
+    const found = pack.matches.find(m =>
+      normId(m && m.id) === wanted ||
+      normId(`${m && m.home || ''}-${m && m.away || ''}`) === wanted
+    );
+    if (found) { match = found; date = dayKey; break; }
+  }
+  if (!match) return res.status(404).json({ ok:false, error:'Partita non trovata', id:req.params.id });
+  const details = store.details || {};
+  let detail = details[match.id] || details[req.params.id] || null;
+  if (!detail) {
+    detail = Object.values(details).find(d => d && normId(`${d.home || ''}-${d.away || ''}`) === wanted) || null;
+  }
+  res.set('Cache-Control','no-store');
+  res.json({ ok:true, match, detail, date });
+});
+
 app.get('/api/details', (req, res) => {
   res.set('Cache-Control', 'no-store');
   res.json({ ok: true, details: readStore().details });
@@ -137,7 +168,7 @@ app.use((err, req, res, next) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`MagicScanner V3.2.2 listening on port ${PORT}`);
+  console.log(`MagicScanner V3.2.3 listening on port ${PORT}`);
   console.log(`Storage: ${STORE_FILE}`);
   console.log(`ADMIN_TOKEN: ${ADMIN_TOKEN ? 'required' : 'not configured'}`);
 });
