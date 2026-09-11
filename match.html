@@ -6520,24 +6520,42 @@ function renderRadar(m,root){
   `;
 }
 
+let SERVER_MATCHDAYS={};
+let SERVER_DETAILS={};
+async function loadServerMatchData(){
+  try{
+    const [md,dt]=await Promise.all([
+      fetch('/api/matchdays',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error(`matchdays HTTP ${r.status}`);return r.json()}),
+      fetch('/api/details',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error(`details HTTP ${r.status}`);return r.json()})
+    ]);
+    SERVER_MATCHDAYS=md?.matchdays||{};
+    SERVER_DETAILS=dt?.details||{};
+  }catch(e){
+    console.warn('Server data non disponibili, uso fallback locale',e);
+    SERVER_MATCHDAYS={};SERVER_DETAILS={};
+  }
+}
+
 function msNormId(v){
   return String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
 }
 function getImportedMatch(id){
   const wanted=msNormId(id);
   const candidates=[];
+  for(const pack of Object.values(SERVER_MATCHDAYS||{})) if(pack&&Array.isArray(pack.matches)) candidates.push(...pack.matches);
   try{
     const days=JSON.parse(localStorage.getItem('MAGICSCANNER_MATCHDAYS')||'{}')||{};
-    for(const pack of Object.values(days)) if(pack && Array.isArray(pack.matches)) candidates.push(...pack.matches);
-  }catch(e){ console.warn('Giornate importate non leggibili',e); }
+    for(const pack of Object.values(days)) if(pack&&Array.isArray(pack.matches)) candidates.push(...pack.matches);
+  }catch(e){console.warn('Giornate importate locali non leggibili',e)}
   try{
     const today=JSON.parse(localStorage.getItem('MAGICSCANNER_MATCHDAY')||'{}')||{};
-    if(Array.isArray(today.matches)) candidates.push(...today.matches);
-  }catch(e){}
-  return candidates.find(x=>msNormId(x.id)===wanted || msNormId((x.home||'')+'-'+(x.away||''))===wanted) || null;
+    if(Array.isArray(today.matches))candidates.push(...today.matches);
+  }catch{}
+  return candidates.find(x=>msNormId(x.id)===wanted||msNormId((x.home||'')+'-'+(x.away||''))===wanted)||null;
 }
 
 async function initMatchPage(){
+  await loadServerMatchData();
   const id=new URLSearchParams(location.search).get('id') || 'stevenage-luton-town';
   const staticMatch=matches.find(x=>x.id===id);
   const importedMatch=getImportedMatch(id);
@@ -6556,9 +6574,9 @@ async function initMatchPage(){
   const detailFile=(window.MATCH_DETAIL_FILES||{})[id];
   let localImported={};
   try{ localImported=JSON.parse(localStorage.getItem('MAGICSCANNER_IMPORTED_DETAILS')||'{}'); }catch(e){ console.warn('Archivio import locale non leggibile',e); }
-  let importedDetail=(localImported||{})[id] || (window.IMPORTED_DETAILS||{})[id];
+  let importedDetail=(SERVER_DETAILS||{})[id] || (localImported||{})[id] || (window.IMPORTED_DETAILS||{})[id];
   if(!importedDetail){
-    const allDetails={...(window.IMPORTED_DETAILS||{}),...(localImported||{})};
+    const allDetails={...(window.IMPORTED_DETAILS||{}),...(localImported||{}),...(SERVER_DETAILS||{})};
     importedDetail=Object.values(allDetails).find(d=>d && msNormId((d.home||'')+'-'+(d.away||''))===msNormId(id)) || null;
   }
   if(importedDetail){

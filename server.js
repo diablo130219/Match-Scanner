@@ -1,94 +1,143 @@
-import express from 'express';
-import path from 'path';
-import { fileURLToPath } from 'url';
+const express = require('express');
+const fs = require('fs');
+const path = require('path');
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 const app = express();
 const PORT = process.env.PORT || 3000;
+const DATA_DIR = process.env.MAGICSCANNER_DATA_DIR || path.join(__dirname, 'data');
+const STORE_FILE = path.join(DATA_DIR, 'store.json');
+const ADMIN_TOKEN = String(process.env.ADMIN_TOKEN || '').trim();
 
-app.use(express.json({ limit: '250kb' }));
-
-function validateSoccerStatsUrl(raw){
-  let u;
-  try { u = new URL(raw); } catch { return null; }
-  if (u.protocol !== 'https:' && u.protocol !== 'http:') return null;
-  const host = u.hostname.toLowerCase();
-  if (host !== 'soccerstats.com' && host !== 'www.soccerstats.com') return null;
-  const allowed = ['/pmatch.asp','/h2h.asp','/teamstats.asp','/matchlist.asp','/matches.asp','/match.asp','/matchstats.asp','/stats.asp'];
-  if (!allowed.includes(u.pathname.toLowerCase())) return null;
-  u.protocol = 'https:';
-  u.hash = '';
-  return u.toString();
+fs.mkdirSync(DATA_DIR, { recursive: true });
+if (!fs.existsSync(STORE_FILE)) {
+  fs.writeFileSync(STORE_FILE, JSON.stringify({ matchdays: {}, details: {} }, null, 2));
 }
 
-async function fetchWithTimeout(url, ms=12000){
-  const ctrl = new AbortController();
-  const timer = setTimeout(()=>ctrl.abort(), ms);
-  try{
-    return await fetch(url, {
-      signal: ctrl.signal,
-      redirect: 'follow',
-      headers: {
-        'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/124 Safari/537.36 MagicScanner/2.6',
-        'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-        'accept-language': 'en-US,en;q=0.9,it;q=0.8',
-        'cache-control': 'no-cache'
-      }
-    });
-  } finally { clearTimeout(timer); }
+function readStore() {
+  try {
+    const raw = fs.readFileSync(STORE_FILE, 'utf8');
+    const parsed = JSON.parse(raw || '{}');
+    return {
+      matchdays: parsed && typeof parsed.matchdays === 'object' && parsed.matchdays ? parsed.matchdays : {},
+      details: parsed && typeof parsed.details === 'object' && parsed.details ? parsed.details : {}
+    };
+  } catch (e) {
+    console.error('Store read error:', e.message);
+    return { matchdays: {}, details: {} };
+  }
 }
 
+function writeStore(store) {
+  const tmp = STORE_FILE + '.tmp';
+  fs.writeFileSync(tmp, JSON.stringify(store, null, 2));
+  fs.renameSync(tmp, STORE_FILE);
+}
 
-app.post('/api/fetch-matchday', async (req,res)=>{
-  const url = validateSoccerStatsUrl(req.body?.url || '');
-  if (!url) return res.status(400).json({error:'Inserisci un URL SoccerSTATS valido.'});
-  const parsed = new URL(url);
-  if (parsed.pathname.toLowerCase() !== '/matches.asp') {
-    return res.status(400).json({error:'Per la giornata usa un URL matches.asp di SoccerSTATS.'});
-  }
-  try{
-    const r = await fetchWithTimeout(url, 15000);
-    const html = await r.text();
-    if(!r.ok) return res.status(r.status).json({error:`SoccerSTATS ha risposto HTTP ${r.status}`});
-    if(!/Matches played|Goals per match|soccerstats/i.test(html)) {
-      return res.status(502).json({error:'La risposta non sembra la pagina giornaliera SoccerSTATS.'});
-    }
-    res.json({ok:true,url,html});
-  }catch(err){
-    res.status(502).json({error:err?.name==='AbortError'?'Timeout della sorgente':String(err?.message||err)});
-  }
+function requireAdmin(req, res, next) {
+  if (!ADMIN_TOKEN) return next();
+  const token = String(req.get('x-admin-token') || '').trim();
+  if (token !== ADMIN_TOKEN) return res.status(401).json({ ok: false, error: 'ADMIN_TOKEN non valido' });
+  next();
+}
+
+app.disable('x-powered-by');
+app.use(express.json({ limit: '25mb' }));
+
+app.get('/api/health', (req, res) => {
+  const store = readStore();
+  res.json({
+    ok: true,
+    version: '3.2.0',
+    storage: 'server-json',
+    admin_token_required: !!ADMIN_TOKEN,
+    matchdays: Object.keys(store.matchdays).length,
+    details: Object.keys(store.details).length
+  });
 });
 
-app.post('/api/fetch-stats', async (req,res)=>{
-  const incoming = Array.isArray(req.body?.urls) ? req.body.urls : [];
-  const urls = [...new Set(incoming.map(validateSoccerStatsUrl).filter(Boolean))].slice(0,30);
-  if (!urls.length) return res.status(400).json({error:'Inserisci almeno un URL SoccerSTATS valido.'});
+app.get('/api/matchdays', (req, res) => {
+  res.set('Cache-Control', 'no-store');
+  res.json({ ok: true, matchdays: readStore().matchdays });
+});
 
-  const items=[];
-  for (const url of urls){
-    try{
-      const r=await fetchWithTimeout(url);
-      const html=await r.text();
-      if(!r.ok){
-        items.push({url,ok:false,status:r.status,error:`HTTP ${r.status}`});
-      }else if(!/soccerstats/i.test(html)){
-        items.push({url,ok:false,status:r.status,error:'La risposta non sembra una pagina SoccerSTATS.'});
-      }else{
-        items.push({url,ok:true,status:r.status,html});
-      }
-    }catch(err){
-      items.push({url,ok:false,status:0,error:err?.name==='AbortError'?'Timeout della sorgente':String(err?.message||err)});
-    }
-    // richiesta sequenziale e piccola pausa: evita raffiche inutili
-    await new Promise(r=>setTimeout(r,250));
+app.get('/api/matchdays/:date', (req, res) => {
+  const store = readStore();
+  const pack = store.matchdays[req.params.date];
+  if (!pack) return res.status(404).json({ ok: false, error: 'Giornata non trovata' });
+  res.set('Cache-Control', 'no-store');
+  res.json({ ok: true, matchday: pack });
+});
+
+app.post('/api/matchdays/:date', requireAdmin, (req, res) => {
+  const key = String(req.params.date || '');
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(key)) return res.status(400).json({ ok: false, error: 'Data non valida' });
+  const pack = req.body && typeof req.body === 'object' ? req.body : {};
+  if (!Array.isArray(pack.matches)) return res.status(400).json({ ok: false, error: 'matches deve essere un array' });
+  const store = readStore();
+  store.matchdays[key] = { ...pack, date: key, published_at: new Date().toISOString() };
+  writeStore(store);
+  res.json({ ok: true, date: key, matches: pack.matches.length });
+});
+
+app.delete('/api/matchdays/:date', requireAdmin, (req, res) => {
+  const store = readStore();
+  const existed = !!store.matchdays[req.params.date];
+  delete store.matchdays[req.params.date];
+  writeStore(store);
+  res.json({ ok: true, deleted: existed, date: req.params.date });
+});
+
+app.delete('/api/matchdays', requireAdmin, (req, res) => {
+  const store = readStore();
+  const count = Object.keys(store.matchdays).length;
+  store.matchdays = {};
+  writeStore(store);
+  res.json({ ok: true, deleted: count });
+});
+
+app.get('/api/details', (req, res) => {
+  res.set('Cache-Control', 'no-store');
+  res.json({ ok: true, details: readStore().details });
+});
+
+app.post('/api/details/bulk', requireAdmin, (req, res) => {
+  const incoming = req.body && req.body.details && typeof req.body.details === 'object' ? req.body.details : {};
+  const store = readStore();
+  let count = 0;
+  for (const [id, detail] of Object.entries(incoming)) {
+    if (!id || !detail || typeof detail !== 'object') continue;
+    store.details[id] = detail;
+    count++;
   }
-  res.json({count:items.length,items});
+  writeStore(store);
+  res.json({ ok: true, saved: count, total: Object.keys(store.details).length });
 });
 
-app.use(express.static(path.join(__dirname,'dist'), { extensions: ['html'] }));
-app.use((req,res)=>{
-  res.status(404).sendFile(path.join(__dirname,'dist','index.html'));
+app.delete('/api/details', requireAdmin, (req, res) => {
+  const store = readStore();
+  const count = Object.keys(store.details).length;
+  store.details = {};
+  writeStore(store);
+  res.json({ ok: true, deleted: count });
 });
 
-app.listen(PORT, ()=> console.log(`MagicScanner V2.6 in ascolto sulla porta ${PORT}`));
+app.use(express.static(__dirname, {
+  etag: false,
+  lastModified: false,
+  setHeaders(res) {
+    res.setHeader('Cache-Control', 'no-store');
+  }
+}));
+
+app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'index.html')));
+
+app.use((err, req, res, next) => {
+  console.error(err);
+  res.status(500).json({ ok: false, error: 'Errore server' });
+});
+
+app.listen(PORT, () => {
+  console.log(`MagicScanner V3.2 listening on port ${PORT}`);
+  console.log(`Storage: ${STORE_FILE}`);
+  console.log(`ADMIN_TOKEN: ${ADMIN_TOKEN ? 'required' : 'not configured'}`);
+});
