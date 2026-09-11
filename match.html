@@ -6306,7 +6306,7 @@ function v3GoalTable(m,d){
   const detail=d?.goal_statistics||{};
   let rows;
   if(Object.keys(detail).length){
-    const gf=v3FindDetail(d,'GF per match'),ga=v3FindDetail(d,'GA per match'),o25=v3FindDetail(d,'GF+GA over 2.5'),btts=v3DetailPair((d?.total_goals_raw||[]).find(r=>r.some(x=>/^BTS$/i.test(x)))||[]),tg=v3FindDetail(d,'GF+GA per match');
+    const gf=v3FindDetail(d,'GF per match'),ga=v3FindDetail(d,'GA per match'),o25=v3FindDetail(d,'GF+GA over 2.5'),btts=v3DetailPair((d?.total_goals_raw||[]).find(r=>Array.isArray(r) ? r.some(x=>/^BTS$/i.test(String(x||''))) : /(^|\s)BTS($|\s)/i.test(String(r||'')))||[]),tg=v3FindDetail(d,'GF+GA per match');
     const scored=v3FindDetail(d,'Goals scored (GF)'), conceded=v3FindDetail(d,'Goals conceded (GA)');
     rows=[['Gol fatti',scored[0]!=='—'?scored[0]:gf[0],scored[1]!=='—'?scored[1]:gf[1]],['Gol subiti',conceded[0]!=='—'?conceded[0]:ga[0],conceded[1]!=='—'?conceded[1]:ga[1]],['Over 2.5',o25[0],o25[1]],['GF per match',gf[0],gf[1]],['GA per match',ga[0],ga[1]],['Media gol',tg[0],tg[1]]];
   }else{
