@@ -146,7 +146,7 @@ h1{font-size:34px;margin:0 0 8px}.sub{color:var(--muted);line-height:1.58}.eyebr
       <div class="daymetric"><small>No Bet</small><b id="dayNoBet">0</b></div>
       <div class="daymetric"><small>Stats URL</small><b id="dayStatsUrls">0</b></div>
     </div>
-    <div class="daylist" id="dayList" style="display:none"></div>
+    <div class="daylist" id="dayList"></div>
   </div>
 </div>
 
@@ -772,8 +772,10 @@ function renderDay(matches){
   document.querySelector('#dayFound').textContent=matches.length;
   document.querySelector('#dayPromoted').textContent=matches.filter(x=>x.marketType!=='nobet'&&x.marketType!=='noBet').length;
   document.querySelector('#dayNoBet').textContent=matches.filter(x=>x.marketType==='nobet'||x.marketType==='noBet').length;
-  document.querySelector('#dayStats').textContent=matches.filter(x=>x.stats_url).length;
+  const dayStatsEl=document.querySelector('#dayStats'); if(dayStatsEl) dayStatsEl.textContent=matches.filter(x=>x.stats_url).length;
   const box=document.querySelector('#dayList');
+  if(!box)return;
+  box.style.display=matches.length?'block':'none';
   if(!matches.length){box.innerHTML='';return}
   box.innerHTML=matches.slice(0,160).map(m=>{
     const home=msCleanTeamName(m.home), away=msCleanTeamName(m.away);
