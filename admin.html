@@ -177,7 +177,7 @@ h1{font-size:34px;margin:0 0 8px}.sub{color:var(--muted);line-height:1.58}.eyebr
 <div id="filePanel" class="panel"><label class="drop"><input id="files" type="file" accept=".html,.htm,.md,.txt,text/html" multiple hidden><strong>Trascina o scegli più file Stats</strong><small>Puoi caricare anche l’HTML salvato da MagicScanner Extract</small></label></div>
 <div class="actions"><button class="btn primary" id="importBtn">Importa e salva nel browser</button><button class="btn secondary" id="downloadBtn" disabled>Scarica backup .js</button><button class="btn secondary" id="clearBtn">Svuota archivio importato</button></div><div id="status" class="status"></div>
 <div class="grid"><div class="metric"><span>Sorgenti lette</span><b id="nFiles">0</b></div><div class="metric"><span>Partite riconosciute</span><b id="nMatches">0</b></div><div class="metric"><span>Goal stats</span><b id="nGoals">0</b></div><div class="metric"><span>Timing</span><b id="nTiming">0</b></div></div><div class="list" id="list"></div></div>
-<div class="card"><b>Flusso V3.1.2</b><div class="sub" style="margin-top:8px">Per la home: apri la pagina <b>matches.asp</b> → clicca <b>MagicScanner Extract</b> → incolla qui → <b>Importa giornata dal browser</b>. Per il dettaglio: fai lo stesso dalla pagina <b>Stats</b> e usa la sezione “Incolla testo/HTML”.</div><div class="notice">Il recupero diretto via URL rimane solo come fallback: SoccerSTATS può rispondere HTTP 403 ai server cloud.</div></div>
+<div class="card"><b>Flusso V3.1.7</b><div class="sub" style="margin-top:8px">Per la home: apri la pagina <b>matches.asp</b> → clicca <b>MagicScanner Extract</b> → incolla qui → <b>Importa giornata dal browser</b>. Per il dettaglio: fai lo stesso dalla pagina <b>Stats</b> e usa la sezione “Incolla testo/HTML”.</div><div class="notice">Il recupero diretto via URL rimane solo come fallback: SoccerSTATS può rispondere HTTP 403 ai server cloud.</div></div>
 </div>
 <script>
 /* V3.1: PIN amministratore lato browser. Protegge da accessi accidentali, non è sicurezza server-side. */
@@ -267,33 +267,36 @@ function parseExtractV3(data){
     if(scopeIndex<0)return null;
     const sm=cells[scopeIndex].match(/last\s+(\d+)/i);
     if(!sm)return null;
-    let team=msTeamFromRowLinks(r); let time='';
-    const scopeCell=cells[scopeIndex]||'';
-    if(!team){const embedded=msCleanTeamName(scopeCell); if(msValidTeamName(embedded))team=embedded;}
+    let team=''; let time='';
     for(let i=0;i<scopeIndex;i++){
       const c=cells[i];
       if(isTime(c)){time=c;continue}
-      if(msHeaderish(c))continue;
-      if(!team && !/^\d+(?:[.,]\d+)?%?$/.test(c) && c.length<=80 && msValidTeamName(c)) team=msCleanTeamName(c);
+      if(/^(scope|gp|w%|fts|cs|bts|tg|gf|ga|1\.5\+|2\.5\+|3\.5\+|points per game|stats)$/i.test(c))continue;
+      if(!/^\d+(?:[.,]\d+)?%?$/.test(c) && c.length<=80) team=c;
     }
     if(!team){
       const before=clean((r.text||'').split(/last\s+\d+/i)[0]).replace(/\b(?:[01]?\d|2[0-3]):[0-5]\d\b/g,' ').trim();
-      team=msCleanTeamName(before.split(/\s{2,}|\|/).map(clean).filter(Boolean).pop()||before);
+      team=before.split(/\s{2,}|\|/).map(clean).filter(Boolean).pop()||before;
     }
+    team=msCleanTeamName(team);
+    if(!msValidTeamName(team)||msHeaderish(team)) return null;
     let vals=[];
     for(let i=scopeIndex+1;i<cells.length;i++) vals.push(...numberTokens(cells[i]));
     if(vals.length<12){
       const tail=(r.text||'').split(/last\s+\d+/i).slice(1).join(' ');
       vals=numberTokens(tail);
     }
-    if(vals.length<11 || !msValidTeamName(team))return null;
+    if(vals.length<11)return null;
     let k=0, gp=Number(sm[1]);
     if(vals.length>=12 && !vals[0].includes('%') && Number(vals[0].replace(',','.'))<=40) gp=num(vals[k++]);
     const take=()=>vals[k++]||'0';
     let stats_url='';
     for(const a of (r.links||[])){
-      if(/^stats$/i.test(clean(a.text)) && a.href){stats_url=a.href;break}
-      const oc=a.onclick||''; const mm=oc.match(/['\"]([^'\"]*(?:pmatch|match|h2h)[^'\"]*)['\"]/i);
+      const href=String(a?.href||'');
+      const txt=clean(a?.text||'');
+      if(/^stats$/i.test(txt) && href){stats_url=href;break}
+      if(!stats_url && /pmatch\.asp|match\.asp/i.test(href)){stats_url=href;break}
+      const oc=String(a?.onclick||''); const mm=oc.match(/['\"]([^'\"]*(?:pmatch|match|h2h)[^'\"]*)['\"]/i);
       if(!stats_url&&mm){try{stats_url=new URL(mm[1],data.source||'https://www.soccerstats.com/').href}catch{}}
     }
     return {team,time,gp,w:take(),fts:take(),cs:take(),bts:take(),tg:take(),gf:take(),ga:take(),o15:take(),o25:take(),o35:take(),ppg:take(),stats_url};
@@ -313,13 +316,13 @@ function parseExtractV3(data){
     if(!pending){pending={league,row:parsed};continue}
     if(pending.row.team!==parsed.team){
       const stats_url=parsed.stats_url||pending.row.stats_url||'';
-      if(msValidTeamName(pending.row.team)&&msValidTeamName(parsed.team)&&!msHeaderish(pending.row.team)&&!msHeaderish(parsed.team)) out.push(buildMatch(pending.row,parsed,pending.league||league,pending.row.time||parsed.time||'',stats_url));
+      const m=buildMatch(pending.row,parsed,pending.league||league,pending.row.time||parsed.time||'',stats_url);
+      if(!out.some(x=>x.id===m.id))out.push(m);
       pending=null;
     }else pending={league,row:parsed};
   }
   return out;
 }
-
 
 // V3.1.2 — fallback robusto per matches.asp quando SoccerSTATS cambia struttura DOM.
 function msCleanText(v){return String(v||'').replace(/\u00a0/g,' ').replace(/\r/g,'').replace(/[ ]{2,}/g,' ').trim()}
@@ -503,14 +506,15 @@ function storeMatchdayFromHtml(html, sourceUrl='browser'){
     try{
       const data=JSON.parse(raw); extractData=data;
       if(data && (data.magicScannerExtract===5 || data.magicScannerExtract===4 || data.magicScannerExtract===3) && data.page!=='detail' && Array.isArray(data.rows)){
-        matches=parseExtractV3(data);
-        if(!matches.length) matches=parseExtractFlexible(data);
+        const classic=parseExtractV3(data);
+        const flexible=parseExtractFlexible(data);
+        matches=classic.length>=flexible.length?classic:flexible;
         sourceUrl=data.source||sourceUrl;
       } else if(data && data.magicScannerExtract===2 && Array.isArray(data.matches)){
         matches=data.matches.map(x=>buildMatch(x.home,x.away,x.league||'SoccerSTATS',x.time||'',x.stats_url||'')); sourceUrl=data.source||sourceUrl;
       }
     }catch(e){}
-    if(!matches.length && extractData && Array.isArray(extractData.rows)) matches=parseExtractFlexible(extractData);
+    if(extractData && Array.isArray(extractData.rows)){const alt=parseExtractFlexible(extractData);if(alt.length>matches.length)matches=alt;}
   }
   if(!matches.length) matches=parseMatchdayHtml(html);
   matches=(matches||[]).filter(m=>m&&msValidTeamName(m.home)&&msValidTeamName(m.away)&&!msHeaderish(m.home)&&!msHeaderish(m.away)&&m.home!==m.away);
