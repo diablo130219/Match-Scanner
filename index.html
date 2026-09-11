@@ -4288,7 +4288,6 @@ function readLogoCache(){try{return JSON.parse(localStorage.getItem('MAGICSCANNE
 function saveLogoCache(name,url){try{const c=readLogoCache();c[name]=url;localStorage.setItem('MAGICSCANNER_LOGO_CACHE',JSON.stringify(c))}catch{}}
 
 async function getOfficialTeamLogo(name){
-  const name=name;
   if(logoCache.has(name)) return logoCache.get(name);
   if(typeof teamLogoOverrides!=='undefined' && teamLogoOverrides[name]){logoCache.set(name,teamLogoOverrides[name]);saveLogoCache(name,teamLogoOverrides[name]);return teamLogoOverrides[name]}
   const persisted=readLogoCache()[name]; if(persisted){logoCache.set(name,persisted);return persisted}
