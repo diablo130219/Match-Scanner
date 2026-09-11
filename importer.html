@@ -161,7 +161,7 @@ h1{font-size:34px;margin:0 0 8px}.sub{color:var(--muted);line-height:1.58}.eyebr
 </div>
 
 <div class="card" id="promotedQueueCard">
-  <div class="eyebrow">V3.3.5 · Ricerca schede Stats</div>
+  <div class="eyebrow">V3.3.6 · Ricerca schede Stats</div>
   <h1>Trova una partita e carica il dettaglio</h1>
   <div class="sub">Cerca rapidamente tra <b>tutte le partite importate</b>. Premi <b>Apri Stats →</b>, sulla pagina SoccerSTATS usa <b>MagicScanner Extract</b>, poi torna qui e incolla nella sezione “Importa le pagine Stats”. Quando pubblichi, la partita passa automaticamente a <b>Dettaglio presente ✓</b> per tutti gli utenti.</div>
   <div class="grid" style="margin-top:18px">
@@ -484,7 +484,7 @@ function msBodyCanonicalMatches(data){
   return out;
 }
 
-// V3.3.5 — parser completo della giornata.
+// V3.3.6 — parser completo della giornata.
 // SoccerSTATS cambia le righe dopo l'inizio del match: le partite future hanno "last 8" + Stats,
 // quelle già giocate mostrano il punteggio + link round_details/analysis. Le leggiamo entrambe.
 function msScoreCell(v){return /^\d{1,2}$/.test(msCleanText(v))}

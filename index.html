@@ -4069,6 +4069,11 @@ body{background-attachment:fixed!important}
 .adminHomeBtn:hover{border-color:#38bdf8;color:#fff;box-shadow:0 0 0 3px rgba(56,189,248,.10),inset 0 1px 0 rgba(255,255,255,.05)}
 .adminHomeBtn::before{content:'🔒';font-size:12px}
 .badge.result{background:rgba(148,163,184,.14)!important;color:#d9e2ee!important;border-color:rgba(148,163,184,.28)!important}.confPill.result{background:rgba(148,163,184,.12)!important;color:#d9e2ee!important;border:1px solid rgba(148,163,184,.25)!important}
+
+/* V3.3.6: risultato finale ben visibile */
+.matchCard .badge.result{background:rgba(148,163,184,.16)!important;color:#e5edf6!important;border-color:rgba(148,163,184,.32)!important}
+.matchCard .confPill.result{background:rgba(148,163,184,.12)!important;color:#dce7f3!important;border-color:rgba(148,163,184,.28)!important}
+.matchCard .scoreBox .scoreN{white-space:nowrap}
 </style>
 </head>
 <body>
@@ -4486,10 +4491,12 @@ function renderList(){
 
   list.innerHTML = arr.map(m => {
     const isResult=m.status==='result'&&m.result;
-    const shownTime=isResult?`${m.result.home}-${m.result.away}`:(m.time||'—');
-    const shownReco=isResult?'Risultato':(m.recommended||'NO BET');
-    const shownSub=isResult?'Partita già passata a risultato su SoccerSTATS.':(m.summary||'');
-    const shownScore=isResult?'—':(m.signalScore ?? '');
+    const finalScore=isResult?`${m.result.home}-${m.result.away}`:'';
+    const shownTime=isResult?(m.time||'FT'):(m.time||'—');
+    const shownReco=isResult?`${m.home} ${finalScore} ${m.away}`:(m.recommended||'NO BET');
+    const shownSub=isResult?'Risultato finale':(m.summary||'');
+    const shownScore=isResult?finalScore:(m.signalScore ?? '');
+    const shownScoreLabel=isResult?'Finale':'Score';
     const shownConf=isResult?'RISULTATO':(m.confidence||'Bassa');
     return `
     <a class="matchCard" data-match-id="${esc(m.id)}" href="match.html?id=${encodeURIComponent(m.id)}">
@@ -4514,7 +4521,7 @@ function renderList(){
 
       <div class="scoreBox">
         <div class="scoreN">${shownScore}</div>
-        <div class="scoreLbl">Score</div>
+        <div class="scoreLbl">${esc(shownScoreLabel)}</div>
       </div>
 
       <div class="confPill ${isResult?'result':confClass(m.confidence)}">${esc(shownConf)}</div>
