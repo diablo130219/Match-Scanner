@@ -4137,42 +4137,36 @@ body{background-attachment:fixed!important}
 <div class="listWrap" id="matchList"></div>
 </section></div>
 <div class="footerNote">
-      MagicScanner V3.1 · Dashboard pubblica. Le giornate e i dettagli vengono gestiti dal pannello amministrativo separato.
+      MagicScanner V3.1.11 · Dashboard pubblica. Le giornate e i dettagli vengono gestiti dal pannello amministrativo separato.
     </div>
 </div>
-<script src="./data/matches.js"></script>
 <script>
 const matches = (()=>{
-  const base = Array.isArray(window.MATCHES) ? window.MATCHES : [];
+  // V3.1.11: la home pubblica mostra ESCLUSIVAMENTE le giornate importate dall'Admin.
+  // Il vecchio dataset statico non viene più usato come fallback della data corrente.
   try{
-    let days = JSON.parse(localStorage.getItem('MAGICSCANNER_MATCHDAYS') || '{}') || {};
-    // Compatibilità con le versioni precedenti: vecchia giornata = oggi.
-    if(!Object.keys(days).length){
-      const legacy=JSON.parse(localStorage.getItem('MAGICSCANNER_MATCHDAY')||'{}');
-      if(Array.isArray(legacy.matches)&&legacy.matches.length){
-        const t=new Date();t.setHours(12,0,0,0);
-        const key=`${t.getFullYear()}-${String(t.getMonth()+1).padStart(2,'0')}-${String(t.getDate()).padStart(2,'0')}`;
-        days[key]=legacy;
+    const days = JSON.parse(localStorage.getItem('MAGICSCANNER_MATCHDAYS') || '{}') || {};
+    const today = new Date();
+    today.setHours(12,0,0,0);
+    const imported = [];
+
+    for(const [key, pack] of Object.entries(days)){
+      if(!pack || !Array.isArray(pack.matches) || !pack.matches.length) continue;
+      const dm = String(key).match(/^(\d{4})-(\d{2})-(\d{2})$/);
+      if(!dm) continue;
+      const d = new Date(Number(dm[1]), Number(dm[2])-1, Number(dm[3]), 12);
+      const offset = Math.round((d - today) / 86400000);
+      if(offset < -1 || offset > 4) continue;
+      for(const m of pack.matches){
+        imported.push({...m, date_offset:offset, calendar_date:key, imported_day:true});
       }
     }
-    const today=new Date();today.setHours(12,0,0,0);
-    const imported=[]; const replacedOffsets=new Set();
-    for(const [key,pack] of Object.entries(days)){
-      if(!Array.isArray(pack.matches)||!pack.matches.length)continue;
-      const dm=key.match(/^(\d{4})-(\d{2})-(\d{2})$/);if(!dm)continue;
-      const d=new Date(Number(dm[1]),Number(dm[2])-1,Number(dm[3]),12);
-      const offset=Math.round((d-today)/86400000);
-      if(offset < -1 || offset > 4) continue;
-      replacedOffsets.add(offset);
-      for(const m of pack.matches) imported.push({...m,date_offset:offset,calendar_date:key});
-    }
-    if(imported.length){
-      const ids=new Set(imported.map(m=>m.id+'|'+m.date_offset));
-      const keep=base.filter(m=>!replacedOffsets.has(Number(m.date_offset??0)) && !ids.has(m.id+'|'+Number(m.date_offset??0)));
-      return [...keep,...imported];
-    }
-  }catch(e){ console.warn('Giornate importate non leggibili',e); }
-  return base;
+
+    return imported;
+  }catch(e){
+    console.warn('Giornate importate non leggibili', e);
+    return [];
+  }
 })();
 
 function esc(s) {
