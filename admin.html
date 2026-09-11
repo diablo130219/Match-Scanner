@@ -425,6 +425,56 @@ function msBodyCanonicalMatches(data){
   return out;
 }
 
+// V3.2.5 — parser deterministico della giornata SoccerSTATS.
+// Usa esclusivamente coppie di righe consecutive: HOME con orario + last 8, poi AWAY + last 8.
+function parseDeterministicMatchday(data){
+  const rows=Array.isArray(data&&data.rows)?data.rows:[];
+  const out=[];
+  let league='SoccerSTATS';
+  const clean=v=>String(v==null?'':v).replace(/\u00a0/g,' ').replace(/\r/g,'').replace(/[ ]{2,}/g,' ').trim();
+  const isTime=v=>/^(?:[01]?\d|2[0-3]):[0-5]\d$/.test(clean(v));
+  const isScope=v=>/^(?:last|la\s*t)\s*8$/i.test(clean(v));
+  const cleanTeam=v=>clean(v).replace(/\s+(?:last|la\s*t)\s*8.*$/i,'').replace(/\s+(?:stats?|tat)$/i,'').trim();
+  const metric=v=>/^\d+(?:[.,]\d+)?%?$/.test(clean(v));
+  const statsUrl=r=>{
+    const links=Array.isArray(r&&r.links)?r.links:[];
+    const a=links.find(x=>/soccerstats\.com\/(?:pmatch|h2h|match)\.asp/i.test(String(x&&x.href||'')));
+    return a?String(a.href||''):'';
+  };
+  const parseRow=(cells,home)=>{
+    const c=(cells||[]).map(clean);
+    const si=home?2:1;
+    if(!isScope(c[si]))return null;
+    const vals=c.slice(si+1).filter(metric);
+    if(vals.length<12)return null;
+    const team=cleanTeam(c[0]);
+    if(!team||team.length>90||!/\p{L}/u.test(team))return null;
+    const [gp,w,fts,cs,bts,tg,gf,ga,o15,o25,o35,ppg]=vals.slice(0,12);
+    return {team,gp,w,fts,cs,bts,tg,gf,ga,o15,o25,o35,ppg,stats_url:''};
+  };
+  for(let i=0;i<rows.length-1;i++){
+    const r=rows[i]||{};
+    const c=(r.cells||[]).map(clean);
+    // Header campionato: prima cella col nome, seconda con Matches played.
+    if(c.length>=2 && /matche?s?\s+played/i.test(c[1])){
+      const g=cleanTeam(c[0]);
+      if(g)league=g;
+      continue;
+    }
+    if(c.length<15 || !isTime(c[1]) || !isScope(c[2]))continue;
+    const next=rows[i+1]||{};
+    const cc=(next.cells||[]).map(clean);
+    if(cc.length<14 || !isScope(cc[1]))continue;
+    const home=parseRow(c,true), away=parseRow(cc,false);
+    if(!home||!away)continue;
+    home.stats_url=statsUrl(r);
+    const m=buildMatch(home,away,league,c[1],home.stats_url);
+    if(m)out.push(m);
+    i++; // la riga ospite è già stata consumata
+  }
+  return out;
+}
+
 // V3.1.9 — parser diretto sul payload reale condiviso dall'utente.
 // Non dipende da "last 8": SoccerSTATS nel payload può trasformarlo in "la t 8".
 function parseExactPayloadV319(data){
@@ -708,20 +758,17 @@ function storeMatchdayFromHtml(html, sourceUrl='browser'){
     try{
       const data=JSON.parse(raw); extractData=data;
       if(data && (data.magicScannerExtract===6 || data.magicScannerExtract===5 || data.magicScannerExtract===4 || data.magicScannerExtract===3) && data.page!=='detail' && Array.isArray(data.rows)){
-        const direct=parseExactPayloadV319(data);
-        const exact=parseExtractExact(data);
-        const classic=parseExtractV3(data);
-        const flexible=parseExtractFlexible(data);
-        matches=[direct,exact,classic,flexible].sort((a,b)=>b.length-a.length)[0];
+        // V3.2.5: parser unico e deterministico. Non sostituire più il risultato con fallback più piccoli.
+        matches=parseDeterministicMatchday(data);
         sourceUrl=data.source||sourceUrl;
       } else if(data && data.magicScannerExtract===2 && Array.isArray(data.matches)){
         matches=data.matches.map(x=>buildMatch(x.home,x.away,x.league||'SoccerSTATS',x.time||'',x.stats_url||'')); sourceUrl=data.source||sourceUrl;
       }
     }catch(e){}
-    if(extractData && Array.isArray(extractData.rows)){const directAlt=parseExactPayloadV319(extractData);const exactAlt=parseExtractExact(extractData);const flexAlt=parseExtractFlexible(extractData);for(const alt of [directAlt,exactAlt,flexAlt])if(alt.length>matches.length)matches=alt;}
+
   }
   if(!matches.length) matches=parseMatchdayHtml(html);
-  matches=(matches||[]).filter(m=>m&&msValidTeamName(m.home)&&msValidTeamName(m.away)&&!msHeaderish(m.home)&&!msHeaderish(m.away)&&m.home!==m.away);
+  matches=(matches||[]).filter(m=>m&&String(m.home||'').trim()&&String(m.away||'').trim()&&m.home!==m.away);
   const dedupMap=new Map(); for(const m of matches){const k=slug(m.home)+'__'+slug(m.away)+'__'+String(m.time||''); if(!dedupMap.has(k))dedupMap.set(k,m)} matches=[...dedupMap.values()];
   if(!matches.length){
     let diag='';
