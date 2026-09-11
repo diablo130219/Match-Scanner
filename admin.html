@@ -19,7 +19,7 @@ h1{font-size:34px;margin:0 0 8px}.sub{color:var(--muted);line-height:1.58}.eyebr
 .dayrow{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:end}
 .dayurl{width:100%;border:1px solid #2b4765;border-radius:13px;background:#071524;color:#eef6ff;padding:13px 14px;font:14px ui-monospace,SFMono-Regular,Consolas,monospace;outline:none}
 .dayurl:focus{border-color:var(--cyan);box-shadow:0 0 0 3px #38bdf81a}
-.dayresults{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:14px}
+.dayresults{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin-top:14px}
 .daymetric{padding:12px;border:1px solid #1f3853;border-radius:14px;background:#081626}.daymetric small{display:block;color:#8199b1;text-transform:uppercase;letter-spacing:.7px;font-size:10px}.daymetric b{display:block;font-size:23px;margin-top:4px}
 .daylist{margin-top:12px;max-height:360px;overflow:auto;border:1px solid #19304a;border-radius:14px}.dayitem{display:grid;grid-template-columns:70px minmax(0,1fr) 100px 130px;gap:10px;align-items:center;padding:10px 12px;border-bottom:1px solid #162c43;font-size:13px}.dayitem:last-child{border-bottom:0}.pill{display:inline-flex;justify-content:center;padding:5px 8px;border-radius:999px;font-size:10px;font-weight:900;text-transform:uppercase}.pill.over{background:#12385a;color:#7dd3fc}.pill.goal{background:#32205c;color:#c4b5fd}.pill.favorite{background:#4b3510;color:#fde68a}.pill.under{background:#12372d;color:#86efac}.pill.nobet{background:#3b1b25;color:#fda4af}
 @media(max-width:720px){.dayrow{grid-template-columns:1fr}.dayresults{grid-template-columns:repeat(2,1fr)}.dayitem{grid-template-columns:55px minmax(0,1fr);}.dayitem>*:nth-child(3),.dayitem>*:nth-child(4){display:none}}
@@ -52,8 +52,9 @@ h1{font-size:34px;margin:0 0 8px}.sub{color:var(--muted);line-height:1.58}.eyebr
 .actions .btn,.actions .dayurl{min-height:46px}
 #storedDaySelect{min-width:250px;max-width:320px!important}
 #matchdayHtml{min-height:210px!important}
-.dayresults{grid-template-columns:repeat(4,minmax(150px,1fr))!important}
+.dayresults{grid-template-columns:repeat(5,minmax(130px,1fr))!important}
 .daymetric{min-height:86px;display:flex;flex-direction:column;justify-content:center}
+.pill.result{background:rgba(148,163,184,.14)!important;color:#d9e2ee!important;border-color:rgba(148,163,184,.28)!important}
 .daylist{max-height:520px!important;background:#081421}
 .dayitem{grid-template-columns:72px minmax(0,1fr) 110px minmax(160px,240px)!important;padding:13px 14px!important;min-height:68px}
 .dayitem>div{min-width:0}.dayitem>div>b{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -152,6 +153,7 @@ h1{font-size:34px;margin:0 0 8px}.sub{color:var(--muted);line-height:1.58}.eyebr
       <div class="daymetric"><small>Partite trovate</small><b id="dayFound">0</b></div>
       <div class="daymetric"><small>Promosse</small><b id="dayPromoted">0</b></div>
       <div class="daymetric"><small>No Bet</small><b id="dayNoBet">0</b></div>
+      <div class="daymetric"><small>Risultati</small><b id="dayResults">0</b></div>
       <div class="daymetric"><small>Stats URL</small><b id="dayStatsUrls">0</b></div>
     </div>
     <div class="daylist" id="dayList"></div>
@@ -159,7 +161,7 @@ h1{font-size:34px;margin:0 0 8px}.sub{color:var(--muted);line-height:1.58}.eyebr
 </div>
 
 <div class="card" id="promotedQueueCard">
-  <div class="eyebrow">V3.3.3 · Ricerca schede Stats</div>
+  <div class="eyebrow">V3.3.5 · Ricerca schede Stats</div>
   <h1>Trova una partita e carica il dettaglio</h1>
   <div class="sub">Cerca rapidamente tra <b>tutte le partite importate</b>. Premi <b>Apri Stats →</b>, sulla pagina SoccerSTATS usa <b>MagicScanner Extract</b>, poi torna qui e incolla nella sezione “Importa le pagine Stats”. Quando pubblichi, la partita passa automaticamente a <b>Dettaglio presente ✓</b> per tutti gli utenti.</div>
   <div class="grid" style="margin-top:18px">
@@ -478,6 +480,59 @@ function msBodyCanonicalMatches(data){
       if(a.length>=13 && /^last\s*8$/i.test(a[1]||'')){away=a;break}
     }
     if(away)out.push({league,home:msCleanTeamName(h[0]),away:msCleanTeamName(away[0]),time:h[1]});
+  }
+  return out;
+}
+
+// V3.3.5 — parser completo della giornata.
+// SoccerSTATS cambia le righe dopo l'inizio del match: le partite future hanno "last 8" + Stats,
+// quelle già giocate mostrano il punteggio + link round_details/analysis. Le leggiamo entrambe.
+function msScoreCell(v){return /^\d{1,2}$/.test(msCleanText(v))}
+function msResultUrl(row){
+  const links=Array.isArray(row?.links)?row.links:[];
+  const x=links.find(a=>/soccerstats\.com\/round_details\.asp/i.test(String(a?.href||'')));
+  return x?.href||'';
+}
+function msResultMatch(home,away,league,hs,as,resultUrl){
+  home=msCleanTeamName(home);away=msCleanTeamName(away);
+  if(!msValidTeamName(home)||!msValidTeamName(away)||home===away)return null;
+  return {id:slug(home+'-'+away),league:league||'SoccerSTATS',time:'',home,away,status:'result',result:{home:Number(hs),away:Number(as)},result_url:resultUrl||'',date_offset:0};
+}
+function parseAllStatesMatchday(data){
+  const rows=Array.isArray(data?.rows)?data.rows:[];
+  const out=[];let league='SoccerSTATS';
+  const clean=v=>msCleanText(v);
+  const isTime=v=>/^(?:[01]?\d|2[0-3]):[0-5]\d$/.test(clean(v));
+  const isScope=v=>/^(?:last|la\s*t)\s*8$/i.test(clean(v));
+  const add=m=>{if(m&&!out.some(x=>x.id===m.id))out.push(m)};
+  for(let i=0;i<rows.length;i++){
+    const r=rows[i]||{};const c=(r.cells||[]).map(clean);
+    if(c.length>=2&&/matche?s?\s+played/i.test(c[1]||'')){
+      const g=msCleanTeamName(c[0]).replace(/\s+(?:stats?|tat)$/i,'').trim();if(g)league=g;continue;
+    }
+    // Futuro / pre-match: riga casa + riga trasferta con last 8.
+    if(c.length>=15&&isTime(c[1])&&isScope(c[2])){
+      const home=msExactMetricRow(c,true);let away=null,awayIndex=-1;
+      if(home){
+        for(let j=i+1;j<Math.min(rows.length,i+4);j++){
+          const cc=(rows[j]?.cells||[]).map(clean);
+          if(cc.length>=14&&isScope(cc[1])){away=msExactMetricRow(cc,false);if(away){awayIndex=j;break}}
+          if(cc.length>1&&isTime(cc[1]))break;
+        }
+      }
+      if(home&&away){home.stats_url=msExactStatsUrl(r);add(buildMatch(home,away,league,c[1],home.stats_url));if(awayIndex>i)i=awayIndex;continue}
+    }
+    // Match già iniziato/terminato: SoccerSTATS sostituisce le metriche con punteggio + Analysis.
+    const resultUrl=msResultUrl(r);
+    if(c.length>=2&&msScoreCell(c[1])&&resultUrl){
+      const home=msCleanTeamName(c[0]);
+      for(let j=i+1;j<Math.min(rows.length,i+4);j++){
+        const cc=(rows[j]?.cells||[]).map(clean);
+        if(!cc[0])continue;
+        if(msScoreCell(cc[1])){add(msResultMatch(home,cc[0],league,c[1],cc[1],resultUrl));i=j;break}
+        if(isTime(cc[1])||/matche?s?\s+played/i.test(cc[1]||''))break;
+      }
+    }
   }
   return out;
 }
@@ -850,14 +905,14 @@ function storeMatchdayFromHtml(html, sourceUrl='browser'){
   if(raw.startsWith('{')){
     try{
       const data=JSON.parse(raw); extractData=data;
-      if(data && data.magicScannerExtract===8 && data.page!=='detail' && data.rawDom===true && Array.isArray(data.rows)){
-        const namedCandidates=[['det',parseDeterministicMatchday(data)],['flat',parseFlatCellMatchday(data)],['exact',parseExactPayloadV319(data)]];
+      if(data && Number(data.magicScannerExtract)>=8 && data.page!=='detail' && data.rawDom===true && Array.isArray(data.rows)){
+        const namedCandidates=[['all',parseAllStatesMatchday(data)],['det',parseDeterministicMatchday(data)],['flat',parseFlatCellMatchday(data)],['exact',parseExactPayloadV319(data)]];
         namedCandidates.sort((a,b)=>b[1].length-a[1].length);
         matches=namedCandidates[0]?.[1]||[];
         data.__msParserDiag=namedCandidates.map(x=>`${x[0]}:${x[1].length}`).join(' · ');
         sourceUrl=data.source||sourceUrl;
       } else if(data && data.magicScannerExtract && data.page!=='detail'){
-        throw new Error('Estrattore vecchio: aggiorna il preferito MagicScanner Extract dalla V3.3.3. Serve la V8, che legge il DOM grezzo incluse le competizioni nascoste.');
+        throw new Error('Estrattore vecchio: aggiorna il preferito MagicScanner Extract dalla V3.3.3. Serve la V8 o successiva.');
       } else if(data && data.magicScannerExtract===2 && Array.isArray(data.matches)){
         matches=data.matches.map(x=>buildMatch(x.home,x.away,x.league||'SoccerSTATS',x.time||'',x.stats_url||'')); sourceUrl=data.source||sourceUrl;
       }
@@ -1124,8 +1179,9 @@ function cleanRecommended(m){let s=String(m?.recommended||'').trim();s=s.replace
 
 function renderDay(matches){
   document.querySelector('#dayFound').textContent=matches.length;
-  document.querySelector('#dayPromoted').textContent=matches.filter(x=>x.marketType!=='nobet'&&x.marketType!=='noBet').length;
-  document.querySelector('#dayNoBet').textContent=matches.filter(x=>x.marketType==='nobet'||x.marketType==='noBet').length;
+  document.querySelector('#dayPromoted').textContent=matches.filter(x=>x.status!=='result'&&x.marketType&&x.marketType!=='nobet'&&x.marketType!=='noBet').length;
+  document.querySelector('#dayNoBet').textContent=matches.filter(x=>x.status!=='result'&&(x.marketType==='nobet'||x.marketType==='noBet')).length;
+  const dayResultsEl=document.querySelector('#dayResults'); if(dayResultsEl) dayResultsEl.textContent=matches.filter(x=>x.status==='result').length;
   const dayStatsEl=document.querySelector('#dayStats'); if(dayStatsEl) dayStatsEl.textContent=matches.filter(x=>x.stats_url).length;
   const box=document.querySelector('#dayList');
   if(!box)return;
@@ -1133,16 +1189,17 @@ function renderDay(matches){
   if(!matches.length){box.innerHTML='';return}
   box.innerHTML=matches.slice(0,160).map(m=>{
     const home=msCleanTeamName(m.home), away=msCleanTeamName(m.away);
-    const mt=(m.marketType||'nobet').toLowerCase();
-    const pill=mt==='nobet'||mt==='nobet'?'NO BET':mt.toUpperCase();
-    const pick=cleanRecommended({...m,home,away});
-    const conf=Math.round(Number(m.signalScore||0)); const confLabel=String(m.confidence||'').trim();
+    const isResult=m.status==='result'&&m.result;
+    const mt=isResult?'result':(m.marketType||'nobet').toLowerCase();
+    const pill=isResult?'RISULTATO':(mt==='nobet'?'NO BET':mt.toUpperCase());
+    const pick=isResult?`${m.result.home} - ${m.result.away}`:cleanRecommended({...m,home,away});
+    const conf=isResult?0:Math.round(Number(m.signalScore||0)); const confLabel=isResult?'':String(m.confidence||'').trim();
     return `<div class="dayitem">
-      <div class="fixtureTime">${m.time||'—'}</div>
+      <div class="fixtureTime">${isResult?`${m.result.home}-${m.result.away}`:(m.time||'—')}</div>
       <div><div class="fixtureTeams"><span class="fixtureTeam">${adminCrest(home)}<span class="fixtureTeamName">${home}</span></span><span class="fixtureDash">—</span><span class="fixtureTeam"><span class="fixtureTeamName">${away}</span>${adminCrest(away)}</span></div><small class="fixtureMeta">${m.league||'SoccerSTATS'}</small></div>
       <div class="fixturePick"><span class="pill ${mt}">${pill}</span><b>${pick}</b></div>
-      <div class="fixtureConfidence">${conf?conf+'%':'—'}<small>${confLabel?confLabel+' · ':''}affidabilità</small></div>
-      ${m.stats_url?`<a class="fixtureStatsBtn" href="${m.stats_url}" target="_blank" rel="noopener">Stats →</a>`:'<span></span>'}
+      <div class="fixtureConfidence">${isResult?'—':(conf?conf+'%':'—')}<small>${isResult?'risultato':(confLabel?confLabel+' · ':'')+'affidabilità'}</small></div>
+      ${isResult&&m.result_url?`<a class="fixtureStatsBtn" href="${m.result_url}" target="_blank" rel="noopener">Analisi →</a>`:(m.stats_url?`<a class="fixtureStatsBtn" href="${m.stats_url}" target="_blank" rel="noopener">Stats →</a>`:'<span></span>')}
     </div>`
   }).join('');
 }
