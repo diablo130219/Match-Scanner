@@ -542,8 +542,127 @@ function section(t,a,ends){const i=t.indexOf(a);if(i<0)return'';let e=t.length;f
 function cells(line){return line.replace(/^\||\|$/g,'').split('|').map(x=>x.replace(/\*\*/g,'').replace(/\[[^\]]*\]\([^)]*\)/g,'').trim())}
 function rowmap(block,labels){const o={};for(const ln of block.split('\n')){const c=cells(ln);for(const lab of labels)if(c.some(x=>x.toLowerCase()===lab.toLowerCase()))o[lab]=c}return o}
 function timing(block){const o={};let team=null,scope=null,last=null;for(const raw of block.split('\n')){const ln=raw.trim();if(ln.startsWith('#### ')){team=ln.slice(5).trim();o[team]??={}}else if(/^\*\*(Total|Home|Away)\*\*$/.test(ln)){scope=ln.replace(/\*/g,'').toLowerCase();if(team)o[team][scope]??={}}else if(team&&scope){const seg=['0-15','16-30','31-45','46-60','61-75','76-90','1st Half','2nd Half'].find(x=>ln.includes(x));if(seg){last=seg;o[team][scope][seg]??={};const n=(ln.match(/\b\d+(?:\.\d+)?%?\b/g)||[])[0]||'';if(ln.includes('GF'))o[team][scope][seg].gf=n;if(ln.includes('GA'))o[team][scope][seg].ga=n}else if(last&&/^\|\s*GA\s*\|/i.test(ln)){const n=(ln.match(/\b\d+(?:\.\d+)?%?\b/g)||[])[0]||'';o[team][scope][last].ga=n}}}return o}
-function parse(text,name,sourceUrl=''){let title='';for(const ln of text.split('\n').slice(0,140)){const m=ln.match(/([^|#*]+?)\s+vs\s+([^|#*]+)/i);if(m){title=m[1].trim()+' vs '+m[2].trim();break}}if(!title)title=name.replace(/\.(md|txt)$/i,'').replace(/-/g,' ');const p=title.split(/\s+vs\s+/i),home=p[0]||title,away=p[1]||'';const goal=section(text,'## Goal statistics',['## Teams scoring stats','## Home vs Away Stats','## Scorelines']);const corners=section(text,'## Corner statistics',['## Teams results table','## Goal statistics']);const gt=section(text,'## Goal times',['## Goal Differences by time segment']);const avg=section(text,'## Average goal times',['## Corner statistics']);const total=section(text,'## Total Goals (GF + GA) stats',['## Featured Highest','## Contextual averages']);const contextual=section(text,'## Contextual averages',['FORM','## Results progression','## Goal times']);const ha=section(text,'## Home vs Away Stats',['## Scorelines','## Home vs Away distribution']);const labels=['Goals scored (GF)','GF per match','Goals conceded (GA)','GA per match','GF+GA per match','GF+GA over 0.5','GF+GA over 1.5','GF+GA over 2.5','GF+GA over 3.5','GF+GA over 4.5','GF+GA over 5.5','GF+GA over 0.5 at HT','GF+GA over 1.5 at HT','GF+GA over 2.5 at HT'];const cl=['AVG Corners For','AVG Corners Against','Total per match','Total Over 7.5','Total Over 8.5','Total Over 9.5','Total Over 10.5','Total Over 11.5','Total Over 12.5','Total Over 13.5'];const onlyRows=b=>b.split('\n').map(x=>x.trim()).filter(x=>x.startsWith('|')&&!/^\|?\s*[-:| ]+\|?$/.test(x));return{id:slug(home+'-'+away),home,away,source_file:name,source_url:sourceUrl,goal_statistics:rowmap(goal,labels),corners:rowmap(corners,cl),average_goal_times_raw:onlyRows(avg).filter(x=>x.includes('Average minute')),total_goals_raw:onlyRows(total),contextual_raw:onlyRows(contextual),home_away_raw:onlyRows(ha),timing:timing(gt)}}
-function htmlToMarkdownish(html){const doc=new DOMParser().parseFromString(html,'text/html');doc.querySelectorAll('script,style,noscript,svg,canvas').forEach(x=>x.remove());const out=[];const walk=(el)=>{if(el.nodeType!==1)return;const tag=el.tagName.toLowerCase();if(/^h[1-4]$/.test(tag)){const lvl=Number(tag[1]);const txt=el.textContent.replace(/\s+/g,' ').trim();if(txt)out.push('#'.repeat(lvl)+' '+txt)}else if(tag==='table'){for(const tr of el.querySelectorAll(':scope > tbody > tr, :scope > thead > tr, :scope > tr')){const cs=[...tr.children].filter(x=>/^(TD|TH)$/.test(x.tagName)).map(x=>x.textContent.replace(/\s+/g,' ').trim());if(cs.length)out.push('| '+cs.join(' | ')+' |')}}else if(['p','div','section','article'].includes(tag)){const own=[...el.childNodes].filter(n=>n.nodeType===3).map(n=>n.textContent).join(' ').replace(/\s+/g,' ').trim();if(own)out.push(own)}for(const c of el.children)if(tag!=='table')walk(c)};walk(doc.body);return out.join('\n')}
+function sectionLoose(text, title, nextTitles=[]){
+  const lines=String(text||'').split('\n');
+  const norm=s=>String(s||'').replace(/^#+\s*/,'').replace(/\*\*/g,'').replace(/\s+/g,' ').trim().toLowerCase();
+  const start=lines.findIndex(x=>norm(x)===title.toLowerCase());
+  if(start<0)return '';
+  let stop=lines.length;
+  for(let i=start+1;i<lines.length;i++){
+    const n=norm(lines[i]);
+    if(nextTitles.some(t=>n===t.toLowerCase())){stop=i;break}
+    if(/^##\s+/.test(lines[i]) && n!==title.toLowerCase()){stop=i;break}
+  }
+  return lines.slice(start,stop).join('\n');
+}
+function rowsFromBlock(block){
+  return String(block||'').split('\n').map(x=>x.trim()).filter(x=>x.startsWith('|')&&!/^\|?\s*[-:| ]+\|?$/.test(x));
+}
+function rowmapLoose(block, labels){
+  const out={};
+  for(const row of rowsFromBlock(block)){
+    const cells=row.replace(/^\||\|$/g,'').split('|').map(x=>x.replace(/\*\*/g,'').replace(/\u00a0/g,' ').trim());
+    const hit=labels.find(l=>cells.some(c=>c.toLowerCase()===l.toLowerCase()));
+    if(hit){
+      const nums=cells.filter(c=>c && c.toLowerCase()!==hit.toLowerCase() && /\d|%/.test(c));
+      if(nums.length) out[hit]=nums.slice(0,4);
+    }
+  }
+  return out;
+}
+function timingLoose(block,home,away){
+  const rows=rowsFromBlock(block);
+  const segments=['0-15','16-30','31-45','46-60','61-75','76-90'];
+  const groups=[]; let current=[];
+  for(const row of rows){
+    const cells=row.replace(/^\||\|$/g,'').split('|').map(x=>x.replace(/\*\*/g,'').trim()).filter(Boolean);
+    if(cells.some(c=>segments.includes(c))){
+      if(current.length>=4) groups.push(current);
+      current=[];
+    }
+    if(cells.some(c=>segments.includes(c)) || /^GA$/i.test(cells[0]||'')) current.push(cells);
+  }
+  if(current.length)groups.push(current);
+  const parsedGroups=[];
+  for(const g of groups){
+    const obj={}; let last='';
+    for(const c of g){
+      const seg=c.find(x=>segments.includes(x));
+      if(seg){last=seg;obj[seg]??={};const gi=c.findIndex(x=>/^GF$/i.test(x));if(gi>=0){const val=c.slice(gi+1).find(x=>/^-?\d+(?:\.\d+)?%?$/.test(x));if(val)obj[seg].gf=val}}
+      else if(last && /^GA$/i.test(c[0]||'')){const val=c.slice(1).find(x=>/^-?\d+(?:\.\d+)?%?$/.test(x));if(val)obj[last].ga=val}
+    }
+    if(Object.keys(obj).length>=3)parsedGroups.push(obj);
+  }
+  const out={};
+  if(parsedGroups[0]){out[home]??={};out[home].total=parsedGroups[0]}
+  if(parsedGroups[1]){out[home]??={};out[home].home=parsedGroups[1]}
+  if(parsedGroups[2]){out[away]??={};out[away].total=parsedGroups[2]}
+  if(parsedGroups[3]){out[away]??={};out[away].away=parsedGroups[3]}
+  return out;
+}
+function parse(text,name,sourceUrl=''){
+  text=String(text||'').replace(/\\n/g,'\n').replace(/\\t/g,'\t');
+  let title='';
+  for(const ln of text.split('\n').slice(0,220)){
+    const m=ln.replace(/[#*|]/g,' ').match(/([^|]+?)\s+vs\s+([^|]+)/i);
+    if(m){title=m[1].trim()+' vs '+m[2].trim();break}
+  }
+  if(!title) title=name.replace(/\.(md|txt)$/i,'').replace(/-/g,' ');
+  const p=title.split(/\s+vs\s+/i),home=(p[0]||title).trim(),away=(p[1]||'').trim();
+  const goal=sectionLoose(text,'Goal statistics',['Teams scoring stats vs league average','Home vs Away Stats','Scorelines']);
+  const corners=sectionLoose(text,'Corner statistics',['Teams results table','Goal statistics']);
+  const gt=sectionLoose(text,'Goal times',['Goal Differences by time segment (TOTAL)','Average goal times','Corner statistics']);
+  const avg=sectionLoose(text,'Average goal times',['Corner statistics']);
+  const total=sectionLoose(text,'Total Goals (GF + GA) stats',['Featured Highest / Lowest individual rankings','Contextual averages']);
+  const contextual=sectionLoose(text,'Contextual averages',['Results progression and current form','Goal times']);
+  const ha=sectionLoose(text,'Home vs Away Stats',['Scorelines','Home vs Away distribution']);
+  const labels=['Goals scored (GF)','GF per match','Goals conceded (GA)','GA per match','GF+GA per match','GF+GA over 0.5','GF+GA over 1.5','GF+GA over 2.5','GF+GA over 3.5','GF+GA over 4.5','GF+GA over 5.5','GF+GA over 0.5 at HT','GF+GA over 1.5 at HT','GF+GA over 2.5 at HT'];
+  const cl=['AVG Corners For','AVG Corners Against','Total per match','Total Over 7.5','Total Over 8.5','Total Over 9.5','Total Over 10.5','Total Over 11.5','Total Over 12.5','Total Over 13.5'];
+  const onlyRows=b=>rowsFromBlock(b);
+  let gmap=rowmap(goal,labels); if(!Object.keys(gmap).length)gmap=rowmapLoose(goal,labels);
+  let cmap=rowmap(corners,cl); if(!Object.keys(cmap).length)cmap=rowmapLoose(corners,cl);
+  let tmap=timing(gt); if(!Object.keys(tmap).length)tmap=timingLoose(gt,home,away);
+  return {id:slug(home+'-'+away),home,away,source_file:name,source_url:sourceUrl,goal_statistics:gmap,corners:cmap,average_goal_times_raw:onlyRows(avg).filter(x=>/Average minute/i.test(x)),total_goals_raw:onlyRows(total),contextual_raw:onlyRows(contextual),home_away_raw:onlyRows(ha),timing:tmap};
+}
+function htmlToMarkdownish(html){
+  const doc=new DOMParser().parseFromString(html,'text/html');
+  doc.querySelectorAll('script,style,noscript,svg,canvas,iframe').forEach(x=>x.remove());
+  const out=[];
+  const known=[
+    'Total Goals (GF + GA) stats','Contextual averages','Goal times','Goal Differences by time segment (TOTAL)',
+    'Goal Differences by time segment (HOME vs AWAY)','Average goal times','Corner statistics','Teams results table',
+    'Goal statistics','Teams scoring stats vs league average','Home vs Away Stats','Scorelines','Home vs Away distribution',
+    'Current Streaks & Sequences','Results progression and current form','League table','Tables','Recent league results'
+  ];
+  const norm=s=>String(s||'').replace(/\u00a0/g,' ').replace(/\s+/g,' ').trim();
+  const knownMap=new Map(known.map(x=>[x.toLowerCase(),x]));
+  const seenHead=new Set();
+  const emitHeading=(txt)=>{const k=txt.toLowerCase();const canon=knownMap.get(k);if(canon&&!seenHead.has(canon)){out.push('## '+canon);seenHead.add(canon);return true}return false};
+  const walk=(el)=>{
+    if(el.nodeType!==1)return;
+    const tag=el.tagName.toLowerCase();
+    const all=norm(el.textContent);
+    if(/^h[1-6]$/.test(tag)){
+      if(!emitHeading(all) && all) out.push('## '+all);
+    }else if(tag==='table'){
+      for(const tr of el.querySelectorAll(':scope > tbody > tr, :scope > thead > tr, :scope > tfoot > tr, :scope > tr')){
+        const cs=[...tr.children].filter(x=>/^(TD|TH)$/.test(x.tagName)).map(x=>norm(x.textContent));
+        if(cs.length) out.push('| '+cs.join(' | ')+' |');
+      }
+    }else if(['p','div','section','article','span','b','strong'].includes(tag)){
+      const own=norm([...el.childNodes].filter(n=>n.nodeType===3).map(n=>n.textContent).join(' '));
+      if(own){
+        if(!emitHeading(own)){
+          if(/^(Total|Home|Away)$/i.test(own)) out.push('**'+own+'**');
+          else if(own.length<120) out.push(own);
+        }
+      }
+    }
+    for(const c of el.children) if(tag!=='table') walk(c);
+  };
+  walk(doc.body);
+  return out.join('\n');
+}
 function mergeAndStore(rows){let existing={};try{existing=JSON.parse(localStorage.getItem('MAGICSCANNER_IMPORTED_DETAILS')||'{}')}catch{};for(const d of rows)if(d.id&&d.away)existing[d.id]=d;parsed=existing;localStorage.setItem('MAGICSCANNER_IMPORTED_DETAILS',JSON.stringify(existing));render(rows);$('#downloadBtn').disabled=!Object.keys(existing).length;return existing}
 
 function allImportedMatches(){
