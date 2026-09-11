@@ -47,7 +47,7 @@ app.get('/api/health', (req, res) => {
   const store = readStore();
   res.json({
     ok: true,
-    version: '3.2.0',
+    version: '3.2.2',
     storage: 'server-json',
     admin_token_required: !!ADMIN_TOKEN,
     matchdays: Object.keys(store.matchdays).length,
@@ -137,7 +137,7 @@ app.use((err, req, res, next) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`MagicScanner V3.2 listening on port ${PORT}`);
+  console.log(`MagicScanner V3.2.2 listening on port ${PORT}`);
   console.log(`Storage: ${STORE_FILE}`);
   console.log(`ADMIN_TOKEN: ${ADMIN_TOKEN ? 'required' : 'not configured'}`);
 });
