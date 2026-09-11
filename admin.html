@@ -177,7 +177,7 @@ h1{font-size:34px;margin:0 0 8px}.sub{color:var(--muted);line-height:1.58}.eyebr
 <div id="filePanel" class="panel"><label class="drop"><input id="files" type="file" accept=".html,.htm,.md,.txt,text/html" multiple hidden><strong>Trascina o scegli più file Stats</strong><small>Puoi caricare anche l’HTML salvato da MagicScanner Extract</small></label></div>
 <div class="actions"><button class="btn primary" id="importBtn">Importa e salva nel browser</button><button class="btn secondary" id="downloadBtn" disabled>Scarica backup .js</button><button class="btn secondary" id="clearBtn">Svuota archivio importato</button></div><div id="status" class="status"></div>
 <div class="grid"><div class="metric"><span>Sorgenti lette</span><b id="nFiles">0</b></div><div class="metric"><span>Partite riconosciute</span><b id="nMatches">0</b></div><div class="metric"><span>Goal stats</span><b id="nGoals">0</b></div><div class="metric"><span>Timing</span><b id="nTiming">0</b></div></div><div class="list" id="list"></div></div>
-<div class="card"><b>Flusso V3.1.7</b><div class="sub" style="margin-top:8px">Per la home: apri la pagina <b>matches.asp</b> → clicca <b>MagicScanner Extract</b> → incolla qui → <b>Importa giornata dal browser</b>. Per il dettaglio: fai lo stesso dalla pagina <b>Stats</b> e usa la sezione “Incolla testo/HTML”.</div><div class="notice">Il recupero diretto via URL rimane solo come fallback: SoccerSTATS può rispondere HTTP 403 ai server cloud.</div></div>
+<div class="card"><b>Flusso V3.1.9</b><div class="sub" style="margin-top:8px">Per la home: apri la pagina <b>matches.asp</b> → clicca <b>MagicScanner Extract</b> → incolla qui → <b>Importa giornata dal browser</b>. Per il dettaglio: fai lo stesso dalla pagina <b>Stats</b> e usa la sezione “Incolla testo/HTML”.</div><div class="notice">Il recupero diretto via URL rimane solo come fallback: SoccerSTATS può rispondere HTTP 403 ai server cloud.</div></div>
 </div>
 <script>
 /* V3.1: PIN amministratore lato browser. Protegge da accessi accidentali, non è sicurezza server-side. */
@@ -364,6 +364,71 @@ function msBodyCanonicalMatches(data){
   }
   return out;
 }
+
+// V3.1.9 — parser diretto sul payload reale condiviso dall'utente.
+// Non dipende da "last 8": SoccerSTATS nel payload può trasformarlo in "la t 8".
+function parseExactPayloadV319(data){
+  const rows=Array.isArray(data&&data.rows)?data.rows:[];
+  const out=[];
+  let league='SoccerSTATS';
+  const clean=v=>String(v==null?'':v).replace(/\u00a0/g,' ').replace(/\r/g,'').replace(/[ ]{2,}/g,' ').trim();
+  const isTime=v=>/^(?:[01]?\d|2[0-3]):[0-5]\d$/.test(clean(v));
+  const isScope=v=>/^(?:last|la\s*t)\s*8$/i.test(clean(v));
+  const metric=v=>/^\d+(?:[.,]\d+)?%?$/.test(clean(v));
+  const cleanTeam=v=>{
+    let s=clean(v);
+    s=s.replace(/\s+(?:last|la\s*t)\s*8.*$/i,'').trim();
+    s=s.replace(/\s+(?:stats?|tat)$/i,'').trim();
+    return s;
+  };
+  const detailUrl=r=>{
+    const links=Array.isArray(r&&r.links)?r.links:[];
+    const a=links.find(x=>/soccerstats\.com\/(?:pmatch|h2h|match)\.asp/i.test(String(x&&x.href||'')));
+    return a?String(a.href||''):'';
+  };
+  const parseMetrics=(cells,home)=>{
+    const c=(cells||[]).map(clean);
+    const si=home?2:1;
+    if(!isScope(c[si])) return null;
+    const vals=c.slice(si+1).filter(metric);
+    if(vals.length<12) return null;
+    const team=cleanTeam(c[0]);
+    if(!team || team.length>80 || !/[A-Za-zÀ-ÿ]/.test(team)) return null;
+    const [gp,w,fts,cs,bts,tg,gf,ga,o15,o25,o35,ppg]=vals.slice(0,12);
+    return {team,gp,w,fts,cs,bts,tg,gf,ga,o15,o25,o35,ppg,stats_url:''};
+  };
+  for(let i=0;i<rows.length;i++){
+    const r=rows[i]||{};
+    const c=(r.cells||[]).map(clean);
+    // Header campionato reale: prima cella col nome, seconda con "Matches/Matche played".
+    if(c.length>=2 && /matche?s?\s+played/i.test(c[1].replace(/\s+/g,' '))){
+      let g=cleanTeam(c[0]).replace(/\s+(?:stats?|tat)$/i,'').trim();
+      if(g) league=g;
+      continue;
+    }
+    if(c.length<15 || !isTime(c[1]) || !isScope(c[2])) continue;
+    const home=parseMetrics(c,true);
+    if(!home) continue;
+    let away=null;
+    let awayIndex=-1;
+    for(let j=i+1;j<Math.min(rows.length,i+4);j++){
+      const cc=(rows[j]&&rows[j].cells||[]).map(clean);
+      if(cc.length>=14 && isScope(cc[1])){
+        away=parseMetrics(cc,false);
+        if(away){awayIndex=j;break;}
+      }
+      // Se incontriamo un nuovo header/orario, non appartiene più alla stessa partita.
+      if(cc.length>1 && isTime(cc[1])) break;
+    }
+    if(!away) continue;
+    home.stats_url=detailUrl(r);
+    const m=buildMatch(home,away,league,c[1],home.stats_url);
+    if(m && !out.some(x=>x.id===m.id)) out.push(m);
+    if(awayIndex>i) i=awayIndex;
+  }
+  return out;
+}
+
 function parseExtractExact(data){
   const rows=Array.isArray(data?.rows)?data.rows:[];
   const bodyCanonical=msBodyCanonicalMatches(data);
@@ -581,17 +646,18 @@ function storeMatchdayFromHtml(html, sourceUrl='browser'){
   if(raw.startsWith('{')){
     try{
       const data=JSON.parse(raw); extractData=data;
-      if(data && (data.magicScannerExtract===5 || data.magicScannerExtract===4 || data.magicScannerExtract===3) && data.page!=='detail' && Array.isArray(data.rows)){
+      if(data && (data.magicScannerExtract===6 || data.magicScannerExtract===5 || data.magicScannerExtract===4 || data.magicScannerExtract===3) && data.page!=='detail' && Array.isArray(data.rows)){
+        const direct=parseExactPayloadV319(data);
         const exact=parseExtractExact(data);
         const classic=parseExtractV3(data);
         const flexible=parseExtractFlexible(data);
-        matches=[exact,classic,flexible].sort((a,b)=>b.length-a.length)[0];
+        matches=[direct,exact,classic,flexible].sort((a,b)=>b.length-a.length)[0];
         sourceUrl=data.source||sourceUrl;
       } else if(data && data.magicScannerExtract===2 && Array.isArray(data.matches)){
         matches=data.matches.map(x=>buildMatch(x.home,x.away,x.league||'SoccerSTATS',x.time||'',x.stats_url||'')); sourceUrl=data.source||sourceUrl;
       }
     }catch(e){}
-    if(extractData && Array.isArray(extractData.rows)){const exactAlt=parseExtractExact(extractData);const flexAlt=parseExtractFlexible(extractData);for(const alt of [exactAlt,flexAlt])if(alt.length>matches.length)matches=alt;}
+    if(extractData && Array.isArray(extractData.rows)){const directAlt=parseExactPayloadV319(extractData);const exactAlt=parseExtractExact(extractData);const flexAlt=parseExtractFlexible(extractData);for(const alt of [directAlt,exactAlt,flexAlt])if(alt.length>matches.length)matches=alt;}
   }
   if(!matches.length) matches=parseMatchdayHtml(html);
   matches=(matches||[]).filter(m=>m&&msValidTeamName(m.home)&&msValidTeamName(m.away)&&!msHeaderish(m.home)&&!msHeaderish(m.away)&&m.home!==m.away);
@@ -600,7 +666,7 @@ function storeMatchdayFromHtml(html, sourceUrl='browser'){
     let diag='';
     if(extractData){
       const rowCount=Array.isArray(extractData.rows)?extractData.rows.length:0;
-      const lastCount=((String(extractData.bodyText||'').match(/\blast\s+\d+\b/ig))||[]).length;
+      const lastCount=((String(extractData.bodyText||'').match(/\b(?:last|la\s*t)\s+\d+\b/ig))||[]).length;
       diag=` · righe ${rowCount}, occorrenze last ${lastCount}`;
     }
     throw new Error(`Dati ricevuti (${html.length.toLocaleString('it-IT')} caratteri), ma non riconosco partite${diag}.`);
@@ -863,12 +929,12 @@ function renderDay(matches){
     const mt=(m.marketType||'nobet').toLowerCase();
     const pill=mt==='nobet'||mt==='nobet'?'NO BET':mt.toUpperCase();
     const pick=cleanRecommended({...m,home,away});
-    const conf=Math.round(Number(m.confidence||m.signalScore||0));
+    const conf=Math.round(Number(m.signalScore||0)); const confLabel=String(m.confidence||'').trim();
     return `<div class="dayitem">
       <div class="fixtureTime">${m.time||'—'}</div>
       <div><div class="fixtureTeams"><span class="fixtureTeam">${adminCrest(home)}<span class="fixtureTeamName">${home}</span></span><span class="fixtureDash">—</span><span class="fixtureTeam"><span class="fixtureTeamName">${away}</span>${adminCrest(away)}</span></div><small class="fixtureMeta">${m.league||'SoccerSTATS'}</small></div>
       <div class="fixturePick"><span class="pill ${mt}">${pill}</span><b>${pick}</b></div>
-      <div class="fixtureConfidence">${conf||'—'}<small>affidabilità</small></div>
+      <div class="fixtureConfidence">${conf?conf+'%':'—'}<small>${confLabel?confLabel+' · ':''}affidabilità</small></div>
       ${m.stats_url?`<a class="fixtureStatsBtn" href="${m.stats_url}" target="_blank" rel="noopener">Stats →</a>`:'<span></span>'}
     </div>`
   }).join('');
