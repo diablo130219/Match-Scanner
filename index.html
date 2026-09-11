@@ -4142,14 +4142,37 @@ body{background-attachment:fixed!important}
 </div>
 <script>
 const matches = (()=>{
-  // V3.1.11: la home pubblica mostra ESCLUSIVAMENTE le giornate importate dall'Admin.
-  // Il vecchio dataset statico non viene più usato come fallback della data corrente.
+  // V3.1.12: home pubblica = solo giornate importate.
+  // Legge sia l'archivio multi-giornata sia la chiave compatibilità della giornata corrente.
   try{
-    const days = JSON.parse(localStorage.getItem('MAGICSCANNER_MATCHDAYS') || '{}') || {};
     const today = new Date();
     today.setHours(12,0,0,0);
-    const imported = [];
+    const isoLocal = d => {
+      const y=d.getFullYear(), m=String(d.getMonth()+1).padStart(2,'0'), day=String(d.getDate()).padStart(2,'0');
+      return `${y}-${m}-${day}`;
+    };
+    const todayKey = isoLocal(today);
+    let days = {};
+    try{ days = JSON.parse(localStorage.getItem('MAGICSCANNER_MATCHDAYS') || '{}') || {}; }catch{}
 
+    // Compatibilità: l'Admin salva anche MAGICSCANNER_MATCHDAY per Oggi.
+    try{
+      const legacy = JSON.parse(localStorage.getItem('MAGICSCANNER_MATCHDAY') || '{}') || {};
+      if(legacy && Array.isArray(legacy.matches) && legacy.matches.length){
+        const key = legacy.date || todayKey;
+        if(!days[key] || !Array.isArray(days[key].matches) || !days[key].matches.length){
+          days[key] = {...legacy, date:key};
+        }
+      }
+    }catch{}
+
+    window.MAGICSCANNER_STORAGE_DEBUG = {
+      matchdaysKeys:Object.keys(days),
+      todayKey,
+      hasLegacy:!!localStorage.getItem('MAGICSCANNER_MATCHDAY')
+    };
+
+    const imported = [];
     for(const [key, pack] of Object.entries(days)){
       if(!pack || !Array.isArray(pack.matches) || !pack.matches.length) continue;
       const dm = String(key).match(/^(\d{4})-(\d{2})-(\d{2})$/);
@@ -4161,10 +4184,10 @@ const matches = (()=>{
         imported.push({...m, date_offset:offset, calendar_date:key, imported_day:true});
       }
     }
-
     return imported;
   }catch(e){
     console.warn('Giornate importate non leggibili', e);
+    window.MAGICSCANNER_STORAGE_DEBUG={error:String(e)};
     return [];
   }
 })();
@@ -4461,7 +4484,7 @@ function renderList(){
   document.querySelectorAll('.marketCard').forEach(btn => btn.classList.toggle('active', btn.dataset.filter === activeFilter));
 
   if(!arr.length){
-    list.innerHTML = '<div class="emptyState">Nessuna partita corrisponde a questa selezione.</div>';
+    list.innerHTML = '<div class="emptyState">Nessuna partita corrisponde a questa selezione.<div id="storageDiag" style="margin-top:8px;font-size:11px;opacity:.55"></div></div>';
     return;
   }
 
@@ -4637,6 +4660,15 @@ if(matchListEl){
 setupDates();
 renderCounts();
 renderList();
+
+setTimeout(()=>{
+  const d=document.getElementById('storageDiag');
+  if(d && window.MAGICSCANNER_STORAGE_DEBUG){
+    const x=window.MAGICSCANNER_STORAGE_DEBUG;
+    d.textContent=`Archivio browser: ${x.matchdaysKeys?.length||0} giornate · oggi ${x.todayKey||'—'} · compatibilità ${x.hasLegacy?'presente':'assente'}`;
+  }
+},100);
+
 </script>
 
 </body>
