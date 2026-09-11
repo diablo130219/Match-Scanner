@@ -107,7 +107,7 @@ h1{font-size:34px;margin:0 0 8px}.sub{color:var(--muted);line-height:1.58}.eyebr
     <div class="label">1. Installa una volta l'estrattore nel browser</div>
     <div class="notice">Trascina il pulsante qui sotto nella barra dei preferiti. Poi, quando sei su una pagina SoccerSTATS, cliccalo: prova a copiare l'HTML negli appunti; se il browser non lo consente, scarica automaticamente un file <code>.html</code>.</div>
     <div class="actions">
-      <a id="bookmarklet" class="btn primary" style="text-decoration:none" href="javascript:(()=&gt;{try{if(!/(^|\.)soccerstats\.com$/i.test(location.hostname)){alert(&#x27;Apri prima una pagina di SoccerSTATS.&#x27;);return;}const N=s=&gt;(s||&#x27;&#x27;).replace(/\u00a0/g,&#x27; &#x27;).replace(/\s+/g,&#x27; &#x27;).trim();const rows=[...document.querySelectorAll(&#x27;tr&#x27;)].map((tr,i)=&gt;({i,cells:[...tr.querySelectorAll(&#x27;th,td&#x27;)].map(c=&gt;N(c.innerText||c.textContent)),text:N(tr.innerText||tr.textContent),links:[...tr.querySelectorAll(&#x27;a,button,input&#x27;)].map(a=&gt;({text:N(a.innerText||a.textContent||a.value),href:a.href||&#x27;&#x27;,onclick:a.getAttribute(&#x27;onclick&#x27;)||&#x27;&#x27;}))})).filter(r=&gt;r.text);const links=[...document.querySelectorAll(&#x27;a[href]&#x27;)].map(a=&gt;({text:N(a.innerText||a.textContent),href:a.href}));const dateCandidates=[...document.querySelectorAll(&#x27;a,button,div,span,td&#x27;)].map(e=&gt;({text:N(e.innerText||e.textContent),cls:N(e.className&amp;&amp;typeof e.className===&#x27;string&#x27;?e.className:&#x27;&#x27;),id:e.id||&#x27;&#x27;,aria:e.getAttribute(&#x27;aria-current&#x27;)||&#x27;&#x27;,pressed:e.getAttribute(&#x27;aria-pressed&#x27;)||&#x27;&#x27;})).filter(x=&gt;/\b(?:mon|tue|wed|thu|fri|sat|sun|lun|mar|mer|gio|ven|sab|dom)\b/i.test(x.text)&amp;&amp;/\b\d{1,2}(?:st|nd|rd|th)?\b/i.test(x.text)&amp;&amp;x.text.length&lt;80).slice(0,80);const payload=JSON.stringify({magicScannerExtract:4,page:&#x27;matchday&#x27;,source:location.href,title:document.title||&#x27;&#x27;,extracted_at:new Date().toISOString(),dateCandidates,rows,links,bodyText:document.body.innerText||document.body.textContent||&#x27;&#x27;});const ta=document.createElement(&#x27;textarea&#x27;);ta.value=payload;ta.style.position=&#x27;fixed&#x27;;ta.style.left=&#x27;-99999px&#x27;;document.body.appendChild(ta);ta.select();const ok=document.execCommand(&#x27;copy&#x27;);ta.remove();alert(ok?&#x27;MagicScanner: pagina strutturata copiata. Torna su MagicScanner e incolla.&#x27;:&#x27;Copia automatica non riuscita.&#x27;);if(!ok)prompt(&#x27;Copia questi dati:&#x27;,payload)}catch(e){alert(&#x27;MagicScanner Extract: &#x27;+e.message)}})()">MagicScanner Extract</a>
+      <a id="bookmarklet" class="btn primary" style="text-decoration:none" href="javascript:(()=&gt;{try{if(!/(^|\.)soccerstats\.com$/i.test(location.hostname)){alert(&#x27;Apri prima una pagina di SoccerSTATS.&#x27;);return;}const N=s=&gt;(s||&#x27;&#x27;).replace(/\u00a0/g,&#x27; &#x27;).replace(/\s+/g,&#x27; &#x27;).trim();const rows=[...document.querySelectorAll(&#x27;tr&#x27;)].map((tr,i)=&gt;({i,cells:[...tr.querySelectorAll(&#x27;th,td&#x27;)].map(c=&gt;N(c.textContent||c.innerText)),text:N(tr.textContent||tr.innerText),links:[...tr.querySelectorAll(&#x27;a,button,input&#x27;)].map(a=&gt;({text:N(a.textContent||a.innerText||a.value),href:a.href||&#x27;&#x27;,onclick:a.getAttribute(&#x27;onclick&#x27;)||&#x27;&#x27;}))})).filter(r=&gt;r.text);const links=[...document.querySelectorAll(&#x27;a[href]&#x27;)].map(a=&gt;({text:N(a.textContent||a.innerText),href:a.href}));const dateCandidates=[...document.querySelectorAll(&#x27;a,button,div,span,td&#x27;)].map(e=&gt;({text:N(e.textContent||e.innerText),cls:N(e.className&amp;&amp;typeof e.className===&#x27;string&#x27;?e.className:&#x27;&#x27;),id:e.id||&#x27;&#x27;,aria:e.getAttribute(&#x27;aria-current&#x27;)||&#x27;&#x27;,pressed:e.getAttribute(&#x27;aria-pressed&#x27;)||&#x27;&#x27;})).filter(x=&gt;/\b(?:mon|tue|wed|thu|fri|sat|sun|lun|mar|mer|gio|ven|sab|dom)\b/i.test(x.text)&amp;&amp;/\b\d{1,2}(?:st|nd|rd|th)?\b/i.test(x.text)&amp;&amp;x.text.length&lt;80).slice(0,80);const payload=JSON.stringify({magicScannerExtract:4,page:&#x27;matchday&#x27;,source:location.href,title:document.title||&#x27;&#x27;,extracted_at:new Date().toISOString(),dateCandidates,rows,links,bodyText:document.body.innerText||document.body.textContent||&#x27;&#x27;});const ta=document.createElement(&#x27;textarea&#x27;);ta.value=payload;ta.style.position=&#x27;fixed&#x27;;ta.style.left=&#x27;-99999px&#x27;;document.body.appendChild(ta);ta.select();const ok=document.execCommand(&#x27;copy&#x27;);ta.remove();alert(ok?&#x27;MagicScanner: pagina strutturata copiata. Torna su MagicScanner e incolla.&#x27;:&#x27;Copia automatica non riuscita.&#x27;);if(!ok)prompt(&#x27;Copia questi dati:&#x27;,payload)}catch(e){alert(&#x27;MagicScanner Extract: &#x27;+e.message)}})()">MagicScanner Extract</a>
       <button class="btn secondary" id="copyExtractorBtn">Copia comando estrattore</button>
     </div>
 
@@ -210,7 +210,7 @@ window.addEventListener('DOMContentLoaded',initAdminGate);
 const MATCHDAY_KEY='MAGICSCANNER_MATCHDAY';
 const MATCHDAYS_KEY='MAGICSCANNER_MATCHDAYS';
 const LAST_DAY_KEY='MAGICSCANNER_LAST_IMPORTED_DATE';
-const EXTRACTOR_CODE = `javascript:(()=>{try{if(!/(^|\.)soccerstats\.com$/i.test(location.hostname)){alert('Apri prima una pagina di SoccerSTATS.');return;}const N=s=>(s||'').replace(/\u00a0/g,' ').replace(/\s+/g,' ').trim();const path=(location.pathname||'').toLowerCase();const isDetail=/pmatch|match|head2head|h2h/.test(path)&&!/matches\.asp$/.test(path);const rows=[...document.querySelectorAll('tr')].map((tr,i)=>({i,cells:[...tr.querySelectorAll('th,td')].map(c=>N(c.innerText||c.textContent)),text:N(tr.innerText||tr.textContent),links:[...tr.querySelectorAll('a,button,input')].map(a=>({text:N(a.innerText||a.textContent||a.value),href:a.href||'',onclick:a.getAttribute('onclick')||''}))})).filter(r=>r.text);const links=[...document.querySelectorAll('a[href]')].map(a=>({text:N(a.innerText||a.textContent),href:a.href}));const dateCandidates=[...document.querySelectorAll('a,button,div,span,td')].map(e=>({text:N(e.innerText||e.textContent),cls:N(e.className&&typeof e.className==='string'?e.className:''),id:e.id||'',aria:e.getAttribute('aria-current')||'',pressed:e.getAttribute('aria-pressed')||''})).filter(x=>/\b(?:mon|tue|wed|thu|fri|sat|sun|lun|mar|mer|gio|ven|sab|dom)\b/i.test(x.text)&&/\b\d{1,2}(?:st|nd|rd|th)?\b/i.test(x.text)&&x.text.length<80).slice(0,80);const payload=JSON.stringify({magicScannerExtract:5,page:isDetail?'detail':'matchday',source:location.href,title:document.title||'',extracted_at:new Date().toISOString(),dateCandidates,rows,links,bodyText:document.body.innerText||document.body.textContent||'',html:isDetail?document.documentElement.outerHTML:''});const ta=document.createElement('textarea');ta.value=payload;ta.style.position='fixed';ta.style.left='-99999px';document.body.appendChild(ta);ta.select();const ok=document.execCommand('copy');ta.remove();alert(ok?(isDetail?'MagicScanner: scheda Stats copiata. Torna su MagicScanner e incolla nella sezione dettagli.':'MagicScanner: giornata copiata. Torna su MagicScanner e incolla.'):'Copia automatica non riuscita.');if(!ok)prompt('Copia questi dati:',payload)}catch(e){alert('MagicScanner Extract: '+e.message)}})()`;
+const EXTRACTOR_CODE = `javascript:(()=>{try{if(!/(^|\.)soccerstats\.com$/i.test(location.hostname)){alert('Apri prima una pagina di SoccerSTATS.');return;}const N=s=>(s||'').replace(/\u00a0/g,' ').replace(/\s+/g,' ').trim();const path=(location.pathname||'').toLowerCase();const isDetail=/pmatch|match|head2head|h2h/.test(path)&&!/matches\.asp$/.test(path);const rows=[...document.querySelectorAll('tr')].map((tr,i)=>({i,cells:[...tr.querySelectorAll('th,td')].map(c=>N(c.textContent||c.innerText)),text:N(tr.textContent||tr.innerText),links:[...tr.querySelectorAll('a,button,input')].map(a=>({text:N(a.textContent||a.innerText||a.value),href:a.href||'',onclick:a.getAttribute('onclick')||''}))})).filter(r=>r.text);const links=[...document.querySelectorAll('a[href]')].map(a=>({text:N(a.textContent||a.innerText),href:a.href}));const dateCandidates=[...document.querySelectorAll('a,button,div,span,td')].map(e=>({text:N(e.textContent||e.innerText),cls:N(e.className&&typeof e.className==='string'?e.className:''),id:e.id||'',aria:e.getAttribute('aria-current')||'',pressed:e.getAttribute('aria-pressed')||''})).filter(x=>/\b(?:mon|tue|wed|thu|fri|sat|sun|lun|mar|mer|gio|ven|sab|dom)\b/i.test(x.text)&&/\b\d{1,2}(?:st|nd|rd|th)?\b/i.test(x.text)&&x.text.length<80).slice(0,80);const payload=JSON.stringify({magicScannerExtract:6,page:isDetail?'detail':'matchday',source:location.href,title:document.title||'',extracted_at:new Date().toISOString(),dateCandidates,rows,links,bodyText:document.body.innerText||document.body.textContent||'',html:isDetail?document.documentElement.outerHTML:''});const ta=document.createElement('textarea');ta.value=payload;ta.style.position='fixed';ta.style.left='-99999px';document.body.appendChild(ta);ta.select();const ok=document.execCommand('copy');ta.remove();alert(ok?(isDetail?'MagicScanner: scheda Stats copiata. Torna su MagicScanner e incolla nella sezione dettagli.':'MagicScanner: giornata copiata. Torna su MagicScanner e incolla.'):'Copia automatica non riuscita.');if(!ok)prompt('Copia questi dati:',payload)}catch(e){alert('MagicScanner Extract: '+e.message)}})()`;
 window.addEventListener('DOMContentLoaded',()=>{
   const bm=document.querySelector('#bookmarklet');
   if(bm) bm.setAttribute('href', EXTRACTOR_CODE);
@@ -267,19 +267,18 @@ function parseExtractV3(data){
     if(scopeIndex<0)return null;
     const sm=cells[scopeIndex].match(/last\s+(\d+)/i);
     if(!sm)return null;
-    let team=msTeamFromRowLinks(r); let time='';
-    const scopeCellRaw=cells[scopeIndex]||'';
-    if(!team){const embedded=msCleanTeamName(scopeCellRaw); if(msValidTeamName(embedded))team=embedded;}
+    let team=''; let time='';
     for(let i=0;i<scopeIndex;i++){
       const c=cells[i];
       if(isTime(c)){time=c;continue}
-      if(msHeaderish(c))continue;
-      if(!team && !/^\d+(?:[.,]\d+)?%?$/.test(c) && c.length<=80 && msValidTeamName(c)) team=msCleanTeamName(c);
+      if(/^(scope|gp|w%|fts|cs|bts|tg|gf|ga|1\.5\+|2\.5\+|3\.5\+|points per game|stats)$/i.test(c))continue;
+      if(!/^\d+(?:[.,]\d+)?%?$/.test(c) && c.length<=80) team=c;
     }
     if(!team){
       const before=clean((r.text||'').split(/last\s+\d+/i)[0]).replace(/\b(?:[01]?\d|2[0-3]):[0-5]\d\b/g,' ').trim();
-      team=msCleanTeamName(before.split(/\s{2,}|\|/).map(clean).filter(Boolean).pop()||before);
+      team=before.split(/\s{2,}|\|/).map(clean).filter(Boolean).pop()||before;
     }
+    team=msCleanTeamName(team);
     if(!msValidTeamName(team)||msHeaderish(team)) return null;
     let vals=[];
     for(let i=scopeIndex+1;i<cells.length;i++) vals.push(...numberTokens(cells[i]));
@@ -321,6 +320,82 @@ function parseExtractV3(data){
       if(!out.some(x=>x.id===m.id))out.push(m);
       pending=null;
     }else pending={league,row:parsed};
+  }
+  return out;
+}
+
+// V3.1.8 — parser costruito sul payload reale SoccerSTATS matches.asp.
+// Struttura osservata: riga CASA = [team,time,last 8,GP,W%,FTS,CS,BTS,TG,GF,GA,1.5+,2.5+,3.5+,PPG,stats]
+// riga TRASFERTA immediatamente successiva = [team,last 8,GP,W%,FTS,CS,BTS,TG,GF,GA,1.5+,2.5+,3.5+,PPG]
+function msExactScope(v){return /^(?:last|la\s*t)\s*8$/i.test(msCleanText(v))}
+function msExactMetricRow(cells,isHome){
+  const c=(cells||[]).map(msCleanText);
+  const si=isHome?2:1;
+  if(c.length<14 || !msExactScope(c[si]))return null;
+  const nums=c.slice(si+1).filter(x=>/^\d+(?:[.,]\d+)?%?$/.test(x));
+  if(nums.length<12)return null;
+  const [gp,w,fts,cs,bts,tg,gf,ga,o15,o25,o35,ppg]=nums.slice(0,12);
+  const team=msCleanTeamName(c[0]);
+  if(!msValidTeamName(team))return null;
+  return {team,gp,w,fts,cs,bts,tg,gf,ga,o15,o25,o35,ppg,stats_url:''};
+}
+function msExactStatsUrl(row){
+  const links=Array.isArray(row?.links)?row.links:[];
+  const x=links.find(a=>/soccerstats\.com\/(?:pmatch|h2h|match)\.asp/i.test(String(a?.href||'')));
+  return x?.href||'';
+}
+function msBodyCanonicalMatches(data){
+  const raw=String(data?.bodyText||'').replace(/\u00a0/g,' ').replace(/\r/g,'');
+  const lines=raw.split('\n');
+  const out=[]; let league='SoccerSTATS';
+  const cleanLeague=s=>String(s||'').replace(/\s+/g,' ').trim();
+  for(let i=0;i<lines.length;i++){
+    const line=lines[i].trim();
+    const lm=line.match(/^(.*?)\s+stats\s+Matches played:/i);
+    if(lm){league=cleanLeague(lm[1]);continue}
+    const h=lines[i].split('\t').map(msCleanText);
+    if(h.length<14 || !/^(?:[01]?\d|2[0-3]):[0-5]\d$/.test(h[1]||'') || !/^last\s*8$/i.test(h[2]||''))continue;
+    let away=null;
+    for(let j=i+1;j<Math.min(lines.length,i+5);j++){
+      const a=lines[j].split('\t').map(msCleanText);
+      if(a.length>=13 && /^last\s*8$/i.test(a[1]||'')){away=a;break}
+    }
+    if(away)out.push({league,home:msCleanTeamName(h[0]),away:msCleanTeamName(away[0]),time:h[1]});
+  }
+  return out;
+}
+function parseExtractExact(data){
+  const rows=Array.isArray(data?.rows)?data.rows:[];
+  const bodyCanonical=msBodyCanonicalMatches(data);
+  const out=[]; let league='SoccerSTATS'; let canonicalIndex=0;
+  for(let i=0;i<rows.length;i++){
+    const r=rows[i];
+    const c=(r.cells||[]).map(msCleanText);
+    const detail=msExactStatsUrl(r);
+    const latest=(Array.isArray(r.links)?r.links:[]).find(a=>/latest\.asp\?league=/i.test(String(a?.href||'')));
+    if(latest && !detail && c[0] && c[0].length<120 && /\s-\s/.test(c[0])){
+      const guess=c[0].replace(/\s+(?:stats?|tat)\s*$/i,'').trim();
+      if(guess)league=guess;
+    }
+    if(c.length<15 || !/^(?:[01]?\d|2[0-3]):[0-5]\d$/.test(c[1]||'') || !msExactScope(c[2]))continue;
+    const home=msExactMetricRow(c,true); if(!home)continue;
+    let away=null;
+    for(let j=i+1;j<Math.min(rows.length,i+4);j++){
+      const cc=(rows[j].cells||[]).map(msCleanText);
+      if(cc.length>=14 && msExactScope(cc[1])){away=msExactMetricRow(cc,false);break}
+    }
+    if(!away)continue;
+    home.stats_url=detail;
+    // bodyText usa innerText dell'intera pagina e conserva i nomi completi dei blocchi visibili.
+    // Se coincide per orario/ordine, usalo per riparare eventuali lettere perse nelle singole celle.
+    const canon=bodyCanonical[canonicalIndex];
+    if(canon && canon.time===c[1]){
+      home.team=canon.home||home.team; away.team=canon.away||away.team;
+      if(canon.league)league=canon.league;
+      canonicalIndex++;
+    }
+    const m=buildMatch(home,away,league,c[1],detail);
+    if(!out.some(x=>x.id===m.id && x.time===m.time))out.push(m);
   }
   return out;
 }
@@ -507,15 +582,16 @@ function storeMatchdayFromHtml(html, sourceUrl='browser'){
     try{
       const data=JSON.parse(raw); extractData=data;
       if(data && (data.magicScannerExtract===5 || data.magicScannerExtract===4 || data.magicScannerExtract===3) && data.page!=='detail' && Array.isArray(data.rows)){
+        const exact=parseExtractExact(data);
         const classic=parseExtractV3(data);
         const flexible=parseExtractFlexible(data);
-        matches=classic.length>=flexible.length?classic:flexible;
+        matches=[exact,classic,flexible].sort((a,b)=>b.length-a.length)[0];
         sourceUrl=data.source||sourceUrl;
       } else if(data && data.magicScannerExtract===2 && Array.isArray(data.matches)){
         matches=data.matches.map(x=>buildMatch(x.home,x.away,x.league||'SoccerSTATS',x.time||'',x.stats_url||'')); sourceUrl=data.source||sourceUrl;
       }
     }catch(e){}
-    if(extractData && Array.isArray(extractData.rows)){const alt=parseExtractFlexible(extractData);if(alt.length>matches.length)matches=alt;}
+    if(extractData && Array.isArray(extractData.rows)){const exactAlt=parseExtractExact(extractData);const flexAlt=parseExtractFlexible(extractData);for(const alt of [exactAlt,flexAlt])if(alt.length>matches.length)matches=alt;}
   }
   if(!matches.length) matches=parseMatchdayHtml(html);
   matches=(matches||[]).filter(m=>m&&msValidTeamName(m.home)&&msValidTeamName(m.away)&&!msHeaderish(m.home)&&!msHeaderish(m.away)&&m.home!==m.away);
@@ -1190,9 +1266,6 @@ async function importPaste(){
         if(data.html) text=htmlToMarkdownish(data.html);
         else if(data.bodyText) text=String(data.bodyText||'');
         else if(Array.isArray(data.rows)) text=data.rows.map(r=>Array.isArray(r.cells)?r.cells.join('\t'):(r.text||'')).join('\n');
-        // Il <title> di SoccerSTATS ("Team A vs Team B H2H stats...") è la fonte più affidabile
-        // per riconoscere le due squadre: lo mettiamo davanti così parse() lo trova per primo.
-        if(data.title) text=String(data.title)+'\n'+text;
         let d=parse(text,'soccerstats-detail',data.source||'');
         if(Array.isArray(data.rows)){
           const sd=parseStructuredDetailPayload(data,exactMatch);
@@ -1214,9 +1287,7 @@ async function importPaste(){
       }
     }catch(e){console.warn('JSON detail import',e)}
   }
-  // Se l'input era JSON (payload di MagicScanner Extract), non ricadere sullo split testuale:
-  // interpretare il JSON grezzo come markdown produce squadre sbagliate o nessun risultato.
-  if(!rows.length && !raw.startsWith('{')){
+  if(!rows.length){
     const chunks=raw.split(/^---MATCH---\s*$/m).map(x=>x.trim()).filter(Boolean);
     rows=chunks.map((x,i)=>{
       if(/^</.test(x)){return parse(htmlToMarkdownish(x),`html-${i+1}`)}
