@@ -64,7 +64,9 @@ h1{font-size:34px;margin:0 0 8px}.sub{color:var(--muted);line-height:1.58}.eyebr
       <button class="btn primary" id="parseDayHtmlBtn">Importa giornata dal browser</button>
       <label class="btn secondary" style="cursor:pointer">Carica file .html<input id="matchdayHtmlFile" type="file" accept=".html,.htm,text/html" hidden></label>
       <a class="btn secondary" style="text-decoration:none" href="index.html">Apri home aggiornata</a>
-      <button class="btn secondary" id="clearDayBtn">Ripristina giornata originale</button>
+      <select id="storedDaySelect" class="dayurl" style="max-width:280px;min-height:46px;font-family:Inter,system-ui,Arial"><option value="">Seleziona giornata da cancellare</option></select>
+      <button class="btn secondary" id="clearDayBtn">Cancella giornata selezionata</button>
+      <button class="btn secondary" id="clearAllDaysBtn">Cancella tutte le giornate</button>
     </div>
     <div class="helper">I dati restano nel tuo browser tramite <code>localStorage</code>. Nessuna richiesta a SoccerSTATS parte da Render.</div>
     <div id="dayStatus" class="status"></div>
@@ -246,6 +248,7 @@ function storeMatchdayFromHtml(html, sourceUrl='browser'){
   if(!matches.length) throw new Error(`Dati ricevuti (${html.length.toLocaleString('it-IT')} caratteri), ma non riconosco partite.`);
   const resolved=resolveTargetDate(extractData||{}); const key=storeImportedDay(resolved.date,matches,sourceUrl);
   renderDay(matches);
+  refreshStoredDaySelect(key);
   const [y,m,d]=key.split('-');
   const label=new Date(Number(y),Number(m)-1,Number(d),12).toLocaleDateString('it-IT',{weekday:'long',day:'numeric',month:'long'});
   const warning=resolved.mode==='fallback'?' Data non riconosciuta: ho usato Oggi; scegli manualmente “Domani” se necessario.':'';
@@ -432,6 +435,54 @@ function parseMatchdayHtml(html){
   }
   return out;
 }
+
+function formatStoredDayLabel(key){
+  try{
+    const [y,m,d]=String(key).split('-').map(Number);
+    const dt=new Date(y,m-1,d,12);
+    return dt.toLocaleDateString('it-IT',{weekday:'short',day:'numeric',month:'short'}).replace(/\./g,'');
+  }catch{return key}
+}
+function getStoredDays(){
+  let days={};
+  try{days=JSON.parse(localStorage.getItem(MATCHDAYS_KEY)||'{}')||{}}catch{}
+  return days;
+}
+function syncClearDayButton(){
+  const btn=document.querySelector('#clearDayBtn');
+  const sel=document.querySelector('#storedDaySelect');
+  if(!btn||!sel)return;
+  btn.textContent=sel.value?`Cancella ${formatStoredDayLabel(sel.value)}`:'Cancella giornata selezionata';
+}
+function refreshStoredDaySelect(preferredKey=''){
+  const sel=document.querySelector('#storedDaySelect');
+  if(!sel)return;
+  const days=getStoredDays();
+  const keys=Object.keys(days).sort();
+  const current=preferredKey||sel.value||localStorage.getItem(LAST_DAY_KEY)||'';
+  sel.innerHTML='<option value="">Seleziona giornata da cancellare</option>' + keys.map(k=>`<option value="${k}">${formatStoredDayLabel(k)} · ${(days[k]&&days[k].matches?days[k].matches.length:0)} partite</option>`).join('');
+  if(current && keys.includes(current)) sel.value=current;
+  syncClearDayButton();
+}
+function removeStoredDay(key){
+  const days=getStoredDays();
+  if(!key || !days[key]) return false;
+  delete days[key];
+  const keys=Object.keys(days).sort();
+  localStorage.setItem(MATCHDAYS_KEY, JSON.stringify(days));
+  const todayKey=isoLocal(dateFromOffset(0));
+  if(!keys.length){
+    localStorage.removeItem(MATCHDAY_KEY);
+    localStorage.removeItem(LAST_DAY_KEY);
+  }else{
+    if(key===todayKey && !days[todayKey]) localStorage.removeItem(MATCHDAY_KEY);
+    if(days[todayKey]) localStorage.setItem(MATCHDAY_KEY, JSON.stringify(days[todayKey]));
+    const last=localStorage.getItem(LAST_DAY_KEY)||'';
+    if(last===key || !days[last]) localStorage.setItem(LAST_DAY_KEY, keys[keys.length-1]);
+  }
+  return true;
+}
+
 function renderDay(matches){
   document.querySelector('#dayFound').textContent=matches.length;
   const promoted=matches.filter(m=>m.marketType!=='nobet');
@@ -532,8 +583,11 @@ $('#clearBtn').onclick=()=>{if(!confirm('Vuoi cancellare dal browser tutte le sc
 
 document.querySelector('#parseDayHtmlBtn').onclick=()=>{try{const html=document.querySelector('#matchdayHtml').value;storeMatchdayFromHtml(html,document.querySelector('#matchdayUrl').value.trim()||'browser')}catch(e){dayStatus(String(e.message||e),'error')}};
 document.querySelector('#matchdayHtmlFile').onchange=async(e)=>{const f=e.target.files?.[0];if(!f)return;try{const html=await f.text();document.querySelector('#matchdayHtml').value=html;storeMatchdayFromHtml(html,document.querySelector('#matchdayUrl').value.trim()||f.name)}catch(err){dayStatus(String(err.message||err),'error')}};
-document.querySelector('#clearDayBtn').onclick=()=>{if(!confirm('Rimuovere l’ultima giornata importata e ripristinare i dati originali per quel giorno?'))return;let days={};try{days=JSON.parse(localStorage.getItem(MATCHDAYS_KEY)||'{}')||{}}catch{};const k=localStorage.getItem(LAST_DAY_KEY);if(k&&days[k]){delete days[k];localStorage.setItem(MATCHDAYS_KEY,JSON.stringify(days));}localStorage.removeItem(LAST_DAY_KEY);localStorage.removeItem(MATCHDAY_KEY);renderDay([]);dayStatus('Ultima giornata importata rimossa.','good')};
+document.querySelector('#storedDaySelect').onchange=syncClearDayButton;
+document.querySelector('#clearDayBtn').onclick=()=>{const sel=document.querySelector('#storedDaySelect');const key=(sel&&sel.value)||localStorage.getItem(LAST_DAY_KEY)||'';if(!key){dayStatus('Seleziona prima una giornata da cancellare.','error');return}if(!confirm(`Rimuovere la giornata ${formatStoredDayLabel(key)} dal browser?`))return;const ok=removeStoredDay(key);if(!ok){dayStatus('Giornata non trovata nel browser.','error');return}const days=getStoredDays();const keys=Object.keys(days).sort();const nextKey=keys.includes((sel&&sel.value)||'')?(sel&&sel.value):(keys[keys.length-1]||'');refreshStoredDaySelect(nextKey);if(nextKey&&days[nextKey]&&Array.isArray(days[nextKey].matches)) renderDay(days[nextKey].matches); else renderDay([]);dayStatus(`Giornata ${formatStoredDayLabel(key)} rimossa dal browser.`,'good')};
+document.querySelector('#clearAllDaysBtn').onclick=()=>{const days=getStoredDays();const n=Object.keys(days).length;if(!n){dayStatus('Non ci sono giornate importate da cancellare.','error');return}if(!confirm(`Vuoi cancellare tutte le ${n} giornate importate dal browser?`))return;localStorage.removeItem(MATCHDAYS_KEY);localStorage.removeItem(MATCHDAY_KEY);localStorage.removeItem(LAST_DAY_KEY);renderDay([]);refreshStoredDaySelect();dayStatus('Tutte le giornate importate sono state rimosse.','good')};
 try{const d=JSON.parse(localStorage.getItem(MATCHDAY_KEY)||'{}');if(Array.isArray(d.matches)&&d.matches.length){renderDay(d.matches);dayStatus(`${d.matches.length} partite della giornata già presenti nel browser.`,'good')}}catch{}
+refreshStoredDaySelect();
 
 try{const ex=JSON.parse(localStorage.getItem('MAGICSCANNER_IMPORTED_DETAILS')||'{}');if(Object.keys(ex).length){parsed=ex;$('#downloadBtn').disabled=false;status(`${Object.keys(ex).length} scheda/e già presenti nel browser.`,'good')}}catch{}
 $('#refreshQueue').onclick=renderPromotedQueue;$('#openNextMissing').onclick=openNextMissing;renderPromotedQueue();
