@@ -743,7 +743,14 @@ function resolveTargetDate(data){
 }
 function storeImportedDay(date,matches,sourceUrl){
   let days={};try{days=JSON.parse(localStorage.getItem(MATCHDAYS_KEY)||'{}')||{}}catch{}
-  const key=isoLocal(date); days[key]={date:key,source_url:sourceUrl,imported_at:new Date().toISOString(),matches};
+  const key=isoLocal(date);
+  const previous=Array.isArray(days[key]?.matches)?days[key].matches:[];
+  const merged=new Map();
+  const mk=x=>slug(`${x?.home||''}-${x?.away||''}-${x?.time||''}`)||slug(x?.id||'');
+  previous.forEach(x=>{const k=mk(x);if(k)merged.set(k,x)});
+  matches.forEach(x=>{const k=mk(x);if(k)merged.set(k,{...(merged.get(k)||{}),...x})});
+  const mergedMatches=[...merged.values()];
+  days[key]={...(days[key]||{}),date:key,source_url:sourceUrl,imported_at:new Date().toISOString(),matches:mergedMatches};
   localStorage.setItem(MATCHDAYS_KEY,JSON.stringify(days)); localStorage.setItem(LAST_DAY_KEY,key);
   // Compatibilità: manteniamo la vecchia chiave solo se la giornata è oggi.
   if(key===isoLocal(dateFromOffset(0))) localStorage.setItem(MATCHDAY_KEY,JSON.stringify(days[key]));
@@ -785,7 +792,7 @@ function storeMatchdayFromHtml(html, sourceUrl='browser'){
   const [y,m,d]=key.split('-');
   const label=new Date(Number(y),Number(m)-1,Number(d),12).toLocaleDateString('it-IT',{weekday:'long',day:'numeric',month:'long'});
   const warning=resolved.mode==='fallback'?' Data non riconosciuta: ho usato Oggi; scegli manualmente “Domani” se necessario.':'';
-  dayStatus(`${matches.length} partite importate in ${label} (${resolved.mode}).${warning}`,'good');
+  const totalStored=(getStoredDays()[key]?.matches||[]).length; dayStatus(`${matches.length} lette ora · ${totalStored} partite conservate in ${label} (${resolved.mode}).${warning}`,'good');
   return matches;
 }
 function clamp(n,a=0,b=100){return Math.max(a,Math.min(b,n))}

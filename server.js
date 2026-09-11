@@ -47,7 +47,7 @@ app.get('/api/health', (req, res) => {
   const store = readStore();
   res.json({
     ok: true,
-    version: '3.2.3',
+    version: '3.2.7',
     storage: 'server-json',
     admin_token_required: !!ADMIN_TOKEN,
     matchdays: Object.keys(store.matchdays).length,
@@ -74,9 +74,15 @@ app.post('/api/matchdays/:date', requireAdmin, (req, res) => {
   const pack = req.body && typeof req.body === 'object' ? req.body : {};
   if (!Array.isArray(pack.matches)) return res.status(400).json({ ok: false, error: 'matches deve essere un array' });
   const store = readStore();
-  store.matchdays[key] = { ...pack, date: key, published_at: new Date().toISOString() };
+  const previous = store.matchdays[key] && Array.isArray(store.matchdays[key].matches) ? store.matchdays[key].matches : [];
+  const merged = new Map();
+  const matchKey = m => normId(`${m && m.home || ''}-${m && m.away || ''}-${m && m.time || ''}`) || normId(m && m.id);
+  for (const m of previous) { const k = matchKey(m); if (k) merged.set(k, m); }
+  for (const m of pack.matches) { const k = matchKey(m); if (k) merged.set(k, { ...(merged.get(k)||{}), ...m }); }
+  const mergedMatches = [...merged.values()];
+  store.matchdays[key] = { ...store.matchdays[key], ...pack, date: key, matches: mergedMatches, published_at: new Date().toISOString() };
   writeStore(store);
-  res.json({ ok: true, date: key, matches: pack.matches.length });
+  res.json({ ok: true, date: key, imported: pack.matches.length, matches: mergedMatches.length, preserved: Math.max(0, mergedMatches.length-pack.matches.length) });
 });
 
 app.delete('/api/matchdays/:date', requireAdmin, (req, res) => {
@@ -168,7 +174,7 @@ app.use((err, req, res, next) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`MagicScanner V3.2.3 listening on port ${PORT}`);
+  console.log(`MagicScanner V3.2.7 listening on port ${PORT}`);
   console.log(`Storage: ${STORE_FILE}`);
   console.log(`ADMIN_TOKEN: ${ADMIN_TOKEN ? 'required' : 'not configured'}`);
 });
