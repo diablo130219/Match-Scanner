@@ -118,7 +118,7 @@ h1{font-size:34px;margin:0 0 8px}.sub{color:var(--muted);line-height:1.58}.eyebr
 <div id="filePanel" class="panel"><label class="drop"><input id="files" type="file" accept=".html,.htm,.md,.txt,text/html" multiple hidden><strong>Trascina o scegli più file Stats</strong><small>Puoi caricare anche l’HTML salvato da MagicScanner Extract</small></label></div>
 <div class="actions"><button class="btn primary" id="importBtn">Importa e salva nel browser</button><button class="btn secondary" id="downloadBtn" disabled>Scarica backup .js</button><button class="btn secondary" id="clearBtn">Svuota archivio importato</button></div><div id="status" class="status"></div>
 <div class="grid"><div class="metric"><span>Sorgenti lette</span><b id="nFiles">0</b></div><div class="metric"><span>Partite riconosciute</span><b id="nMatches">0</b></div><div class="metric"><span>Goal stats</span><b id="nGoals">0</b></div><div class="metric"><span>Timing</span><b id="nTiming">0</b></div></div><div class="list" id="list"></div></div>
-<div class="card"><b>Flusso V2.8</b><div class="sub" style="margin-top:8px">Per la home: apri la pagina <b>matches.asp</b> → clicca <b>MagicScanner Extract</b> → incolla qui → <b>Importa giornata dal browser</b>. Per il dettaglio: fai lo stesso dalla pagina <b>Stats</b> e usa la sezione “Incolla testo/HTML”.</div><div class="notice">Il recupero diretto via URL rimane solo come fallback: SoccerSTATS può rispondere HTTP 403 ai server cloud.</div></div>
+<div class="card"><b>Flusso V3.0.6</b><div class="sub" style="margin-top:8px">Per la home: apri la pagina <b>matches.asp</b> → clicca <b>MagicScanner Extract</b> → incolla qui → <b>Importa giornata dal browser</b>. Per il dettaglio: fai lo stesso dalla pagina <b>Stats</b> e usa la sezione “Incolla testo/HTML”.</div><div class="notice">Il recupero diretto via URL rimane solo come fallback: SoccerSTATS può rispondere HTTP 403 ai server cloud.</div></div>
 </div>
 <script>
 
@@ -600,6 +600,73 @@ function timingLoose(block,home,away){
   if(parsedGroups[3]){out[away]??={};out[away].away=parsedGroups[3]}
   return out;
 }
+
+function detailSectionRowsFromPayload(data, startNames, endNames=[]){
+  const rows=Array.isArray(data?.rows)?data.rows:[];
+  const norm=s=>String(s||'').replace(/\u00a0/g,' ').replace(/\s+/g,' ').trim().toLowerCase();
+  const starts=startNames.map(norm), ends=endNames.map(norm);
+  let start=-1;
+  for(let i=0;i<rows.length;i++){
+    const t=norm(rows[i]?.text||'');
+    if(starts.some(s=>t===s || t.includes(s))){start=i+1;break}
+  }
+  if(start<0)return [];
+  let stop=rows.length;
+  for(let i=start;i<rows.length;i++){
+    const t=norm(rows[i]?.text||'');
+    if(ends.some(e=>t===e || t.includes(e))){stop=i;break}
+  }
+  return rows.slice(start,stop);
+}
+function cellsOfPayloadRow(r){
+  return (Array.isArray(r?.cells)?r.cells:[]).map(x=>String(x||'').replace(/\u00a0/g,' ').replace(/\s+/g,' ').trim()).filter(Boolean);
+}
+function mapStatRowsStructured(rows, labels){
+  const out={};
+  for(const r of rows){
+    const c=cellsOfPayloadRow(r);
+    for(const lab of labels){
+      const idx=c.findIndex(x=>x.toLowerCase()===lab.toLowerCase() || x.toLowerCase().includes(lab.toLowerCase()));
+      if(idx<0)continue;
+      const vals=c.filter((x,i)=>i!==idx && /-?\d+(?:[.,]\d+)?%?/.test(x));
+      if(vals.length)out[lab]=vals.slice(0,4);
+    }
+  }
+  return out;
+}
+function rawPayloadRows(rows){return rows.map(cellsOfPayloadRow).filter(x=>x.length>=2)}
+function timingStructured(data,home,away){
+  const rows=detailSectionRowsFromPayload(data,['Goal times'],['Goal Differences by time segment (TOTAL)','Average goal times','Corner statistics']);
+  if(!rows.length)return {};
+  const teams=[home,away].filter(Boolean),segs=['0-15','16-30','31-45','46-60','61-75','76-90','1st Half','2nd Half'];
+  const out={};let team=null,scope=null,lastSeg=null;
+  for(const r of rows){
+    const c=cellsOfPayloadRow(r),txt=String(r?.text||c.join(' ')).replace(/\s+/g,' ').trim();
+    const teamHit=teams.find(t=>t&&txt.toLowerCase()===t.toLowerCase())||teams.find(t=>t&&txt.toLowerCase().includes(t.toLowerCase())&&txt.length<t.length+24);
+    if(teamHit){team=teamHit;out[team]??={};continue}
+    const scopeHit=c.find(x=>/^(Total|Home|Away)$/i.test(x))||(/^(Total|Home|Away)$/i.test(txt)?txt:null);
+    if(scopeHit&&team){scope=scopeHit.toLowerCase();out[team][scope]??={};continue}
+    if(!team||!scope)continue;
+    const seg=c.find(x=>segs.includes(x))||segs.find(x=>txt.includes(x));
+    if(seg){lastSeg=seg;out[team][scope][seg]??={};const gi=c.findIndex(x=>/^GF$/i.test(x));const ai=c.findIndex(x=>/^GA$/i.test(x));if(gi>=0){const v=c.slice(gi+1).find(x=>/^-?\d+(?:[.,]\d+)?%?$/.test(x));if(v)out[team][scope][seg].gf=v}if(ai>=0){const v=c.slice(ai+1).find(x=>/^-?\d+(?:[.,]\d+)?%?$/.test(x));if(v)out[team][scope][seg].ga=v}continue}
+    if(lastSeg&&/^GA$/i.test(c[0]||'')){const v=c.slice(1).find(x=>/^-?\d+(?:[.,]\d+)?%?$/.test(x));if(v)out[team][scope][lastSeg].ga=v}
+  }
+  return out;
+}
+function parseStructuredDetailPayload(data, exactMatch=null){
+  const goalLabels=['Goals scored (GF)','GF per match','Goals conceded (GA)','GA per match','GF+GA per match','GF+GA over 0.5','GF+GA over 1.5','GF+GA over 2.5','GF+GA over 3.5','GF+GA over 4.5','GF+GA over 5.5','GF+GA over 0.5 at HT','GF+GA over 1.5 at HT','GF+GA over 2.5 at HT'];
+  const cornerLabels=['AVG Corners For','AVG Corners Against','Total per match','Total Over 7.5','Total Over 8.5','Total Over 9.5','Total Over 10.5','Total Over 11.5','Total Over 12.5','Total Over 13.5'];
+  const goalRows=detailSectionRowsFromPayload(data,['Goal statistics'],['Teams scoring stats vs league average','Home vs Away Stats','Scorelines','Corner statistics']);
+  const cornerRows=detailSectionRowsFromPayload(data,['Corner statistics'],['Teams results table','Goal statistics','Results progression and current form']);
+  const avgRows=detailSectionRowsFromPayload(data,['Average goal times'],['Corner statistics']);
+  const totalRows=detailSectionRowsFromPayload(data,['Total Goals (GF + GA) stats'],['Featured Highest / Lowest individual rankings','Contextual averages']);
+  const contextualRows=detailSectionRowsFromPayload(data,['Contextual averages'],['Results progression and current form','Goal times']);
+  const haRows=detailSectionRowsFromPayload(data,['Home vs Away Stats'],['Scorelines','Home vs Away distribution']);
+  const home=exactMatch?.home||'',away=exactMatch?.away||'';
+  return {id:exactMatch?.id||'',home,away,league:exactMatch?.league||'',source_file:'soccerstats-structured',source_url:data?.source||'',goal_statistics:mapStatRowsStructured(goalRows,goalLabels),corners:mapStatRowsStructured(cornerRows,cornerLabels),average_goal_times_raw:rawPayloadRows(avgRows).filter(r=>r.some(x=>/Average minute/i.test(x))),total_goals_raw:rawPayloadRows(totalRows),contextual_raw:rawPayloadRows(contextualRows),home_away_raw:rawPayloadRows(haRows),timing:timingStructured(data,home,away)};
+}
+function hasUsefulDetail(d){return !!(Object.keys(d?.goal_statistics||{}).length||Object.keys(d?.corners||{}).length||Object.keys(d?.timing||{}).length||(d?.average_goal_times_raw||[]).length||(d?.total_goals_raw||[]).length||(d?.contextual_raw||[]).length||(d?.home_away_raw||[]).length)}
+
 function parse(text,name,sourceUrl=''){
   text=String(text||'').replace(/\\n/g,'\n').replace(/\\t/g,'\t');
   let title='';
@@ -720,7 +787,7 @@ function filteredDetailQueue(){
   const state=document.querySelector('#matchStatusFilter')?.value||'all';
   return allImportedMatches().filter(m=>{
     if(scope==='promoted'&&!isPromotedMatch(m))return false;
-    const done=!!details[m.id];
+    const done=hasUsefulDetail(details[m.id]);
     if(state==='done'&&!done)return false;
     if(state==='missing'&&done)return false;
     return detailMatchesQuery(m,q);
@@ -759,13 +826,23 @@ async function importPaste(){
         exactMatch=findImportedMatchByStatsUrl(data.source||'');
         let text='';
         if(data.html) text=htmlToMarkdownish(data.html);
-        else if(data.bodyText) text=String(data.bodyText||'').replace(/\n/g,'\n').replace(/\t/g,'\t');
+        else if(data.bodyText) text=String(data.bodyText||'');
         else if(Array.isArray(data.rows)) text=data.rows.map(r=>Array.isArray(r.cells)?r.cells.join('\t'):(r.text||'')).join('\n');
         let d=parse(text,'soccerstats-detail',data.source||'');
-        d=bindDetailToImportedMatch(d,data);
-        if(exactMatch && !d.away){
-          d={...d,id:exactMatch.id,home:exactMatch.home,away:exactMatch.away,league:exactMatch.league||'',source_url:data.source||'',goal_statistics:d.goal_statistics||{},corners:d.corners||{},timing:d.timing||{}};
+        if(Array.isArray(data.rows)){
+          const sd=parseStructuredDetailPayload(data,exactMatch);
+          d={...d,
+            goal_statistics:Object.keys(sd.goal_statistics||{}).length?sd.goal_statistics:(d.goal_statistics||{}),
+            corners:Object.keys(sd.corners||{}).length?sd.corners:(d.corners||{}),
+            timing:Object.keys(sd.timing||{}).length?sd.timing:(d.timing||{}),
+            average_goal_times_raw:(sd.average_goal_times_raw||[]).length?sd.average_goal_times_raw:(d.average_goal_times_raw||[]),
+            total_goals_raw:(sd.total_goals_raw||[]).length?sd.total_goals_raw:(d.total_goals_raw||[]),
+            contextual_raw:(sd.contextual_raw||[]).length?sd.contextual_raw:(d.contextual_raw||[]),
+            home_away_raw:(sd.home_away_raw||[]).length?sd.home_away_raw:(d.home_away_raw||[])
+          };
         }
+        d=bindDetailToImportedMatch(d,data);
+        if(exactMatch)d={...d,id:exactMatch.id,home:exactMatch.home,away:exactMatch.away,league:exactMatch.league||d.league||'',source_url:data.source||d.source_url||''};
         if(d.away) rows=[d];
       }
     }catch(e){console.warn('JSON detail import',e)}
@@ -781,7 +858,9 @@ async function importPaste(){
   mergeAndStore(rows);
   renderPromotedQueue();
   const bound=rows.filter(x=>x.matched_by==='stats_url').length;
-  status(`${rows.length} partita/e salvate nel browser${bound?' e associate alla partita corretta tramite URL Stats':''}.`,'good')
+  const useful=rows.filter(hasUsefulDetail).length;
+  if(!useful) status(`${rows.length} partita/e associate correttamente, ma nessun blocco Stats è stato estratto. La partita resta “Da importare”.`,'error');
+  else status(`${rows.length} partita/e salvate${bound?' e associate tramite URL Stats':''}; ${useful} con dati dettagliati estratti.`,'good')
 }
 async function importFiles(){const fs=[...$('#files').files];if(!fs.length)throw new Error('Seleziona almeno un file .md o .txt.');const rows=[];for(const f of fs){const d=parse(await f.text(),f.name);if(d.away)rows.push(d)}mergeAndStore(rows);status(`${rows.length} partita/e salvate nel browser.`,'good')}
 $('#importBtn').onclick=async()=>{try{$('#importBtn').disabled=true;if(activeTab==='urlPanel')await importUrls();else if(activeTab==='pastePanel')await importPaste();else await importFiles()}catch(e){status(String(e.message||e),'error')}finally{$('#importBtn').disabled=false}};
