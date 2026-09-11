@@ -267,18 +267,19 @@ function parseExtractV3(data){
     if(scopeIndex<0)return null;
     const sm=cells[scopeIndex].match(/last\s+(\d+)/i);
     if(!sm)return null;
-    let team=''; let time='';
+    let team=msTeamFromRowLinks(r); let time='';
+    const scopeCellRaw=cells[scopeIndex]||'';
+    if(!team){const embedded=msCleanTeamName(scopeCellRaw); if(msValidTeamName(embedded))team=embedded;}
     for(let i=0;i<scopeIndex;i++){
       const c=cells[i];
       if(isTime(c)){time=c;continue}
-      if(/^(scope|gp|w%|fts|cs|bts|tg|gf|ga|1\.5\+|2\.5\+|3\.5\+|points per game|stats)$/i.test(c))continue;
-      if(!/^\d+(?:[.,]\d+)?%?$/.test(c) && c.length<=80) team=c;
+      if(msHeaderish(c))continue;
+      if(!team && !/^\d+(?:[.,]\d+)?%?$/.test(c) && c.length<=80 && msValidTeamName(c)) team=msCleanTeamName(c);
     }
     if(!team){
       const before=clean((r.text||'').split(/last\s+\d+/i)[0]).replace(/\b(?:[01]?\d|2[0-3]):[0-5]\d\b/g,' ').trim();
-      team=before.split(/\s{2,}|\|/).map(clean).filter(Boolean).pop()||before;
+      team=msCleanTeamName(before.split(/\s{2,}|\|/).map(clean).filter(Boolean).pop()||before);
     }
-    team=msCleanTeamName(team);
     if(!msValidTeamName(team)||msHeaderish(team)) return null;
     let vals=[];
     for(let i=scopeIndex+1;i<cells.length;i++) vals.push(...numberTokens(cells[i]));
@@ -354,11 +355,11 @@ function msBodyCanonicalMatches(data){
     const lm=line.match(/^(.*?)\s+stats\s+Matches played:/i);
     if(lm){league=cleanLeague(lm[1]);continue}
     const h=lines[i].split('\t').map(msCleanText);
-    if(h.length<14 || !/^(?:[01]?\d|2[0-3]):[0-5]\d$/.test(h[1]||'') || !/^last\s*8$/i.test(h[2]||''))continue;
+    if(h.length<14 || !/^(?:[01]?\d|2[0-3]):[0-5]\d$/.test(h[1]||'') || !msExactScope(h[2]||''))continue;
     let away=null;
     for(let j=i+1;j<Math.min(lines.length,i+5);j++){
       const a=lines[j].split('\t').map(msCleanText);
-      if(a.length>=13 && /^last\s*8$/i.test(a[1]||'')){away=a;break}
+      if(a.length>=13 && msExactScope(a[1]||'')){away=a;break}
     }
     if(away)out.push({league,home:msCleanTeamName(h[0]),away:msCleanTeamName(away[0]),time:h[1]});
   }
@@ -1332,6 +1333,9 @@ async function importPaste(){
         if(data.html) text=htmlToMarkdownish(data.html);
         else if(data.bodyText) text=String(data.bodyText||'');
         else if(Array.isArray(data.rows)) text=data.rows.map(r=>Array.isArray(r.cells)?r.cells.join('\t'):(r.text||'')).join('\n');
+        // Il <title> di SoccerSTATS ("Team A vs Team B H2H stats...") è la fonte più affidabile
+        // per riconoscere le due squadre: lo mettiamo davanti così parse() lo trova per primo.
+        if(data.title) text=String(data.title)+'\n'+text;
         let d=parse(text,'soccerstats-detail',data.source||'');
         if(Array.isArray(data.rows)){
           const sd=parseStructuredDetailPayload(data,exactMatch);
@@ -1353,7 +1357,9 @@ async function importPaste(){
       }
     }catch(e){console.warn('JSON detail import',e)}
   }
-  if(!rows.length){
+  // Se l'input era JSON (payload di MagicScanner Extract), non ricadere sullo split testuale:
+  // interpretare il JSON grezzo come markdown produce squadre sbagliate o nessun risultato.
+  if(!rows.length && !raw.startsWith('{')){
     const chunks=raw.split(/^---MATCH---\s*$/m).map(x=>x.trim()).filter(Boolean);
     rows=chunks.map((x,i)=>{
       if(/^</.test(x)){return parse(htmlToMarkdownish(x),`html-${i+1}`)}
