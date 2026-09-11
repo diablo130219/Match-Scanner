@@ -137,7 +137,7 @@ h1{font-size:34px;margin:0 0 8px}.sub{color:var(--muted);line-height:1.58}.eyebr
 <div id="filePanel" class="panel"><label class="drop"><input id="files" type="file" accept=".html,.htm,.md,.txt,text/html" multiple hidden><strong>Trascina o scegli più file Stats</strong><small>Puoi caricare anche l’HTML salvato da MagicScanner Extract</small></label></div>
 <div class="actions"><button class="btn primary" id="importBtn">Importa e salva nel browser</button><button class="btn secondary" id="downloadBtn" disabled>Scarica backup .js</button><button class="btn secondary" id="clearBtn">Svuota archivio importato</button></div><div id="status" class="status"></div>
 <div class="grid"><div class="metric"><span>Sorgenti lette</span><b id="nFiles">0</b></div><div class="metric"><span>Partite riconosciute</span><b id="nMatches">0</b></div><div class="metric"><span>Goal stats</span><b id="nGoals">0</b></div><div class="metric"><span>Timing</span><b id="nTiming">0</b></div></div><div class="list" id="list"></div></div>
-<div class="card"><b>Flusso V3.0.6</b><div class="sub" style="margin-top:8px">Per la home: apri la pagina <b>matches.asp</b> → clicca <b>MagicScanner Extract</b> → incolla qui → <b>Importa giornata dal browser</b>. Per il dettaglio: fai lo stesso dalla pagina <b>Stats</b> e usa la sezione “Incolla testo/HTML”.</div><div class="notice">Il recupero diretto via URL rimane solo come fallback: SoccerSTATS può rispondere HTTP 403 ai server cloud.</div></div>
+<div class="card"><b>Flusso V3.1.2</b><div class="sub" style="margin-top:8px">Per la home: apri la pagina <b>matches.asp</b> → clicca <b>MagicScanner Extract</b> → incolla qui → <b>Importa giornata dal browser</b>. Per il dettaglio: fai lo stesso dalla pagina <b>Stats</b> e usa la sezione “Incolla testo/HTML”.</div><div class="notice">Il recupero diretto via URL rimane solo come fallback: SoccerSTATS può rispondere HTTP 403 ai server cloud.</div></div>
 </div>
 <script>
 /* V3.1: PIN amministratore lato browser. Protegge da accessi accidentali, non è sicurezza server-side. */
@@ -243,6 +243,128 @@ function parseExtractV3(data){
   return out;
 }
 
+
+// V3.1.2 — fallback robusto per matches.asp quando SoccerSTATS cambia struttura DOM.
+function msCleanText(v){return String(v||'').replace(/\u00a0/g,' ').replace(/\r/g,'').replace(/[ ]{2,}/g,' ').trim()}
+function msLooksLikeTeam(v){
+  const s=msCleanText(v);
+  if(!s||s.length<2||s.length>80||!/\p{L}/u.test(s))return false;
+  if(/^(?:scope|gp|w%|fts|cs|bts|btts|tg|gf|ga|points per game|stats|matches played|goals per match|last\s+\d+|home|away)$/i.test(s))return false;
+  if(/^(?:\d+(?:[.,]\d+)?%?|[01]?\d:[0-5]\d)$/i.test(s))return false;
+  return true;
+}
+function msParseStatChunk(text, explicitTeam='', explicitTime=''){
+  const clean=msCleanText(text);
+  const sm=clean.match(/\blast\s+(\d+)\b/i); if(!sm)return null;
+  const before=clean.slice(0,sm.index).trim();
+  const after=clean.slice(sm.index+sm[0].length);
+  const vals=(after.match(/\d+(?:[.,]\d+)?%?/g)||[]);
+  if(vals.length<11)return null;
+  let team=msCleanText(explicitTeam);
+  let time=explicitTime||((before.match(/\b(?:[01]?\d|2[0-3]):[0-5]\d\b/)||[])[0]||'');
+  if(!team){
+    let b=before.replace(/\b(?:[01]?\d|2[0-3]):[0-5]\d\b/g,' ').trim();
+    const pieces=b.split(/\t|\||\s{2,}/).map(msCleanText).filter(Boolean);
+    team=[...pieces].reverse().find(msLooksLikeTeam)||'';
+  }
+  if(!msLooksLikeTeam(team))return null;
+  let k=0, gp=Number(sm[1]);
+  if(vals.length>=12 && !vals[0].includes('%') && Number(vals[0].replace(',','.'))<=40) gp=num(vals[k++]);
+  const take=()=>vals[k++]||'0';
+  return {team,time,gp,w:take(),fts:take(),cs:take(),bts:take(),tg:take(),gf:take(),ga:take(),o15:take(),o25:take(),o35:take(),ppg:take(),stats_url:''};
+}
+function parseExtractFlexible(data){
+  const candidates=[];
+  const clean=s=>msCleanText(s);
+  const rows=Array.isArray(data?.rows)?data.rows:[];
+  let league='SoccerSTATS';
+
+  // 1) Analizza le celle preservando la posizione del team e di "last N".
+  for(const r of rows){
+    const cells=(r.cells||[]).map(clean).filter(Boolean);
+    const txt=clean(r.text||cells.join('\t'));
+    if(/Matches played/i.test(txt)&&/Goals per match/i.test(txt)){
+      const maybe=cells.find(msLooksLikeTeam);
+      if(maybe && maybe.length<100)league=maybe.replace(/\bstats\b/ig,' ').trim();
+    }
+    const scopeIdx=[];
+    cells.forEach((c,i)=>{if(/\blast\s+\d+\b/i.test(c))scopeIdx.push(i)});
+    if(scopeIdx.length){
+      for(let si=0;si<scopeIdx.length;si++){
+        const idx=scopeIdx[si], end=si+1<scopeIdx.length?scopeIdx[si+1]:cells.length;
+        let team=''; let time='';
+        for(let j=idx-1;j>=0;j--){
+          const c=cells[j];
+          if(!time && /^(?:[01]?\d|2[0-3]):[0-5]\d$/.test(c))time=c;
+          if(msLooksLikeTeam(c)){team=c;break}
+        }
+        const chunk=[team,time,cells[idx],...cells.slice(idx+1,end)].filter(Boolean).join('\t');
+        const p=msParseStatChunk(chunk,team,time); if(p)candidates.push({league,row:p});
+      }
+      continue;
+    }
+    // Alcuni layout comprimono l'intera riga in text e contengono uno o due "last N".
+    const scopes=[...txt.matchAll(/\blast\s+\d+\b/ig)];
+    if(scopes.length){
+      for(let si=0;si<scopes.length;si++){
+        const a=scopes[si].index||0, b=si+1<scopes.length?(scopes[si+1].index||txt.length):txt.length;
+        const prefix=txt.slice(Math.max(0,a-120),a);
+        const chunk=prefix+txt.slice(a,b);
+        const p=msParseStatChunk(chunk); if(p)candidates.push({league,row:p});
+      }
+    }
+  }
+
+  // 2) Fallback sul bodyText: utile quando le statistiche non sono più dentro <tr> classici.
+  if(candidates.length<2){
+    const raw=String(data?.bodyText||'').replace(/\u00a0/g,' ').replace(/\r/g,'');
+    const lines=raw.split('\n').map(x=>x.trim()).filter(Boolean);
+    let currentLeague='SoccerSTATS';
+    for(let i=0;i<lines.length;i++){
+      const line=lines[i];
+      if(/Matches played/i.test(line)&&/Goals per match/i.test(line)){
+        const prev=lines.slice(Math.max(0,i-3),i).reverse().find(msLooksLikeTeam);
+        if(prev)currentLeague=prev;
+      }
+      if(!/\blast\s+\d+\b/i.test(line))continue;
+      // combina la riga con un piccolo contesto prima/dopo per catturare team e valori spezzati.
+      for(const radius of [0,1,2,3]){
+        const start=Math.max(0,i-radius), end=Math.min(lines.length,i+radius+1);
+        const block=lines.slice(start,end).join('\t');
+        let team=''; let time='';
+        for(let j=i-1;j>=Math.max(0,i-4);j--){
+          if(!time && /^(?:[01]?\d|2[0-3]):[0-5]\d$/.test(lines[j]))time=lines[j];
+          if(msLooksLikeTeam(lines[j])){team=lines[j];break}
+        }
+        const p=msParseStatChunk(block,team,time);
+        if(p){candidates.push({league:currentLeague,row:p});break}
+      }
+    }
+  }
+
+  // deduplica righe squadra consecutive/duplicate.
+  const uniq=[];
+  for(const x of candidates){
+    const key=msNormId?msNormId(x.row.team):x.row.team.toLowerCase();
+    const last=uniq[uniq.length-1];
+    const lastKey=last?(msNormId?msNormId(last.row.team):last.row.team.toLowerCase()):'';
+    if(key && key!==lastKey)uniq.push(x);
+  }
+
+  // URL Stats disponibili nella pagina, nell'ordine dei match.
+  const statLinks=(Array.isArray(data?.links)?data.links:[]).map(x=>x?.href||'').filter(h=>/soccerstats\.com\/(?:pmatch|h2h|match)\.asp/i.test(h));
+  const uniqueLinks=[...new Set(statLinks)];
+  const out=[];
+  for(let i=0;i+1<uniq.length;i+=2){
+    const a=uniq[i],b=uniq[i+1];
+    if(!a?.row||!b?.row||a.row.team===b.row.team)continue;
+    const stats_url=uniqueLinks[out.length]||a.row.stats_url||b.row.stats_url||'';
+    const m=buildMatch(a.row,b.row,a.league||b.league||'SoccerSTATS',a.row.time||b.row.time||'',stats_url);
+    if(!out.some(x=>x.id===m.id))out.push(m);
+  }
+  return out;
+}
+
 function isoLocal(d){
   const y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,'0'),day=String(d.getDate()).padStart(2,'0');
   return `${y}-${m}-${day}`;
@@ -300,14 +422,25 @@ function storeMatchdayFromHtml(html, sourceUrl='browser'){
     try{
       const data=JSON.parse(raw); extractData=data;
       if(data && (data.magicScannerExtract===5 || data.magicScannerExtract===4 || data.magicScannerExtract===3) && data.page!=='detail' && Array.isArray(data.rows)){
-        matches=parseExtractV3(data); sourceUrl=data.source||sourceUrl;
+        matches=parseExtractV3(data);
+        if(!matches.length) matches=parseExtractFlexible(data);
+        sourceUrl=data.source||sourceUrl;
       } else if(data && data.magicScannerExtract===2 && Array.isArray(data.matches)){
         matches=data.matches.map(x=>buildMatch(x.home,x.away,x.league||'SoccerSTATS',x.time||'',x.stats_url||'')); sourceUrl=data.source||sourceUrl;
       }
     }catch(e){}
+    if(!matches.length && extractData && Array.isArray(extractData.rows)) matches=parseExtractFlexible(extractData);
   }
   if(!matches.length) matches=parseMatchdayHtml(html);
-  if(!matches.length) throw new Error(`Dati ricevuti (${html.length.toLocaleString('it-IT')} caratteri), ma non riconosco partite.`);
+  if(!matches.length){
+    let diag='';
+    if(extractData){
+      const rowCount=Array.isArray(extractData.rows)?extractData.rows.length:0;
+      const lastCount=((String(extractData.bodyText||'').match(/\blast\s+\d+\b/ig))||[]).length;
+      diag=` · righe ${rowCount}, occorrenze last ${lastCount}`;
+    }
+    throw new Error(`Dati ricevuti (${html.length.toLocaleString('it-IT')} caratteri), ma non riconosco partite${diag}.`);
+  }
   const resolved=resolveTargetDate(extractData||{}); const key=storeImportedDay(resolved.date,matches,sourceUrl);
   renderDay(matches);
   refreshStoredDaySelect(key);
