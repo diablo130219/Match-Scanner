@@ -4165,7 +4165,9 @@ function flattenMatchdays(days){
     const dm=String(key).match(/^(\d{4})-(\d{2})-(\d{2})$/);if(!dm)continue;
     const d=new Date(Number(dm[1]),Number(dm[2])-1,Number(dm[3]),12);
     const offset=Math.round((d-today)/86400000);
-    if(offset<-1||offset>4)continue;
+    // V3.3.9-fix: prima qui si scartava in silenzio qualsiasi giornata fuori dalla finestra
+    // ieri..+4 giorni, quindi una giornata importata con data diversa spariva del tutto
+    // (sintomo "0 partite" in home pur con import riuscito in admin). Ora si tengono tutte.
     for(const m of pack.matches) imported.push({...m,date_offset:offset,calendar_date:key,imported_day:true});
   }
   return imported;
@@ -4634,8 +4636,10 @@ function setupDates(){
   const today=new Date();
   today.setHours(12,0,0,0);
 
-  // Manteniamo al massimo ieri, poi oggi e i 4 giorni successivi.
-  const offsets=[-1,0,1,2,3,4];
+  // Manteniamo sempre ieri..+4 giorni, più eventuali giornate importate fuori da questa
+  // finestra (es. weekend più lontani) così restano raggiungibili dalla barra date.
+  const importedOffsets=[...new Set(matches.map(m => m.date_offset ?? 0))];
+  const offsets=[...new Set([-1,0,1,2,3,4,...importedOffsets])].sort((a,b)=>a-b);
 
   rail.innerHTML=offsets.map(offset=>{
     const d=new Date(today);
@@ -4718,6 +4722,13 @@ if(matchListEl){
 
 async function bootstrapMagicScanner(){
   await loadPublicMatchdays();
+  // V3.3.9-fix: prima si apriva sempre su "oggi" (offset 0) anche quando l'unica giornata
+  // importata era per un altro giorno, mostrando "0 partite". Ora si apre sul giorno più
+  // vicino che ha davvero partite importate.
+  if(!matches.some(m => (m.date_offset ?? 0) === activeDateOffset)){
+    const withData=[...new Set(matches.map(m => m.date_offset ?? 0))].sort((a,b)=>Math.abs(a)-Math.abs(b));
+    if(withData.length) activeDateOffset=withData[0];
+  }
   setupDates();
   renderCounts();
   renderList();
