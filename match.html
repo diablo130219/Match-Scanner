@@ -6077,6 +6077,7 @@ body{background:radial-gradient(circle at 50% -10%,rgba(13,97,161,.12),transpare
 .v3card{background:linear-gradient(180deg,#082036,#06192b);border:1px solid #0c537d;border-radius:10px;padding:13px 14px;min-height:180px;box-shadow:inset 0 1px 0 rgba(255,255,255,.025)}.v3cardTitle{font-size:14px;font-weight:1000;text-transform:uppercase;letter-spacing:.02em;margin-bottom:12px}.v3muted{color:#8299ae}.v3Unavailable{height:calc(100% - 28px);min-height:135px;display:grid;place-items:center;text-align:center;border:1px dashed rgba(91,153,196,.22);border-radius:8px;background:rgba(3,15,28,.32);padding:18px;color:#8299ae;font-size:13px;line-height:1.55}
 .v3info{display:grid;gap:0;border:1px solid rgba(49,119,162,.24);border-radius:8px;overflow:hidden}.v3infoRow{display:grid;grid-template-columns:38% 62%;padding:10px 12px;border-bottom:1px solid rgba(46,110,149,.22);font-size:13px}.v3infoRow:last-child{border-bottom:0}.v3infoRow span{color:#b6c7d8}.v3infoRow b{font-weight:900}
 .v3table{width:100%;border-collapse:collapse;font-size:12px}.v3table th,.v3table td{padding:7px 6px;border-bottom:1px solid rgba(47,106,145,.24);text-align:center}.v3table th{color:#a9bdd0;font-weight:800}.v3table td:first-child,.v3table th:first-child{text-align:left}.v3table tr:last-child td{border-bottom:0}
+.v3laUp{color:#4ade80;font-size:10px}.v3laDown{color:#f87171;font-size:10px}.v3laEq{color:#8aa0b6;font-size:10px}
 .v3rowHi-home{background:rgba(84,197,255,.16)}.v3rowHi-away{background:rgba(255,99,135,.14)}.v3rowHi-home th,.v3rowHi-home td,.v3rowHi-away th,.v3rowHi-away td{color:#fff;font-weight:900}
 .v3split{display:grid;grid-template-columns:1fr 1fr;gap:12px}.v3splitBox{border:1px solid rgba(45,120,168,.25);border-radius:8px;padding:11px;background:rgba(3,16,29,.32)}.v3splitHead{font-size:12px;font-weight:1000;margin-bottom:9px}.v3kv{display:flex;justify-content:space-between;gap:12px;padding:4px 0;font-size:12px}.v3kv span{color:#afc0d1}.v3kv b{font-weight:900}
 .v3diaWrap{display:flex;flex-direction:column;align-items:center;gap:10px}.v3diaSvg{width:100%;max-width:280px;height:auto;overflow:visible}.v3diaGrid{fill:none;stroke:rgba(226,232,240,.16);stroke-width:1}.v3diaAxis{stroke:rgba(226,232,240,.14);stroke-width:1}.v3diaLabel{fill:#a9bdd0;font-size:10px;font-weight:900;text-anchor:middle}.v3diaPolyHome{fill:rgba(56,189,248,.22);stroke:#54c5ff;stroke-width:2.4;cursor:default}.v3diaPolyAway{fill:rgba(244,63,94,.18);stroke:#ff6387;stroke-width:2.4;cursor:default}.v3diaPointHome{fill:#e8f8ff;stroke:#54c5ff;stroke-width:2;cursor:default}.v3diaPointAway{fill:#fff0f4;stroke:#ff6387;stroke-width:2;cursor:default}.v3diaLegendHead{display:flex;justify-content:space-between;width:100%;font-size:11px;font-weight:900;color:#dbe7f3}.v3diaDot{width:9px;height:9px;border-radius:3px;display:inline-block;margin-right:6px}.v3diaDot.home{background:#54c5ff}.v3diaDot.away{background:#ff6387}.v3diaRows{width:100%;display:grid;gap:4px}.v3diaRow{display:grid;grid-template-columns:64px 1fr 64px;align-items:center;gap:8px;font-size:11px;padding:3px 0;border-bottom:1px solid rgba(148,163,184,.10)}.v3diaRow b{font-size:12px;font-weight:900}.v3diaRow b.home{color:#7ec7ff;text-align:left}.v3diaRow b.away{color:#ff93aa;text-align:right}.v3diaRow span{color:#afc0d1;text-align:center}
@@ -6550,6 +6551,77 @@ function v3TimingSplit(m,d){
   const make=(name,scope,blue)=>{const vals=segs.map(x=>parseFloat(scope?.[x]?.gf||'0')||0);const mx=Math.max(...vals,1);return `<div><div class="v3splitHead">${esc(name)} · gol segnati</div><div class="v3barChart">${vals.map((v,i)=>`<div class="v3bar ${blue?'blue':''}" style="height:${Math.max(5,(v/mx)*90)}%"><span>${v||0}</span><i>${segs[i]}</i></div>`).join('')}</div></div>`};
   return `<div class="v3bars">${names.map((name,i)=>make(name,data[i],i===1)).join('')}</div>`;
 }
+// V3.9: confronto con la media di campionato, dal testo puro della pagina Stats
+// (d.league_average_split, vedi leagueAverageFromPlainText in admin.html). Stesso
+// schema posizionale delle altre sezioni: "first"/"second" nell'ordine di comparsa,
+// qui etichettate con m.home/m.away. La media di campionato è la stessa per
+// entrambe le squadre (stesso campionato), quindi la mostriamo una sola volta.
+const V3_LEAGUE_AVG_ROWS=[
+  ['Points per game','PPG'],
+  ['% Wins','% Vittorie'],
+  ['% Draws','% Pareggi'],
+  ['Goals scored per game','Gol fatti / partita'],
+  ['Goals conceded per game','Gol subiti / partita'],
+  ['% Clean sheets','% Clean sheet'],
+  ['% Team scored first','% Segna per primo'],
+  ['Total goals per game','Gol totali / partita'],
+  ['% over 1.5 goals','% Over 1.5'],
+  ['% over 2.5 goals','% Over 2.5'],
+  ['% over 3.5 goals','% Over 3.5'],
+  ['% both teams scored','% BTTS']
+];
+function v3LeagueAvgArrow(teamVal,leagueVal){
+  const t=parseFloat(String(teamVal||'').replace('%','').replace(',','.'));
+  const l=parseFloat(String(leagueVal||'').replace('%','').replace(',','.'));
+  if(isNaN(t)||isNaN(l)||l===0) return '';
+  if(t>l*1.05) return '<span class="v3laUp">▲</span>';
+  if(t<l*0.95) return '<span class="v3laDown">▼</span>';
+  return '<span class="v3laEq">–</span>';
+}
+function v3LeagueAvgSplit(m,d){
+  const la=d?.league_average_split;
+  if(!la) return null;
+  const home=la.first||{}, away=la.second||{};
+  const rows=V3_LEAGUE_AVG_ROWS.map(([key,label])=>{
+    const h=home[key], a=away[key];
+    if(!h&&!a) return null;
+    const lg=h?.league||a?.league||'—';
+    return {label,hv:h?.team||'—',av:a?.team||'—',lg,hArrow:v3LeagueAvgArrow(h?.team,lg),aArrow:v3LeagueAvgArrow(a?.team,lg)};
+  }).filter(Boolean);
+  if(!rows.length) return null;
+  return `<table class="v3table"><thead><tr><th></th><th>${esc(m.home)}</th><th>Media Lega</th><th>${esc(m.away)}</th></tr></thead><tbody>${rows.map(r=>`<tr><th>${esc(r.label)}</th><td>${esc(r.hv)} ${r.hArrow}</td><td>${esc(r.lg)}</td><td>${r.aArrow} ${esc(r.av)}</td></tr>`).join('')}</tbody></table>`;
+}
+// V3.9: sequenze/tendenze attuali, dal testo puro della pagina Stats
+// (d.streaks_split, vedi streaksFromPlainText in admin.html). Come per i corner,
+// usiamo la riga "Home" della squadra di casa e la riga "Away" della squadra
+// ospite: la striscia aperta nel contesto in cui giocano questa partita (casa in
+// casa, ospite in trasferta), non la riga "Totale" generica.
+const V3_STREAK_ROWS=[
+  ['Consecutive wins','Vittorie consecutive'],
+  ['No defeat','Imbattuta da (partite)'],
+  ['1 goal scored or more','Segna da (partite)'],
+  ['No goal conceded','Clean sheet di fila'],
+  ['GF+GA over 2.5','Over 2.5 di fila'],
+  ['GF+GA under 2.5','Under 2.5 di fila'],
+  ['Scored at least twice','Doppietta+ di fila']
+];
+function v3StreakVal(v){
+  const s=String(v||'').trim();
+  if(!s||s==='-') return '—';
+  return s;
+}
+function v3StreaksSplit(m,d){
+  const st=d?.streaks_split;
+  if(!st) return null;
+  const home=st.first||{}, away=st.second||{};
+  const rows=V3_STREAK_ROWS.map(([key,label])=>{
+    const h=home[key]?.home, a=away[key]?.away;
+    if(h==null&&a==null) return null;
+    return [label,v3StreakVal(h),v3StreakVal(a)];
+  }).filter(Boolean);
+  if(!rows.length) return null;
+  return `<table class="v3table"><thead><tr><th>${esc(m.home)}</th><th></th><th>${esc(m.away)}</th></tr></thead><tbody>${rows.map(r=>`<tr><td>${esc(r[1])}</td><th>${esc(r[0])}</th><td>${esc(r[2])}</td></tr>`).join('')}</tbody></table>`;
+}
 function v3Split(m){
   const names=[m.home,m.away]; const side=['in casa','in trasferta']; const idx=[0,1];
   return `<div class="v3split">${idx.map(i=>{const gp=v3Pair(m.basic?.['Partite considerate'])[i],w=v3Pair(m.basic?.['Vittorie'])[i],gf=v3Pair(m.basic?.['Gol fatti'])[i],ga=v3Pair(m.basic?.['Gol subiti'])[i],tg=v3Pair(m.basic?.['Media gol'])[i];return `<div class="v3splitBox"><div class="v3splitHead">${esc(names[i])} (${side[i]})</div><div class="v3kv"><span>Partite</span><b>${esc(gp)}</b></div><div class="v3kv"><span>Vittorie</span><b>${esc(w)}</b></div><div class="v3kv"><span>Gol fatti</span><b>${esc(gf)}</b></div><div class="v3kv"><span>Gol subiti</span><b>${esc(ga)}</b></div><div class="v3kv"><span>Media gol</span><b>${esc(tg)}</b></div></div>`}).join('')}</div>`;
@@ -6663,7 +6735,12 @@ function buildPremiumDetailMarkup(m,d){
   const hasTiming=v327Has(d?.timing)||!!timingSplit;
   const hasStandings=Array.isArray(d?.standings_raw)&&d.standings_raw.length;
   const hasSplit=!!m.basic;
+  const leagueAvgSplit=d?v3LeagueAvgSplit(m,d):null;
+  const hasLeagueAvg=!!leagueAvgSplit;
+  const streaksSplit=d?v3StreaksSplit(m,d):null;
+  const hasStreaks=!!streaksSplit;
   const auxiliary=[];
+  if(hasLeagueAvg) auxiliary.push(`<div class="v3card"><div class="v3cardTitle">Confronto con media di campionato · SoccerSTATS</div>${leagueAvgSplit}<div class="v327cardNote" style="margin-top:10px">▲/▼ indicano se la squadra è sopra o sotto la media di tutte le squadre del campionato da inizio stagione.</div></div>`);
   if(hasRecent) auxiliary.push(`<div class="v3card"><div class="v3cardTitle">Forma stagionale / risultati recenti · SoccerSTATS</div>${v3RecentForm(m,d)}<div class="v327cardNote" style="margin-top:10px">Approfondimento SoccerSTATS. Non modifica lo Score MagicScanner Last 8.</div></div>`);
   // Reparto Corner sempre visibile (anche senza dati) — resta un placeholder finché
   // l'estrazione dalla pagina Stats non riconosce quella sezione per questo import.
@@ -6671,6 +6748,7 @@ function buildPremiumDetailMarkup(m,d){
   // incollata come testo) quando disponibile, altrimenti la vecchia v3CornerTable.
   auxiliary.push(`<div class="v3card"><div class="v3cardTitle">Corner · SoccerSTATS</div>${cornerSplit||v3CornerTable(m,d)}${hasCorners?'<div class="v327cardNote" style="margin-top:10px">Corner a favore/subiti/totali: media della squadra di casa nelle sue partite in casa vs media della squadra ospite nelle sue partite in trasferta — lo scenario di questa partita.</div>':''}</div>`);
   const auxiliaryBottom=[];
+  if(hasStreaks) auxiliaryBottom.push(`<div class="v3card"><div class="v3cardTitle">Sequenze & tendenze attuali · SoccerSTATS</div>${streaksSplit}<div class="v327cardNote" style="margin-top:10px">Striscia aperta nel contesto di questa partita: casa nelle sue partite in casa, ospite nelle sue partite in trasferta.</div></div>`);
   if(hasTiming) auxiliaryBottom.push(`<div class="v3card"><div class="v3cardTitle">Goal timing · SoccerSTATS</div>${timingSplit||v3Timing(m,d)}<div class="v327cardNote" style="margin-top:10px">Distribuzione temporale dei gol segnati in stagione, squadra per squadra (non solo lo scenario di questa partita).</div></div>`);
   if(hasSplit) auxiliaryBottom.push(`<div class="v3card"><div class="v3cardTitle">Rendimento casa / trasferta · a rombo</div>${v3SplitDiamond(m)}<div class="v327cardNote" style="margin-top:10px">Indice 0–100 su dati Ultimi 8 disponibili, non percentuale ufficiale SoccerSTATS. Approfondimento separato: non entra nel calcolo del pronostico Last 8.</div></div>`);
   if(hasStandings) auxiliaryBottom.push(`<div class="v3card"><div class="v3cardTitle">Classifica · SoccerSTATS</div>${v3Standings(m,d)}<div class="v327cardNote" style="margin-top:10px">Classifica estratta dal dettaglio SoccerSTATS. Le due squadre di questa partita sono evidenziate.</div></div>`);

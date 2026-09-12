@@ -1495,7 +1495,7 @@ function parseStructuredDetailPayload(data, exactMatch=null){
   const home=exactMatch?.home||'',away=exactMatch?.away||'';
   return {id:exactMatch?.id||'',home,away,league:exactMatch?.league||'',source_file:'soccerstats-structured',source_url:data?.source||'',goal_statistics:Object.assign({},globalStatMapFromPayload(data,goalLabels),mapStatRowsStructured(goalRows,goalLabels)),corners:Object.assign({},globalStatMapFromPayload(data,cornerLabels),mapStatRowsStructured(cornerRows,cornerLabels)),average_goal_times_raw:rawPayloadRows(avgRows).filter(r=>r.some(x=>/Average minute/i.test(x))),total_goals_raw:rawPayloadRows(totalRows),contextual_raw:rawPayloadRows(contextualRows),home_away_raw:rawPayloadRows(haRows),timing:(()=>{const a=timingStructured(data,home,away);return timingHasValues(a)?a:timingStructuredByGroups(data,home,away)})(),recent_results_raw:recentResultsFromPayload(data),standings_raw:standingsFromPayload(data)};
 }
-function hasUsefulDetail(d){return !!(Object.keys(d?.goal_statistics||{}).length||Object.keys(d?.corners||{}).length||(d?.corners_split&&(Object.keys(d.corners_split.first||{}).length||Object.keys(d.corners_split.second||{}).length))||timingHasValues(d?.timing)||(d?.timing_split&&(Object.keys(d.timing_split.first||{}).length||Object.keys(d.timing_split.second||{}).length))||(d?.average_goal_times_raw||[]).length||(d?.total_goals_raw||[]).length||(d?.contextual_raw||[]).length||(d?.home_away_raw||[]).length||(d?.recent_results_raw||[]).length||(d?.standings_raw||[]).length)}
+function hasUsefulDetail(d){return !!(Object.keys(d?.goal_statistics||{}).length||Object.keys(d?.corners||{}).length||(d?.corners_split&&(Object.keys(d.corners_split.first||{}).length||Object.keys(d.corners_split.second||{}).length))||timingHasValues(d?.timing)||(d?.timing_split&&(Object.keys(d.timing_split.first||{}).length||Object.keys(d.timing_split.second||{}).length))||(d?.league_average_split&&(Object.keys(d.league_average_split.first||{}).length||Object.keys(d.league_average_split.second||{}).length))||(d?.streaks_split&&(Object.keys(d.streaks_split.first||{}).length||Object.keys(d.streaks_split.second||{}).length))||(d?.average_goal_times_raw||[]).length||(d?.total_goals_raw||[]).length||(d?.contextual_raw||[]).length||(d?.home_away_raw||[]).length||(d?.recent_results_raw||[]).length||(d?.standings_raw||[]).length)}
 
 // V3.8: la pagina di confronto pre-match di SoccerSTATS, quando viene incollata come
 // TESTO PURO (selezione + copia dal browser, non HTML e non JSON), non ha alcuna
@@ -1590,6 +1590,59 @@ function recentResultsFromPlainText(text){
   for(const idx of idxs.slice(0,2)) out.push(...recentResultsBlockAt(lines,idx));
   return out.length?out:null;
 }
+// V3.9: "Comparison with league average" — intestazione ripetuta una volta per
+// squadra ("Lazio (3 matches) vs league average" / "AC Milan (3 matches) vs
+// league average"), seguita da righe "Etichetta <tab> valore squadra <tab> valore
+// media lega" fino alla riga singola "Home" (inizio delle sotto-tabelle
+// Home/Away, che non ci servono qui: usiamo sempre il Totale). La media di
+// campionato è la stessa per entrambe le squadre (stesso campionato).
+function ssLeagueAvgBlockAt(lines,startIdx){
+  const out={};
+  for(let i=startIdx+1;i<Math.min(lines.length,startIdx+45);i++){
+    const raw=lines[i];
+    if(raw==null)break;
+    if(/^\s*Home\s*$/i.test(raw))break;
+    if(/vs league average/i.test(raw))continue;
+    if(/^\s*\(overall\)/i.test(raw))continue;
+    if(/^\s*Total\s*$/i.test(raw))continue;
+    const cells=ssRowCells(raw);
+    if(cells.length<3)continue;
+    out[cells[0]]={team:cells[1],league:cells[2]};
+  }
+  return out;
+}
+function leagueAverageFromPlainText(text){
+  const lines=String(text||'').split(/\r?\n/);
+  const idxs=ssFindHeadingIdxs(lines,'Comparison with league average');
+  if(!idxs.length)return null;
+  const perTeam=idxs.slice(0,2).map(idx=>ssLeagueAvgBlockAt(lines,idx));
+  if(!Object.keys(perTeam[0]||{}).length && !Object.keys(perTeam[1]||{}).length) return null;
+  return {first:perTeam[0]||{},second:perTeam[1]||{}};
+}
+// V3.9: "Current Streaks & Sequences" — intestazione ripetuta una volta per
+// squadra, riga di intestazione colonne "CURRENT SEQUENCES Home Away Total" poi
+// righe "Etichetta <tab> Home <tab> Away <tab> Total" (valore o "-" se assente).
+function ssStreaksBlockAt(lines,startIdx){
+  const out={};
+  for(let i=startIdx+1;i<Math.min(lines.length,startIdx+20);i++){
+    const raw=lines[i];
+    if(raw==null)break;
+    const cells=ssRowCells(raw);
+    if(!cells.length){ if(Object.keys(out).length) break; else continue }
+    if(/^CURRENT SEQUENCES$/i.test(cells[0]))continue;
+    if(cells.length<4)break;
+    out[cells[0]]={home:cells[1],away:cells[2],total:cells[3]};
+  }
+  return out;
+}
+function streaksFromPlainText(text){
+  const lines=String(text||'').split(/\r?\n/);
+  const idxs=ssFindHeadingIdxs(lines,'Current Streaks & Sequences');
+  if(!idxs.length)return null;
+  const perTeam=idxs.slice(0,2).map(idx=>ssStreaksBlockAt(lines,idx));
+  if(!Object.keys(perTeam[0]||{}).length && !Object.keys(perTeam[1]||{}).length) return null;
+  return {first:perTeam[0]||{},second:perTeam[1]||{}};
+}
 function parse(text,name,sourceUrl=''){
   text=String(text||'').replace(/\\n/g,'\n').replace(/\\t/g,'\t');
   let title='';
@@ -1615,7 +1668,9 @@ function parse(text,name,sourceUrl=''){
   const cornersSplit=cornersFromPlainText(text);
   const timingSplit=timingFromPlainText(text);
   const recentPlain=recentResultsFromPlainText(text);
-  return {id:slug(home+'-'+away),home,away,source_file:name,source_url:sourceUrl,goal_statistics:gmap,corners:cmap,corners_split:cornersSplit||undefined,timing_split:timingSplit||undefined,recent_results_raw:recentPlain||[],average_goal_times_raw:onlyRows(avg).filter(x=>/Average minute/i.test(x)),total_goals_raw:onlyRows(total),contextual_raw:onlyRows(contextual),home_away_raw:onlyRows(ha),timing:tmap};
+  const leagueAverageSplit=leagueAverageFromPlainText(text);
+  const streaksSplit=streaksFromPlainText(text);
+  return {id:slug(home+'-'+away),home,away,source_file:name,source_url:sourceUrl,goal_statistics:gmap,corners:cmap,corners_split:cornersSplit||undefined,timing_split:timingSplit||undefined,recent_results_raw:recentPlain||[],league_average_split:leagueAverageSplit||undefined,streaks_split:streaksSplit||undefined,average_goal_times_raw:onlyRows(avg).filter(x=>/Average minute/i.test(x)),total_goals_raw:onlyRows(total),contextual_raw:onlyRows(contextual),home_away_raw:onlyRows(ha),timing:tmap};
 }
 function htmlToMarkdownish(html){
   const doc=new DOMParser().parseFromString(html,'text/html');
