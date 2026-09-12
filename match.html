@@ -6362,11 +6362,22 @@ function v3Pair(v){
   return [a[0]||'—',a[1]||'—'];
 }
 function v3Num(v){ const m=String(v||'').match(/[\d.]+/g)||[]; return m.map(Number); }
-// V3.4: niente più "pronostico principale/secondario" né uno Score di affidabilità
-// inventato — le 3 caselle mostrano solo andamenti reali (ultime 8 disponibili) a confronto.
-function quickTrendRows(m){
-  const row=(label,key)=>{const [h,a]=v3Pair(m.basic?.[key]);return {label,home:h,away:a}};
-  return [row('PPG','Punti per partita'), row('Over 2.5','Over 2.5'), row('BTTS','BTTS / Entrambe segnano')];
+// V3.5: 1ª/2ª giocata + Alternativa, ricostruite con regole trasparenti (vedi rankedPlays()
+// in admin.html, salvato su ogni match come m.plays): ogni giocata è la media reale delle due
+// squadre su UN SOLO mercato, senza pesi combinati né una confidenza inventata. Sono ordinate
+// dalla percentuale reale più alta alla più bassa — l'Alternativa è semplicemente la terza,
+// quindi meno ovvia ma comunque appoggiata sui dati; non è un calcolo di valore contro quote
+// reali (che MagicScanner non ha).
+const PLAY_MIN_PCT=60;
+function pickRows(m){
+  const plays=Array.isArray(m.plays)?m.plays:[];
+  const labels=['1ª GIOCATA','2ª GIOCATA','ALTERNATIVA'];
+  const subs=['Segnale più forte','Secondo segnale','Meno ovvia, ma reale'];
+  return [0,1,2].map(i=>{
+    const p=plays[i];
+    if(!p||p.value<PLAY_MIN_PCT) return {k:labels[i],v:'Nessun segnale netto',p:null,s:subs[i]};
+    return {k:labels[i],v:p.label,p:p.value,s:p.why};
+  });
 }
 function v3Unavailable(text){return `<div class="v3Unavailable">${esc(text)}</div>`}
 
@@ -6455,7 +6466,7 @@ function v327Metrics(m){
   return `<div class="v327metrics">${items.map(x=>`<div class="v327metric"><span>${esc(x[0])}</span><b>${esc(x[1])}</b></div>`).join('')}</div>`;
 }
 function buildPremiumDetailMarkup(m,d){
-  const trends=quickTrendRows(m);
+  const picks=pickRows(m);
   const dateLabel=m.date_label||m.date||'Giornata importata';
   const summary=m.summary||`Andamento di ${m.home} e ${m.away} basato esclusivamente sulle ultime 8 partite disponibili mostrate da SoccerSTATS.`;
 
@@ -6482,12 +6493,12 @@ function buildPremiumDetailMarkup(m,d){
     <header class="v3topbar"><div class="v3brand"><div class="v3brandMark">▥</div><div><div class="v3brandName"><span>Magic</span>Scanner <small style="font-size:11px;color:#cbd5e1">V3.3.12</small></div><div class="v3brandSub">Statistiche. Andamenti. Tendenze.</div></div></div><nav class="v3nav"><a href="index.html">Home</a></nav><div class="v3date"><b>${esc(dateLabel)}</b><small>Dashboard Match Premium</small></div></header>
     <div class="v3leagueRow"><a class="v3back" href="index.html">← Torna alla home</a><div class="v3league">⚽ ${esc(m.league||'Competizione')}</div><div class="v3metaRight"><span class="v3metaPill">◷ ${esc(m.time||'—')}</span><span class="v3metaPill">✓ SoccerSTATS</span></div></div>
     <section class="v3hero"><div class="v3team"><img class="v3crest staticOfficialCrest" data-team="${esc(m.home)}" alt="${esc(m.home)}"><div><div class="v3teamName">${esc(m.home)}</div><div class="v3teamSub">Squadra casa</div></div></div>
-      <div class="v3pickCenter"><div class="v3kick">${esc(dateLabel)} · ${esc(m.time||'—')}</div><div class="v3picks">${trends.map(x=>`<div class="v3pick"><small>${esc(x.label)}</small><b>${esc(x.home)} — ${esc(x.away)}</b><strong>casa / trasferta</strong><em>ultime 8 disponibili</em></div>`).join('')}</div></div>
+      <div class="v3pickCenter"><div class="v3kick">${esc(dateLabel)} · ${esc(m.time||'—')}</div><div class="v3picks">${picks.map(x=>`<div class="v3pick"><small>${esc(x.k)}</small><b>${esc(x.v)}</b><strong>${x.p==null?'—':x.p+'%'}</strong><em>${esc(x.s)}</em></div>`).join('')}</div></div>
       <div class="v3team away"><div><div class="v3teamName">${esc(m.away)}</div><div class="v3teamSub">Squadra ospite</div></div><img class="v3crest staticOfficialCrest" data-team="${esc(m.away)}" alt="${esc(m.away)}"></div></section>
 
     <section class="v3card v327section"><div class="v3cardTitle">Indicatori principali · ultimi 8 disponibili</div>${v327Metrics(m)}</section>
 
-    <section class="v3grid3"><div class="v3card"><div class="v3cardTitle">Panoramica match</div><div class="v3info"><div class="v3infoRow"><span>Competizione</span><b>${esc(m.league||'—')}</b></div><div class="v3infoRow"><span>Data</span><b>${esc(dateLabel)}</b></div><div class="v3infoRow"><span>Orario</span><b>${esc(m.time||'—')}</b></div><div class="v3infoRow"><span>Fonte dati</span><b>SoccerSTATS</b></div><div class="v3infoRow"><span>Scope dati</span><b>Ultime 8 disponibili</b></div><div class="v3infoRow"><span>Campione</span><b>${esc(m.basic?.['Partite considerate']||'—')}</b></div></div></div><div class="v3card v3analysisCard"><div class="v3cardTitle">Andamento</div><div class="v327cardNote">${esc(summary)}</div><div class="v327cardNote" style="margin-top:10px">Il confronto qui sopra usa solo il blocco <b>ultime 8</b>. Corner, goal timing, forma stagionale, classifica e rendimento restano visibili come approfondimenti SoccerSTATS, senza combinarsi in un giudizio unico.</div></div></section>
+    <section class="v3grid3"><div class="v3card"><div class="v3cardTitle">Panoramica match</div><div class="v3info"><div class="v3infoRow"><span>Competizione</span><b>${esc(m.league||'—')}</b></div><div class="v3infoRow"><span>Data</span><b>${esc(dateLabel)}</b></div><div class="v3infoRow"><span>Orario</span><b>${esc(m.time||'—')}</b></div><div class="v3infoRow"><span>Fonte dati</span><b>SoccerSTATS</b></div><div class="v3infoRow"><span>Scope dati</span><b>Ultime 8 disponibili</b></div><div class="v3infoRow"><span>Campione</span><b>${esc(m.basic?.['Partite considerate']||'—')}</b></div></div></div><div class="v3card v3analysisCard"><div class="v3cardTitle">Andamento</div><div class="v327cardNote">${esc(summary)}</div><div class="v327cardNote" style="margin-top:10px">Le 3 giocate qui sopra sono singole percentuali reali (ultime 8), ordinate dalla più alta alla più bassa — non una formula combinata. Corner, goal timing, forma stagionale, classifica e rendimento restano approfondimenti SoccerSTATS separati.</div></div></section>
 
     ${last8Block}
     ${auxiliary.length?`<section class="v3gridForm">${auxiliary.join('')}</section>`:''}

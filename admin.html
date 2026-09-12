@@ -987,16 +987,33 @@ function statsLinkAround(rows){
   for(const tr of rows){for(const a of tr.querySelectorAll('a[href]')){const h=a.getAttribute('href')||'';if(/pmatch\.asp|h2h\.asp|matchstats\.asp|stats\.asp/i.test(h))return absUrl(h)}}
   return '';
 }
-// V3.4: niente più pronostico/confidenza/score inventati. MagicScanner mostra solo le
-// percentuali reali che SoccerSTATS pubblica per ciascuna squadra (ultime 8 disponibili);
-// la lettura dei numeri resta a Monica, il software non decide più "chi vince" o "quanto è affidabile".
+// V3.5: nessuna formula a scatola chiusa. Ogni "giocata" è semplicemente la media reale
+// delle due squadre su UN SOLO mercato (Over1.5/2.5/3.5, BTTS, Under2.5 come complemento
+// di Over2.5) — niente pesi combinati, niente confidenza inventata. Le giocate vengono
+// ordinate dalla percentuale reale più alta alla più bassa: la 1ª e la 2ª sono i due segnali
+// più netti; l'Alternativa è il terzo segnale reale più alto, quindi meno ovvio ma comunque
+// sostenuto dai dati — NON è un calcolo di valore contro le quote reali del bookmaker (che
+// MagicScanner non ha), solo il terzo numero più alto tra quelli disponibili.
+// Sotto PLAY_MIN_PCT il segnale è considerato troppo debole per essere proposto come giocata.
+const PLAY_MIN_PCT=60;
+function rankedPlays(home,away){
+  const avg=(a,b)=>(pct(a)+pct(b))/2;
+  const o15=avg(home.o15,away.o15), o25=avg(home.o25,away.o25), o35=avg(home.o35,away.o35), btts=avg(home.bts,away.bts);
+  return [
+    {label:'Over 1.5 gol', value:Math.round(o15), why:`Media Over 1.5 delle due squadre: ${home.o15} / ${away.o15}`},
+    {label:'Over 2.5 gol', value:Math.round(o25), why:`Media Over 2.5 delle due squadre: ${home.o25} / ${away.o25}`},
+    {label:'Over 3.5 gol', value:Math.round(o35), why:`Media Over 3.5 delle due squadre: ${home.o35} / ${away.o35}`},
+    {label:'Goal (BTTS)', value:Math.round(btts), why:`Media BTTS delle due squadre: ${home.bts} / ${away.bts}`},
+    {label:'Under 2.5 gol', value:Math.round(100-o25), why:`Complementare della media Over 2.5 (${Math.round(o25)}%)`}
+  ].sort((a,b)=>b.value-a.value);
+}
 function summarize(home,away){
   const summary=`Over 1.5 ${home.o15} / ${away.o15} · Over 2.5 ${home.o25} / ${away.o25} · BTTS ${home.bts} / ${away.bts} · Media gol ${home.tg} / ${away.tg} · PPG ${home.ppg} / ${away.ppg}`;
-  return {summary};
+  return {summary, plays:rankedPlays(home,away)};
 }
 function buildMatch(home,away,league,time,stats_url){
   const r=summarize(home,away);
-  home.team=msCleanTeamName(home.team);away.team=msCleanTeamName(away.team);return {id:slug(home.team+'-'+away.team),league,time:time||'',home:home.team,away:away.team,summary:r.summary,basic:{'Partite considerate':`${home.gp} / ${away.gp}`,'Vittorie':`${home.w} / ${away.w}`,'Senza segnare':`${home.fts} / ${away.fts}`,'Senza subire':`${home.cs} / ${away.cs}`,'BTTS / Entrambe segnano':`${home.bts} / ${away.bts}`,'Media gol':`${home.tg} / ${away.tg}`,'Gol fatti':`${home.gf} / ${away.gf}`,'Gol subiti':`${home.ga} / ${away.ga}`,'Over 1.5':`${home.o15} / ${away.o15}`,'Over 2.5':`${home.o25} / ${away.o25}`,'Over 3.5':`${home.o35} / ${away.o35}`,'Punti per partita':`${home.ppg} / ${away.ppg}`},timing_loaded:false,date_offset:0,stats_url};
+  home.team=msCleanTeamName(home.team);away.team=msCleanTeamName(away.team);return {id:slug(home.team+'-'+away.team),league,time:time||'',home:home.team,away:away.team,summary:r.summary,plays:r.plays,basic:{'Partite considerate':`${home.gp} / ${away.gp}`,'Vittorie':`${home.w} / ${away.w}`,'Senza segnare':`${home.fts} / ${away.fts}`,'Senza subire':`${home.cs} / ${away.cs}`,'BTTS / Entrambe segnano':`${home.bts} / ${away.bts}`,'Media gol':`${home.tg} / ${away.tg}`,'Gol fatti':`${home.gf} / ${away.gf}`,'Gol subiti':`${home.ga} / ${away.ga}`,'Over 1.5':`${home.o15} / ${away.o15}`,'Over 2.5':`${home.o25} / ${away.o25}`,'Over 3.5':`${home.o35} / ${away.o35}`,'Punti per partita':`${home.ppg} / ${away.ppg}`},timing_loaded:false,date_offset:0,stats_url};
 }
 function countLastScopes(text){return (text.match(/last\s+\d+/ig)||[]).length}
 function parseStatElement(el){
@@ -1182,14 +1199,15 @@ function renderDay(matches){
   box.innerHTML=matches.slice(0,160).map(m=>{
     const home=msCleanTeamName(m.home), away=msCleanTeamName(m.away);
     const isResult=m.status==='result'&&m.result;
-    // V3.4: nessun pronostico/pill colorata per mercato — solo un promemoria dei numeri
-    // reali (Over 2.5 e media gol, ultime 8) e quante partite compongono il campione.
-    const trend=isResult?'':`Over 2.5 ${m.basic?.['Over 2.5']||'—'} · Media gol ${m.basic?.['Media gol']||'—'}`;
+    // V3.5: la "giocata" mostrata qui è la 1ª in classifica (percentuale reale più alta
+    // tra Over1.5/2.5/3.5/BTTS/Under2.5) — vedi rankedPlays(). Sotto soglia, si dice esplicitamente.
+    const topPlay=(m.plays||[])[0];
+    const trend=isResult?'':(topPlay&&topPlay.value>=PLAY_MIN_PCT?`${topPlay.label} · ${topPlay.value}%`:'Nessun segnale netto');
     const sample=isResult?'':(m.basic?.['Partite considerate']||'—');
     return `<div class="dayitem">
       <div class="fixtureTime">${isResult?`${m.result.home}-${m.result.away}`:(m.time||'—')}</div>
       <div><div class="fixtureTeams"><span class="fixtureTeam">${adminCrest(home)}<span class="fixtureTeamName">${home}</span></span><span class="fixtureDash">—</span><span class="fixtureTeam"><span class="fixtureTeamName">${away}</span>${adminCrest(away)}</span></div><small class="fixtureMeta">${m.league||'SoccerSTATS'}</small></div>
-      <div class="fixturePick"><span class="pill ${isResult?'result':'stats'}">${isResult?'RISULTATO':'DATI'}</span><b>${isResult?`${m.result.home} - ${m.result.away}`:trend}</b></div>
+      <div class="fixturePick"><span class="pill ${isResult?'result':'stats'}">${isResult?'RISULTATO':'1ª GIOCATA'}</span><b>${isResult?`${m.result.home} - ${m.result.away}`:trend}</b></div>
       <div class="fixtureConfidence">${isResult?'—':'campione'}<small>${isResult?'risultato':sample+' partite'}</small></div>
       ${isResult&&m.result_url?`<a class="fixtureStatsBtn" href="${m.result_url}" target="_blank" rel="noopener">Analisi →</a>`:(m.stats_url?`<a class="fixtureStatsBtn" href="${m.stats_url}" target="_blank" rel="noopener">Stats →</a>`:'<span></span>')}
     </div>`

@@ -4435,7 +4435,10 @@ function renderList(){
     const shownTime=isResult?(m.time||'FT'):(m.time||'—');
     // V3.4: niente più pronostico/score/affidabilità inventati — solo l'andamento reale
     // (ultime 8 disponibili) preso così com'è da SoccerSTATS.
-    const shownHeadline=isResult?`${m.home} ${finalScore} ${m.away}`:'Ultime 8 disponibili';
+    // V3.5: "1ª giocata" = percentuale reale più alta tra i mercati (vedi rankedPlays in
+    // admin.html); nessuna formula combinata, solo il numero più alto tra quelli disponibili.
+    const topPlay=(m.plays||[])[0];
+    const shownHeadline=isResult?`${m.home} ${finalScore} ${m.away}`:(topPlay&&topPlay.value>=60?`${topPlay.label} · ${topPlay.value}%`:'Nessun segnale netto');
     const shownTrend=isResult?'Risultato finale':`Over 2.5 ${m.basic?.['Over 2.5']||'—'} · Media gol ${m.basic?.['Media gol']||'—'} · BTTS ${m.basic?.['BTTS / Entrambe segnano']||'—'}`;
     return `
     <a class="matchCard" data-match-id="${esc(m.id)}" href="match.html?id=${encodeURIComponent(m.id)}">
