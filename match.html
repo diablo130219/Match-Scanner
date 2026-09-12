@@ -6464,9 +6464,21 @@ function v3Standings(d){
   return `<table class="v3table"><tbody>${rows.slice(0,10).map((c,i)=>{const team=c.find(x=>/[A-Za-zÀ-ÿ]/.test(x)&&!/^(GP|pts|Points)$/i.test(x))||'—';const nums=c.filter(x=>/^\d+(?:\.\d+)?$/.test(x));return `<tr><td>${i+1}</td><th>${esc(team)}</th><td>${esc(nums[nums.length-1]||'—')}</td></tr>`}).join('')}</tbody></table>`;
 }
 function v3GoalTable(m,d){
-  const [gfH,gfA]=v3Pair(m.basic?.['Gol fatti']),[gaH,gaA]=v3Pair(m.basic?.['Gol subiti']),[o15H,o15A]=v3Pair(m.basic?.['Over 1.5']),[o25H,o25A]=v3Pair(m.basic?.['Over 2.5']),[o35H,o35A]=v3Pair(m.basic?.['Over 3.5']),[bttsH,bttsA]=v3Pair(m.basic?.['BTTS / Entrambe segnano']),[tgH,tgA]=v3Pair(m.basic?.['Media gol']),[ppgH,ppgA]=v3Pair(m.basic?.['Punti per partita']);
-  const rows=[['PPG',ppgH,ppgA],['Gol fatti',gfH,gfA],['Gol subiti',gaH,gaA],['Media gol',tgH,tgA],['Over 1.5',o15H,o15A],['Over 2.5',o25H,o25A],['Over 3.5',o35H,o35A],['Entrambe segnano',bttsH,bttsA]];
-  return `<table class="v3table"><thead><tr><th>${esc(m.home)}</th><th>Ultimi 8</th><th>${esc(m.away)}</th></tr></thead><tbody>${rows.map(r=>`<tr><td>${esc(r[1])}</td><th>${esc(r[0])}</th><td>${esc(r[2])}</td></tr>`).join('')}</tbody></table>`;
+  const rows=[
+    ['Partite considerate',...v3Pair(m.basic?.['Partite considerate'])],
+    ['Vittorie',...v3Pair(m.basic?.['Vittorie'])],
+    ['Senza segnare (FTS)',...v3Pair(m.basic?.['Senza segnare'])],
+    ['Senza subire (CS)',...v3Pair(m.basic?.['Senza subire'])],
+    ['Entrambe segnano (BTTS)',...v3Pair(m.basic?.['BTTS / Entrambe segnano'])],
+    ['Media gol (TG)',...v3Pair(m.basic?.['Media gol'])],
+    ['Gol fatti (GF)',...v3Pair(m.basic?.['Gol fatti'])],
+    ['Gol subiti (GA)',...v3Pair(m.basic?.['Gol subiti'])],
+    ['Over 1.5',...v3Pair(m.basic?.['Over 1.5'])],
+    ['Over 2.5',...v3Pair(m.basic?.['Over 2.5'])],
+    ['Over 3.5',...v3Pair(m.basic?.['Over 3.5'])],
+    ['Punti per partita (PPG)',...v3Pair(m.basic?.['Punti per partita'])]
+  ];
+  return `<table class="v3table"><thead><tr><th>${esc(m.home)}</th><th>Ultimi 8 disponibili</th><th>${esc(m.away)}</th></tr></thead><tbody>${rows.map(r=>`<tr><td>${esc(r[1])}</td><th>${esc(r[0])}</th><td>${esc(r[2])}</td></tr>`).join('')}</tbody></table>`;
 }
 function v3CornerTable(m,d){
   const obj=d?.corners||{}; const entries=Object.entries(obj);
@@ -6488,41 +6500,56 @@ function v327Has(obj){return obj && (Array.isArray(obj)?obj.length:Object.keys(o
 function v327MetricValue(m,key,idx){return v3Pair(m.basic?.[key])[idx]||'—'}
 function v327Metrics(m){
   const items=[
-    ['PPG casa',v327MetricValue(m,'Punti per partita',0)],['PPG trasferta',v327MetricValue(m,'Punti per partita',1)],
-    ['Gol fatti casa',v327MetricValue(m,'Gol fatti',0)],['Gol fatti trasferta',v327MetricValue(m,'Gol fatti',1)],
-    ['Over 2.5 casa',v327MetricValue(m,'Over 2.5',0)],['Over 2.5 trasferta',v327MetricValue(m,'Over 2.5',1)]
+    [`PPG ${m.home}`,v327MetricValue(m,'Punti per partita',0)],
+    [`PPG ${m.away}`,v327MetricValue(m,'Punti per partita',1)],
+    [`Gol fatti ${m.home}`,v327MetricValue(m,'Gol fatti',0)],
+    [`Gol fatti ${m.away}`,v327MetricValue(m,'Gol fatti',1)],
+    [`Over 2.5 ${m.home}`,v327MetricValue(m,'Over 2.5',0)],
+    [`Over 2.5 ${m.away}`,v327MetricValue(m,'Over 2.5',1)]
   ];
   return `<div class="v327metrics">${items.map(x=>`<div class="v327metric"><span>${esc(x[0])}</span><b>${esc(x[1])}</b></div>`).join('')}</div>`;
 }
 function buildPremiumDetailMarkup(m,d){
-  const picks=v3MarketRows(m), conf=v3Confidence(m); const confLabel=conf==null?'—':conf+'%';
+  const picks=v3MarketRows(m), conf=v3Confidence(m);
+  const scoreLabel=conf==null?'—':conf+'/100';
   const dateLabel=m.date_label||m.date||'Giornata importata';
+  const summary=m.summary||`Lettura pre-match di ${m.home} - ${m.away} basata esclusivamente sulle ultime 8 partite disponibili mostrate da SoccerSTATS.`;
+
+  // BLOCCO PRINCIPALE: sempre Last 8. È l'unico scope usato per il pronostico MagicScanner.
+  const last8Block=`<section class="v3gridForm"><div class="v3card"><div class="v3cardTitle">Confronto statistico · ultimi 8 disponibili</div>${v3GoalTable(m,d)}</div></section>`;
+
+  // BLOCCHI DI APPROFONDIMENTO: copiati dalla pagina Stats dettagliata di SoccerSTATS.
+  // Mantengono lo scope originale della fonte e NON entrano nel calcolo del pronostico Last 8.
   const cleanRecent=d?v3CleanRecentRows(d):[];
   const hasRecent=cleanRecent.length>0;
   const hasCorners=v327Has(d?.corners);
   const hasTiming=v327Has(d?.timing);
   const hasStandings=Array.isArray(d?.standings_raw)&&d.standings_raw.length;
-  const hasGoal=v327Has(d?.goal_statistics) || !!m.basic;
-  const summary=m.summary||`Lettura pre-match di ${m.home} - ${m.away} basata sui dati SoccerSTATS disponibili.`;
-  const optional=[];
-  if(hasRecent) optional.push(`<div class="v3card"><div class="v3cardTitle">Forma recente</div>${v3RecentForm(m,d)}</div>`);
-  if(hasGoal) optional.push(`<div class="v3card"><div class="v3cardTitle">Statistiche base · ultimi 8</div>${v3GoalTable(m,d)}</div>`);
-  if(hasCorners) optional.push(`<div class="v3card"><div class="v3cardTitle">Corner · casa vs trasferta</div>${v3CornerTable(m,d)}</div>`);
-  const bottom=[];
-  if(hasTiming) bottom.push(`<div class="v3card"><div class="v3cardTitle">Goal timing</div>${v3Timing(m,d)}</div>`);
-  bottom.push(`<div class="v3card"><div class="v3cardTitle">Rendimento casa / trasferta</div>${v3Split(m)}</div>`);
-  if(hasStandings) bottom.push(`<div class="v3card"><div class="v3cardTitle">Classifica</div>${v3Standings(d)}</div>`);
+  const hasSplit=!!m.basic;
+  const auxiliary=[];
+  if(hasRecent) auxiliary.push(`<div class="v3card"><div class="v3cardTitle">Forma stagionale / risultati recenti · SoccerSTATS</div>${v3RecentForm(m,d)}<div class="v327cardNote" style="margin-top:10px">Approfondimento SoccerSTATS. Non modifica lo Score MagicScanner Last 8.</div></div>`);
+  if(hasCorners) auxiliary.push(`<div class="v3card"><div class="v3cardTitle">Corner · SoccerSTATS</div>${v3CornerTable(m,d)}<div class="v327cardNote" style="margin-top:10px">Valori riportati secondo lo scope originale della pagina Stats.</div></div>`);
+  const auxiliaryBottom=[];
+  if(hasTiming) auxiliaryBottom.push(`<div class="v3card"><div class="v3cardTitle">Goal timing · SoccerSTATS</div>${v3Timing(m,d)}<div class="v327cardNote" style="margin-top:10px">Distribuzione temporale riportata dalla pagina Stats dettagliata.</div></div>`);
+  if(hasSplit) auxiliaryBottom.push(`<div class="v3card"><div class="v3cardTitle">Rendimento casa / trasferta · SoccerSTATS</div>${v3Split(m)}<div class="v327cardNote" style="margin-top:10px">Approfondimento separato: non entra nel calcolo del pronostico Last 8.</div></div>`);
+  if(hasStandings) auxiliaryBottom.push(`<div class="v3card"><div class="v3cardTitle">Classifica · SoccerSTATS</div>${v3Standings(d)}<div class="v327cardNote" style="margin-top:10px">Classifica estratta dal dettaglio SoccerSTATS.</div></div>`);
+
   return `<div class="v3app">
-    <header class="v3topbar"><div class="v3brand"><div class="v3brandMark">▥</div><div><div class="v3brandName"><span>Magic</span>Scanner <small style="font-size:11px;color:#cbd5e1">V3.3.9</small></div><div class="v3brandSub">Statistiche. Analisi. Pronostici.</div></div></div><nav class="v3nav"><a href="index.html">Home</a></nav><div class="v3date"><b>${esc(dateLabel)}</b><small>Dashboard Match Premium</small></div></header>
-    <div class="v3leagueRow"><a class="v3back" href="index.html">← Torna alla home</a><div class="v3league">⚽ ${esc(m.league||'Competizione')}</div><div class="v3metaRight"><span class="v3metaPill">◷ ${esc(m.time||'—')}</span><span class="v3metaPill">${d?'✓ Dati Stats':'◌ Dati giornata'}</span></div></div>
-    <section class="v3hero"><div class="v3team"><img class="v3crest staticOfficialCrest" data-team="${esc(m.home)}" alt="${esc(m.home)}"><div><div class="v3teamName">${esc(m.home)}</div><div class="v3teamSub">Casa</div></div></div>
-      <div class="v3pickCenter"><div class="v3kick">${esc(dateLabel)} · ${esc(m.time||'—')}</div><div class="v3picks">${picks.map(x=>`<div class="v3pick ${x.cls}"><small>${esc(x.k)}</small><b>${esc(x.v)}</b><strong>${x.p==null?'—':esc(x.p)+'%'}</strong><em>${esc(x.s)}</em></div>`).join('')}</div></div>
-      <div class="v3team away"><div><div class="v3teamName">${esc(m.away)}</div><div class="v3teamSub">Trasferta</div></div><img class="v3crest staticOfficialCrest" data-team="${esc(m.away)}" alt="${esc(m.away)}"></div></section>
-    <section class="v3card v327section"><div class="v3cardTitle">Indicatori principali</div>${v327Metrics(m)}</section>
-    <section class="v3grid3"><div class="v3card"><div class="v3cardTitle">Panoramica match</div><div class="v3info"><div class="v3infoRow"><span>Competizione</span><b>${esc(m.league||'—')}</b></div><div class="v3infoRow"><span>Data</span><b>${esc(dateLabel)}</b></div><div class="v3infoRow"><span>Orario</span><b>${esc(m.time||'—')}</b></div><div class="v3infoRow"><span>Pronostico</span><b>${esc(m.recommended||'—')}</b></div><div class="v3infoRow"><span>Affidabilità</span><b>${confLabel}</b></div></div></div><div class="v3card v3analysisCard"><div class="v3cardTitle">Lettura MagicScanner</div><div class="v327cardNote">${esc(summary)}</div>${d?`<div class="v327cardNote" style="margin-top:10px">Il dettaglio Stats è stato associato a questa partita. Le sezioni vengono mostrate solo quando i dati sono realmente presenti.</div>`:''}</div></section>
-    ${optional.length?`<section class="v3gridForm">${optional.join('')}</section>`:''}
-    ${bottom.length?`<section class="v3gridBottom">${bottom.join('')}</section>`:''}
-    <section class="v3summary"><div class="v3summaryText"><div class="v3summaryTitle">▣ Sintesi finale</div><p>${esc(summary)}</p></div><div class="v3reliability"><small>Affidabilità analisi</small><div class="v3relLine"><div class="v3track"><div class="v3fill" style="width:${conf||0}%"></div></div><b>${confLabel}</b></div></div></section>
+    <header class="v3topbar"><div class="v3brand"><div class="v3brandMark">▥</div><div><div class="v3brandName"><span>Magic</span>Scanner <small style="font-size:11px;color:#cbd5e1">V3.3.12</small></div><div class="v3brandSub">Statistiche. Analisi. Pronostici.</div></div></div><nav class="v3nav"><a href="index.html">Home</a></nav><div class="v3date"><b>${esc(dateLabel)}</b><small>Dashboard Match Premium</small></div></header>
+    <div class="v3leagueRow"><a class="v3back" href="index.html">← Torna alla home</a><div class="v3league">⚽ ${esc(m.league||'Competizione')}</div><div class="v3metaRight"><span class="v3metaPill">◷ ${esc(m.time||'—')}</span><span class="v3metaPill">✓ SoccerSTATS</span></div></div>
+    <section class="v3hero"><div class="v3team"><img class="v3crest staticOfficialCrest" data-team="${esc(m.home)}" alt="${esc(m.home)}"><div><div class="v3teamName">${esc(m.home)}</div><div class="v3teamSub">Squadra casa</div></div></div>
+      <div class="v3pickCenter"><div class="v3kick">${esc(dateLabel)} · ${esc(m.time||'—')}</div><div class="v3picks">${picks.map(x=>`<div class="v3pick ${x.cls}"><small>${esc(x.k)}</small><b>${esc(x.v)}</b><strong>${x.p==null?'—':esc(x.p)+'/100'}</strong><em>${esc(x.s)}</em></div>`).join('')}</div></div>
+      <div class="v3team away"><div><div class="v3teamName">${esc(m.away)}</div><div class="v3teamSub">Squadra ospite</div></div><img class="v3crest staticOfficialCrest" data-team="${esc(m.away)}" alt="${esc(m.away)}"></div></section>
+
+    <section class="v3card v327section"><div class="v3cardTitle">Indicatori principali · ultimi 8 disponibili</div>${v327Metrics(m)}</section>
+
+    <section class="v3grid3"><div class="v3card"><div class="v3cardTitle">Panoramica match</div><div class="v3info"><div class="v3infoRow"><span>Competizione</span><b>${esc(m.league||'—')}</b></div><div class="v3infoRow"><span>Data</span><b>${esc(dateLabel)}</b></div><div class="v3infoRow"><span>Orario</span><b>${esc(m.time||'—')}</b></div><div class="v3infoRow"><span>Fonte dati</span><b>SoccerSTATS</b></div><div class="v3infoRow"><span>Scope pronostico</span><b>Ultime 8 disponibili</b></div><div class="v3infoRow"><span>Pronostico</span><b>${esc(m.recommended||'—')}</b></div><div class="v3infoRow"><span>Score MagicScanner</span><b>${scoreLabel}</b></div></div></div><div class="v3card v3analysisCard"><div class="v3cardTitle">Lettura MagicScanner</div><div class="v327cardNote">${esc(summary)}</div><div class="v327cardNote" style="margin-top:10px">Il pronostico e lo Score MagicScanner utilizzano solo il blocco <b>last 8</b>. Corner, goal timing, forma stagionale, classifica e rendimento restano visibili come approfondimenti SoccerSTATS, ma non modificano il calcolo.</div></div></section>
+
+    ${last8Block}
+    ${auxiliary.length?`<section class="v3gridForm">${auxiliary.join('')}</section>`:''}
+    ${auxiliaryBottom.length?`<section class="v3gridBottom">${auxiliaryBottom.join('')}</section>`:''}
+
+    <section class="v3summary"><div class="v3summaryText"><div class="v3summaryTitle">▣ Sintesi finale</div><p>${esc(summary)}</p></div><div class="v3reliability"><small>Score MagicScanner</small><div class="v3relLine"><div class="v3track"><div class="v3fill" style="width:${conf||0}%"></div></div><b>${scoreLabel}</b></div></div></section>
   </div>`;
 }
 

@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>MagicScanner V3.3.3 · SoccerSTATS Browser Import</title>
+<title>MagicScanner V3.3.12 · SoccerSTATS Browser Import</title>
 <style>
 :root{color-scheme:dark;--bg:#07101d;--panel:#0b1727;--panel2:#0d1b2d;--line:#203750;--text:#eef6ff;--muted:#8fa6bd;--cyan:#38bdf8;--green:#5ee7b1;--amber:#fbbf24;--red:#fb7185}
 *{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,Arial;background:radial-gradient(circle at 10% 0,#12306a55,transparent 38%),var(--bg);color:var(--text)}
@@ -104,7 +104,7 @@ h1{font-size:34px;margin:0 0 8px}.sub{color:var(--muted);line-height:1.58}.eyebr
   </div>
 </div>
 <div class="wrap">
-<div class="top"><div class="brand">MagicScanner <span>Import Center V3.3.0</span></div><a class="back" href="index.html">← Home</a></div>
+<div class="top"><div class="brand">MagicScanner <span>Import Center V3.3.12</span></div><a class="back" href="index.html">← Home</a></div>
 <div class="adminTopNote"><b>Pannello riservato:</b> accesso dalla home protetto da PIN. Il PIN è una protezione lato browser contro accessi accidentali, non sostituisce un’autenticazione server.</div>
 
 <div class="card">
@@ -329,7 +329,7 @@ async function syncServerToBrowser(){
   }catch(e){setServerSync('non raggiungibile: '+e.message,false)}
 }
 
-const EXTRACTOR_CODE = `javascript:(()=>{try{if(!/(^|\.)soccerstats\.com$/i.test(location.hostname)){alert('Apri prima una pagina di SoccerSTATS.');return;}const N=s=>(s||'').replace(/\u00a0/g,' ').replace(/\s+/g,' ').trim();const path=(location.pathname||'').toLowerCase();const isDetail=/pmatch|match|head2head|h2h/.test(path)&&!/matches\.asp$/.test(path);const rows=[...document.querySelectorAll('tr')].map((tr,i)=>({i,cells:[...tr.querySelectorAll('th,td')].map(c=>N(c.textContent||'')),visibleCells:[...tr.querySelectorAll('th,td')].map(c=>N(c.innerText||'')),text:N(tr.textContent||''),visibleText:N(tr.innerText||''),links:[...tr.querySelectorAll('a,button,input')].map(a=>({text:N(a.textContent||a.innerText||a.value),href:a.href||'',onclick:a.getAttribute('onclick')||''}))})).filter(r=>r.text);const links=[...document.querySelectorAll('a[href]')].map(a=>({text:N(a.textContent||a.innerText),href:a.href}));const dateCandidates=[...document.querySelectorAll('a,button,div,span,td')].map(e=>({text:N(e.innerText||e.textContent),cls:N(e.className&&typeof e.className==='string'?e.className:''),id:e.id||'',aria:e.getAttribute('aria-current')||'',pressed:e.getAttribute('aria-pressed')||''})).filter(x=>/\b(?:mon|tue|wed|thu|fri|sat|sun|lun|mar|mer|gio|ven|sab|dom)\b/i.test(x.text)&&/\b\d{1,2}(?:st|nd|rd|th)?\b/i.test(x.text)&&x.text.length<80).slice(0,80);const payload=JSON.stringify({magicScannerExtract:8,page:isDetail?'detail':'matchday',rawDom:true,source:location.href,title:document.title||'',extracted_at:new Date().toISOString(),dateCandidates,rows,links,bodyText:document.body.textContent||'',visibleBodyText:document.body.innerText||'',html:isDetail?document.documentElement.outerHTML:''});const ta=document.createElement('textarea');ta.value=payload;ta.style.position='fixed';ta.style.left='-99999px';document.body.appendChild(ta);ta.select();const ok=document.execCommand('copy');ta.remove();alert(ok?(isDetail?'MagicScanner V8: scheda Stats copiata.':'MagicScanner V8: giornata completa copiata dal DOM, incluse le competizioni nascoste.'):'Copia automatica non riuscita.');if(!ok)prompt('Copia questi dati:',payload)}catch(e){alert('MagicScanner Extract V8: '+e.message)}})()`
+const EXTRACTOR_CODE = String.raw`javascript:(()=>{try{if(!/(^|\.)soccerstats\.com$/i.test(location.hostname)){alert('Apri prima una pagina di SoccerSTATS.');return;}const N=s=>(s||'').replace(/\u00a0/g,' ').replace(/\s+/g,' ').trim();const path=(location.pathname||'').toLowerCase();const isDetail=/pmatch|match|head2head|h2h/.test(path)&&!/matches\.asp$/.test(path);const rows=[...document.querySelectorAll('tr')].map((tr,i)=>({i,cells:[...tr.querySelectorAll('th,td')].map(c=>N(c.textContent||'')),visibleCells:[...tr.querySelectorAll('th,td')].map(c=>N(c.innerText||'')),text:N(tr.textContent||''),visibleText:N(tr.innerText||''),links:[...tr.querySelectorAll('a,button,input')].map(a=>({text:N(a.textContent||a.innerText||a.value),href:a.href||'',onclick:a.getAttribute('onclick')||''}))})).filter(r=>r.text);const links=[...document.querySelectorAll('a[href]')].map(a=>({text:N(a.textContent||a.innerText),href:a.href}));const dateCandidates=[...document.querySelectorAll('a,button,div,span,td')].map(e=>({text:N(e.innerText||e.textContent),cls:N(e.className&&typeof e.className==='string'?e.className:''),id:e.id||'',aria:e.getAttribute('aria-current')||'',pressed:e.getAttribute('aria-pressed')||''})).filter(x=>/\b(?:mon|tue|wed|thu|fri|sat|sun|lun|mar|mer|gio|ven|sab|dom)\b/i.test(x.text)&&/\b\d{1,2}(?:st|nd|rd|th)?\b/i.test(x.text)&&x.text.length<80).slice(0,80);const payload=JSON.stringify({magicScannerExtract:9,page:isDetail?'detail':'matchday',rawDom:true,source:location.href,title:document.title||'',extracted_at:new Date().toISOString(),dateCandidates,rows,links,bodyText:document.body.textContent||'',visibleBodyText:document.body.innerText||'',html:isDetail?document.documentElement.outerHTML:''});const ta=document.createElement('textarea');ta.value=payload;ta.style.position='fixed';ta.style.left='-99999px';document.body.appendChild(ta);ta.select();const ok=document.execCommand('copy');ta.remove();alert(ok?(isDetail?'MagicScanner V9: scheda Stats copiata.':'MagicScanner V9: giornata completa copiata dal DOM, nomi integri e competizioni nascoste.'):'Copia automatica non riuscita.');if(!ok)prompt('Copia questi dati:',payload)}catch(e){alert('MagicScanner Extract V9: '+e.message)}})()`
 window.addEventListener('DOMContentLoaded',()=>{
   const bm=document.querySelector('#bookmarklet');
   if(bm) bm.setAttribute('href', EXTRACTOR_CODE);
@@ -905,14 +905,14 @@ function storeMatchdayFromHtml(html, sourceUrl='browser'){
   if(raw.startsWith('{')){
     try{
       const data=JSON.parse(raw); extractData=data;
-      if(data && Number(data.magicScannerExtract)>=8 && data.page!=='detail' && data.rawDom===true && Array.isArray(data.rows)){
+      if(data && Number(data.magicScannerExtract)>=9 && data.page!=='detail' && data.rawDom===true && Array.isArray(data.rows)){
         const namedCandidates=[['all',parseAllStatesMatchday(data)],['det',parseDeterministicMatchday(data)],['flat',parseFlatCellMatchday(data)],['exact',parseExactPayloadV319(data)]];
         namedCandidates.sort((a,b)=>b[1].length-a[1].length);
         matches=namedCandidates[0]?.[1]||[];
         data.__msParserDiag=namedCandidates.map(x=>`${x[0]}:${x[1].length}`).join(' · ');
         sourceUrl=data.source||sourceUrl;
       } else if(data && data.magicScannerExtract && data.page!=='detail'){
-        throw new Error('Estrattore vecchio: aggiorna il preferito MagicScanner Extract dalla V3.3.3. Serve la V8 o successiva.');
+        throw new Error('Estrattore vecchio: aggiorna il preferito MagicScanner Extract dalla V3.3.3. Serve la V9 o successiva.');
       } else if(data && data.magicScannerExtract===2 && Array.isArray(data.matches)){
         matches=data.matches.map(x=>buildMatch(x.home,x.away,x.league||'SoccerSTATS',x.time||'',x.stats_url||'')); sourceUrl=data.source||sourceUrl;
       }
