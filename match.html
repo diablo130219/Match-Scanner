@@ -6157,6 +6157,13 @@ body{background:radial-gradient(circle at 50% -10%,rgba(13,97,161,.12),transpare
 <script>
 const matches=window.MATCHES || [];
 
+// V3.3.9: helper HTML escape locale, necessario anche quando i vecchi data/*.js non sono presenti.
+function esc(value){
+  return String(value ?? '').replace(/[&<>"']/g, ch => ({
+    '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'
+  })[ch]);
+}
+
 const teamLogoAliases = {
   "A ton Villa":"Aston Villa",
   "Aston Villa":"Aston Villa",
@@ -6506,7 +6513,7 @@ function buildPremiumDetailMarkup(m,d){
   bottom.push(`<div class="v3card"><div class="v3cardTitle">Rendimento casa / trasferta</div>${v3Split(m)}</div>`);
   if(hasStandings) bottom.push(`<div class="v3card"><div class="v3cardTitle">Classifica</div>${v3Standings(d)}</div>`);
   return `<div class="v3app">
-    <header class="v3topbar"><div class="v3brand"><div class="v3brandMark">▥</div><div><div class="v3brandName"><span>Magic</span>Scanner <small style="font-size:11px;color:#cbd5e1">V3.3.8</small></div><div class="v3brandSub">Statistiche. Analisi. Pronostici.</div></div></div><nav class="v3nav"><a href="index.html">Home</a></nav><div class="v3date"><b>${esc(dateLabel)}</b><small>Dashboard Match Premium</small></div></header>
+    <header class="v3topbar"><div class="v3brand"><div class="v3brandMark">▥</div><div><div class="v3brandName"><span>Magic</span>Scanner <small style="font-size:11px;color:#cbd5e1">V3.3.9</small></div><div class="v3brandSub">Statistiche. Analisi. Pronostici.</div></div></div><nav class="v3nav"><a href="index.html">Home</a></nav><div class="v3date"><b>${esc(dateLabel)}</b><small>Dashboard Match Premium</small></div></header>
     <div class="v3leagueRow"><a class="v3back" href="index.html">← Torna alla home</a><div class="v3league">⚽ ${esc(m.league||'Competizione')}</div><div class="v3metaRight"><span class="v3metaPill">◷ ${esc(m.time||'—')}</span><span class="v3metaPill">${d?'✓ Dati Stats':'◌ Dati giornata'}</span></div></div>
     <section class="v3hero"><div class="v3team"><img class="v3crest staticOfficialCrest" data-team="${esc(m.home)}" alt="${esc(m.home)}"><div><div class="v3teamName">${esc(m.home)}</div><div class="v3teamSub">Casa</div></div></div>
       <div class="v3pickCenter"><div class="v3kick">${esc(dateLabel)} · ${esc(m.time||'—')}</div><div class="v3picks">${picks.map(x=>`<div class="v3pick ${x.cls}"><small>${esc(x.k)}</small><b>${esc(x.v)}</b><strong>${x.p==null?'—':esc(x.p)+'%'}</strong><em>${esc(x.s)}</em></div>`).join('')}</div></div>
