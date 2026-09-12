@@ -1413,20 +1413,69 @@ function recentResultsFromPayload(data){
   }
   return out;
 }
+// V3.6: la sezione "Tables" di SoccerSTATS mette in sequenza più mini-tabelle con
+// le stesse squadre (Tables overview/Points, Form (last 8), Home, Away, Offence,
+// Defence...). La vecchia condizione di stop cercava solo intestazioni esatte tipo
+// "Form" o "Home vs Away" e spesso non scattava mai, quindi la classifica finiva
+// per accumulare anche le righe delle tabelle successive (o, quando SoccerSTATS
+// non separa le righe in celle pulite, un unico blocco di testo incollato).
+// Qui ci fermiamo appena una squadra si ripete: è il segnale certo che siamo
+// entrati nella tabella successiva, indipendentemente dalle intestazioni.
+function standingsParseBlob(text){
+  const STOP=/^(Tables?|overview|Points|GP|pts|Pts|Form|\(last|last|8\)|Home|Away|Offence|Defence|Total|Attack|Table|current)$/i;
+  const tokens=String(text||'').replace(/\s+/g,' ').trim().split(' ').filter(Boolean);
+  const out=[]; const seen=new Set(); let buf=[];
+  for(let i=0;i<tokens.length;i++){
+    const t=tokens[i];
+    if(/^\d+$/.test(t) && /^\d+$/.test(tokens[i+1]||'')){
+      const gp=t, pts=tokens[i+1];
+      const team=buf.filter(w=>!STOP.test(w)).slice(-4).join(' ').trim();
+      buf=[];
+      if(team && Number(gp)<=60 && Number(pts)<=200){
+        const key=team.toLowerCase();
+        if(seen.has(key))break;
+        seen.add(key);
+        out.push([team,gp,pts]);
+      }
+      i++;
+      continue;
+    }
+    if(/^\d+(?:[.,]\d+)?%?$/.test(t)){buf=[];continue}
+    if(STOP.test(t)){buf=[];continue}
+    buf.push(t);
+  }
+  return out;
+}
 function standingsFromPayload(data){
-  const rows=Array.isArray(data?.rows)?data.rows:[]; const out=[];
+  const rows=Array.isArray(data?.rows)?data.rows:[]; const out=[]; const seen=new Set();
   let start=-1;
   for(let i=0;i<rows.length;i++){
     const c=cellsOfPayloadRow(rows[i]),t=String(rows[i]?.text||'').replace(/\s+/g,' ').trim();
     if(c.some(x=>/^Points$/i.test(x)) || /^Points$/i.test(t) || /\bPoints\b/.test(t) && c.some(x=>/^pts$/i.test(x))){start=i;break}
   }
-  if(start<0)return out;
-  for(let i=start;i<Math.min(rows.length,start+35);i++){
+  if(start<0){
+    const blob=rows.map(r=>String(r?.text||'')).join(' ');
+    if(/\bPoints\b/i.test(blob)&&/\bGP\b/i.test(blob))return standingsParseBlob(blob);
+    return out;
+  }
+  for(let i=start;i<Math.min(rows.length,start+60);i++){
     const c=cellsOfPayloadRow(rows[i]); if(!c.length)continue;
+    if(c.length===1&&c[0].length>60){
+      for(const row of standingsParseBlob(c[0])){
+        const key=row[0].toLowerCase(); if(seen.has(key))return out; seen.add(key); out.push(row);
+      }
+      continue;
+    }
     if(i>start && c.some(x=>/^(PPG|Form|Goal stats|Home vs Away)$/i.test(x)))break;
     const team=c.find(x=>/[A-Za-zÀ-ÿ]/.test(x)&&!/^(GP|pts|Points|Home|Away|Total)$/i.test(x));
     const nums=c.filter(x=>/^\d+(?:\.\d+)?$/.test(x));
-    if(team&&nums.length>=1){out.push(c); if(out.length>=14)break}
+    if(team&&nums.length>=1){
+      const key=team.toLowerCase();
+      if(seen.has(key))break; // stessa squadra già vista: siamo nella tabella successiva (Form/Home/Away...)
+      seen.add(key);
+      out.push(c);
+      if(out.length>=20)break;
+    }
   }
   return out;
 }
