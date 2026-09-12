@@ -6506,7 +6506,7 @@ function buildPremiumDetailMarkup(m,d){
   bottom.push(`<div class="v3card"><div class="v3cardTitle">Rendimento casa / trasferta</div>${v3Split(m)}</div>`);
   if(hasStandings) bottom.push(`<div class="v3card"><div class="v3cardTitle">Classifica</div>${v3Standings(d)}</div>`);
   return `<div class="v3app">
-    <header class="v3topbar"><div class="v3brand"><div class="v3brandMark">▥</div><div><div class="v3brandName"><span>Magic</span>Scanner <small style="font-size:11px;color:#cbd5e1">V3.3.3</small></div><div class="v3brandSub">Statistiche. Analisi. Pronostici.</div></div></div><nav class="v3nav"><a href="index.html">Home</a></nav><div class="v3date"><b>${esc(dateLabel)}</b><small>Dashboard Match Premium</small></div></header>
+    <header class="v3topbar"><div class="v3brand"><div class="v3brandMark">▥</div><div><div class="v3brandName"><span>Magic</span>Scanner <small style="font-size:11px;color:#cbd5e1">V3.3.8</small></div><div class="v3brandSub">Statistiche. Analisi. Pronostici.</div></div></div><nav class="v3nav"><a href="index.html">Home</a></nav><div class="v3date"><b>${esc(dateLabel)}</b><small>Dashboard Match Premium</small></div></header>
     <div class="v3leagueRow"><a class="v3back" href="index.html">← Torna alla home</a><div class="v3league">⚽ ${esc(m.league||'Competizione')}</div><div class="v3metaRight"><span class="v3metaPill">◷ ${esc(m.time||'—')}</span><span class="v3metaPill">${d?'✓ Dati Stats':'◌ Dati giornata'}</span></div></div>
     <section class="v3hero"><div class="v3team"><img class="v3crest staticOfficialCrest" data-team="${esc(m.home)}" alt="${esc(m.home)}"><div><div class="v3teamName">${esc(m.home)}</div><div class="v3teamSub">Casa</div></div></div>
       <div class="v3pickCenter"><div class="v3kick">${esc(dateLabel)} · ${esc(m.time||'—')}</div><div class="v3picks">${picks.map(x=>`<div class="v3pick ${x.cls}"><small>${esc(x.k)}</small><b>${esc(x.v)}</b><strong>${x.p==null?'—':esc(x.p)+'%'}</strong><em>${esc(x.s)}</em></div>`).join('')}</div></div>
@@ -6717,13 +6717,19 @@ function showMatchError(title,message){
   el.innerHTML=`<div class="detailCard" style="max-width:900px;margin:34px auto"><div class="detailCardTitle">${esc(title)}</div><div class="notice">${esc(message)}</div><div style="margin-top:14px"><a class="v3back" href="index.html">← Torna alla home</a></div></div>`;
 }
 
-async function fetchServerMatch(id){
-  const r=await fetch('/api/match/'+encodeURIComponent(id),{cache:'no-store'});
-  if(r.status===404) return null;
-  if(!r.ok) throw new Error(`API partita HTTP ${r.status}`);
-  const data=await r.json();
-  if(!data || !data.ok || !data.match) return null;
-  return data;
+async function fetchServerMatch(id,timeoutMs=8000){
+  const controller=new AbortController();
+  const timer=setTimeout(()=>controller.abort(),timeoutMs);
+  try{
+    const r=await fetch('/api/match/'+encodeURIComponent(id),{cache:'no-store',signal:controller.signal});
+    if(r.status===404) return null;
+    if(!r.ok) throw new Error(`API partita HTTP ${r.status}`);
+    const data=await r.json();
+    if(!data || !data.ok || !data.match) return null;
+    return data;
+  }finally{
+    clearTimeout(timer);
+  }
 }
 
 function getLocalImportedMatch(id){
@@ -6740,48 +6746,78 @@ function getLocalImportedMatch(id){
   return candidates.find(x=>msNormId(x?.id)===wanted||msNormId(`${x?.home||''}-${x?.away||''}`)===wanted)||null;
 }
 
+function getCachedSelectedMatch(id){
+  try{
+    const pack=JSON.parse(localStorage.getItem('MAGICSCANNER_SELECTED_MATCH')||'null');
+    const m=pack?.match||pack;
+    if(!m) return null;
+    const wanted=msNormId(id);
+    if(msNormId(m.id)===wanted || msNormId(`${m.home||''}-${m.away||''}`)===wanted) return m;
+  }catch{}
+  return null;
+}
+
+function findLocalDetailForMatch(m,id){
+  let localImported={};
+  try{localImported=JSON.parse(localStorage.getItem('MAGICSCANNER_IMPORTED_DETAILS')||'{}')||{}}catch{}
+  let d=localImported[m?.id] || localImported[id] || (window.IMPORTED_DETAILS||{})[m?.id] || (window.IMPORTED_DETAILS||{})[id] || null;
+  if(!d){
+    const all=Object.values({...localImported,...(window.IMPORTED_DETAILS||{})});
+    d=all.find(x=>x&&msNormId(`${x.home||''}-${x.away||''}`)===msNormId(`${m?.home||''}-${m?.away||''}`))||null;
+  }
+  return d;
+}
+
 async function initMatchPage(){
   const el=document.getElementById('genericDetail');
-  if(el){
+  const id=new URLSearchParams(location.search).get('id');
+  if(!id){ showMatchError('Partita non trovata','Manca l’identificativo della partita. Torna alla home e seleziona un match.'); return; }
+
+  // 1) Render immediato da cache/browser: nessun loader infinito.
+  const staticMatch=matches.find(x=>msNormId(x.id)===msNormId(id));
+  const cachedMatch=getCachedSelectedMatch(id);
+  const localMatch=getLocalImportedMatch(id);
+  let currentMatch=cachedMatch || localMatch || staticMatch || null;
+  if(currentMatch){
+    document.title=`${currentMatch.home} vs ${currentMatch.away} · MagicScanner`;
+    const localDetail=findLocalDetailForMatch(currentMatch,id);
+    if(localDetail) showAutoDetail(currentMatch,localDetail);
+    else showGeneric(currentMatch);
+  }else if(el){
     el.style.display='block';
-    el.innerHTML='<div class="detailCard" style="max-width:900px;margin:34px auto"><div class="detailCardTitle">Caricamento partita…</div><div class="notice">Sto recuperando la scheda dal server MagicScanner.</div></div>';
+    el.innerHTML='<div class="detailCard" style="max-width:900px;margin:34px auto"><div class="detailCardTitle">Caricamento partita…</div><div class="notice">Sto recuperando la scheda dal server MagicScanner. Attesa massima 8 secondi.</div></div>';
   }
+
+  // 2) Aggiornamento dal server in secondo piano, con timeout.
   try{
-    const id=new URLSearchParams(location.search).get('id');
-    if(!id){ showMatchError('Partita non trovata','Manca l’identificativo della partita. Torna alla home e seleziona un match.'); return; }
-
     let serverPack=null;
-    try{ serverPack=await fetchServerMatch(id); }catch(e){ console.warn('API match non disponibile',e); }
-
-    const staticMatch=matches.find(x=>msNormId(x.id)===msNormId(id));
-    const localMatch=getLocalImportedMatch(id);
-    const m=serverPack?.match || localMatch || staticMatch || null;
-    if(!m){ showMatchError('Partita non trovata',`Non trovo “${id}” nell’archivio pubblicato. Torna alla home e riapri la partita.`); return; }
-    if(serverPack?.date && !m.date_label){
-      const [yy,mm,dd]=String(serverPack.date).split('-').map(Number);
-      const dt=new Date(yy,(mm||1)-1,dd||1,12);
-      if(!isNaN(dt)) m.date_label=dt.toLocaleDateString('it-IT',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+    try{ serverPack=await fetchServerMatch(id,8000); }
+    catch(e){
+      if(e?.name!=='AbortError') console.warn('API match non disponibile',e);
+      else console.warn('Timeout API match: uso i dati già disponibili nel browser.');
     }
 
-    document.title=`${m.home} vs ${m.away} · MagicScanner`;
-
-    let importedDetail=serverPack?.detail || null;
-    if(!importedDetail){
-      let localImported={};
-      try{localImported=JSON.parse(localStorage.getItem('MAGICSCANNER_IMPORTED_DETAILS')||'{}')||{}}catch{}
-      importedDetail=localImported[m.id] || localImported[id] || (window.IMPORTED_DETAILS||{})[m.id] || (window.IMPORTED_DETAILS||{})[id] || null;
-      if(!importedDetail){
-        const all=Object.values({...localImported,...(window.IMPORTED_DETAILS||{})});
-        importedDetail=all.find(d=>d&&msNormId(`${d.home||''}-${d.away||''}`)===msNormId(`${m.home||''}-${m.away||''}`))||null;
+    if(serverPack?.match){
+      const m=serverPack.match;
+      if(serverPack.date && !m.date_label){
+        const [yy,mm,dd]=String(serverPack.date).split('-').map(Number);
+        const dt=new Date(yy,(mm||1)-1,dd||1,12);
+        if(!isNaN(dt)) m.date_label=dt.toLocaleDateString('it-IT',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
       }
+      currentMatch=m;
+      document.title=`${m.home} vs ${m.away} · MagicScanner`;
+      try{localStorage.setItem('MAGICSCANNER_SELECTED_MATCH',JSON.stringify({match:m,savedAt:Date.now()}));}catch{}
+      const importedDetail=serverPack.detail || findLocalDetailForMatch(m,id);
+      if(importedDetail) showAutoDetail(m,importedDetail);
+      else showGeneric(m);
+    }else if(!currentMatch){
+      showMatchError('Partita non trovata',`Non trovo “${id}” nell’archivio pubblicato. Torna alla home e riapri la partita.`);
+      return;
     }
-
-    if(importedDetail) showAutoDetail(m,importedDetail);
-    else showGeneric(m);
     window.scrollTo(0,0);
   }catch(e){
     console.error('Errore apertura scheda partita',e);
-    showMatchError('Errore caricamento scheda',e && e.message ? e.message : 'Errore imprevisto durante il caricamento della partita.');
+    if(!currentMatch) showMatchError('Errore caricamento scheda',e && e.message ? e.message : 'Errore imprevisto durante il caricamento della partita.');
   }
 }
 

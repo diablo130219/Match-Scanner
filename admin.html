@@ -1586,8 +1586,15 @@ function renderPromotedQueue(){
     const ok=!!details[m.id];const url=m.stats_url||m.statsUrl||'';
     const date=m._dateKey?`<span class="queueDate">${queueDateLabel(m._dateKey)}</span>`:'';
     const promo=isPromotedMatch(m)?'<span class="queueDate">PROMOSSA</span>':'';
-    return `<div class="row"><div><b>${m.home} — ${m.away}</b>${date}${promo}<small>${m.league||''}${m.time?' · '+m.time:''}</small></div><span class="${ok?'ok':'warn'}">${ok?'Dettaglio presente ✓':'Da importare'}</span><div class="queueAction">${url?`<a class="btn secondary jumpBtn" target="_blank" rel="noopener" href="${url.replace(/&/g,'&amp;').replace(/"/g,'&quot;')}">${ok?'Apri Stats':'Apri Stats →'}</a>`:'<span class="bad">URL Stats assente</span>'}<a class="btn secondary jumpBtn" href="match.html?id=${encodeURIComponent(m.id)}" target="_blank" rel="noopener">Scheda</a></div></div>`
+    return `<div class="row"><div><b>${m.home} — ${m.away}</b>${date}${promo}<small>${m.league||''}${m.time?' · '+m.time:''}</small></div><span class="${ok?'ok':'warn'}">${ok?'Dettaglio presente ✓':'Da importare'}</span><div class="queueAction">${url?`<a class="btn secondary jumpBtn" target="_blank" rel="noopener" href="${url.replace(/&/g,'&amp;').replace(/"/g,'&quot;')}">${ok?'Apri Stats':'Apri Stats →'}</a>`:'<span class="bad">URL Stats assente</span>'}<a class="btn secondary jumpBtn" data-ms-scheda="${String(m.id).replace(/"/g,'&quot;')}" href="match.html?id=${encodeURIComponent(m.id)}" target="_blank" rel="noopener">Scheda</a></div></div>`
   }).join('') || '<div class="notice">Nessuna partita corrisponde alla ricerca o ai filtri selezionati.</div>';
+  box.querySelectorAll('[data-ms-scheda]').forEach(a=>{
+    a.addEventListener('click',()=>{
+      const mm=list.find(x=>String(x.id)===String(a.dataset.msScheda));
+      if(!mm) return;
+      try{localStorage.setItem('MAGICSCANNER_SELECTED_MATCH',JSON.stringify({match:mm,savedAt:Date.now()}));}catch{}
+    });
+  });
 }
 function openNextMissing(){const details=importedDetailMap();const m=filteredDetailQueue().find(x=>!details[x.id]&&(x.stats_url||x.statsUrl));if(!m){status('Nessuna partita visibile con dettaglio mancante e URL Stats disponibile.','good');return}window.open(m.stats_url||m.statsUrl,'_blank','noopener')}
 

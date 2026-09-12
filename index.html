@@ -4567,6 +4567,15 @@ function renderList(){
   `}).join('');
 
   hydrateStaticOfficialCrests(list);
+  // Salva la partita selezionata prima di aprire la scheda: match.html può
+  // renderizzarla subito anche se l’API server impiega qualche secondo.
+  list.querySelectorAll('.matchCard[data-match-id]').forEach(a=>{
+    a.addEventListener('click',()=>{
+      const mm=arr.find(x=>String(x.id)===String(a.dataset.matchId));
+      if(!mm) return;
+      try{localStorage.setItem('MAGICSCANNER_SELECTED_MATCH',JSON.stringify({match:mm,savedAt:Date.now()}));}catch{}
+    });
+  });
 }
 
 function statRows(m){
@@ -4607,6 +4616,10 @@ function activateDetailTabs(){
 
 function openDetail(id){
   if(!id) return;
+  try{
+    const mm=matches.find(x=>String(x.id)===String(id));
+    if(mm) localStorage.setItem('MAGICSCANNER_SELECTED_MATCH',JSON.stringify({match:mm,savedAt:Date.now()}));
+  }catch{}
   window.location.href = 'match.html?id=' + encodeURIComponent(id);
 }
 
