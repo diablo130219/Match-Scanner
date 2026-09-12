@@ -1495,7 +1495,7 @@ function parseStructuredDetailPayload(data, exactMatch=null){
   const home=exactMatch?.home||'',away=exactMatch?.away||'';
   return {id:exactMatch?.id||'',home,away,league:exactMatch?.league||'',source_file:'soccerstats-structured',source_url:data?.source||'',goal_statistics:Object.assign({},globalStatMapFromPayload(data,goalLabels),mapStatRowsStructured(goalRows,goalLabels)),corners:Object.assign({},globalStatMapFromPayload(data,cornerLabels),mapStatRowsStructured(cornerRows,cornerLabels)),average_goal_times_raw:rawPayloadRows(avgRows).filter(r=>r.some(x=>/Average minute/i.test(x))),total_goals_raw:rawPayloadRows(totalRows),contextual_raw:rawPayloadRows(contextualRows),home_away_raw:rawPayloadRows(haRows),timing:(()=>{const a=timingStructured(data,home,away);return timingHasValues(a)?a:timingStructuredByGroups(data,home,away)})(),recent_results_raw:recentResultsFromPayload(data),standings_raw:standingsFromPayload(data)};
 }
-function hasUsefulDetail(d){return !!(Object.keys(d?.goal_statistics||{}).length||Object.keys(d?.corners||{}).length||(d?.corners_split&&(Object.keys(d.corners_split.first||{}).length||Object.keys(d.corners_split.second||{}).length))||timingHasValues(d?.timing)||(d?.average_goal_times_raw||[]).length||(d?.total_goals_raw||[]).length||(d?.contextual_raw||[]).length||(d?.home_away_raw||[]).length||(d?.recent_results_raw||[]).length||(d?.standings_raw||[]).length)}
+function hasUsefulDetail(d){return !!(Object.keys(d?.goal_statistics||{}).length||Object.keys(d?.corners||{}).length||(d?.corners_split&&(Object.keys(d.corners_split.first||{}).length||Object.keys(d.corners_split.second||{}).length))||timingHasValues(d?.timing)||(d?.timing_split&&(Object.keys(d.timing_split.first||{}).length||Object.keys(d.timing_split.second||{}).length))||(d?.average_goal_times_raw||[]).length||(d?.total_goals_raw||[]).length||(d?.contextual_raw||[]).length||(d?.home_away_raw||[]).length||(d?.recent_results_raw||[]).length||(d?.standings_raw||[]).length)}
 
 // V3.8: la pagina di confronto pre-match di SoccerSTATS, quando viene incollata come
 // TESTO PURO (selezione + copia dal browser, non HTML e non JSON), non ha alcuna
@@ -1537,6 +1537,59 @@ function cornersFromPlainText(text){
   if(!Object.keys(perTeam[0]).length && !Object.keys(perTeam[1]).length) return null;
   return {first:perTeam[0],second:perTeam[1]};
 }
+// Stessa idea di cornersFromPlainText applicata al "Goal times": intestazione vera
+// "GOALS PER TIME SEGMENT (total)", ripetuta una volta per squadra, con GF sulla
+// riga del segmento e GA sulla riga subito sotto.
+const SS_TIME_SEGMENTS=['0-15','16-30','31-45','46-60','61-75','76-90'];
+function ssTimingBlockAt(lines,startIdx){
+  const out={}; let lastSeg=null;
+  for(let i=startIdx+1;i<Math.min(lines.length,startIdx+40);i++){
+    const raw=lines[i];
+    if(raw==null)break;
+    if(/average minutes/i.test(raw))break;
+    const cells=ssRowCells(raw);
+    if(!cells.length)continue;
+    if(SS_TIME_SEGMENTS.includes(cells[0])){
+      lastSeg=cells[0]; out[lastSeg]=out[lastSeg]||{};
+      if(/^GF$/i.test(cells[1]||''))out[lastSeg].gf=cells[2];
+      else if(/^GA$/i.test(cells[1]||''))out[lastSeg].ga=cells[2];
+      continue;
+    }
+    if(/^(1st Half|2nd Half)$/i.test(cells[0]||'')){lastSeg=null;continue}
+    if(lastSeg&&/^GF$/i.test(cells[0]||'')){out[lastSeg].gf=cells[1];continue}
+    if(lastSeg&&/^GA$/i.test(cells[0]||'')){out[lastSeg].ga=cells[1];continue}
+  }
+  return out;
+}
+function timingFromPlainText(text){
+  const lines=String(text||'').split(/\r?\n/);
+  const idxs=ssFindHeadingIdxs(lines,'GOALS PER TIME SEGMENT (total)');
+  if(!idxs.length)return null;
+  const perTeam=idxs.slice(0,2).map(idx=>ssTimingBlockAt(lines,idx));
+  if(!Object.keys(perTeam[0]||{}).length && !Object.keys(perTeam[1]||{}).length) return null;
+  return {first:perTeam[0]||{},second:perTeam[1]||{}};
+}
+// "Results" (ultimi risultati reali di stagione): intestazione ripetuta una volta
+// per squadra, righe successive finché contengono un punteggio "N:N" o "N-N".
+function recentResultsBlockAt(lines,startIdx){
+  const rows=[];
+  for(let i=startIdx+1;i<Math.min(lines.length,startIdx+12);i++){
+    const raw=lines[i];
+    if(raw==null)break;
+    const cells=ssRowCells(raw);
+    if(!cells.length){ if(rows.length)break; else continue }
+    if(cells.some(x=>/^\d+\s*[:\-]\s*\d+$/.test(x))) rows.push(cells);
+    else if(rows.length) break;
+  }
+  return rows;
+}
+function recentResultsFromPlainText(text){
+  const lines=String(text||'').split(/\r?\n/);
+  const idxs=ssFindHeadingIdxs(lines,'Results');
+  const out=[];
+  for(const idx of idxs.slice(0,2)) out.push(...recentResultsBlockAt(lines,idx));
+  return out.length?out:null;
+}
 function parse(text,name,sourceUrl=''){
   text=String(text||'').replace(/\\n/g,'\n').replace(/\\t/g,'\t');
   let title='';
@@ -1560,7 +1613,9 @@ function parse(text,name,sourceUrl=''){
   let cmap=rowmap(corners,cl); if(!Object.keys(cmap).length)cmap=rowmapLoose(corners,cl);
   let tmap=timing(gt); if(!Object.keys(tmap).length)tmap=timingLoose(gt,home,away);
   const cornersSplit=cornersFromPlainText(text);
-  return {id:slug(home+'-'+away),home,away,source_file:name,source_url:sourceUrl,goal_statistics:gmap,corners:cmap,corners_split:cornersSplit||undefined,average_goal_times_raw:onlyRows(avg).filter(x=>/Average minute/i.test(x)),total_goals_raw:onlyRows(total),contextual_raw:onlyRows(contextual),home_away_raw:onlyRows(ha),timing:tmap};
+  const timingSplit=timingFromPlainText(text);
+  const recentPlain=recentResultsFromPlainText(text);
+  return {id:slug(home+'-'+away),home,away,source_file:name,source_url:sourceUrl,goal_statistics:gmap,corners:cmap,corners_split:cornersSplit||undefined,timing_split:timingSplit||undefined,recent_results_raw:recentPlain||[],average_goal_times_raw:onlyRows(avg).filter(x=>/Average minute/i.test(x)),total_goals_raw:onlyRows(total),contextual_raw:onlyRows(contextual),home_away_raw:onlyRows(ha),timing:tmap};
 }
 function htmlToMarkdownish(html){
   const doc=new DOMParser().parseFromString(html,'text/html');

@@ -6536,6 +6536,20 @@ function v3Timing(m,d){
   const make=(name,scope,blue)=>{const s=scope?.total||scope?.home||scope?.away||{};let vals=segs.map(x=>parseFloat(String(s[x]?.gf||'0').replace('%',''))||0);const mx=Math.max(...vals,1);return `<div><div class="v3splitHead">${esc(name)} · gol segnati</div><div class="v3barChart">${vals.map((v,i)=>`<div class="v3bar ${blue?'blue':''}" style="height:${Math.max(5,(v/mx)*90)}%"><span>${v||0}</span><i>${segs[i]}</i></div>`).join('')}</div></div>`};
   return `<div class="v3bars">${teams.slice(0,2).map(([name,scope],i)=>make(name,scope,i===1)).join('')}</div>`;
 }
+// V3.8: goal timing reale dal testo puro (d.timing_split, vedi timingFromPlainText
+// in admin.html) — stesso schema posizionale di corners_split: "first"/"second"
+// nell'ordine di comparsa nella pagina, etichettati qui con m.home/m.away (che a
+// questo punto sono già quelli corretti, dopo il binding fatto in admin.html).
+function v3TimingSplit(m,d){
+  const ts=d?.timing_split;
+  if(!ts) return null;
+  const segs=['0-15','16-30','31-45','46-60','61-75','76-90'];
+  const names=[m.home,m.away], data=[ts.first||{},ts.second||{}];
+  const hasAny=Object.keys(data[0]).length||Object.keys(data[1]).length;
+  if(!hasAny) return null;
+  const make=(name,scope,blue)=>{const vals=segs.map(x=>parseFloat(scope?.[x]?.gf||'0')||0);const mx=Math.max(...vals,1);return `<div><div class="v3splitHead">${esc(name)} · gol segnati</div><div class="v3barChart">${vals.map((v,i)=>`<div class="v3bar ${blue?'blue':''}" style="height:${Math.max(5,(v/mx)*90)}%"><span>${v||0}</span><i>${segs[i]}</i></div>`).join('')}</div></div>`};
+  return `<div class="v3bars">${names.map((name,i)=>make(name,data[i],i===1)).join('')}</div>`;
+}
 function v3Split(m){
   const names=[m.home,m.away]; const side=['in casa','in trasferta']; const idx=[0,1];
   return `<div class="v3split">${idx.map(i=>{const gp=v3Pair(m.basic?.['Partite considerate'])[i],w=v3Pair(m.basic?.['Vittorie'])[i],gf=v3Pair(m.basic?.['Gol fatti'])[i],ga=v3Pair(m.basic?.['Gol subiti'])[i],tg=v3Pair(m.basic?.['Media gol'])[i];return `<div class="v3splitBox"><div class="v3splitHead">${esc(names[i])} (${side[i]})</div><div class="v3kv"><span>Partite</span><b>${esc(gp)}</b></div><div class="v3kv"><span>Vittorie</span><b>${esc(w)}</b></div><div class="v3kv"><span>Gol fatti</span><b>${esc(gf)}</b></div><div class="v3kv"><span>Gol subiti</span><b>${esc(ga)}</b></div><div class="v3kv"><span>Media gol</span><b>${esc(tg)}</b></div></div>`}).join('')}</div>`;
@@ -6645,7 +6659,8 @@ function buildPremiumDetailMarkup(m,d){
   const hasRecent=cleanRecent.length>0;
   const cornerSplit=d?v3CornerSplit(m,d):null;
   const hasCorners=v327Has(d?.corners)||!!cornerSplit;
-  const hasTiming=v327Has(d?.timing);
+  const timingSplit=d?v3TimingSplit(m,d):null;
+  const hasTiming=v327Has(d?.timing)||!!timingSplit;
   const hasStandings=Array.isArray(d?.standings_raw)&&d.standings_raw.length;
   const hasSplit=!!m.basic;
   const auxiliary=[];
@@ -6656,7 +6671,7 @@ function buildPremiumDetailMarkup(m,d){
   // incollata come testo) quando disponibile, altrimenti la vecchia v3CornerTable.
   auxiliary.push(`<div class="v3card"><div class="v3cardTitle">Corner · SoccerSTATS</div>${cornerSplit||v3CornerTable(m,d)}${hasCorners?'<div class="v327cardNote" style="margin-top:10px">Corner a favore/subiti/totali: media della squadra di casa nelle sue partite in casa vs media della squadra ospite nelle sue partite in trasferta — lo scenario di questa partita.</div>':''}</div>`);
   const auxiliaryBottom=[];
-  if(hasTiming) auxiliaryBottom.push(`<div class="v3card"><div class="v3cardTitle">Goal timing · SoccerSTATS</div>${v3Timing(m,d)}<div class="v327cardNote" style="margin-top:10px">Distribuzione temporale riportata dalla pagina Stats dettagliata.</div></div>`);
+  if(hasTiming) auxiliaryBottom.push(`<div class="v3card"><div class="v3cardTitle">Goal timing · SoccerSTATS</div>${timingSplit||v3Timing(m,d)}<div class="v327cardNote" style="margin-top:10px">Distribuzione temporale dei gol segnati in stagione, squadra per squadra (non solo lo scenario di questa partita).</div></div>`);
   if(hasSplit) auxiliaryBottom.push(`<div class="v3card"><div class="v3cardTitle">Rendimento casa / trasferta · a rombo</div>${v3SplitDiamond(m)}<div class="v327cardNote" style="margin-top:10px">Indice 0–100 su dati Ultimi 8 disponibili, non percentuale ufficiale SoccerSTATS. Approfondimento separato: non entra nel calcolo del pronostico Last 8.</div></div>`);
   if(hasStandings) auxiliaryBottom.push(`<div class="v3card"><div class="v3cardTitle">Classifica · SoccerSTATS</div>${v3Standings(m,d)}<div class="v327cardNote" style="margin-top:10px">Classifica estratta dal dettaglio SoccerSTATS. Le due squadre di questa partita sono evidenziate.</div></div>`);
 
