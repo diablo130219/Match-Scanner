@@ -4101,42 +4101,7 @@ body{background-attachment:fixed!important}
 </div>
 <div class="dateRail" id="dateRail"></div>
 </section>
-<section class="sectionBox">
-<div class="sectionTitle">Mercati consigliati</div>
-<div class="sectionSub">Seleziona una categoria grande e filtra immediatamente la giornata</div>
-<div class="marketGrid" id="marketGrid">
-<button class="marketCard active" data-filter="all">
-<div class="marketCardTitle">Tutte</div>
-<div class="marketCardNum blue" id="countAll">0</div>
-<div class="marketCardHint">Panoramica completa della giornata</div>
-</button>
-<button class="marketCard" data-filter="over">
-<div class="marketCardTitle">Over</div>
-<div class="marketCardNum blue" id="countOver">0</div>
-<div class="marketCardHint">Profili offensivi e gol attesi</div>
-</button>
-<button class="marketCard" data-filter="goal">
-<div class="marketCardTitle">Goal</div>
-<div class="marketCardNum purple" id="countGoal">0</div>
-<div class="marketCardHint">Entrambe le squadre a segno</div>
-</button>
-<button class="marketCard" data-filter="fav">
-<div class="marketCardTitle">Favorite</div>
-<div class="marketCardNum amber" id="countFav">0</div>
-<div class="marketCardHint">Squadre con vantaggio statistico</div>
-</button>
-<button class="marketCard" data-filter="under">
-<div class="marketCardTitle">Under</div>
-<div class="marketCardNum green" id="countUnder">0</div>
-<div class="marketCardHint">Partite più chiuse e prudenti</div>
-</button>
-<button class="marketCard" data-filter="nobet">
-<div class="marketCardTitle">No Bet</div>
-<div class="marketCardNum red" id="countNoBet">0</div>
-<div class="marketCardHint">Segnali deboli o poco chiari</div>
-</button>
-</div>
-</section>
+
 <section class="sectionBox">
 <div class="sectionTitle">Partite del giorno</div>
 <div class="sectionSub" id="listSubtitle">Tutte le partite disponibili nella sessione</div>
@@ -4199,16 +4164,7 @@ function esc(s) {
     .replaceAll('"','&quot;');
 }
 
-let activeFilter = 'all';
 let activeDateOffset = 0;
-
-function confClass(c){
-  const x=(c||'').toLowerCase().replaceAll(' ','-');
-  if(x.includes('alta') && x.includes('media')) return 'conf-media-alta';
-  if(x==='alta') return 'conf-alta';
-  if(x==='media') return 'conf-media';
-  return 'conf-bassa';
-}
 
 
 const teamLogoAliases = {
@@ -4446,84 +4402,30 @@ async function hydrateStaticOfficialCrests(root=document){
   }
 }
 
-function badgeType(m){
-  if(m&&m.status==='result') return 'result';
-  const mt=String(m.marketType||'').toLowerCase().replace(/[^a-z]/g,'');
-  if(['favorite','over','goal','under','nobet'].includes(mt)) return mt;
-  const rec=(m.recommended||'').toLowerCase();
-  const tags=(m.tags||[]).join(' ').toLowerCase();
-  if(rec.includes('no bet') || tags.includes('no bet')) return 'nobet';
-  if(rec.includes('favorita') || rec.includes('vincente') || tags.includes('favorita')) return 'favorite';
-  if(rec.includes('under')) return 'under';
-  if(rec.includes('goal') || rec.includes('entrambe')) return 'goal';
-  if(rec.includes('over')) return 'over';
-  return 'nobet';
-}
-
-function badgeLabel(m){
-  const t=badgeType(m);
-  return {
-    over:'OVER',
-    goal:'GOAL',
-    favorite:'FAVORITE',
-    under:'UNDER',
-    nobet:'NO BET',
-    result:'RISULTATO'
-  }[t] || 'MATCH';
-}
-
-function filt(m, f){
-  const t=badgeType(m);
-  if(f==='all') return true;
-  if(f==='fav') return t==='favorite';
-  return t===f;
-}
-
+// V3.4: MagicScanner non classifica più le partite in mercati (Over/Goal/Favorite/Under/
+// No Bet) né inventa un badge — mostra solo i dati reali di SoccerSTATS, l'utente decide.
 function current(){
   const q=document.getElementById('search').value.trim().toLowerCase();
   const dayMatches = matches.filter(m => (m.date_offset ?? 0) === activeDateOffset);
 
   return dayMatches.filter(m =>
-    filt(m, activeFilter) &&
-    (!q || `${m.home} ${m.away} ${m.league} ${m.recommended} ${(m.tags||[]).join(' ')}`.toLowerCase().includes(q))
+    (!q || `${m.home} ${m.away} ${m.league}`.toLowerCase().includes(q))
   );
 }
 
 function renderCounts(){
-  const base = matches.filter(m => (m.date_offset ?? 0) === activeDateOffset);
-  const over = base.filter(m=>filt(m,'over')).length;
-  const goal = base.filter(m=>filt(m,'goal')).length;
-  const fav = base.filter(m=>filt(m,'fav')).length;
-  const under = base.filter(m=>filt(m,'under')).length;
-  const nobet = base.filter(m=>filt(m,'nobet')).length;
-
-  document.getElementById('countAll').textContent = base.length;
-  document.getElementById('countOver').textContent = over;
-  document.getElementById('countGoal').textContent = goal;
-  document.getElementById('countFav').textContent = fav;
-  document.getElementById('countUnder').textContent = under;
-  document.getElementById('countNoBet').textContent = nobet;
+  // Nessun conteggio per mercato: la sezione filtri è stata rimossa insieme al pronostico.
 }
 
 function renderList(){
   const arr = current();
   const list = document.getElementById('matchList');
   const base = matches.filter(m => (m.date_offset ?? 0) === activeDateOffset);
-  const subtitleMap = {
-    all:`Tutte le partite della giornata · ${base.length} match`,
-    over:`Solo partite a profilo Over · ${base.filter(m=>filt(m,'over')).length} match`,
-    goal:`Solo partite Goal / BTTS · ${base.filter(m=>filt(m,'goal')).length} match`,
-    fav:`Solo favorite statistiche · ${base.filter(m=>filt(m,'fav')).length} match`,
-    under:`Solo partite Under · ${base.filter(m=>filt(m,'under')).length} match`,
-    nobet:`Solo partite No Bet · ${base.filter(m=>filt(m,'nobet')).length} match`
-  };
-  document.getElementById('listSubtitle').textContent = subtitleMap[activeFilter] || subtitleMap.all;
+  document.getElementById('listSubtitle').textContent = `Tutte le partite della giornata · ${base.length} match`;
   document.getElementById('listMeta').textContent = arr.length + ' partite';
 
-  document.querySelectorAll('.marketCard').forEach(btn => btn.classList.toggle('active', btn.dataset.filter === activeFilter));
-
   if(!arr.length){
-    list.innerHTML = '<div class="emptyState">Nessuna partita corrisponde a questa selezione.<div id="storageDiag" style="margin-top:8px;font-size:11px;opacity:.55"></div></div>';
+    list.innerHTML = '<div class="emptyState">Nessuna partita corrisponde alla ricerca.<div id="storageDiag" style="margin-top:8px;font-size:11px;opacity:.55"></div></div>';
     return;
   }
 
@@ -4531,11 +4433,10 @@ function renderList(){
     const isResult=m.status==='result'&&m.result;
     const finalScore=isResult?`${m.result.home}-${m.result.away}`:'';
     const shownTime=isResult?(m.time||'FT'):(m.time||'—');
-    const shownReco=isResult?`${m.home} ${finalScore} ${m.away}`:(m.recommended||'NO BET');
-    const shownSub=isResult?'Risultato finale':(m.summary||'');
-    const shownScore=isResult?finalScore:(m.signalScore ?? '');
-    const shownScoreLabel=isResult?'Finale':'Score';
-    const shownConf=isResult?'RISULTATO':(m.confidence||'Bassa');
+    // V3.4: niente più pronostico/score/affidabilità inventati — solo l'andamento reale
+    // (ultime 8 disponibili) preso così com'è da SoccerSTATS.
+    const shownHeadline=isResult?`${m.home} ${finalScore} ${m.away}`:'Ultime 8 disponibili';
+    const shownTrend=isResult?'Risultato finale':`Over 2.5 ${m.basic?.['Over 2.5']||'—'} · Media gol ${m.basic?.['Media gol']||'—'} · BTTS ${m.basic?.['BTTS / Entrambe segnano']||'—'}`;
     return `
     <a class="matchCard" data-match-id="${esc(m.id)}" href="match.html?id=${encodeURIComponent(m.id)}">
       <div class="timePill">${esc(shownTime)}</div>
@@ -4552,17 +4453,9 @@ function renderList(){
       </div>
 
       <div>
-        <div class="badges"><span class="badge ${badgeType(m)}">${badgeLabel(m)}</span></div>
-        <div class="recoMain">${esc(shownReco)}</div>
-        <div class="recoSub">${esc(shownSub)}</div>
+        <div class="recoMain">${esc(shownHeadline)}</div>
+        <div class="recoSub">${esc(shownTrend)}</div>
       </div>
-
-      <div class="scoreBox">
-        <div class="scoreN">${shownScore}</div>
-        <div class="scoreLbl">${esc(shownScoreLabel)}</div>
-      </div>
-
-      <div class="confPill ${isResult?'result':confClass(m.confidence)}">${esc(shownConf)}</div>
 
       <div style="font-size:13px;font-weight:900;color:#174f91">Apri →</div>
     </a>
@@ -4683,21 +4576,10 @@ function updateDateUI(){
   const status=document.getElementById('dateStatus');
   if(status) status.textContent=labels[String(activeDateOffset)] || 'Giornata selezionata';
 
-  activeFilter='all';
-  document.querySelectorAll('.marketCard').forEach(btn=>{
-    btn.classList.toggle('active', btn.dataset.filter==='all');
-  });
-
-  renderCounts();
   renderList();
 }
 
 document.getElementById('search').addEventListener('input', renderList);
-
-document.querySelectorAll('.marketCard').forEach(btn => btn.onclick = () => {
-  activeFilter = btn.dataset.filter;
-  renderList();
-});
 
 /* Click unico e permanente per tutte le partite, anche quelle aggiunte in futuro. */
 const matchListEl = document.getElementById('matchList');
